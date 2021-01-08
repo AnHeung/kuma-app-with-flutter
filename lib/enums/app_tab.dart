@@ -1,0 +1,1 @@
+enum AppTab {TORRENT , IMAGE, VIDEO}
