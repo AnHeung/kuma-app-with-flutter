@@ -3,7 +3,7 @@ import 'package:kuma_flutter_app/enums/app_tab.dart';
 
 class TabCubit extends Cubit<AppTab> {
 
-  TabCubit() : super(AppTab.TORRENT);
+  TabCubit() : super(AppTab.ANIMATION);
 
   tabUpdate(AppTab appTab){
     emit(appTab);

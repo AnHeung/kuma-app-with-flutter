@@ -28,14 +28,14 @@ class TabSelector extends StatelessWidget {
     String title;
 
     switch (tab) {
+      case AppTab.ANIMATION:
+        title = "애니";
+        break;
       case AppTab.TORRENT:
         title = "토렌트";
         break;
       case AppTab.IMAGE:
         title = "이미지";
-        break;
-      case AppTab.VIDEO:
-        title = "영상";
         break;
     }
     return title;
@@ -45,14 +45,14 @@ class TabSelector extends StatelessWidget {
     IconData icon = Icons.terrain;
 
     switch (tab) {
+      case AppTab.ANIMATION:
+        icon = Icons.album;
+        break;
       case AppTab.TORRENT:
-        icon = Icons.accessibility_new;
+        icon = Icons.phone_android;
         break;
       case AppTab.IMAGE:
         icon = Icons.image;
-        break;
-      case AppTab.VIDEO:
-        icon = Icons.slow_motion_video;
         break;
     }
     return icon;

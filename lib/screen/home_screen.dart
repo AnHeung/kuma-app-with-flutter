@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kuma_flutter_app/bloc/tab/tab_cubit.dart';
 import 'package:kuma_flutter_app/enums/app_tab.dart';
-import 'package:kuma_flutter_app/repository/api_repository.dart';
 import 'package:kuma_flutter_app/screen/image_screen.dart';
 import 'package:kuma_flutter_app/screen/torrent_screen.dart';
-import 'package:kuma_flutter_app/screen/video_screen.dart';
+import 'package:kuma_flutter_app/screen/animation.dart';
 import 'package:kuma_flutter_app/widget/tab_selector.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -17,6 +16,13 @@ class HomeScreen extends StatelessWidget {
     return BlocBuilder<TabCubit , AppTab>(
         builder: (context, currentTab){
           return Scaffold(
+            drawer: SafeArea(
+              child: Drawer(
+                child: Container(
+                  color: Colors.white,
+                ),
+              ),
+            ),
             appBar: AppBar(
               title: Text('메인'),
             ),
@@ -36,14 +42,14 @@ class HomeScreen extends StatelessWidget {
     Widget widget = TorrentScreen();
 
     switch(tab){
+      case AppTab.ANIMATION :
+        widget = AnimationScreen();
+        break;
       case AppTab.TORRENT :
         widget = TorrentScreen();
         break;
       case AppTab.IMAGE :
         widget = ImageScreen();
-        break;
-      case AppTab.VIDEO :
-        widget = VideoScreen();
         break;
     }
     return widget;
