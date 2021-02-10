@@ -12,14 +12,18 @@ class AnimationScreen extends StatelessWidget {
     return BlocBuilder<AnimationBloc, AnimationState>(
       builder: (context, state) {
         bool isLoading = state is AnimationLoadInProgress;
-        List<AnimationMainItem> mainItem  = (state is AnimationLoadSuccess) ? state.rankingList : null;
-        print("mainItem : $mainItem");
+        final List<AnimationMainItem> mainItem  = (state is AnimationLoadSuccess) ? state.rankingList : null;
 
         return Scaffold(
           body: Stack(
             children: [
-              Container(
-                height: MediaQuery.of(context).size.height,
+              Column(
+                children: [
+                  Container(
+                    color: Colors.blue,
+                    child: Text('text'),
+                  )
+                ],
               ),
               LoadingIndicator(
                 isVisible: isLoading,

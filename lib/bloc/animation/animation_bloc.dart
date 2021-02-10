@@ -32,10 +32,24 @@ class AnimationBloc extends Bloc<AnimationEvent, AnimationState> {
     String rankType = event.rankType ?? "all";
     String searchType = event.searchType ?? "all";
     String limit = event.limit ?? "30";
-    SearchRankingApiResult searchRankingApiResult = await repository.getRankingItemList(rankType, limit ,searchType);
-    bool isErr  = searchRankingApiResult.err;
-    if(isErr) yield AnimationLoadInFailure(errMsg: searchRankingApiResult.msg);
-    else yield AnimationLoadSuccess(rankingList: searchRankingApiResult.result.map((result) => AnimationMainItem()).toList());
+    SearchRankingApiResult searchRankingApiResult =
+        await repository.getRankingItemList(rankType, limit, searchType);
+    bool isErr = searchRankingApiResult.err;
+    if (isErr)
+      yield AnimationLoadInFailure(errMsg: searchRankingApiResult.msg);
+    else
+      yield AnimationLoadSuccess(
+          rankingList: searchRankingApiResult.result.map((result) =>
+              AnimationMainItem(
+                  type: result.type,
+                  list: result.rank_result
+                      .map((data) => RankingItem(
+                          id: data.id,
+                          title: data.title,
+                          image: data.image,
+                          ranking: data.ranking))
+                      .toList()))
+              .toList());
   }
 
   Stream<AnimationState> _mapToAnimationLoadUpdate(
