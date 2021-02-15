@@ -1,0 +1,1 @@
+enum ImageType {FILE, NETWORK , NO_IMAGE }

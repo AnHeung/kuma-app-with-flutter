@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kuma_flutter_app/bloc/animation/animation_bloc.dart';
 import 'package:kuma_flutter_app/bloc/tab/tab_cubit.dart';
 import 'package:kuma_flutter_app/enums/app_tab.dart';
 import 'package:kuma_flutter_app/screen/image_screen.dart';
@@ -26,7 +27,7 @@ class HomeScreen extends StatelessWidget {
             appBar: AppBar(
               title: Text('메인'),
             ),
-            body: _selectScreen(currentTab),
+            body: _selectScreen(tab:currentTab,context: context),
             floatingActionButton: FloatingActionButton(
               onPressed: ()=>print('ㅌㅅㅌㅅ'),
               child: Icon(Icons.plus_one),
@@ -37,12 +38,13 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _selectScreen(AppTab tab){
+  Widget _selectScreen({AppTab tab, BuildContext context}){
 
     Widget widget = TorrentScreen();
 
     switch(tab){
       case AppTab.ANIMATION :
+        // BlocProvider.of<AnimationBloc>(context).add(AnimationLoad(rankType: "all",searchType: "all",limit: "30"));
         widget = AnimationScreen();
         break;
       case AppTab.TORRENT :

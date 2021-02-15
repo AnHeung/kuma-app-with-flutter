@@ -32,8 +32,7 @@ class AnimationBloc extends Bloc<AnimationEvent, AnimationState> {
     String rankType = event.rankType ?? "all";
     String searchType = event.searchType ?? "all";
     String limit = event.limit ?? "30";
-    SearchRankingApiResult searchRankingApiResult =
-        await repository.getRankingItemList(rankType, limit, searchType);
+    SearchRankingApiResult searchRankingApiResult = await repository.getRankingItemList(rankType, limit, searchType);
     bool isErr = searchRankingApiResult.err;
     if (isErr)
       yield AnimationLoadInFailure(errMsg: searchRankingApiResult.msg);
