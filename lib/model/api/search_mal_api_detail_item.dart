@@ -2,6 +2,30 @@ import 'package:json_annotation/json_annotation.dart';
 
 @JsonSerializable()
 class SearchMalDetailApiItem {
+  bool err;
+  String msg;
+  SearchMalDetailApiItemResult result;
+
+  SearchMalDetailApiItem({this.err, this.msg, this.result});
+
+  SearchMalDetailApiItem.fromJson(Map<String, dynamic> json) {
+    err = json['err'];
+    msg = json['msg'];
+    result = json['result'] != null ? new SearchMalDetailApiItemResult.fromJson(json['result']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['err'] = this.err;
+    data['msg'] = this.msg;
+    if (this.result != null) {
+      data['result'] = this.result.toJson();
+    }
+    return data;
+  }
+}
+
+class SearchMalDetailApiItemResult {
   int id;
   String title;
   String image;
@@ -15,25 +39,25 @@ class SearchMalDetailApiItem {
   String genres;
   int numEpisodes;
   int startSeason;
-  List<RelatedAnime> relatedAnime;
+  List<SearchMalDetailRelatedAnimeItem> relatedAnime;
 
-  SearchMalDetailApiItem(
+  SearchMalDetailApiItemResult(
       {this.id,
-      this.title,
-      this.image,
-      this.startDate,
-      this.endDate,
-      this.star,
-      this.popularity,
-      this.rank,
-      this.synopsis,
-      this.status,
-      this.genres,
-      this.numEpisodes,
-      this.startSeason,
-      this.relatedAnime});
+        this.title,
+        this.image,
+        this.startDate,
+        this.endDate,
+        this.star,
+        this.popularity,
+        this.rank,
+        this.synopsis,
+        this.status,
+        this.genres,
+        this.numEpisodes,
+        this.startSeason,
+        this.relatedAnime});
 
-  SearchMalDetailApiItem.fromJson(Map<String, dynamic> json) {
+  SearchMalDetailApiItemResult.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     title = json['title'];
     image = json['image'];
@@ -48,9 +72,9 @@ class SearchMalDetailApiItem {
     numEpisodes = json['num_episodes'];
     startSeason = json['start_season'];
     if (json['related_anime'] != null) {
-      relatedAnime = new List<RelatedAnime>();
+      relatedAnime = new List<SearchMalDetailRelatedAnimeItem>();
       json['related_anime'].forEach((v) {
-        relatedAnime.add(new RelatedAnime.fromJson(v));
+        relatedAnime.add(new SearchMalDetailRelatedAnimeItem.fromJson(v));
       });
     }
   }
@@ -77,15 +101,14 @@ class SearchMalDetailApiItem {
   }
 }
 
-@JsonSerializable()
-class RelatedAnime {
+class SearchMalDetailRelatedAnimeItem {
   int id;
   String title;
   String image;
 
-  RelatedAnime({this.id, this.title, this.image});
+  SearchMalDetailRelatedAnimeItem({this.id, this.title, this.image});
 
-  RelatedAnime.fromJson(Map<String, dynamic> json) {
+  SearchMalDetailRelatedAnimeItem.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     title = json['title'];
     image = json['image'];

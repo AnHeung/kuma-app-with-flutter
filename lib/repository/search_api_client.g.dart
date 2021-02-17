@@ -35,9 +35,11 @@ class _SearchApiClient implements SearchApiClient {
   }
 
   @override
-  Future<SearchMalDetailApiItem> getMalApiDetailItem() async {
+  Future<SearchMalDetailApiItem> getMalApiDetailItem(id, type) async {
+    ArgumentError.checkNotNull(id, 'id');
+    ArgumentError.checkNotNull(type, 'type');
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'id': id, r'type': type};
     final _data = <String, dynamic>{};
     final _result = await _dio.request<Map<String, dynamic>>('/mal/detail',
         queryParameters: queryParameters,

@@ -13,8 +13,7 @@ class ApiRepository {
 
   Future<SearchMalApiItem> getMalApiItem(String query) => searchApiClient.getTranslateTitleList(query);
 
-  Future<SearchMalDetailApiItem> getDetailApiItem() =>
-      searchApiClient.getMalApiDetailItem();
+  Future<SearchMalDetailApiItem> getDetailApiItem(String id , String type) => searchApiClient.getMalApiDetailItem(id, type);
 
   Future<SearchRankingApiResult> getRankingItemList(
           String rankType, String limit, String searchType) =>

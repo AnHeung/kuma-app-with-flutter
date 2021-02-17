@@ -5,5 +5,6 @@ class Routes{
   static const VIDEO = '/video';
   static const SPLASH = '/splash';
   static const SETTING = '/setting';
+  static const IMAGE_DETAIL = '/image/detail';
 
 }

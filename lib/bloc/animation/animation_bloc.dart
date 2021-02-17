@@ -3,13 +3,14 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_ranking_item.dart';
+import 'package:kuma_flutter_app/model/item/animation_detail_item.dart';
 import 'package:kuma_flutter_app/model/item/animation_main_item.dart';
 import 'package:kuma_flutter_app/repository/api_repository.dart';
 import 'package:meta/meta.dart';
 
 part 'animation_event.dart';
-
 part 'animation_state.dart';
+
 
 class AnimationBloc extends Bloc<AnimationEvent, AnimationState> {
   ApiRepository repository;
@@ -32,14 +33,15 @@ class AnimationBloc extends Bloc<AnimationEvent, AnimationState> {
     String rankType = event.rankType ?? "all";
     String searchType = event.searchType ?? "all";
     String limit = event.limit ?? "30";
-    SearchRankingApiResult searchRankingApiResult = await repository.getRankingItemList(rankType, limit, searchType);
+    SearchRankingApiResult searchRankingApiResult =
+        await repository.getRankingItemList(rankType, limit, searchType);
     bool isErr = searchRankingApiResult.err;
     if (isErr)
       yield AnimationLoadInFailure(errMsg: searchRankingApiResult.msg);
     else
       yield AnimationLoadSuccess(
-          rankingList: searchRankingApiResult.result.map((result) =>
-              AnimationMainItem(
+          rankingList: searchRankingApiResult.result
+              .map((result) => AnimationMainItem(
                   type: result.type,
                   list: result.rank_result
                       .map((data) => RankingItem(

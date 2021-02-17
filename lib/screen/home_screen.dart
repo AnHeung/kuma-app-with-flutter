@@ -6,7 +6,7 @@ import 'package:kuma_flutter_app/bloc/tab/tab_cubit.dart';
 import 'package:kuma_flutter_app/enums/app_tab.dart';
 import 'package:kuma_flutter_app/screen/image_screen.dart';
 import 'package:kuma_flutter_app/screen/torrent_screen.dart';
-import 'package:kuma_flutter_app/screen/animation.dart';
+import 'package:kuma_flutter_app/screen/animation_screen.dart';
 import 'package:kuma_flutter_app/widget/tab_selector.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -30,7 +30,7 @@ class HomeScreen extends StatelessWidget {
             body: _selectScreen(tab:currentTab,context: context),
             floatingActionButton: FloatingActionButton(
               onPressed: ()=>print('ㅌㅅㅌㅅ'),
-              child: Icon(Icons.plus_one),
+              child: Icon(Icons.search),
             ),
             bottomNavigationBar: TabSelector(tab: currentTab, onTabSelected: (currentTab)=>BlocProvider.of<TabCubit>(context).tabUpdate(currentTab),),
           );
@@ -44,7 +44,7 @@ class HomeScreen extends StatelessWidget {
 
     switch(tab){
       case AppTab.ANIMATION :
-        // BlocProvider.of<AnimationBloc>(context).add(AnimationLoad(rankType: "all",searchType: "all",limit: "30"));
+        BlocProvider.of<AnimationBloc>(context).add(AnimationLoad(rankType: "all",searchType: "all",limit: "30"));
         widget = AnimationScreen();
         break;
       case AppTab.TORRENT :

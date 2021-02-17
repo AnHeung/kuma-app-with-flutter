@@ -15,7 +15,7 @@ abstract class SearchApiClient {
   Future<SearchMalApiItem> getTranslateTitleList(@Query("q") String query);
 
   @GET("/mal/detail")
-  Future<SearchMalDetailApiItem> getMalApiDetailItem();
+  Future<SearchMalDetailApiItem> getMalApiDetailItem(@Query("id") String id , @Query("type")String type);
 
   @GET("/mal/detail")
   Future<SearchMalSimpleApiItem> getMalApiSimpleItem();

@@ -24,7 +24,6 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
   }
 
   Stream<SplashState> _mapToSplashInit(SplashInit event) async*{
-      print('테스트');
       await Future.delayed(Duration(seconds: 2));
       yield SplashLoadSuccess();
   }
