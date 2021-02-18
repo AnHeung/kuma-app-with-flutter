@@ -7,6 +7,7 @@ import 'package:kuma_flutter_app/bloc/animation_detail/animation_detail_bloc.dar
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
 import 'package:kuma_flutter_app/model/item/animation_main_item.dart';
 import 'package:kuma_flutter_app/routes/routes.dart';
+import 'package:kuma_flutter_app/widget/custom_text.dart';
 import 'package:kuma_flutter_app/widget/empty_container.dart';
 import 'package:kuma_flutter_app/widget/image_item.dart';
 import 'package:kuma_flutter_app/widget/loading_indicator.dart';
@@ -70,9 +71,7 @@ class AnimationScreen extends StatelessWidget {
             padding: const EdgeInsets.only(top: 20, bottom: 20),
             child: Container(
               width: MediaQuery.of(context).size.width,
-              child: Text(item.type.toUpperCase(),
-                  style: TextStyle(color: Colors.white, fontSize: 20)),
-            ),
+              child: CustomText(text: item.type.toUpperCase() , fontSize: 20)),
           ),
           Expanded(
             child: ListView(
@@ -102,20 +101,20 @@ class AnimationScreen extends StatelessWidget {
         width: width,
         child: Column(
           children: [
-            Flexible(
+            Expanded(
               flex: 1,
               child: Container(
                 margin: EdgeInsets.only(bottom: 10),
-                  child:AutoSizeText(
-                    item.title,
-                    style: TextStyle(fontSize: 13, color: Colors.white),
-                    overflow: TextOverflow.ellipsis,
+                  child:CustomText(
+                    text: item.title,
                     maxLines: 2,
-                  ) ,
+                    isDynamic: true,
+                    isEllipsis: true,
+                  ),
                 ),
             ),
             Expanded(
-              flex: 3,
+              flex: 4,
               child: Container(
                 child: ImageItem(
                   imgRes: item.image,

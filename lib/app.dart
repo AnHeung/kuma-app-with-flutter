@@ -40,6 +40,7 @@ class App extends StatelessWidget {
       child: MaterialApp(
         title: "쿠마앱",
         theme: ThemeData(
+          fontFamily: 'NanumPenScript',
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),

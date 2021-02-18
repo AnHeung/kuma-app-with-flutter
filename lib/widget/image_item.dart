@@ -13,54 +13,48 @@ class ImageItem extends StatefulWidget {
    final String imgRes;
    final ImageShapeType type;
    final Key key;
+   final double opacity;
 
-  ImageItem({Key key , this.imgRes , ImageShapeType type}) : this.type = type ?? ImageShapeType.CIRCLE , this.key = key?? UniqueKey() , super(key:key);
+  ImageItem({Key key , this.imgRes , ImageShapeType type, double opacity}) : this.type = type ?? ImageShapeType.CIRCLE , this.key = key?? UniqueKey() , this.opacity = opacity?? 0 , super(key:key);
 
   @override
-  State<ImageItem> createState(){
-    ImageType imageType = checkImageType(imgRes);
-    switch(imageType){
-      case ImageType.FILE :return _FileImageState();
-      case ImageType.NETWORK :return _NetImageState();
-      case ImageType.NO_IMAGE :return _NoImageState();
-      default: return _NoImageState();
-    }
-  }
+  State<ImageItem> createState()=>_ImageState();
+
 }
 
-class _FileImageState extends State<ImageItem> {
+
+class _ImageState extends State<ImageItem> {
   @override
   Widget build(BuildContext context) {
+
+    ImageType imageType = checkImageType(widget.imgRes);
+
+    var image;
+
+    switch(imageType){
+      case ImageType.FILE : image = FileImage(File(widget.imgRes));
+          break;
+      case ImageType.NETWORK : image= NetworkImage(widget.imgRes);
+          break;
+      case ImageType.NO_IMAGE : image=  AssetImage('assets/images/no_image.png' ,);
+        break;
+      default : image = AssetImage('assets/images/no_image.png' ,);
+        break;
+    }
+
     return widget.type == ImageShapeType.CIRCLE ?
     CircleAvatar(
         radius: 55,
         backgroundColor: Color(0xffFDCF09),
         child: CircleAvatar(radius: 50, backgroundImage: FileImage(File(widget.imgRes))))
-        :   Image.file(File(widget.imgRes));
-  }
-}
-// Image.network(widget.imgRes, fit: BoxFit.cover),
-class _NetImageState extends State<ImageItem> {
-  @override
-  Widget build(BuildContext context) {
-    return widget.type == ImageShapeType.CIRCLE ?
-    CircleAvatar(
-      radius: 55,
-      backgroundColor: Color(0xffFDCF09),
-      child: CircleAvatar(radius: 50, backgroundImage: NetworkImage(widget.imgRes)))
-        :   Image.network(widget.imgRes, fit: BoxFit.cover);
-  }
-}
-
-class _NoImageState extends State<ImageItem> {
-  @override
-  Widget build(BuildContext context) {
-
-    return widget.type == ImageShapeType.CIRCLE ?
-    CircleAvatar(
-      radius: 55,
-      backgroundColor: Color(0xffFDCF09),
-      child: CircleAvatar(radius: 50, backgroundImage: AssetImage('assets/images/no_image.png'),),)
-        :  Image(fit: BoxFit.cover, image: AssetImage('assets/images/no_image.png' ,),);
+        :  Container(
+      margin: EdgeInsets.only(bottom: 20),
+      constraints: BoxConstraints.expand(),
+      decoration: BoxDecoration(
+        image: DecorationImage(
+            colorFilter: widget.opacity > 0 ? ColorFilter.mode(Colors.black.withOpacity(widget.opacity), BlendMode.dstATop) : null,
+            image: image, fit: BoxFit.fitHeight),
+      ),
+    ); Image.file(File(widget.imgRes));
   }
 }

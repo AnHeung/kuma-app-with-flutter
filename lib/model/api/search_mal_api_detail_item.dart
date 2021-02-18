@@ -31,14 +31,14 @@ class SearchMalDetailApiItemResult {
   String image;
   String startDate;
   String endDate;
-  double star;
-  int popularity;
+  String star;
+  String popularity;
   int rank;
   String synopsis;
   String status;
   String genres;
-  int numEpisodes;
-  int startSeason;
+  String numEpisodes;
+  String startSeason;
   List<SearchMalDetailRelatedAnimeItem> relatedAnime;
 
   SearchMalDetailApiItemResult(
