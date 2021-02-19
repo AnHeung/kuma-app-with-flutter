@@ -48,7 +48,6 @@ class _ImageState extends State<ImageItem> {
         backgroundColor: Color(0xffFDCF09),
         child: CircleAvatar(radius: 50, backgroundImage: FileImage(File(widget.imgRes))))
         :  Container(
-      margin: EdgeInsets.only(bottom: 20),
       constraints: BoxConstraints.expand(),
       decoration: BoxDecoration(
         image: DecorationImage(

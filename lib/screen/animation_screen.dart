@@ -30,7 +30,7 @@ class AnimationScreen extends StatelessWidget {
                           .map((item) => _makeMainItem(context, item))
                           .toList(),
                     )
-                  : EmptyContainer(),
+                  : EmptyContainer(title: "타이틀없음",),
               LoadingIndicator(
                 isVisible: isLoading,
               )
