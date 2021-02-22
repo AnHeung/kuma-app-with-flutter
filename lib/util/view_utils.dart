@@ -1,9 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:kuma_flutter_app/enums/image_shape_type.dart';
 import 'package:kuma_flutter_app/enums/image_type.dart';
+import 'package:kuma_flutter_app/widget/custom_text.dart';
+import 'package:kuma_flutter_app/widget/image_item.dart';
 
 
-onLoad(BuildContext context){
+imageAlert(BuildContext context , String title, String imgRes){
   showGeneralDialog(
     context: context,
     barrierColor: Colors.black12.withOpacity(0.6), // background color
@@ -11,28 +14,27 @@ onLoad(BuildContext context){
     barrierLabel: "Dialog", // label for barrier
     transitionDuration: Duration(milliseconds: 400), // how long it takes to popup dialog after button click
     pageBuilder: (_, __, ___) { // your widget implementation
-      return SizedBox.expand( // makes widget fullscreen
-        child: Column(
-          children: <Widget>[
-            Expanded(
-              flex: 9,
-              child: SizedBox.expand(child: FlutterLogo()),
-            ),
-            Expanded(
-              flex: 1,
-              child: SizedBox.expand(
-                child: RaisedButton(
-                  color: Colors.blue[900],
-                  child: Text(
-                    "Dismiss",
-                    style: TextStyle(fontSize: 40),
+      return GestureDetector(
+        onTap: () => Navigator.pop(context),
+        child: SizedBox.expand( // makes widget fullscreen
+          child: Column(
+            children: <Widget>[
+              Expanded(
+                flex: 8,
+                child: SizedBox.expand(child: ImageItem(type: ImageShapeType.FLAT , imgRes: imgRes,)),
+              ),
+              Expanded(
+                flex: 2,
+                child: SizedBox.expand(
+                  child: RaisedButton(
+                    color: Colors.blue[900],
+                    child: CustomText(text: title,fontSize: 15,),
+                    textColor: Colors.white,
                   ),
-                  textColor: Colors.white,
-                  onPressed: () => Navigator.pop(context),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       );
     },

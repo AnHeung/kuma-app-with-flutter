@@ -39,6 +39,7 @@ class SearchMalDetailApiItemResult {
   String genres;
   String numEpisodes;
   String startSeason;
+  List<String> pictures;
   List<SearchMalDetailRelatedAnimeItem> relatedAnime;
 
   SearchMalDetailApiItemResult(
@@ -55,6 +56,7 @@ class SearchMalDetailApiItemResult {
         this.genres,
         this.numEpisodes,
         this.startSeason,
+        this.pictures,
         this.relatedAnime});
 
   SearchMalDetailApiItemResult.fromJson(Map<String, dynamic> json) {
@@ -71,6 +73,7 @@ class SearchMalDetailApiItemResult {
     genres = json['genres'];
     numEpisodes = json['num_episodes'];
     startSeason = json['start_season'];
+    pictures = json['pictures'].cast<String>();
     if (json['related_anime'] != null) {
       relatedAnime = new List<SearchMalDetailRelatedAnimeItem>();
       json['related_anime'].forEach((v) {
@@ -94,6 +97,7 @@ class SearchMalDetailApiItemResult {
     data['genres'] = this.genres;
     data['num_episodes'] = this.numEpisodes;
     data['start_season'] = this.startSeason;
+    data['pictures'] = this.pictures;
     if (this.relatedAnime != null) {
       data['related_anime'] = this.relatedAnime.map((v) => v.toJson()).toList();
     }

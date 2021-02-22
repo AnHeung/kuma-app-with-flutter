@@ -28,7 +28,7 @@ class _ImageState extends State<ImageItem> {
   Widget build(BuildContext context) {
 
     ImageType imageType = checkImageType(widget.imgRes);
-
+    ColorFilter colorFilter =  widget.opacity > 0 ? ColorFilter.mode(Colors.black.withOpacity(widget.opacity), BlendMode.dstATop) : null;
     var image;
 
     switch(imageType){
@@ -42,18 +42,16 @@ class _ImageState extends State<ImageItem> {
         break;
     }
 
-    return widget.type == ImageShapeType.CIRCLE ?
-    CircleAvatar(
-        radius: 55,
-        backgroundColor: Color(0xffFDCF09),
-        child: CircleAvatar(radius: 50, backgroundImage: FileImage(File(widget.imgRes))))
-        :  Container(
+    return Container(
       constraints: BoxConstraints.expand(),
       decoration: BoxDecoration(
-        image: DecorationImage(
-            colorFilter: widget.opacity > 0 ? ColorFilter.mode(Colors.black.withOpacity(widget.opacity), BlendMode.dstATop) : null,
-            image: image, fit: BoxFit.fitHeight),
-      ),
+          shape: widget.type == ImageShapeType.CIRCLE ? BoxShape.circle: BoxShape.rectangle ,
+          image:  DecorationImage(
+              colorFilter: colorFilter,
+              fit: BoxFit.fill,
+              image:  image
+          )
+      ) ,
     ); Image.file(File(widget.imgRes));
   }
 }

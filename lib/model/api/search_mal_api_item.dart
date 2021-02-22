@@ -1,15 +1,15 @@
 import 'package:json_annotation/json_annotation.dart';
 
 @JsonSerializable()
-class SearchMalSimpleApiItem {
+class SearchMalApiItem {
   int id;
   String title;
   String image;
   String startDate;
 
-  SearchMalSimpleApiItem({this.id, this.title, this.image, this.startDate});
+  SearchMalApiItem({this.id, this.title, this.image, this.startDate});
 
-  SearchMalSimpleApiItem.fromJson(Map<String, dynamic> json) {
+  SearchMalApiItem.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     title = json['title'];
     image = json['image'];

@@ -1,6 +1,5 @@
 
 import 'package:dio/dio.dart';
-import 'package:kuma_flutter_app/model/api/search_mal_api_simple_item.dart';
 import 'package:retrofit/http.dart';
 
 part 'rest_client.g.dart';

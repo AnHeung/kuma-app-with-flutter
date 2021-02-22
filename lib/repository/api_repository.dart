@@ -1,6 +1,6 @@
 import 'package:kuma_flutter_app/model/api/search_mal_api_detail_item.dart';
+import 'package:kuma_flutter_app/model/api/search_mal_api_item.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_ranking_item.dart';
-import 'package:kuma_flutter_app/model/api/search_mal_api_simple_item.dart';
 import 'package:kuma_flutter_app/repository/rest_client.dart';
 import 'package:kuma_flutter_app/repository/search_api_client.dart';
 

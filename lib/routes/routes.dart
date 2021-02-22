@@ -6,5 +6,6 @@ class Routes{
   static const SPLASH = '/splash';
   static const SETTING = '/setting';
   static const IMAGE_DETAIL = '/image/detail';
+  static const SEARCH = '/image/search';
 
 }

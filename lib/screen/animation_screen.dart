@@ -104,6 +104,7 @@ class AnimationScreen extends StatelessWidget {
             Expanded(
               flex: 1,
               child: Container(
+                alignment: Alignment.centerLeft,
                 margin: EdgeInsets.only(bottom: 10),
                   child:CustomText(
                     text: item.title,

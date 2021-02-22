@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kuma_flutter_app/bloc/animation/animation_bloc.dart';
 import 'package:kuma_flutter_app/bloc/tab/tab_cubit.dart';
 import 'package:kuma_flutter_app/enums/app_tab.dart';
+import 'package:kuma_flutter_app/routes/routes.dart';
 import 'package:kuma_flutter_app/screen/image_screen.dart';
 import 'package:kuma_flutter_app/screen/torrent_screen.dart';
 import 'package:kuma_flutter_app/screen/animation_screen.dart';
@@ -29,7 +30,7 @@ class HomeScreen extends StatelessWidget {
             ),
             body: _selectScreen(tab:currentTab,context: context),
             floatingActionButton: FloatingActionButton(
-              onPressed: ()=>print('ㅌㅅㅌㅅ'),
+              onPressed: ()=>Navigator.pushNamed(context, Routes.SEARCH),
               child: Icon(Icons.search),
             ),
             bottomNavigationBar: TabSelector(tab: currentTab, onTabSelected: (currentTab)=>BlocProvider.of<TabCubit>(context).tabUpdate(currentTab),),

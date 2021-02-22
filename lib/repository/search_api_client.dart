@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_detail_item.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_item.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_ranking_item.dart';
-import 'package:kuma_flutter_app/model/api/search_mal_api_simple_item.dart';
 import 'package:retrofit/http.dart';
 
 part 'search_api_client.g.dart';
@@ -16,9 +15,6 @@ abstract class SearchApiClient {
 
   @GET("/mal/detail")
   Future<SearchMalDetailApiItem> getMalApiDetailItem(@Query("id") String id , @Query("type")String type);
-
-  @GET("/mal/detail")
-  Future<SearchMalSimpleApiItem> getMalApiSimpleItem();
 
   @GET("/mal/ranking")
   Future<SearchRankingApiResult> getRankingItemList(

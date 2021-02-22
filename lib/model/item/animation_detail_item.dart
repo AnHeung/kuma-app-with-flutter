@@ -8,11 +8,14 @@ class AnimationDetailItem {
   String star;
   String popularity;
   int rank;
+  double percent;
+  String percentText;
   String synopsis;
   String status;
   String genres;
   String numEpisodes;
   String startSeason;
+  List<String> pictures;
   List<RelatedAnimeItem> relatedAnime;
 
   AnimationDetailItem(
@@ -24,11 +27,14 @@ class AnimationDetailItem {
         this.star,
         this.popularity,
         this.rank,
+        this.percent,
+        this.percentText,
         this.synopsis,
         this.status,
         this.genres,
         this.numEpisodes,
         this.startSeason,
+        this.pictures,
         this.relatedAnime});
 
 }
