@@ -11,7 +11,9 @@ class ApiRepository {
 
   ApiRepository({this.restClient, this.searchApiClient});
 
-  Future<SearchMalApiItem> getMalApiItem(String query) => searchApiClient.getTranslateTitleList(query);
+  Future<SearchMalApiItem> getMalApiItem(String query) => searchApiClient.getSearchItems(query);
+
+  Future<SearchMalApiItem> getSearchItems(String query) => searchApiClient.getSearchItems(query);
 
   Future<SearchMalDetailApiItem> getDetailApiItem(String id , String type) => searchApiClient.getMalApiDetailItem(id, type);
 

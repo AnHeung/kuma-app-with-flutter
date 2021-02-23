@@ -17,7 +17,7 @@ class _SearchApiClient implements SearchApiClient {
   String baseUrl;
 
   @override
-  Future<SearchMalApiItem> getTranslateTitleList(query) async {
+  Future<SearchMalApiItem> getSearchItems(query) async {
     ArgumentError.checkNotNull(query, 'query');
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'q': query};

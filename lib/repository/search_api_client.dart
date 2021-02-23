@@ -11,7 +11,7 @@ abstract class SearchApiClient {
   // manatoki, crawling , down , siteInfo , hotdeal , torrent , schedule
 
   @GET("/translate/title")
-  Future<SearchMalApiItem> getTranslateTitleList(@Query("q") String query);
+  Future<SearchMalApiItem> getSearchItems(@Query("q") String query);
 
   @GET("/mal/detail")
   Future<SearchMalDetailApiItem> getMalApiDetailItem(@Query("id") String id , @Query("type")String type);

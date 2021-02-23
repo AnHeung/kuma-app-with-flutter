@@ -16,3 +16,15 @@ class SearchUpdate extends SearchEvent{
   @override
   List<Object> get props =>[searchQuery];
 }
+
+class SearchLoad extends SearchEvent{
+
+  String searchQuery;
+
+  SearchLoad({this.searchQuery});
+
+  @override
+  List<Object> get props =>[searchQuery];
+}
+
+class SearchClear extends SearchEvent{}

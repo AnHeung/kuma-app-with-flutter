@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
 import 'package:kuma_flutter_app/enums/image_type.dart';
 import 'package:kuma_flutter_app/widget/custom_text.dart';
@@ -38,6 +39,19 @@ imageAlert(BuildContext context , String title, String imgRes){
         ),
       );
     },
+  );
+}
+
+showToast({String msg}){
+  if(msg.isNotEmpty)
+    Fluttertoast.showToast(
+      msg: msg,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.CENTER,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.red,
+      textColor: Colors.white,
+      fontSize: 16.0
   );
 }
 

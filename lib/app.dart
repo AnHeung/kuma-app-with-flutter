@@ -15,6 +15,7 @@ import 'package:kuma_flutter_app/screen/animation_screen.dart';
 import 'package:kuma_flutter_app/screen/home_screen.dart';
 import 'package:kuma_flutter_app/screen/search_screen.dart';
 import 'package:kuma_flutter_app/screen/splash_screen.dart';
+import 'package:kuma_flutter_app/screen/test_screen.dart';
 import 'package:logger/logger.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 

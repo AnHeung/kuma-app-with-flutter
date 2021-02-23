@@ -2,18 +2,45 @@ import 'package:json_annotation/json_annotation.dart';
 
 @JsonSerializable()
 class SearchMalApiItem {
+  bool err;
+  String msg;
+  List<SearchMalApiItemResult> result;
+
+  SearchMalApiItem({this.err, this.msg, this.result});
+
+  SearchMalApiItem.fromJson(Map<String, dynamic> json) {
+    err = json['err'];
+    msg = json['msg'];
+    if (json['result'] != null) {
+      result = new List<SearchMalApiItemResult>();
+      json['result'].forEach((v) {
+        result.add(new SearchMalApiItemResult.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['err'] = this.err;
+    data['msg'] = this.msg;
+    if (this.result != null) {
+      data['result'] = this.result.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class SearchMalApiItemResult {
   int id;
   String title;
   String image;
-  String startDate;
 
-  SearchMalApiItem({this.id, this.title, this.image, this.startDate});
+  SearchMalApiItemResult({this.id, this.title, this.image});
 
-  SearchMalApiItem.fromJson(Map<String, dynamic> json) {
+  SearchMalApiItemResult.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     title = json['title'];
     image = json['image'];
-    startDate = json['start_date'];
   }
 
   Map<String, dynamic> toJson() {
@@ -21,7 +48,6 @@ class SearchMalApiItem {
     data['id'] = this.id;
     data['title'] = this.title;
     data['image'] = this.image;
-    data['start_date'] = this.startDate;
     return data;
   }
 }
