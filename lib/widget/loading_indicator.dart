@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kuma_flutter_app/bloc/search/search_bloc.dart';
 
 class LoadingIndicator extends StatelessWidget {
 

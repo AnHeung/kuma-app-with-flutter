@@ -17,7 +17,6 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   List<AnimationSearchItem> searchItemList = List();
   List<AnimationSearchItem> list = List();
@@ -31,30 +30,17 @@ class _SearchScreenState extends State<SearchScreen> {
     searchSubject.stream
         .debounce((_) => TimerStream(true, Duration(milliseconds: durationTime)))
         .where((value) {
-      // if(value.isEmpty && !searchSubject.isClosed) _hide();
       print("value: $value");
       return value.isNotEmpty && value.toString().length > 0;
-    }).listen((query){
-      print('query : $query');
-      BlocProvider.of<SearchBloc>(context).add(SearchLoad(searchQuery: query));
+    }).listen((query) {
+      if(!searchSubject.isClosed)BlocProvider.of<SearchBloc>(context).add(SearchLoad(searchQuery: query));
     });
   }
 
   @override
   void initState() {
     _createSearchEngine();
-    searchController?.addListener((){
-      if(searchController.text.isEmpty){
-        setState(() {
-          print("clear");
-          searchItemList.clear();
-          searchController.clear();
-        });
-      }else{
-        print("not clear ${searchController.text}");
-        _searchListener(searchController.text);
-      }
-    });
+    searchController?.addListener(_searchListener);
     super.initState();
   }
 
@@ -68,82 +54,122 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
 
-    print("searchIcon : ${this._searchIcon}");
-    return BlocBuilder<SearchBloc, SearchState>(
-      builder: (context, state) {
-        searchItemList = (state is SearchItemLoadSuccess) ? state.list : List();
-        list = (state is SearchLoadSuccess) ? state.list :List();
-        bool isLoading = state is SearchLoadInProgress;
-        bool isFailure = state is SearchLoadFailure;
-        print(searchItemList);
+    BlocProvider.of<SearchBloc>(context).add(SearchHistoryLoad());
 
-        if (isFailure) {
-          String errMsg = (state as SearchLoadFailure).errMsg ?? "에러";
-          showToast(msg: errMsg);
-        }
-        return Scaffold(
-          appBar:  AppBar(
-              title: _appBarTitle,
-              actions: [
-                Padding(
-                  padding: EdgeInsets.only(right: 10),
-                  child: IconButton(
-                    onPressed:_searchPressed,
-                    icon: _searchIcon,
-                  ),
-                )
+    return Scaffold(
+      appBar: AppBar(
+        title: _appBarTitle,
+        actions: [
+          Padding(
+            padding: EdgeInsets.only(right: 10),
+            child: IconButton(
+              onPressed: _searchPressed,
+              icon: _searchIcon,
+            ),
+          )
+        ],
+      ),
+      body: BlocListener<SearchBloc, SearchState>(
+        listener: (context, state) {
+          bool isFailure = state is SearchLoadFailure;
+          if (isFailure) {
+            String errMsg = (state as SearchLoadFailure).errMsg ?? "에러";
+            showToast(msg: errMsg);
+          }
+        },
+        child: Stack(
+          children: <Widget>[
+            Column(
+              children: [
+                _searchItemView()
               ],
             ),
-          body: Stack(
-                  children: <Widget>[
-                    _searchItemView(searchItemList),
-                    LoadingIndicator(isVisible: isLoading,)
-                  ],
-                )
-              ,
+            BlocBuilder<SearchBloc, SearchState>(
+              builder: (context, state) => LoadingIndicator(
+                isVisible: state is SearchLoadInProgress,
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  _searchHistoryView(){
+
+    return BlocBuilder<SearchBloc, SearchState>(
+      builder: (context,state){
+
+        List list = new List();
+
+        return Visibility(
+          visible: list.isNotEmpty,
+          child: Container(
+
+          ),
         );
       },
     );
   }
 
-  _searchItemView(List<AnimationSearchItem> items) {
-    return items.isNotEmpty
-        ? Container(
+
+  _searchItemView() {
+    return BlocBuilder<SearchBloc, SearchState>(
+      buildWhen: (prev, cur) => cur is SearchItemLoadSuccess,
+      builder: (context, state) {
+        searchItemList = (state is SearchItemLoadSuccess) ? state.list : List();
+        return Visibility(
+          visible: searchItemList.isNotEmpty,
+          child: Container(
             color: Colors.blue,
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height * 0.4,
             child: ListView(
               scrollDirection: Axis.vertical,
-              children: items
+              children: searchItemList
                   .map((searchItem) => SearchImageItem(
                         imgRes: searchItem.image,
                         title: searchItem.title,
-                            onTap: ()=>Navigator.pushReplacementNamed(context,  Routes.IMAGE_DETAIL, arguments:RankingItem(id: searchItem.id, title: searchItem.title)),
+                        onTap: () => Navigator.pushReplacementNamed(
+                            context, Routes.IMAGE_DETAIL,
+                            arguments: RankingItem(
+                                id: searchItem.id, title: searchItem.title)),
                       ))
                   .toList(),
             ),
-          )
-        : SizedBox();
+          ),
+        );
+      },
+    );
   }
 
   void _searchPressed() {
     setState(() {
       if (this._searchIcon.icon == Icons.search) {
-        this._searchIcon =  Icon(Icons.close);
-        this._appBarTitle =  TextField(
+        this._searchIcon = Icon(Icons.close);
+        this._appBarTitle = TextField(
+          autofocus: true,
           controller: searchController,
-          decoration:  InputDecoration(
-              hintText: '검색...'
-          ),
+          decoration: InputDecoration(hintText: '검색...'),
         );
       } else {
-        this._searchIcon =  Icon(Icons.search);
+        this._searchIcon = Icon(Icons.search);
         this._appBarTitle = Text('검색페이지');
         searchController.clear();
       }
     });
   }
 
-  _searchListener(String query) => searchSubject.add(query);
-
+  _searchListener(){
+    if (searchController.text.isEmpty) {
+      setState(() {
+        print("clear");
+        searchItemList.clear();
+        searchController.clear();
+      });
+    } else {
+      print("not clear ${searchController.text}");
+      searchSubject.add(searchController.text);
+    }
+  }
 }
