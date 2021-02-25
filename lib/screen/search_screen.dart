@@ -8,6 +8,7 @@ import 'package:kuma_flutter_app/routes/routes.dart';
 import 'package:kuma_flutter_app/util/view_utils.dart';
 import 'package:kuma_flutter_app/widget/default_text_field.dart';
 import 'package:kuma_flutter_app/widget/loading_indicator.dart';
+import 'package:kuma_flutter_app/widget/search_history_item.dart';
 import 'package:kuma_flutter_app/widget/search_image_item.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -17,6 +18,7 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
+
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   List<AnimationSearchItem> searchItemList = List();
   List<AnimationSearchItem> list = List();
@@ -28,12 +30,15 @@ class _SearchScreenState extends State<SearchScreen> {
 
   _createSearchEngine() {
     searchSubject.stream
-        .debounce((_) => TimerStream(true, Duration(milliseconds: durationTime)))
+        .debounce(
+            (_) => TimerStream(true, Duration(milliseconds: durationTime)))
         .where((value) {
       print("value: $value");
       return value.isNotEmpty && value.toString().length > 0;
     }).listen((query) {
-      if(!searchSubject.isClosed)BlocProvider.of<SearchBloc>(context).add(SearchLoad(searchQuery: query));
+      if (!searchSubject.isClosed)
+        BlocProvider.of<SearchBloc>(context)
+            .add(SearchLoad(searchQuery: query));
     });
   }
 
@@ -41,6 +46,7 @@ class _SearchScreenState extends State<SearchScreen> {
   void initState() {
     _createSearchEngine();
     searchController?.addListener(_searchListener);
+    BlocProvider.of<SearchBloc>(context).add(SearchHistoryLoad());
     super.initState();
   }
 
@@ -53,10 +59,8 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-
-    BlocProvider.of<SearchBloc>(context).add(SearchHistoryLoad());
-
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: _appBarTitle,
         actions: [
@@ -66,24 +70,31 @@ class _SearchScreenState extends State<SearchScreen> {
               onPressed: _searchPressed,
               icon: _searchIcon,
             ),
-          )
+          ),
+            IconButton(
+              onPressed: ()=>BlocProvider.of<SearchBloc>(context).add(SearchClearHistory()),
+              icon: Icon(Icons.autorenew),
+            ),
         ],
       ),
       body: BlocListener<SearchBloc, SearchState>(
         listener: (context, state) {
-          bool isFailure = state is SearchLoadFailure;
-          if (isFailure) {
-            String errMsg = (state as SearchLoadFailure).errMsg ?? "에러";
-            showToast(msg: errMsg);
+          switch (state.runtimeType) {
+            case SearchLoadFailure:
+              String errMsg = (state as SearchLoadFailure).errMsg ?? "에러";
+              showToast(msg: errMsg);
+              break;
+            case SearchScreenClear:
+              _clearScreen();
+              break;
           }
         },
         child: Stack(
           children: <Widget>[
             Column(
-              children: [
-                _searchItemView()
-              ],
+              children: [_searchHistoryView()],
             ),
+            _searchItemView(),
             BlocBuilder<SearchBloc, SearchState>(
               builder: (context, state) => LoadingIndicator(
                 isVisible: state is SearchLoadInProgress,
@@ -95,23 +106,21 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
-  _searchHistoryView(){
-
+  _searchHistoryView() {
     return BlocBuilder<SearchBloc, SearchState>(
-      builder: (context,state){
-
-        List list = new List();
-
-        return Visibility(
-          visible: list.isNotEmpty,
-          child: Container(
-
+      buildWhen: (prev, cur) => cur is SearchHistoryLoadSuccess,
+      builder: (context, state) {
+        List<AnimationSearchItem> list =
+            (state is SearchHistoryLoadSuccess) ? state.list : List();
+        return Container(
+          margin: EdgeInsets.only(top: 30),
+          child: SearchHistoryItem(
+            list: list,
           ),
         );
       },
     );
   }
-
 
   _searchItemView() {
     return BlocBuilder<SearchBloc, SearchState>(
@@ -130,10 +139,19 @@ class _SearchScreenState extends State<SearchScreen> {
                   .map((searchItem) => SearchImageItem(
                         imgRes: searchItem.image,
                         title: searchItem.title,
-                        onTap: () => Navigator.pushReplacementNamed(
-                            context, Routes.IMAGE_DETAIL,
-                            arguments: RankingItem(
-                                id: searchItem.id, title: searchItem.title)),
+                        onTap: () {
+                          BlocProvider.of<SearchBloc>(context)
+                              .add(SearchClear());
+                          BlocProvider.of<SearchBloc>(context).add(
+                              SearchHistoryWrite(
+                                  searchItem: AnimationSearchItem(
+                                      id: searchItem.id,
+                                      image: searchItem.image,
+                                      title: searchItem.title)));
+                          Navigator.pushNamed(context, Routes.IMAGE_DETAIL,
+                              arguments: RankingItem(
+                                  id: searchItem.id, title: searchItem.title));
+                        },
                       ))
                   .toList(),
             ),
@@ -160,16 +178,16 @@ class _SearchScreenState extends State<SearchScreen> {
     });
   }
 
-  _searchListener(){
-    if (searchController.text.isEmpty) {
-      setState(() {
-        print("clear");
-        searchItemList.clear();
-        searchController.clear();
-      });
-    } else {
-      print("not clear ${searchController.text}");
-      searchSubject.add(searchController.text);
-    }
+  _clearScreen() {
+    setState(() {
+      searchItemList.clear();
+      searchController.text = "";
+      searchController.clear();
+    });
+  }
+
+  _searchListener() {
+    if (searchController.text.isEmpty) _clearScreen();
+    else searchSubject.add(searchController.text);
   }
 }

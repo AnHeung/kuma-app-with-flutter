@@ -27,16 +27,19 @@ class SearchLoad extends SearchEvent{
   List<Object> get props =>[searchQuery];
 }
 
+class SearchClearHistory extends SearchEvent{}
+
 
 class SearchHistoryLoad extends SearchEvent{}
 
 class SearchHistoryWrite extends SearchEvent{
-  List<AnimationSearchItem> searchItems;
 
-  SearchHistoryWrite({this.searchItems});
+  AnimationSearchItem searchItem;
+
+  SearchHistoryWrite({this.searchItem});
 
   @override
-  List<Object> get props =>[searchItems];
+  List<Object> get props =>[searchItem];
 
 }
 
