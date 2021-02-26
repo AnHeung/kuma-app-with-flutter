@@ -1,43 +1,82 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kuma_flutter_app/bloc/animation/animation_bloc.dart';
-import 'package:kuma_flutter_app/bloc/animation_detail/animation_detail_bloc.dart';
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
 import 'package:kuma_flutter_app/model/item/animation_main_item.dart';
+import 'package:kuma_flutter_app/model/item/animation_search_season_item.dart';
 import 'package:kuma_flutter_app/routes/routes.dart';
 import 'package:kuma_flutter_app/widget/custom_text.dart';
-import 'package:kuma_flutter_app/widget/empty_container.dart';
 import 'package:kuma_flutter_app/widget/image_item.dart';
 import 'package:kuma_flutter_app/widget/loading_indicator.dart';
+import 'package:kuma_flutter_app/widget/animation_main_appbar.dart';
 
 class AnimationScreen extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AnimationBloc, AnimationState>(
-      builder: (context, state) {
-        bool isLoading = state is AnimationLoadInProgress;
-        final List<AnimationMainItem> mainItemList = (state is AnimationLoadSuccess) ? state.rankingList : null;
 
-        return Scaffold(
-          body: Stack(
-            children: [
-              mainItemList != null
-                  ? ListView(
-                      children: mainItemList
-                          .map((item) => _makeMainItem(context, item))
-                          .toList(),
-                    )
-                  : EmptyContainer(title: "타이틀없음",),
-              LoadingIndicator(
-                isVisible: isLoading,
+
+    return Scaffold(
+      extendBody: true,
+      body: NestedScrollView(
+          headerSliverBuilder: (context, isScrolled) {
+            return [
+              SliverAppBar(
+                flexibleSpace:BlocBuilder<AnimationBloc,AnimationState>(
+                  buildWhen: (prev,cur)=>cur is AnimationSeasonLoadSuccess,
+                  builder: (context,state){
+                    List<AnimationSeasonItem> list = state is AnimationSeasonLoadSuccess ? state.seasonItems : List();
+                    return AnimationMainAppbar(list: list..shuffle(),);
+                  },
+              ) ,
+                centerTitle: true,
+                title: CustomText(
+                  text: "메인",
+                  fontSize: 15,
+                ),
+                actions: <Widget>[
+                  IconButton(
+                    color: Colors.white,
+                    icon: Icon(Icons.notifications_none),
+                    tooltip: "알림",
+                    onPressed: () => {
+                     print('알림')
+                    },
+                  ),
+                ],
+                // floating 설정. SliverAppBar는 스크롤 다운되면 화면 위로 사라짐.
+                // true: 스크롤 업 하면 앱바가 바로 나타남. false: 리스트 최 상단에서 스크롤 업 할 때에만 앱바가 나타남
+                floating: false,
+                snap: false,
+                pinned: true,
+                // flexibleSpace에 플레이스홀더를 추가
+                // 최대 높이
+                expandedHeight: 450,
               )
-            ],
-          ),
-        );
-      },
+            ];
+          },
+        body: Stack(
+          children: [
+            BlocBuilder<AnimationBloc, AnimationState>(
+              buildWhen:(prev,cur)=> cur is AnimationLoadSuccess,
+                builder: (context, state) {
+                  final List<AnimationMainItem> mainItemList = (state is AnimationLoadSuccess) ? state.rankingList : List();
+                  return ListView(
+                    padding: EdgeInsets.zero,
+                    children: mainItemList
+                        .map((item) => _makeMainItem(context, item))
+                        .toList(),
+                  );
+                }),
+            BlocBuilder<AnimationBloc, AnimationState>(
+              builder: (context, state) =>
+                  LoadingIndicator(
+                    isVisible: state is AnimationLoadInProgress,
+                  ),
+            )
+          ],
+        ),
+      ),
     );
   }
 
@@ -46,7 +85,7 @@ class AnimationScreen extends StatelessWidget {
 
     switch (type) {
       case "airing":
-        color = Colors.blue;
+        color = Colors.cyan;
         break;
       case "movie":
         color = Colors.grey;
@@ -59,7 +98,10 @@ class AnimationScreen extends StatelessWidget {
   }
 
   Widget _makeMainItem(BuildContext context, final AnimationMainItem item) {
-    double heightSize = (MediaQuery.of(context).size.height) * 0.40;
+    double heightSize = (MediaQuery
+        .of(context)
+        .size
+        .height) * 0.40;
 
     return Container(
       height: heightSize,
@@ -70,8 +112,11 @@ class AnimationScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(top: 20, bottom: 20),
             child: Container(
-              width: MediaQuery.of(context).size.width,
-              child: CustomText(text: item.type.toUpperCase() , fontSize: 20)),
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width,
+                child: CustomText(text: item.type.toUpperCase(), fontSize: 20)),
           ),
           Expanded(
             child: ListView(
@@ -81,18 +126,23 @@ class AnimationScreen extends StatelessWidget {
                   .toList(),
             ),
           ),
-          Container()
         ],
       ),
     );
   }
 
   Widget _makeScrollItem(BuildContext context, final RankingItem item) {
-    double width = MediaQuery.of(context).size.width / 3;
-    double heightSize = (MediaQuery.of(context).size.height) * 0.20;
+    double width = MediaQuery
+        .of(context)
+        .size
+        .width / 3;
+    double heightSize = (MediaQuery
+        .of(context)
+        .size
+        .height) * 0.20;
 
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         Navigator.pushNamed(context, Routes.IMAGE_DETAIL, arguments: item);
       },
       child: Container(
@@ -106,13 +156,13 @@ class AnimationScreen extends StatelessWidget {
               child: Container(
                 alignment: Alignment.centerLeft,
                 margin: EdgeInsets.only(bottom: 10),
-                  child:CustomText(
-                    text: item.title,
-                    maxLines: 2,
-                    isDynamic: true,
-                    isEllipsis: true,
-                  ),
+                child: CustomText(
+                  text: item.title,
+                  maxLines: 2,
+                  isDynamic: true,
+                  isEllipsis: true,
                 ),
+              ),
             ),
             Expanded(
               flex: 4,

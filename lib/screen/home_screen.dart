@@ -25,9 +25,6 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
             ),
-            appBar: AppBar(
-              title: Text('메인'),
-            ),
             body: _selectScreen(tab:currentTab,context: context),
             floatingActionButton: FloatingActionButton(
               onPressed: ()=>Navigator.pushNamed(context, Routes.SEARCH),
@@ -46,6 +43,7 @@ class HomeScreen extends StatelessWidget {
     switch(tab){
       case AppTab.ANIMATION :
         BlocProvider.of<AnimationBloc>(context).add(AnimationLoad(rankType: "all",searchType: "all",limit: "30"));
+        BlocProvider.of<AnimationBloc>(context).add(AnimationSeasonLoad(limit: "7"));
         widget = AnimationScreen();
         break;
       case AppTab.TORRENT :

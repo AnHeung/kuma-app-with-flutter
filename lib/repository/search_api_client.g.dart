@@ -35,6 +35,24 @@ class _SearchApiClient implements SearchApiClient {
   }
 
   @override
+  Future<SearchMalApiSeasonItem> getSeasonItems(limit) async {
+    ArgumentError.checkNotNull(limit, 'limit');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'limit': limit};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>('/mal/season',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = SearchMalApiSeasonItem.fromJson(_result.data);
+    return value;
+  }
+
+  @override
   Future<SearchMalDetailApiItem> getMalApiDetailItem(id, type) async {
     ArgumentError.checkNotNull(id, 'id');
     ArgumentError.checkNotNull(type, 'type');

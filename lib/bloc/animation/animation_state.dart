@@ -9,6 +9,16 @@ abstract class AnimationState extends Equatable{
 
 class AnimationLoadInProgress extends AnimationState{}
 
+class AnimationSeasonLoadSuccess extends AnimationState{
+
+  List<AnimationSeasonItem> seasonItems;
+
+  AnimationSeasonLoadSuccess({this.seasonItems});
+
+  @override
+  List<Object> get props =>[seasonItems];
+}
+
 class AnimationLoadInFailure extends AnimationState{
 
   String errMsg;

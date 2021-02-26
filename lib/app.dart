@@ -11,12 +11,10 @@ import 'package:kuma_flutter_app/repository/rest_client.dart';
 import 'package:kuma_flutter_app/repository/search_api_client.dart';
 import 'package:kuma_flutter_app/routes/routes.dart';
 import 'package:kuma_flutter_app/screen/animation_detail_screen.dart';
-import 'package:kuma_flutter_app/screen/animation_screen.dart';
 import 'package:kuma_flutter_app/screen/home_screen.dart';
 import 'package:kuma_flutter_app/screen/search_screen.dart';
 import 'package:kuma_flutter_app/screen/splash_screen.dart';
-import 'package:kuma_flutter_app/screen/test_screen.dart';
-import 'package:logger/logger.dart';
+import 'package:kuma_flutter_app/widget/test.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 class App extends StatelessWidget {

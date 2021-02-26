@@ -3,8 +3,11 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_ranking_item.dart';
+import 'package:kuma_flutter_app/model/api/search_mal_api_season_item.dart';
 import 'package:kuma_flutter_app/model/item/animation_detail_item.dart';
 import 'package:kuma_flutter_app/model/item/animation_main_item.dart';
+import 'package:kuma_flutter_app/model/item/animation_search_item.dart';
+import 'package:kuma_flutter_app/model/item/animation_search_season_item.dart';
 import 'package:kuma_flutter_app/repository/api_repository.dart';
 import 'package:meta/meta.dart';
 
@@ -25,6 +28,8 @@ class AnimationBloc extends Bloc<AnimationEvent, AnimationState> {
       yield* _mapToAnimationLoad(event);
     } else if (event is AnimationUpdate) {
       yield* _mapToAnimationLoadUpdate(event);
+    }else if(event is AnimationSeasonLoad){
+      yield* _mapToAnimationSeasonLoad(event);
     }
   }
 
@@ -58,5 +63,17 @@ class AnimationBloc extends Bloc<AnimationEvent, AnimationState> {
     yield AnimationLoadInProgress();
     List<AnimationMainItem> rankItem = event.rankingList;
     yield AnimationLoadSuccess(rankingList: rankItem);
+  }
+
+  Stream<AnimationState> _mapToAnimationSeasonLoad(
+      AnimationSeasonLoad event) async* {
+    String limit = event.limit;
+
+    SearchMalApiSeasonItem items =  await repository.getSeasonItems(limit);
+    bool isErr = items.err;
+    if (isErr)
+      yield AnimationLoadInFailure(errMsg: items.msg);
+    else
+      yield AnimationSeasonLoadSuccess(seasonItems: items.result.map((data)=>AnimationSeasonItem(id: data.id, title: data.title, image: data.image)).toList());
   }
 }
