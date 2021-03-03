@@ -22,7 +22,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return RepositoryProvider(
       create: (_) {
-        final dio = Dio()..options = BaseOptions(receiveTimeout: 5000, connectTimeout: 5000)
+        final dio = Dio()..options = BaseOptions(receiveTimeout: 15000, connectTimeout: 15000)
           ..interceptors.add(PrettyDioLogger(
             requestHeader: true,
             requestBody: true,

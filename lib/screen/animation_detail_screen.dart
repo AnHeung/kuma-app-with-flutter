@@ -21,84 +21,72 @@ class AnimationDetailScreen extends StatelessWidget {
     final RankingItem infoItem = ModalRoute.of(context).settings.arguments;
     String id = infoItem.id.toString();
     String type = "all";
+    double topHeight = MediaQuery.of(context).size.height * 0.5;
 
     BlocProvider.of<AnimationDetailBloc>(context).add(AnimationDetailLoad(id: id, type: type));
 
     return BlocBuilder<AnimationDetailBloc, AnimationDetailState>(
       builder: (context, state) {
         bool isLoading = state is AnimationDetailLoadInProgress;
-        final AnimationDetailItem detailItem =
-            (state is AnimationDetailLoadSuccess) ? state.detailItem : null;
+        final AnimationDetailItem detailItem = (state is AnimationDetailLoadSuccess) ? state.detailItem : null;
 
         return Scaffold(
-          body: NestedScrollView(
-            headerSliverBuilder: (context, isScrolled) {
-              return [
-                SliverAppBar(
-                  title: CustomText(
-                    text: infoItem.title,
-                    fontSize: 15,
-                  ),
-                  actions: <Widget>[
-                    IconButton(
-                      icon: Icon(Icons.refresh),
-                      tooltip: "재시작",
-                      onPressed: () => {
+          appBar: AppBar(
+              title: CustomText(
+                text: infoItem.title,
+                fontSize: 15,
+              ),
+              actions: <Widget>[
+                IconButton(
+                  icon: Icon(Icons.refresh),
+                  tooltip: "재시작",
+                  onPressed: () => {
+                    BlocProvider.of<AnimationDetailBloc>(context)
+                        .add(AnimationDetailLoad(id: id, type: type))
+                  },
+                ),
+                IconButton(
+                  icon: Icon(Icons.favorite, color: Colors.red,),
+                  tooltip: "즐겨찾기",
+                  onPressed: () => {
+                    BlocProvider.of<AnimationDetailBloc>(context)
+                        .add(AnimationDetailLoad(id: id, type: type))
+                  },
+                ),
+                PopupMenuButton<DeTailAnimationActions>(
+                  onSelected: (value){
+                    switch(value){
+                      case DeTailAnimationActions.ADD:
+                        break;
+                      case DeTailAnimationActions.REFRESH:
                         BlocProvider.of<AnimationDetailBloc>(context)
-                            .add(AnimationDetailLoad(id: id, type: type))
-                      },
+                            .add(AnimationDetailLoad(id: id, type: type));
+                        break;
+                    }
+                  },
+                  itemBuilder: (BuildContext context) => <PopupMenuItem<DeTailAnimationActions>>[
+                    PopupMenuItem<DeTailAnimationActions>(
+                      value: DeTailAnimationActions.ADD,
+                      child: Text('배치에 추가'),
                     ),
-                    IconButton(
-                      icon: Icon(Icons.favorite, color: Colors.red,),
-                      tooltip: "즐겨찾기",
-                      onPressed: () => {
-                        BlocProvider.of<AnimationDetailBloc>(context)
-                            .add(AnimationDetailLoad(id: id, type: type))
-                      },
+                    PopupMenuItem<DeTailAnimationActions>(
+                      value: DeTailAnimationActions.REFRESH,
+                      child: Text('새로고침'),
                     ),
-                    PopupMenuButton<DeTailAnimationActions>(
-                      onSelected: (value){
-                        switch(value){
-                          case DeTailAnimationActions.ADD:
-                            break;
-                          case DeTailAnimationActions.REFRESH:
-                            BlocProvider.of<AnimationDetailBloc>(context)
-                                .add(AnimationDetailLoad(id: id, type: type));
-                            break;
-                        }
-                      },
-                      itemBuilder: (BuildContext context) => <PopupMenuItem<DeTailAnimationActions>>[
-                        PopupMenuItem<DeTailAnimationActions>(
-                          value: DeTailAnimationActions.ADD,
-                          child: Text('배치에 추가'),
-                        ),
-                        PopupMenuItem<DeTailAnimationActions>(
-                          value: DeTailAnimationActions.REFRESH,
-                          child: Text('새로고침'),
-                        ),
-                      ],
-                    )
                   ],
-                  // floating 설정. SliverAppBar는 스크롤 다운되면 화면 위로 사라짐.
-                  // true: 스크롤 업 하면 앱바가 바로 나타남. false: 리스트 최 상단에서 스크롤 업 할 때에만 앱바가 나타남
-                  floating: true,
-                  pinned: true,
-                  // flexibleSpace에 플레이스홀더를 추가
-                  // 최대 높이
-                  expandedHeight: 50,
                 )
-              ];
-            },
-            body: detailItem != null
+              ]
+          ), body: detailItem != null
                 ? Stack(children: [
                     ImageItem(
                       type: ImageShapeType.FLAT,
                       imgRes: detailItem.image,
                       opacity: 0.5,
                     ),
-                    ListView(children: [
+                    ListView(shrinkWrap: true,
+                        children: [
                       Container(
-                        height: 350,
+                        height: topHeight,
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -109,7 +97,7 @@ class AnimationDetailScreen extends StatelessWidget {
                                 child: GestureDetector(
                                   onTap: ()=>imageAlert(context, detailItem.title, detailItem.image),
                                   child: Container(
-                                    height: 350,
+                                    height: topHeight,
                                     child: Hero(
                                       tag:'detail img popup tag',
                                       child: ImageItem(
@@ -128,90 +116,47 @@ class AnimationDetailScreen extends StatelessWidget {
                                 margin: EdgeInsets.all(10),
                                 child: Column(
                                   children: [
-                                    Container(
-                                      alignment: Alignment.centerLeft,
-                                      child: CustomText(
-                                        maxLines: 2,
-                                        text:
-                                            "${detailItem.title}",
-                                        fontSize: 20,
-                                        fontColor: Colors.black,
-                                        isEllipsis: true,
-                                      ),
-                                    ),
-                                    Container(
-                                      alignment: Alignment.centerLeft,
-                                      child: CustomText(
-                                        text:
-                                        "(${detailItem.startSeason})",
-                                        fontSize: 20,
-                                        fontColor: Colors.black,
-                                        isEllipsis: true,
-                                      ),
-                                    ),
-                                    Container(
-                                        margin: EdgeInsets.only(top: 5),
-                                        alignment:
-                                            AlignmentDirectional.centerStart,
-                                        child: CustomText(
-                                            text: detailItem.rank!= null ? '랭킹:${detailItem.rank}위' : "랭킹:기록없음",
-                                            fontSize: 15,
-                                            maxLines: 2,
-                                            isEllipsis: true,
-                                            fontColor: Colors.black)),
-                                    Container(
-                                        margin: EdgeInsets.only(top: 5),
-                                        alignment:
-                                            AlignmentDirectional.centerStart,
-                                        child: CustomText(
-                                            text: '시즌 시작일:${detailItem.startDate}',
-                                            fontSize: 15,
-                                            maxLines: 2,
-                                            isEllipsis: true,
-                                            fontColor: Colors.black)),
-                                    Container(
-                                        margin: EdgeInsets.only(top: 5),
-                                        alignment:
-                                            AlignmentDirectional.centerStart,
-                                        child: CustomText(
-                                            text:
-                                                '시즌 종료일:${detailItem.endDate}',
-                                            fontSize: 15,
-                                            maxLines: 2,
-                                            isEllipsis: true,
-                                            fontColor: Colors.black)),
-                                    Container(
-                                        margin: EdgeInsets.only(top: 5),
-                                        alignment:
-                                            AlignmentDirectional.centerStart,
-                                        child: CustomText(
-                                            text: detailItem.numEpisodes != "0"
+                                     Expanded(
+                                       flex: 3,
+                                       child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                          children: [
+                                            _buildTopContainer(text:  "${detailItem.title}", fontSize: 20 ),
+                                            _buildTopContainer(text:  "(${detailItem.startSeason})", fontSize: 20 ),
+                                            _buildTopContainer(text: detailItem.rank!= null ? '랭킹:${detailItem.rank}위' : "랭킹:기록없음", fontSize: 15),
+                                            _buildTopContainer(text: '시즌 시작일:${detailItem.startDate}', fontSize: 15),
+                                            _buildTopContainer(text: '시즌 종료일:${detailItem.endDate}', fontSize: 15),
+                                            _buildTopContainer( text: detailItem.numEpisodes != "0"
                                                 ? '화수:${detailItem.numEpisodes}'
-                                                : "화수:정보없음",
-                                            fontSize: 15,
-                                            maxLines: 2,
-                                            isEllipsis: true,
-                                            fontColor: Colors.black)),
-                                    Expanded(
-                                      child: Container(
-                                          margin: EdgeInsets.only(top: 5),
-                                          alignment:
-                                              AlignmentDirectional.bottomStart,
-                                          child: CircularPercentIndicator(
-                                            radius: 110.0,
-                                            lineWidth: 15.0,
-                                            animation: true,
-                                            percent: detailItem.percent,
-                                            center: Text(
-                                              detailItem.percentText,
-                                              style: TextStyle(fontSize: 13),
-                                              textAlign: TextAlign.center,
-                                            ),
-                                            circularStrokeCap:
-                                                CircularStrokeCap.round,
-                                            progressColor: Colors.deepPurpleAccent,
-                                          )),
-                                    ),
+                                                : "화수:정보없음", fontSize: 15),
+                                          ],
+                                        ),
+                                     ),
+                                       Expanded(
+                                        flex: 2,
+                                        child: LayoutBuilder(
+                                            builder: (BuildContext context, BoxConstraints constraints){
+                                              return Container(
+                                                  margin: EdgeInsets.only(top: 5),
+                                                  alignment:
+                                                  AlignmentDirectional.bottomStart,
+                                                  child: CircularPercentIndicator(
+                                                    radius: constraints.maxHeight * 0.8,
+                                                    lineWidth: 15.0,
+                                                    animation: true,
+                                                    percent: detailItem.percent,
+                                                    center: Text(
+                                                      detailItem.percentText,
+                                                      style: TextStyle(fontSize: 13),
+                                                      textAlign: TextAlign.center,
+                                                    ),
+                                                    circularStrokeCap:
+                                                    CircularStrokeCap.round,
+                                                    progressColor: Colors.deepPurpleAccent,
+                                                  ));
+                                            }
+                                        ),
+                                      ),
                                   ],
                                 ),
                               ),
@@ -221,8 +166,8 @@ class AnimationDetailScreen extends StatelessWidget {
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top:10, bottom: 10),
-                        child: _getPictureList(size: 150, margin: 10 ,length:detailItem.pictures.length ,builderFunction:
-                            (BuildContext context, idx){
+                        child: _getPictureList(size: 150, margin: 10 ,length:detailItem.pictures.length ,
+                            builderFunction: (BuildContext context, idx){
                           final String imgRes = detailItem.pictures[idx];
                           return AspectRatio(
                             aspectRatio: 0.8,
@@ -255,18 +200,32 @@ class AnimationDetailScreen extends StatelessWidget {
                           final RelatedAnimeItem item =  detailItem.relatedAnime[idx];
                           return _relatedItem(context, RelatedAnimeItem(id: item.id, title: item.title,  image: item.image));
                         }),
-                      ) : EmptyContainer(title: '관련 애니 없음',)
+                      ) : EmptyContainer(title: "관련 애니 없음", size: 50,)
                     ]),
                   ])
                 : LoadingIndicator(
                     isVisible: isLoading,
                   ),
-          ),
-        );
+          );
       },
     );
   }
 
+  Widget _buildTopContainer({int fontSize ,String text}){
+    return Expanded(
+      flex: 1,
+      child: Container(
+          margin: EdgeInsets.only(top: 5),
+          alignment:Alignment.centerLeft,
+          child: CustomText(
+              text: text ,
+              fontSize: fontSize,
+              maxLines: 2,
+              isEllipsis: true,
+              isDynamic: true,
+              fontColor: Colors.black)),
+    );
+  }
 
   Widget _getPictureList({double size, double margin, int length, Function builderFunction}){
     return  Container(
