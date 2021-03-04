@@ -17,7 +17,10 @@ class DefaultTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+
     return TextField(
+
       style: TextStyle(fontSize: textSize ?? 12),
       controller: controller,
       textAlignVertical: TextAlignVertical.center,

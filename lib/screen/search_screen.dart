@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kuma_flutter_app/bloc/search/search_bloc.dart';
 import 'package:kuma_flutter_app/model/item/animation_main_item.dart';
@@ -166,6 +167,9 @@ class _SearchScreenState extends State<SearchScreen> {
       if (this._searchIcon.icon == Icons.search) {
         this._searchIcon = Icon(Icons.close);
         this._appBarTitle = TextField(
+          inputFormatters: [
+            FilteringTextInputFormatter.allow(RegExp('[ㄱ-ㅎ|가-힣|ㆍ|ᆢ'))
+          ],
           autofocus: true,
           controller: searchController,
           decoration: InputDecoration(hintText: '검색...'),
