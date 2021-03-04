@@ -168,7 +168,7 @@ class _SearchScreenState extends State<SearchScreen> {
         this._searchIcon = Icon(Icons.close);
         this._appBarTitle = TextField(
           inputFormatters: [
-            FilteringTextInputFormatter.allow(RegExp('[ㄱ-ㅎ|가-힣|ㆍ|ᆢ'))
+            FilteringTextInputFormatter.allow(RegExp('[ㄱ-ㅎ|가-힣|ㆍ|ᆢ]'))
           ],
           autofocus: true,
           controller: searchController,
