@@ -9,9 +9,11 @@ abstract class AnimationState extends Equatable{
 
 class AnimationLoadInProgress extends AnimationState{}
 
+class AnimationLoadInit extends AnimationState{}
+
 class AnimationSeasonLoadSuccess extends AnimationState{
 
-  List<AnimationSeasonItem> seasonItems;
+  final List<AnimationSeasonItem> seasonItems;
 
   AnimationSeasonLoadSuccess({this.seasonItems});
 
@@ -21,7 +23,7 @@ class AnimationSeasonLoadSuccess extends AnimationState{
 
 class AnimationLoadInFailure extends AnimationState{
 
-  String errMsg;
+  final String errMsg;
 
   AnimationLoadInFailure({this.errMsg});
 
@@ -31,7 +33,7 @@ class AnimationLoadInFailure extends AnimationState{
 
 class AnimationLoadSuccess extends AnimationState{
 
-  List<AnimationMainItem> rankingList;
+  final List<AnimationMainItem> rankingList;
 
   AnimationLoadSuccess({this.rankingList});
 

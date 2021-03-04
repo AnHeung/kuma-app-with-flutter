@@ -95,7 +95,7 @@ class AnimationDetailScreen extends StatelessWidget {
                               child: Container(
                                 margin: EdgeInsets.all(10),
                                 child: GestureDetector(
-                                  onTap: ()=>imageAlert(context, detailItem.title, detailItem.image),
+                                  onTap: ()=>imageAlert(context, detailItem.title, [detailItem.image] , 0),
                                   child: Container(
                                     height: topHeight,
                                     child: Hero(
@@ -119,16 +119,15 @@ class AnimationDetailScreen extends StatelessWidget {
                                      Expanded(
                                        flex: 3,
                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                                           children: [
-                                            _buildTopContainer(text:  "${detailItem.title}", fontSize: 20 ),
-                                            _buildTopContainer(text:  "(${detailItem.startSeason})", fontSize: 20 ),
-                                            _buildTopContainer(text: detailItem.rank!= null ? '랭킹:${detailItem.rank}위' : "랭킹:기록없음", fontSize: 15),
-                                            _buildTopContainer(text: '시즌 시작일:${detailItem.startDate}', fontSize: 15),
-                                            _buildTopContainer(text: '시즌 종료일:${detailItem.endDate}', fontSize: 15),
+                                            _buildTopContainer(text:  "${detailItem.title}", fontSize: 17 ,fontWeight:FontWeight.w700 ),
+                                            _buildTopContainer(text:  "(${detailItem.startSeason})", fontSize: 17 ,fontWeight:FontWeight.w700),
+                                            _buildTopContainer(text: detailItem.rank!= null ? '랭킹:${detailItem.rank}위' : "랭킹:기록없음", fontSize: 15 , ),
+                                            _buildTopContainer(text: '시즌 시작일:${detailItem.startDate}', fontSize: 15,),
+                                            _buildTopContainer(text: '시즌 종료일:${detailItem.endDate}', fontSize: 15,),
                                             _buildTopContainer( text: detailItem.numEpisodes != "0"
                                                 ? '화수:${detailItem.numEpisodes}'
-                                                : "화수:정보없음", fontSize: 15),
+                                                : "화수:정보없음", fontSize: 15,),
                                           ],
                                         ),
                                      ),
@@ -172,7 +171,7 @@ class AnimationDetailScreen extends StatelessWidget {
                           return AspectRatio(
                             aspectRatio: 0.8,
                             child: GestureDetector(
-                              onTap:()=>imageAlert(context, imgRes, imgRes),
+                              onTap:()=>imageAlert(context, imgRes, detailItem.pictures , idx),
                               child: ImageItem(
                                 imgRes: imgRes,
                                 type: ImageShapeType.FLAT,
@@ -193,8 +192,7 @@ class AnimationDetailScreen extends StatelessWidget {
                         margin: EdgeInsets.only(top: 20, left: 10),
                         child: CustomText(text: '관련애니 목록',fontColor: Colors.black,fontSize: 30,),
                       ),
-                      detailItem.relatedAnime.isNotEmpty  ?
-                      Padding(
+                      detailItem.relatedAnime.isNotEmpty ? Padding(
                         padding: const EdgeInsets.only(top: 10),
                         child: _getPictureList(size: 200, margin: 10 , length:detailItem.relatedAnime.length, builderFunction: (BuildContext context, idx){
                           final RelatedAnimeItem item =  detailItem.relatedAnime[idx];
@@ -211,15 +209,15 @@ class AnimationDetailScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildTopContainer({int fontSize ,String text}){
-    return Expanded(
+  Widget _buildTopContainer({int fontSize ,String text , FontWeight fontWeight = FontWeight.normal }){
+    return Flexible(
       flex: 1,
       child: Container(
-          margin: EdgeInsets.only(top: 5),
           alignment:Alignment.centerLeft,
           child: CustomText(
               text: text ,
               fontSize: fontSize,
+              fontWeight:fontWeight,
               maxLines: 2,
               isEllipsis: true,
               isDynamic: true,

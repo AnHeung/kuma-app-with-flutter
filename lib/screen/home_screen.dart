@@ -42,8 +42,8 @@ class HomeScreen extends StatelessWidget {
 
     switch(tab){
       case AppTab.ANIMATION :
-        BlocProvider.of<AnimationBloc>(context).add(AnimationLoad(rankType: "all",searchType: "all",limit: "30"));
         BlocProvider.of<AnimationBloc>(context).add(AnimationSeasonLoad(limit: "7"));
+        BlocProvider.of<AnimationBloc>(context).add(AnimationLoad(rankType: "all",searchType: "all",limit: "30"));
         widget = AnimationScreen();
         break;
       case AppTab.TORRENT :

@@ -12,49 +12,36 @@ import 'package:kuma_flutter_app/routes/routes.dart';
 import 'package:kuma_flutter_app/widget/image_item.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-class AnimationMainAppbar extends StatefulWidget {
-  @override
-  _AnimationMainAppbarState createState() => _AnimationMainAppbarState();
-}
 
-class _AnimationMainAppbarState extends State<AnimationMainAppbar>
-    with WidgetsBindingObserver {
-  PageController controller;
+class AnimationMainAppbar extends StatelessWidget {
+
   Timer timer;
   int currentPage = 0;
+  PageController controller;
   int totalPageCount = 0;
   int scrollTime = 3;
 
-  @override
-  void initState() {
-    super.initState();
-    controller = PageController(initialPage: currentPage)..addListener(_pageControlListener);
-  }
-
-  _pageControlListener() {
-    if(controller.hasClients )currentPage = controller.page.ceil();
-  }
-
-  @override
-  void dispose() {
-    print('AnimationMainAppbar dispose');
-    _disposeJob();
-    super.dispose();
+  AnimationMainAppbar(){
+    controller = PageController(initialPage: currentPage)..addListener(() {
+      if(controller.hasClients )currentPage = controller.page.ceil();
+    });
+    _resumeJob();
   }
 
   _disposeJob(){
+    print('_disposeJob');
     timer?.cancel();
     timer = null;
   }
 
   _resumeJob(){
+    print('resumeJob');
     timer = timer ?? Timer.periodic(Duration(seconds: scrollTime), (timer) {
       if(controller.hasClients) {
         if (currentPage == totalPageCount)
           controller?.jumpToPage(0);
         else if (totalPageCount > 0) {
-          controller.nextPage(
-              duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+          controller.nextPage(duration: Duration(milliseconds: 300), curve: Curves.easeIn);
         }
       }
     });
@@ -63,10 +50,14 @@ class _AnimationMainAppbarState extends State<AnimationMainAppbar>
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AnimationBloc, AnimationState>(
-      buildWhen: (prev, cur) => cur is AnimationSeasonLoadSuccess,
-      builder: (context, state) {
-        List<AnimationSeasonItem> list = state is AnimationSeasonLoadSuccess
-            ? state.seasonItems
+      buildWhen: (prev, cur){
+        print("prev : $prev cur : $cur");
+        return cur is AnimationSeasonLoadSuccess;
+      },
+      builder: (context, seasonState) {
+        print('main Appbar State : $seasonState');
+        List<AnimationSeasonItem> list = seasonState is AnimationSeasonLoadSuccess
+            ? seasonState.seasonItems
             : List<AnimationSeasonItem>();
         totalPageCount = list.length <= 0 ? 0 : list.length - 1;
 

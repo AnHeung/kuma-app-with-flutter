@@ -1,13 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kuma_flutter_app/bloc/search/search_bloc.dart';
 import 'package:kuma_flutter_app/model/item/animation_main_item.dart';
 import 'package:kuma_flutter_app/model/item/animation_search_item.dart';
 import 'package:kuma_flutter_app/routes/routes.dart';
 import 'package:kuma_flutter_app/util/view_utils.dart';
-import 'package:kuma_flutter_app/widget/default_text_field.dart';
 import 'package:kuma_flutter_app/widget/loading_indicator.dart';
 import 'package:kuma_flutter_app/widget/search_history_item.dart';
 import 'package:kuma_flutter_app/widget/search_image_item.dart';
@@ -19,7 +17,6 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   List<AnimationSearchItem> searchItemList = List();
   List<AnimationSearchItem> list = List();
@@ -34,7 +31,6 @@ class _SearchScreenState extends State<SearchScreen> {
         .debounce(
             (_) => TimerStream(true, Duration(milliseconds: durationTime)))
         .where((value) {
-      print("value: $value");
       return value.isNotEmpty && value.toString().length > 0;
     }).listen((query) {
       if (!searchSubject.isClosed)
@@ -61,21 +57,30 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       key: _scaffoldKey,
       appBar: AppBar(
         title: _appBarTitle,
         actions: [
+          IconButton(
+            onPressed: _searchPressed,
+            icon: _searchIcon,
+          ),
           Padding(
-            padding: EdgeInsets.only(right: 10),
+            padding: const EdgeInsets.only(right: 5),
             child: IconButton(
-              onPressed: _searchPressed,
-              icon: _searchIcon,
+              onPressed: () => showBaseDialog(
+                  context: context,
+                  title: "기록 전체삭제",
+                  content: "저장된 기록을 다 지우시겠습니까?",
+                  confirmFunction: () {
+                    BlocProvider.of<SearchBloc>(context)
+                        .add(SearchClearHistory());
+                    Navigator.pop(context);
+                  }),
+              icon: Icon(Icons.delete),
             ),
           ),
-            IconButton(
-              onPressed: ()=>BlocProvider.of<SearchBloc>(context).add(SearchClearHistory()),
-              icon: Icon(Icons.autorenew),
-            ),
         ],
       ),
       body: BlocListener<SearchBloc, SearchState>(
@@ -131,10 +136,13 @@ class _SearchScreenState extends State<SearchScreen> {
         return Visibility(
           visible: searchItemList.isNotEmpty,
           child: Container(
+            constraints: BoxConstraints(
+                minHeight: 100,
+                minWidth: double.infinity,
+                maxHeight: MediaQuery.of(context).size.height * 0.4),
             color: Colors.blue,
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height * 0.4,
             child: ListView(
+              shrinkWrap: true,
               scrollDirection: Axis.vertical,
               children: searchItemList
                   .map((searchItem) => SearchImageItem(
@@ -167,9 +175,6 @@ class _SearchScreenState extends State<SearchScreen> {
       if (this._searchIcon.icon == Icons.search) {
         this._searchIcon = Icon(Icons.close);
         this._appBarTitle = TextField(
-          inputFormatters: [
-            FilteringTextInputFormatter.allow(RegExp('[ㄱ-ㅎ|가-힣|ㆍ|ᆢ]'))
-          ],
           autofocus: true,
           controller: searchController,
           decoration: InputDecoration(hintText: '검색...'),
@@ -177,7 +182,7 @@ class _SearchScreenState extends State<SearchScreen> {
       } else {
         this._searchIcon = Icon(Icons.search);
         this._appBarTitle = Text('검색페이지');
-        searchController.clear();
+        _clearScreen();
       }
     });
   }
@@ -191,7 +196,9 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   _searchListener() {
-    if (searchController.text.isEmpty) _clearScreen();
-    else searchSubject.add(searchController.text);
+    if (searchController.text.isEmpty)
+      _clearScreen();
+    else
+      searchSubject.add(searchController.text);
   }
 }

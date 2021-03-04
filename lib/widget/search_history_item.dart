@@ -10,58 +10,62 @@ import 'package:kuma_flutter_app/widget/custom_text.dart';
 import 'package:kuma_flutter_app/widget/image_item.dart';
 
 class SearchHistoryItem extends StatelessWidget {
+  final List<AnimationSearchItem> list;
 
-  List<AnimationSearchItem> list;
-
-  SearchHistoryItem({this.list });
+  SearchHistoryItem({this.list});
 
   @override
   Widget build(BuildContext context) {
     return Visibility(
         visible: list.isNotEmpty,
         child: Container(
-          height: 300,
+          height: 400,
           child: GridView.count(
               crossAxisCount: 3,
               scrollDirection: Axis.vertical,
-              crossAxisSpacing: 30,
-              mainAxisSpacing: 50,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 20,
               children: list
-                  .map((historyItem) => GestureDetector(
-                   onTap: (){
-                     BlocProvider.of<SearchBloc>(context).add(SearchHistoryWrite(searchItem: AnimationSearchItem(id: historyItem.id , image: historyItem.image , title: historyItem.title) ));
-                     Navigator.pushNamed(
-                       context, Routes.IMAGE_DETAIL,
-                       arguments: RankingItem(
-                           id: historyItem.id, title: historyItem.title));
-                   },
-                    child: Stack(
-                          children: [
-                            Container(
+                  .map(
+                    (historyItem) => GestureDetector(
+                      onTap: () {
+                        BlocProvider.of<SearchBloc>(context).add(
+                            SearchHistoryWrite(
+                                searchItem: AnimationSearchItem(
+                                    id: historyItem.id,
+                                    image: historyItem.image,
+                                    title: historyItem.title)));
+                        Navigator.pushNamed(context, Routes.IMAGE_DETAIL,
+                            arguments: RankingItem(
+                                id: historyItem.id,
+                                title: historyItem.title));
+                      },
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                           Container(
+                              width: 100,
+                              height: 100,
                               child: ImageItem(
                                 type: ImageShapeType.CIRCLE,
                                 imgRes: historyItem.image,
                               ),
                             ),
-                            Align(
-                              alignment: Alignment.center,
-                              child: Container(
-                                padding: EdgeInsets.all(7),
-                                child: CustomText(text: historyItem.title, maxLines: 2, isEllipsis: true, isDynamic: true,),
-                              ),
+                          Container(
+                            alignment: Alignment.center,
+                            width: 90,
+                            height: 90,
+                            child: CustomText(
+                              text: historyItem.title,
+                              maxLines: 2,
+                              isEllipsis: true,
+                              isDynamic: true,
                             ),
-                            Container(
-                              child: Align(
-                                alignment: Alignment.topRight,
-                                child: IconButton(
-                                  icon: Icon(Icons.clear),
-                                  onPressed: () => {},
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                  ))
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
                   .toList()),
         ));
   }

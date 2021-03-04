@@ -9,9 +9,9 @@ abstract class AnimationEvent extends Equatable{
 
 class AnimationLoad extends AnimationEvent{
 
-  String rankType;
-  String limit;
-  String searchType;
+  final String rankType;
+  final String limit;
+  final String searchType;
 
   AnimationLoad({this.rankType, this.limit, this.searchType});
 
@@ -21,7 +21,7 @@ class AnimationLoad extends AnimationEvent{
 
 class AnimationSeasonLoad extends AnimationEvent{
 
-  String limit;
+  final String limit;
 
   AnimationSeasonLoad({this.limit});
 
@@ -31,7 +31,7 @@ class AnimationSeasonLoad extends AnimationEvent{
 
 class AnimationUpdate extends AnimationEvent{
 
-  List<AnimationMainItem> rankingList;
+  final List<AnimationMainItem> rankingList;
 
   AnimationUpdate({this.rankingList});
 

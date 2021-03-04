@@ -6,9 +6,9 @@ import 'package:kuma_flutter_app/widget/custom_text.dart';
 import 'package:kuma_flutter_app/widget/image_item.dart';
 
 class SearchImageItem extends StatelessWidget {
-  String title;
-  String imgRes;
-  GestureTapCallback onTap;
+  final String title;
+  final String imgRes;
+  final GestureTapCallback onTap;
 
   SearchImageItem({this.imgRes, this.title, this.onTap});
 
