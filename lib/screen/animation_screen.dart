@@ -13,18 +13,11 @@ import 'package:kuma_flutter_app/widget/loading_indicator.dart';
 import 'package:kuma_flutter_app/widget/refresh_container.dart';
 
 class AnimationScreen extends StatelessWidget {
-
   final AnimationMainAppbar animationMainAppbar = AnimationMainAppbar();
+
   @override
   Widget build(BuildContext context) {
-
-    return BlocListener<AnimationBloc, AnimationState>(
-      listenWhen:(prev,cur)=> cur is AnimationLoadInFailure,
-      listener: (context, state){
-        String msg = state is AnimationLoadInFailure ? state.errMsg : "에러";
-        showToast(msg: msg);
-      },
-      child: Scaffold(
+    return Scaffold(
         extendBody: true,
         body: NestedScrollView(
           headerSliverBuilder: (context, isScrolled) {
@@ -46,8 +39,7 @@ class AnimationScreen extends StatelessWidget {
                 ],
                 // floating 설정. SliverAppBar는 스크롤 다운되면 화면 위로 사라짐.
                 // true: 스크롤 업 하면 앱바가 바로 나타남. false: 리스트 최 상단에서 스크롤 업 할 때에만 앱바가 나타남
-                floating: false,
-                snap: false,
+                floating: true,
                 pinned: true,
                 // flexibleSpace에 플레이스홀더를 추가
                 // 최대 높이
@@ -55,42 +47,43 @@ class AnimationScreen extends StatelessWidget {
               )
             ];
           },
-          body: Stack(
-            children: [
-              BlocBuilder<AnimationBloc, AnimationState>(
-                  buildWhen: (prev, cur)=>cur is AnimationLoadSuccess,
-                  builder: (context, loadState) {
-                    final List<AnimationMainItem> mainItemList =
-                        (loadState is AnimationLoadSuccess)
-                            ? loadState.rankingList
-                            : List();
-                    print('list :$mainItemList  state :$loadState');
-                    return mainItemList.length > 0
-                        ? ListView(
+          body: BlocConsumer<AnimationBloc, AnimationState>(
+              listenWhen: (prev, cur) => cur is AnimationLoadInFailure,
+              listener: (context, state) {
+                String msg = state is AnimationLoadInFailure ? state.errMsg : "에러";
+                showToast(msg: msg);
+              },
+              builder: (context, loadState) {
+                final List<AnimationMainItem> mainItemList =
+                    (loadState is AnimationLoadSuccess)
+                        ? loadState.rankingList
+                        : List();
+                final bool isLoading = loadState is AnimationLoadInProgress;
+                print('list :$mainItemList  state :$loadState');
+                return mainItemList.length > 0
+                    ? Stack(
+                        children: [
+                          ListView(
                             padding: EdgeInsets.zero,
                             children: mainItemList
                                 .map((item) => _makeMainItem(context, item))
                                 .toList(),
+                          ),
+                          LoadingIndicator(
+                            isVisible: isLoading,
                           )
-                        : RefreshContainer(
-                            callback: () =>
-                                BlocProvider.of<AnimationBloc>(context).add(
-                                    AnimationLoad(
-                                        rankType: "all",
-                                        searchType: "all",
-                                        limit: "30")),
-                          );
-                  }),
-              BlocBuilder<AnimationBloc, AnimationState>(
-                builder: (context, state) => LoadingIndicator(
-                  isVisible: state is AnimationLoadInProgress,
-                ),
-              )
-            ],
-          ),
+                        ],
+                      )
+                    : RefreshContainer(
+                        callback: () => BlocProvider.of<AnimationBloc>(context)
+                            .add(AnimationLoad(
+                                rankType: "all",
+                                searchType: "all",
+                                limit: "30")),
+                      );
+              }),
         ),
-      ),
-    );
+      );
   }
 
   Color _setItemColor(String type) {

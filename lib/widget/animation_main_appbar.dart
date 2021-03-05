@@ -22,10 +22,10 @@ class AnimationMainAppbar extends StatelessWidget {
   int scrollTime = 3;
 
   AnimationMainAppbar(){
-    controller = PageController(initialPage: currentPage)..addListener(() {
-      if(controller.hasClients )currentPage = controller.page.ceil();
+    print('appbar Constructor');
+    controller = PageController(initialPage: currentPage, keepPage: false)..addListener(() {
+      if(controller.hasClients)currentPage = controller.page.ceil();
     });
-    _resumeJob();
   }
 
   _disposeJob(){
@@ -37,10 +37,12 @@ class AnimationMainAppbar extends StatelessWidget {
   _resumeJob(){
     print('resumeJob');
     timer = timer ?? Timer.periodic(Duration(seconds: scrollTime), (timer) {
+      print("controller.hasClient ${controller.hasClients} currentPage :$currentPage totalPageCount: $totalPageCount ");
       if(controller.hasClients) {
-        if (currentPage == totalPageCount)
-          controller?.jumpToPage(0);
-        else if (totalPageCount > 0) {
+        if (currentPage == totalPageCount) {
+          controller?.animateToPage(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+          currentPage = 0;
+        }else if (totalPageCount > 0) {
           controller.nextPage(duration: Duration(milliseconds: 300), curve: Curves.easeIn);
         }
       }
