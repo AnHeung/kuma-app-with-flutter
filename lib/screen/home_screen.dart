@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kuma_flutter_app/bloc/animation/animation_bloc.dart';
+import 'package:kuma_flutter_app/bloc/animation_season/animation_season_bloc.dart';
 import 'package:kuma_flutter_app/bloc/tab/tab_cubit.dart';
 import 'package:kuma_flutter_app/enums/app_tab.dart';
 import 'package:kuma_flutter_app/routes/routes.dart';
@@ -42,8 +43,6 @@ class HomeScreen extends StatelessWidget {
 
     switch(tab){
       case AppTab.ANIMATION :
-        BlocProvider.of<AnimationBloc>(context).add(AnimationSeasonLoad(limit: "7"));
-        BlocProvider.of<AnimationBloc>(context).add(AnimationLoad(rankType: "all",searchType: "all",limit: "30"));
         widget = AnimationScreen();
         break;
       case AppTab.TORRENT :

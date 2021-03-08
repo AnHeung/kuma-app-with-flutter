@@ -26,6 +26,34 @@ class _SearchScreenState extends State<SearchScreen> {
   PublishSubject<String> searchSubject = PublishSubject();
   final int durationTime = 500;
 
+
+  // AnimationController _opacityController;
+  // Animation<double> _opacity = new CurvedAnimation(parent: _opacityController, curve: Curves.easeInOut)..addStatusListener((status) {
+  //   if (status == AnimationStatus.completed) {
+  //     _opacityController.reverse();
+  //   } else if (status == AnimationStatus.dismissed) {
+  //     _opacityController.forward();
+  //   }
+  // });
+  // _opacityController.forward();
+  //
+  // var test = FadeTransition(
+  //   opacity: _opacity,
+  //   child: new Row(
+  //     mainAxisAlignment: MainAxisAlignment.center,
+  //     children: <Widget>[
+  //       new Icon(Icons.arrow_back),
+  //       new Padding(padding: const EdgeInsets.only(left: 8.0)),
+  //       new Text("Swipe it",
+  //         style: new TextStyle(
+  //             fontSize: 16.0,
+  //             color: Colors.blueGrey
+  //         ),
+  //       )
+  //     ],
+  //   ),
+  // );
+
   _createSearchEngine() {
     searchSubject.stream
         .debounce(

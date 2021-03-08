@@ -113,10 +113,16 @@ _controlPage({int listSize ,PageController controller , MoveState state}){
       else controller.nextPage(duration: duration, curve: curves);
       break;
   }
-
-
-
 }
+
+
+// Future<Color> colorForBackground(Image image) async{
+//
+//   final PaletteGenerator paletteGenerator = await PaletteGenerator.fromImage(image);
+//   Color backgroundColor =  paletteGenerator.dominantColor.color;
+//   if (ThemeData.estimateBrightnessForColor(backgroundColor) == Brightness.dark)return Colors.white;
+//   return Colors.black;
+// }
 
 
 showToast({String msg}) {

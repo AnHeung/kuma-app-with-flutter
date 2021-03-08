@@ -1,8 +1,9 @@
 class AnimationMainItem {
   String type;
+  String koreaType;
   List<RankingItem> list;
 
-  AnimationMainItem({this.type, this.list});
+  AnimationMainItem({this.type, this.list ,this.koreaType});
 
 }
 

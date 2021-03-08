@@ -35,13 +35,14 @@ SearchRankingApiItem _$SearchRankingApiItemFromJson(Map<String, dynamic> json) {
             ? null
             : SearchRankingData.fromJson(e as Map<String, dynamic>))
         ?.toList(),
-  );
+  )..koreaType = json['koreaType'] as String;
 }
 
 Map<String, dynamic> _$SearchRankingApiItemToJson(
         SearchRankingApiItem instance) =>
     <String, dynamic>{
       'type': instance.type,
+      'koreaType': instance.koreaType,
       'rank_result': instance.rank_result,
     };
 

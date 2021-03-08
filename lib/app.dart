@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kuma_flutter_app/bloc/animation/animation_bloc.dart';
 import 'package:kuma_flutter_app/bloc/animation_detail/animation_detail_bloc.dart';
+import 'package:kuma_flutter_app/bloc/animation_season/animation_season_bloc.dart';
 import 'package:kuma_flutter_app/bloc/search/search_bloc.dart';
 import 'package:kuma_flutter_app/bloc/splash/splash_bloc.dart';
 import 'package:kuma_flutter_app/bloc/tab/tab_cubit.dart';
@@ -58,7 +59,8 @@ class App extends StatelessWidget {
               MultiBlocProvider(
                 providers: [
                   BlocProvider(create: (_) => TabCubit(),),
-                  BlocProvider(create: (_) => AnimationBloc(repository: context.read<ApiRepository>()),),
+                  BlocProvider(create: (_) => AnimationBloc(repository: context.read<ApiRepository>())..add(AnimationLoad(rankType: "all",searchType: "all",limit: "30" ))),
+                  BlocProvider(create: (_) => AnimationSeasonBloc(repository: context.read<ApiRepository>())..add(AnimationSeasonLoad(limit: "7"))),
                 ],
                 child: HomeScreen(),
               ),

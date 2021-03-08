@@ -13,6 +13,7 @@ import 'package:kuma_flutter_app/widget/loading_indicator.dart';
 import 'package:kuma_flutter_app/widget/refresh_container.dart';
 
 class AnimationScreen extends StatelessWidget {
+
   final AnimationMainAppbar animationMainAppbar = AnimationMainAppbar();
 
   @override
@@ -22,35 +23,13 @@ class AnimationScreen extends StatelessWidget {
         body: NestedScrollView(
           headerSliverBuilder: (context, isScrolled) {
             return [
-              SliverAppBar(
-                flexibleSpace: animationMainAppbar,
-                centerTitle: true,
-                title: CustomText(
-                  text: "메인",
-                  fontSize: 15,
-                ),
-                actions: <Widget>[
-                  IconButton(
-                    color: Colors.white,
-                    icon: Icon(Icons.notifications_none),
-                    tooltip: "알림",
-                    onPressed: () => {print('알림')},
-                  ),
-                ],
-                // floating 설정. SliverAppBar는 스크롤 다운되면 화면 위로 사라짐.
-                // true: 스크롤 업 하면 앱바가 바로 나타남. false: 리스트 최 상단에서 스크롤 업 할 때에만 앱바가 나타남
-                floating: true,
-                pinned: true,
-                // flexibleSpace에 플레이스홀더를 추가
-                // 최대 높이
-                expandedHeight: 450,
-              )
+              _buildSilverAppbar(animationMainAppbar)
             ];
           },
           body: BlocConsumer<AnimationBloc, AnimationState>(
-              listenWhen: (prev, cur) => cur is AnimationLoadInFailure,
+              listenWhen: (prev, cur) => cur is AnimationLoadFailure,
               listener: (context, state) {
-                String msg = state is AnimationLoadInFailure ? state.errMsg : "에러";
+                String msg = state is AnimationLoadFailure ? state.errMsg : "에러";
                 showToast(msg: msg);
               },
               builder: (context, loadState) {
@@ -99,8 +78,40 @@ class AnimationScreen extends StatelessWidget {
       case "upcoming":
         color = Colors.greenAccent;
         break;
+      case "tv":
+        color = Colors.deepPurpleAccent;
+        break;
+      case "ova":
+        color = Colors.pink;
+        break;
     }
     return color;
+  }
+
+  Widget _buildSilverAppbar(appbar){
+    return SliverAppBar(
+      flexibleSpace: appbar,
+      centerTitle: true,
+      title: CustomText(
+        text: "메인",
+        fontSize: 15,
+      ),
+      actions: <Widget>[
+        IconButton(
+          color: Colors.white,
+          icon: Icon(Icons.notifications_none),
+          tooltip: "알림",
+          onPressed: () => {print('알림')},
+        ),
+      ],
+      // floating 설정. SliverAppBar는 스크롤 다운되면 화면 위로 사라짐.
+      // true: 스크롤 업 하면 앱바가 바로 나타남. false: 리스트 최 상단에서 스크롤 업 할 때에만 앱바가 나타남
+      floating: true,
+      pinned: true,
+      // flexibleSpace에 플레이스홀더를 추가
+      // 최대 높이
+      expandedHeight: 450,
+    );
   }
 
   Widget _makeMainItem(BuildContext context, final AnimationMainItem item) {
@@ -116,7 +127,7 @@ class AnimationScreen extends StatelessWidget {
             padding: const EdgeInsets.only(top: 20, bottom: 20),
             child: Container(
                 width: MediaQuery.of(context).size.width,
-                child: CustomText(text: item.type.toUpperCase(), fontSize: 20)),
+                child: CustomText(text: item.koreaType, fontSize: 20)),
           ),
           Expanded(
             child: ListView(

@@ -9,6 +9,7 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  flutter_bloc: ^6.1.3
   smooth_page_indicator: ^0.2.0
   flutter_rating_bar: ^3.2.0+1
   focus_detector: ^1.1.0+1
@@ -25,9 +26,7 @@ dependencies:
   equatable: ^1.1.1
   dio: 3.0.10
   uuid: 2.2.2
-  flutter_bloc: ^6.1.3
   shared_preferences: 0.5.12+4
-  circular_check_box: ^1.0.4
   rxdart: ^0.25.0
   flutter:
     sdk: flutter
@@ -44,6 +43,7 @@ dev_dependencies:
 flutter:
   assets:
     - assets/
+    - assets/images/no_image.png
   fonts:
     - family: NanumGothic
       fonts:

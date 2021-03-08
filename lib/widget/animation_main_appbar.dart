@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:focus_detector/focus_detector.dart';
-import 'package:kuma_flutter_app/bloc/animation/animation_bloc.dart';
+import 'package:kuma_flutter_app/bloc/animation_season/animation_season_bloc.dart';
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
 import 'package:kuma_flutter_app/model/item/animation_main_item.dart';
 import 'package:kuma_flutter_app/model/item/animation_search_season_item.dart';
 import 'package:kuma_flutter_app/routes/routes.dart';
+import 'package:kuma_flutter_app/widget/custom_text.dart';
 import 'package:kuma_flutter_app/widget/image_item.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -37,7 +38,7 @@ class AnimationMainAppbar extends StatelessWidget {
   _resumeJob(){
     print('resumeJob');
     timer = timer ?? Timer.periodic(Duration(seconds: scrollTime), (timer) {
-      print("controller.hasClient ${controller.hasClients} currentPage :$currentPage totalPageCount: $totalPageCount ");
+      print("controller.hasClient ${controller.hasClients} currentPage : $currentPage totalPageCount: $totalPageCount ");
       if(controller.hasClients) {
         if (currentPage == totalPageCount) {
           controller?.animateToPage(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
@@ -51,13 +52,11 @@ class AnimationMainAppbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AnimationBloc, AnimationState>(
+    return BlocBuilder<AnimationSeasonBloc, AnimationSeasonState>(
       buildWhen: (prev, cur){
-        print("prev : $prev cur : $cur");
         return cur is AnimationSeasonLoadSuccess;
       },
       builder: (context, seasonState) {
-        print('main Appbar State : $seasonState');
         List<AnimationSeasonItem> list = seasonState is AnimationSeasonLoadSuccess
             ? seasonState.seasonItems
             : List<AnimationSeasonItem>();
@@ -90,9 +89,24 @@ class AnimationMainAppbar extends StatelessWidget {
                                 height: double.maxFinite,
                                 //// USE THIS FOR THE MATCH WIDTH AND HEIGHT
                                 width: double.maxFinite,
-                                child: ImageItem(
-                                  type: ImageShapeType.FLAT,
-                                  imgRes: data.image,
+                                child: Stack(
+                                  fit: StackFit.expand,
+                                  children: [
+                                    ImageItem(
+                                      type: ImageShapeType.FLAT,
+                                      imgRes: data.image,
+                                    ),
+                                    Container(
+                                      padding: EdgeInsets.only(bottom: 30 , left: 20),
+                                      alignment: Alignment.bottomLeft,
+                                      child: CustomText(
+                                        maxLines: 1,
+                                        fontWeight: FontWeight.w700,
+                                        fontSize:25,
+                                        text: data.title,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ))

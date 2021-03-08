@@ -29,7 +29,7 @@ class AnimationDetailBloc extends Bloc<AnimationDetailEvent, AnimationDetailStat
     String type = event.type ?? "all";
     SearchMalDetailApiItem malDetailApiItem = await repository.getDetailApiItem(id, type);
     if(malDetailApiItem.err) {
-      yield AnimationDetailLoadFailure(errmsg: malDetailApiItem.msg);
+      yield AnimationDetailLoadFailure(errMsg: malDetailApiItem.msg);
     } else{
       SearchMalDetailApiItemResult result = malDetailApiItem.result;
       List<RelatedAnimeItem> relateItemList = result.relatedAnime.map((item) => RelatedAnimeItem(id: item.id, image: item.image, title: item.title)).toList();
@@ -37,9 +37,5 @@ class AnimationDetailBloc extends Bloc<AnimationDetailEvent, AnimationDetailStat
           endDate: result.endDate, star: result.star, popularity: result.popularity, rank: result.rank, percent:  double.parse(result.star) / 10.ceil(), percentText: "인기 그래프 \n${(double.parse(result.star)*10).toStringAsFixed(1)}%", synopsis: result.synopsis,
           status: result.status, genres: result.genres, numEpisodes: result.numEpisodes, startSeason: result.startSeason,pictures:result.pictures, relatedAnime: relateItemList));
     }
-  }
-
-  Stream<AnimationDetailState> _mapToAnimationDetailUpdate() async* {
-    yield AnimationDetailLoadInProgress();
   }
 }

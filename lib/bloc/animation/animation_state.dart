@@ -11,21 +11,11 @@ class AnimationLoadInProgress extends AnimationState{}
 
 class AnimationLoadInit extends AnimationState{}
 
-class AnimationSeasonLoadSuccess extends AnimationState{
-
-  final List<AnimationSeasonItem> seasonItems;
-
-  AnimationSeasonLoadSuccess({this.seasonItems});
-
-  @override
-  List<Object> get props =>[seasonItems];
-}
-
-class AnimationLoadInFailure extends AnimationState{
+class AnimationLoadFailure extends AnimationState{
 
   final String errMsg;
 
-  AnimationLoadInFailure({this.errMsg});
+  AnimationLoadFailure({this.errMsg});
 
   @override
   List<Object> get props =>[errMsg];

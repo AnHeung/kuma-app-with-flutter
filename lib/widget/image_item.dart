@@ -7,7 +7,6 @@ import 'package:kuma_flutter_app/enums/image_shape_type.dart';
 import 'package:kuma_flutter_app/enums/image_type.dart';
 import 'package:kuma_flutter_app/util/view_utils.dart';
 
-// ignore: must_be_immutable
 class ImageItem extends StatefulWidget {
 
    final String imgRes;
@@ -15,7 +14,7 @@ class ImageItem extends StatefulWidget {
    final Key key;
    final double opacity;
 
-  ImageItem({Key key , this.imgRes , ImageShapeType type, double opacity}) : this.type = type ?? ImageShapeType.CIRCLE , this.key = key?? UniqueKey() , this.opacity = opacity?? 0 , super(key:key);
+  ImageItem({Key key , String imgRes , ImageShapeType type, double opacity}) : this.type = type ?? ImageShapeType.CIRCLE , this.imgRes = imgRes ?? "", this.key = key?? UniqueKey() , this.opacity = opacity?? 0 , super(key:key);
 
   @override
   State<ImageItem> createState()=>_ImageState();
@@ -49,7 +48,7 @@ class _ImageState extends State<ImageItem> {
           image:  DecorationImage(
               colorFilter: colorFilter,
               fit: BoxFit.fill,
-              image:  image
+              image:  image,
           )
       ) ,
     ); Image.file(File(widget.imgRes));

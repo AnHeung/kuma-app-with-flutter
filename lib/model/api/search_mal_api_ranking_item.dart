@@ -17,6 +17,7 @@ class SearchRankingApiResult {
 @JsonSerializable()
 class SearchRankingApiItem {
   String type;
+  String koreaType;
   List<SearchRankingData> rank_result;
 
   SearchRankingApiItem({this.type, this.rank_result});

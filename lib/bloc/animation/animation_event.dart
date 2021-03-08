@@ -19,16 +19,6 @@ class AnimationLoad extends AnimationEvent{
   List<Object> get props =>[rankType, limit,searchType];
 }
 
-class AnimationSeasonLoad extends AnimationEvent{
-
-  final String limit;
-
-  AnimationSeasonLoad({this.limit});
-
-  @override
-  List<Object> get props =>[limit];
-}
-
 class AnimationUpdate extends AnimationEvent{
 
   final List<AnimationMainItem> rankingList;

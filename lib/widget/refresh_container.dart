@@ -4,9 +4,9 @@ import 'package:kuma_flutter_app/widget/custom_text.dart';
 
 class RefreshContainer extends StatelessWidget {
 
-  GestureTapCallback callback;
+ final GestureTapCallback callback;
 
-  RefreshContainer({this.callback});
+ const RefreshContainer({this.callback});
 
   @override
   Widget build(BuildContext context) {
