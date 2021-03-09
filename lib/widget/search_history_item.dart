@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kuma_flutter_app/bloc/search/search_bloc.dart';
+import 'package:kuma_flutter_app/bloc/search_history/search_history_bloc.dart';
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
 import 'package:kuma_flutter_app/model/item/animation_main_item.dart';
 import 'package:kuma_flutter_app/model/item/animation_search_item.dart';
@@ -19,7 +19,7 @@ class SearchHistoryItem extends StatelessWidget {
     return Visibility(
         visible: list.isNotEmpty,
         child: Container(
-          height: 400,
+          height: MediaQuery.of(context).size.height,
           child: GridView.count(
               crossAxisCount: 3,
               scrollDirection: Axis.vertical,
@@ -29,7 +29,7 @@ class SearchHistoryItem extends StatelessWidget {
                   .map(
                     (historyItem) => GestureDetector(
                       onTap: () {
-                        BlocProvider.of<SearchBloc>(context).add(
+                        BlocProvider.of<SearchHistoryBloc>(context).add(
                             SearchHistoryWrite(
                                 searchItem: AnimationSearchItem(
                                     id: historyItem.id,

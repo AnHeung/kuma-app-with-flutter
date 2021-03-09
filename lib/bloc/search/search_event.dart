@@ -5,13 +5,15 @@ abstract class SearchEvent extends Equatable{
 
   @override
   List<Object> get props =>[];
+
+  const SearchEvent();
 }
 
-class SearchUpdate extends SearchEvent{
+class SearchQueryUpdate extends SearchEvent{
 
-  String searchQuery;
+ final String searchQuery;
 
-  SearchUpdate({this.searchQuery});
+ SearchQueryUpdate({this.searchQuery});
 
   @override
   List<Object> get props =>[searchQuery];
@@ -19,27 +21,20 @@ class SearchUpdate extends SearchEvent{
 
 class SearchLoad extends SearchEvent{
 
-  String searchQuery;
+  final String searchQuery;
 
-  SearchLoad({this.searchQuery});
+  const SearchLoad({this.searchQuery});
 
   @override
   List<Object> get props =>[searchQuery];
 }
 
-class SearchClearHistory extends SearchEvent{}
 
+class SearchBtnClick extends SearchEvent{
 
-class SearchHistoryLoad extends SearchEvent{}
+  final bool isClick;
 
-class SearchHistoryWrite extends SearchEvent{
-
-  AnimationSearchItem searchItem;
-
-  SearchHistoryWrite({this.searchItem});
-
-  @override
-  List<Object> get props =>[searchItem];
+  SearchBtnClick({this.isClick});
 
 }
 

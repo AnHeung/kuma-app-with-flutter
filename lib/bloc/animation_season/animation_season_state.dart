@@ -12,7 +12,6 @@ abstract class AnimationSeasonState extends Equatable{
 
 class AnimationSeasonLoadInProgress extends AnimationSeasonState{}
 
-
 class AnimationSeasonLoadFailure extends AnimationSeasonState{
 
   final String errMsg;

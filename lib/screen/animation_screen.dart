@@ -5,9 +5,9 @@ import 'package:kuma_flutter_app/bloc/animation/animation_bloc.dart';
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
 import 'package:kuma_flutter_app/model/item/animation_main_item.dart';
 import 'package:kuma_flutter_app/routes/routes.dart';
-import 'package:kuma_flutter_app/util/view_utils.dart';
 import 'package:kuma_flutter_app/widget/animation_main_appbar.dart';
 import 'package:kuma_flutter_app/widget/custom_text.dart';
+import 'package:kuma_flutter_app/widget/empty_container.dart';
 import 'package:kuma_flutter_app/widget/image_item.dart';
 import 'package:kuma_flutter_app/widget/loading_indicator.dart';
 import 'package:kuma_flutter_app/widget/refresh_container.dart';
@@ -26,40 +26,42 @@ class AnimationScreen extends StatelessWidget {
               _buildSilverAppbar(animationMainAppbar)
             ];
           },
-          body: BlocConsumer<AnimationBloc, AnimationState>(
-              listenWhen: (prev, cur) => cur is AnimationLoadFailure,
-              listener: (context, state) {
-                String msg = state is AnimationLoadFailure ? state.errMsg : "에러";
-                showToast(msg: msg);
-              },
+          body: BlocBuilder<AnimationBloc, AnimationState>(
               builder: (context, loadState) {
-                final List<AnimationMainItem> mainItemList =
+                switch(loadState.runtimeType){
+                  case AnimationLoadFailure :
+                    return RefreshContainer(
+                      callback: () => BlocProvider.of<AnimationBloc>(context)
+                          .add(AnimationLoad(
+                          rankType: "all",
+                          searchType: "all",
+                          limit: "30")),
+                    );
+                  case AnimationLoadSuccess:
+                    final List<AnimationMainItem> mainItemList =
                     (loadState is AnimationLoadSuccess)
                         ? loadState.rankingList
-                        : List();
-                final bool isLoading = loadState is AnimationLoadInProgress;
-                print('list :$mainItemList  state :$loadState');
-                return mainItemList.length > 0
-                    ? Stack(
-                        children: [
-                          ListView(
-                            padding: EdgeInsets.zero,
-                            children: mainItemList
-                                .map((item) => _makeMainItem(context, item))
-                                .toList(),
-                          ),
-                          LoadingIndicator(
-                            isVisible: isLoading,
-                          )
-                        ],
-                      )
-                    : RefreshContainer(
-                        callback: () => BlocProvider.of<AnimationBloc>(context)
-                            .add(AnimationLoad(
-                                rankType: "all",
-                                searchType: "all",
-                                limit: "30")),
-                      );
+                        : [];
+
+                    return Stack(
+                      children: [
+                        ListView(
+                          padding: EdgeInsets.zero,
+                          children: mainItemList
+                              .map((item) => _makeMainItem(context, item))
+                              .toList(),
+                        ),
+
+                      ],
+                    );
+                    break;
+                  case AnimationLoadInProgress:
+                    return LoadingIndicator(
+                      isVisible: loadState is AnimationLoadInProgress,
+                    );
+                  default:
+                    return EmptyContainer(title: "내용이 없습니다.",);
+                }
               }),
         ),
       );

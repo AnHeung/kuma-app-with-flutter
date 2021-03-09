@@ -28,29 +28,34 @@ class AnimationBloc extends Bloc<AnimationEvent, AnimationState> {
   }
 
   Stream<AnimationState> _mapToAnimationLoad(AnimationLoad event) async* {
-    yield AnimationLoadInProgress();
-    String rankType = event.rankType ?? "all";
-    String searchType = event.searchType ?? "all";
-    String limit = event.limit ?? "30";
-    SearchRankingApiResult searchRankingApiResult =
-        await repository.getRankingItemList(rankType, limit, searchType);
-    bool isErr = searchRankingApiResult.err;
-    if (isErr)
-      yield AnimationLoadFailure(errMsg: searchRankingApiResult.msg);
-    else
-      yield AnimationLoadSuccess(
-          rankingList: searchRankingApiResult.result
-              .map((result) => AnimationMainItem(
-              koreaType:result.koreaType,
-                  type: result.type,
-                  list: result.rank_result
-                      .map((data) => RankingItem(
-                          id: data.id,
-                          title: data.title,
-                          image: data.image,
-                          ranking: data.ranking))
-                      .toList()))
-              .toList());
+    try {
+      yield AnimationLoadInProgress();
+      String rankType = event.rankType ?? "all";
+      String searchType = event.searchType ?? "all";
+      String limit = event.limit ?? "30";
+      SearchRankingApiResult searchRankingApiResult = await repository.getRankingItemList(rankType, limit, searchType);
+      bool isErr = searchRankingApiResult.err;
+      if (isErr)
+        yield AnimationLoadFailure(errMsg: searchRankingApiResult.msg);
+      else
+        yield AnimationLoadSuccess(
+            rankingList: searchRankingApiResult.result
+                .map((result) =>
+                AnimationMainItem(
+                    koreaType: result.koreaType,
+                    type: result.type,
+                    list: result.rank_result
+                        .map((data) =>
+                        RankingItem(
+                            id: data.id,
+                            title: data.title,
+                            image: data.image,
+                            ranking: data.ranking))
+                        .toList()))
+                .toList());
+    }on Exception{
+      yield AnimationLoadFailure(errMsg: "통신 에러 발생");
+    }
   }
 
   Stream<AnimationState> _mapToAnimationLoadUpdate(

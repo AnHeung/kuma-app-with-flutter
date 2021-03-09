@@ -9,13 +9,15 @@ abstract class SearchState extends Equatable{
 
 class SearchLoadInProgress extends SearchState {}
 
-class SearchScreenClear extends SearchState {}
+class ClearSearchScreen extends SearchState {}
 
-class SearchInitial extends SearchState {}
+class InitialSearchScreen extends SearchState {}
+
+class SetSearchScreen extends SearchState {}
 
 class SearchLoadFailure extends SearchState {
 
-  String errMsg;
+  final String errMsg;
 
   SearchLoadFailure({this.errMsg});
 
@@ -23,21 +25,9 @@ class SearchLoadFailure extends SearchState {
   List<Object> get props =>[];
 }
 
-class SearchHistoryLoadSuccess extends SearchState{
-
-  List<AnimationSearchItem> list;
-
-
-  SearchHistoryLoadSuccess({this.list});
-
-  @override
-  List<Object> get props =>[list];
-}
-
 class SearchItemLoadSuccess extends SearchState{
 
-  List<AnimationSearchItem> list;
-
+  final List<AnimationSearchItem> list;
 
   SearchItemLoadSuccess({this.list});
 

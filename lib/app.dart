@@ -5,6 +5,7 @@ import 'package:kuma_flutter_app/bloc/animation/animation_bloc.dart';
 import 'package:kuma_flutter_app/bloc/animation_detail/animation_detail_bloc.dart';
 import 'package:kuma_flutter_app/bloc/animation_season/animation_season_bloc.dart';
 import 'package:kuma_flutter_app/bloc/search/search_bloc.dart';
+import 'package:kuma_flutter_app/bloc/search_history/search_history_bloc.dart';
 import 'package:kuma_flutter_app/bloc/splash/splash_bloc.dart';
 import 'package:kuma_flutter_app/bloc/tab/tab_cubit.dart';
 import 'package:kuma_flutter_app/repository/api_repository.dart';
@@ -15,7 +16,6 @@ import 'package:kuma_flutter_app/screen/animation_detail_screen.dart';
 import 'package:kuma_flutter_app/screen/home_screen.dart';
 import 'package:kuma_flutter_app/screen/search_screen.dart';
 import 'package:kuma_flutter_app/screen/splash_screen.dart';
-import 'package:kuma_flutter_app/widget/test.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 class App extends StatelessWidget {
@@ -69,8 +69,11 @@ class App extends StatelessWidget {
             create: (_)=> AnimationDetailBloc(repository: context.read<ApiRepository>()),
             child: AnimationDetailScreen(),
           ),
-          Routes.SEARCH: (context)=>BlocProvider(
-            create: (_)=> SearchBloc(repository: context.read<ApiRepository>()),
+          Routes.SEARCH: (context)=>MultiBlocProvider(
+            providers: [
+            BlocProvider(create: (_)=> SearchBloc(repository: context.read<ApiRepository>())),
+              BlocProvider(create: (_)=> SearchHistoryBloc(repository: context.read<ApiRepository>()))
+            ],
             child: SearchScreen(),
           )
         },

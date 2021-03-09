@@ -9,8 +9,12 @@ import 'package:kuma_flutter_app/enums/image_shape_type.dart';
 import 'package:kuma_flutter_app/model/item/animation_main_item.dart';
 import 'package:kuma_flutter_app/model/item/animation_search_season_item.dart';
 import 'package:kuma_flutter_app/routes/routes.dart';
+import 'package:kuma_flutter_app/util/view_utils.dart';
 import 'package:kuma_flutter_app/widget/custom_text.dart';
+import 'package:kuma_flutter_app/widget/empty_container.dart';
 import 'package:kuma_flutter_app/widget/image_item.dart';
+import 'package:kuma_flutter_app/widget/loading_indicator.dart';
+import 'package:kuma_flutter_app/widget/refresh_container.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 
@@ -52,86 +56,104 @@ class AnimationMainAppbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AnimationSeasonBloc, AnimationSeasonState>(
-      buildWhen: (prev, cur){
-        return cur is AnimationSeasonLoadSuccess;
+    return BlocConsumer<AnimationSeasonBloc, AnimationSeasonState>(
+      listenWhen: (prev,cur)=>cur is AnimationSeasonLoadFailure,
+      listener: (context,state){
+        String errMsg = (state is AnimationSeasonLoadFailure) ? state.errMsg : "에러발생";
+        showToast(msg: errMsg);
       },
       builder: (context, seasonState) {
-        List<AnimationSeasonItem> list = seasonState is AnimationSeasonLoadSuccess
-            ? seasonState.seasonItems
-            : List<AnimationSeasonItem>();
-        totalPageCount = list.length <= 0 ? 0 : list.length - 1;
+        switch(seasonState.runtimeType){
+          case AnimationSeasonLoad :
+            List<AnimationSeasonItem> list = seasonState is AnimationSeasonLoadSuccess
+                ? seasonState.seasonItems
+                : [];
+            totalPageCount = list.length <= 0 ? 0 : list.length - 1;
 
-        return FocusDetector(
-          onFocusGained: _resumeJob,
-          onFocusLost: _disposeJob,
-          child: FlexibleSpaceBar(
-            stretchModes: [
-              StretchMode.zoomBackground,
-              StretchMode.blurBackground,
-              StretchMode.fadeTitle,
-            ],
-            background: Stack(
-              fit: StackFit.expand,
-              children: [
-                Container(
-                  color: Colors.white,
-                  child: PageView(
-                    controller: controller,
-                    scrollDirection: Axis.horizontal,
-                    children: list
-                        .map((data) => GestureDetector(
-                              onTap: () => Navigator.pushNamed(
-                                  context, Routes.IMAGE_DETAIL,
-                                  arguments: RankingItem(
-                                      id: data.id, title: data.title)),
-                              child: Container(
-                                height: double.maxFinite,
-                                //// USE THIS FOR THE MATCH WIDTH AND HEIGHT
-                                width: double.maxFinite,
-                                child: Stack(
-                                  fit: StackFit.expand,
-                                  children: [
-                                    ImageItem(
-                                      type: ImageShapeType.FLAT,
-                                      imgRes: data.image,
-                                    ),
-                                    Container(
-                                      padding: EdgeInsets.only(bottom: 30 , left: 20),
-                                      alignment: Alignment.bottomLeft,
-                                      child: CustomText(
-                                        maxLines: 1,
-                                        fontWeight: FontWeight.w700,
-                                        fontSize:25,
-                                        text: data.title,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ))
-                        .toList(),
-                  ),
+            return  FocusDetector(
+              onFocusGained: _resumeJob,
+              onFocusLost: _disposeJob,
+              child: FlexibleSpaceBar(
+                stretchModes: [
+                  StretchMode.zoomBackground,
+                  StretchMode.blurBackground,
+                  StretchMode.fadeTitle,
+                ],
+                background: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    Container(
+                      color: Colors.white,
+                      child: PageView(
+                        controller: controller,
+                        scrollDirection: Axis.horizontal,
+                        children: list
+                            .map((data) => GestureDetector(
+                          onTap: () => Navigator.pushNamed(
+                              context, Routes.IMAGE_DETAIL,
+                              arguments: RankingItem(
+                                  id: data.id, title: data.title)),
+                          child: _pageViewContainer(data),
+                        ))
+                            .toList(),
+                      ),
+                    ),
+                    _indicatorWidget(context: context , indicatorSize: list.length)
+                  ],
                 ),
-                Container(
-                  padding: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).size.height * 0.1),
-                  alignment: Alignment.bottomCenter,
-                  child: Container(
-                    child: list.length > 0
-                        ? SmoothPageIndicator(
-                            controller: controller,
-                            count: list.length,
-                            effect: WormEffect(dotWidth: 10, dotHeight: 10),
-                          )
-                        : SizedBox(),
-                  ),
-                )
-              ],
+              ),
+            );
+          case AnimationSeasonLoadInProgress :
+            return LoadingIndicator(isVisible: seasonState is AnimationSeasonLoadInProgress,);
+          default  :
+            return EmptyContainer(title: '자료없음');
+        }
+
+      },
+    );
+  }
+  Widget _pageViewContainer(AnimationSeasonItem item){
+
+    return  Container(
+      height: double.maxFinite,
+      //// USE THIS FOR THE MATCH WIDTH AND HEIGHT
+      width: double.maxFinite,
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          ImageItem(
+            type: ImageShapeType.FLAT,
+            imgRes: item.image,
+          ),
+          Container(
+            padding: EdgeInsets.only(bottom: 30 , left: 20),
+            alignment: Alignment.bottomLeft,
+            child: CustomText(
+              maxLines: 1,
+              fontWeight: FontWeight.w700,
+              fontSize:25,
+              text: item.title,
             ),
           ),
-        );
-      },
+        ],
+      ),
+    );
+  }
+
+  Widget _indicatorWidget({BuildContext context, int indicatorSize}){
+    return Container(
+      padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).size.height * 0.1),
+      alignment: Alignment.bottomCenter,
+      child: Container(
+        child: indicatorSize > 0
+            ? SmoothPageIndicator(
+          controller: controller,
+          count: indicatorSize,
+          effect: WormEffect(dotWidth: 10, dotHeight: 10),
+        )
+            : SizedBox(),
+      ),
     );
   }
 }
