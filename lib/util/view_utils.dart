@@ -9,7 +9,6 @@ import 'package:kuma_flutter_app/widget/image_item.dart';
 
 imageAlert(
     BuildContext context, String title, List<String> imgList, int imgIdx) {
-
   PageController controller = PageController(initialPage: imgIdx);
 
   showGeneralDialog(
@@ -23,7 +22,6 @@ imageAlert(
     transitionDuration: Duration(milliseconds: 400),
     // how long it takes to popup dialog after button click
     pageBuilder: (_, __, ___) {
-
       double btnHeight = MediaQuery.of(context).size.height * 0.1;
       // your widget implementation
       return Stack(
@@ -35,40 +33,45 @@ imageAlert(
             children: imgList
                 .map(
                   (img) => Column(
-                        children: <Widget>[
-                          Expanded(
-                            flex:1,
-                            child: SizedBox.expand(
-                                child: ImageItem(
-                              type: ImageShapeType.FLAT,
-                              imgRes: img,
-                            )),
-                          ),
-                        ],
+                    children: <Widget>[
+                      Expanded(
+                        flex: 1,
+                        child: SizedBox.expand(
+                            child: ImageItem(
+                          type: ImageShapeType.FLAT,
+                          imgRes: img,
+                        )),
                       ),
+                    ],
+                  ),
                 )
                 .toList(),
           ),
           Align(
             alignment: Alignment.bottomCenter,
-              child: FlatButton(
-                onPressed: () => Navigator.pop(context),
-                color: Colors.transparent,
-                child: Container(
-                  height: btnHeight,
-                  child: CustomText(
-                    fontWeight: FontWeight.w700,
-                    fontColor: Colors.black54,
-                    text: "나가기",
-                    fontSize: 30,
-                  ),
+            child: TextButton(
+              style: TextButton.styleFrom(
+                primary: Colors.transparent,
+              ),
+              onPressed: () => Navigator.pop(context),
+              child: Container(
+                height: btnHeight,
+                child: CustomText(
+                  fontWeight: FontWeight.w700,
+                  fontColor: Colors.black54,
+                  text: "나가기",
+                  fontSize: 30,
                 ),
               ),
             ),
+          ),
           Visibility(
             visible: imgList.length > 1,
             child: GestureDetector(
-              onTap: ()=>_controlPage(listSize: imgList.length , controller: controller ,state: MoveState.RIGHT),
+              onTap: () => _controlPage(
+                  listSize: imgList.length,
+                  controller: controller,
+                  state: MoveState.RIGHT),
               child: Container(
                   alignment: Alignment.centerRight,
                   child: Icon(
@@ -81,7 +84,10 @@ imageAlert(
           Visibility(
             visible: imgList.length > 1,
             child: GestureDetector(
-              onTap: ()=>_controlPage(listSize: imgList.length , controller: controller ,state: MoveState.LEFT),
+              onTap: () => _controlPage(
+                  listSize: imgList.length,
+                  controller: controller,
+                  state: MoveState.LEFT),
               child: Container(
                   alignment: Alignment.centerLeft,
                   child: Icon(
@@ -97,24 +103,27 @@ imageAlert(
   );
 }
 
-_controlPage({int listSize ,PageController controller , MoveState state}){
-
+_controlPage({int listSize, PageController controller, MoveState state}) {
   int currentPage = controller.page.ceil();
   Duration duration = Duration(milliseconds: 300);
   var curves = Curves.easeIn;
 
-  switch(state){
-    case MoveState.LEFT :
-      if(listSize > 1 && currentPage == 0) controller.animateToPage(listSize-1 , duration:duration, curve: curves);
-      else controller.previousPage(duration: duration, curve: Curves.easeIn);
+  switch (state) {
+    case MoveState.LEFT:
+      if (listSize > 1 && currentPage == 0)
+        controller.animateToPage(listSize - 1,
+            duration: duration, curve: curves);
+      else
+        controller.previousPage(duration: duration, curve: Curves.easeIn);
       break;
-    case MoveState.RIGHT :
-      if(listSize > 1 && currentPage == listSize-1) controller.animateToPage(0 , duration:duration, curve: curves );
-      else controller.nextPage(duration: duration, curve: curves);
+    case MoveState.RIGHT:
+      if (listSize > 1 && currentPage == listSize - 1)
+        controller.animateToPage(0, duration: duration, curve: curves);
+      else
+        controller.nextPage(duration: duration, curve: curves);
       break;
   }
 }
-
 
 // Future<Color> colorForBackground(Image image) async{
 //
@@ -123,7 +132,6 @@ _controlPage({int listSize ,PageController controller , MoveState state}){
 //   if (ThemeData.estimateBrightnessForColor(backgroundColor) == Brightness.dark)return Colors.white;
 //   return Colors.black;
 // }
-
 
 showToast({String msg}) {
   if (msg.isNotEmpty)
@@ -152,11 +160,11 @@ showBaseDialog(
         title: Text(title ?? '알림'),
         content: Text(content ?? '내용'),
         actions: <Widget>[
-          FlatButton(
+          TextButton(
             child: Text('확인'),
             onPressed: confirmFunction,
           ),
-          FlatButton(
+          TextButton(
             child: Text('취소'),
             onPressed: cancelFunction != null
                 ? cancelFunction
@@ -183,7 +191,7 @@ showOneBtnDialog(
         title: Text(title ?? '알림'),
         content: Text(content ?? '내용'),
         actions: <Widget>[
-          FlatButton(
+          TextButton(
             child: Text(confirmTxt ?? '확인'),
             onPressed: confirmFunction,
           ),

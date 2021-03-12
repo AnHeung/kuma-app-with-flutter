@@ -14,7 +14,6 @@ import 'package:kuma_flutter_app/widget/custom_text.dart';
 import 'package:kuma_flutter_app/widget/empty_container.dart';
 import 'package:kuma_flutter_app/widget/image_item.dart';
 import 'package:kuma_flutter_app/widget/loading_indicator.dart';
-import 'package:kuma_flutter_app/widget/refresh_container.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 
@@ -64,7 +63,7 @@ class AnimationMainAppbar extends StatelessWidget {
       },
       builder: (context, seasonState) {
         switch(seasonState.runtimeType){
-          case AnimationSeasonLoad :
+          case AnimationSeasonLoadSuccess :
             List<AnimationSeasonItem> list = seasonState is AnimationSeasonLoadSuccess
                 ? seasonState.seasonItems
                 : [];
@@ -108,7 +107,6 @@ class AnimationMainAppbar extends StatelessWidget {
           default  :
             return EmptyContainer(title: '자료없음');
         }
-
       },
     );
   }

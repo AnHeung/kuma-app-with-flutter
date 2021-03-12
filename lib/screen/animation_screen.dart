@@ -18,6 +18,7 @@ class AnimationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('build ani');
     return Scaffold(
         extendBody: true,
         body: NestedScrollView(
@@ -90,8 +91,8 @@ class AnimationScreen extends StatelessWidget {
     return color;
   }
 
-  Widget _buildSilverAppbar(appbar){
-    return SliverAppBar(
+  Widget _buildSilverAppbar(Widget appbar){
+    return  SliverAppBar(
       flexibleSpace: appbar,
       centerTitle: true,
       title: CustomText(
@@ -150,6 +151,7 @@ class AnimationScreen extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
+        print('clickItem : ${item.image}');
         Navigator.pushNamed(context, Routes.IMAGE_DETAIL, arguments: item);
       },
       child: Container(

@@ -8,6 +8,11 @@ abstract class SplashState extends Equatable{
 
 class SplashLoadInProgress extends SplashState {}
 
-class SplashLoadSuccess extends SplashState {}
+class SplashLoadSuccess extends SplashState {
+
+  bool isLogin;
+
+  SplashLoadSuccess({this.isLogin});
+}
 
 class SplashLoadFailure extends SplashState {}

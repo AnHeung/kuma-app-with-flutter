@@ -37,6 +37,9 @@ class TabSelector extends StatelessWidget {
       case AppTab.IMAGE:
         title = "이미지";
         break;
+      case AppTab.MORE:
+        title = "더보기";
+        break;
     }
     return title;
   }
@@ -53,6 +56,9 @@ class TabSelector extends StatelessWidget {
         break;
       case AppTab.IMAGE:
         icon = Icons.image;
+        break;
+      case AppTab.MORE:
+        icon = Icons.more_horiz;
         break;
     }
     return icon;
