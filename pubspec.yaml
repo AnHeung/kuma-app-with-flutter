@@ -48,6 +48,10 @@ flutter:
   assets:
     - assets/
     - assets/images/no_image.png
+    - assets/images/google_icon.png
+    - assets/images/google_logo.png
+    - assets/images/kakao_talk_logo.png
+    - assets/images/kakao_talk_logo_color.png
   fonts:
     - family: NanumGothic
       fonts:

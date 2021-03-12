@@ -50,7 +50,7 @@ class LoginScreen extends StatelessWidget {
                   child: TextButton(onPressed: () => BlocProvider.of<LoginBloc>(context).add(Login(type: SocialType.KAKAO , context:  context)), child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.mark_chat_read),
+                      Image.asset("assets/images/kakao_talk_logo.png",width: 30, height: 30, alignment: Alignment.center,),
                       Padding(
                         padding: const EdgeInsets.only(left:8.0),
                         child: Container(width:100,child: CustomText(text: "카카오톡 로그인" , fontSize: 15,)),
@@ -65,7 +65,7 @@ class LoginScreen extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.email, color: Colors.white,),
+                        Image.asset("assets/images/google_icon.png",width: 30, height: 30,alignment: Alignment.center),
                         Padding(
                           padding: const EdgeInsets.only(left:8.0),
                           child: Container(width: 100, child: CustomText(text: "구글 로그인" , fontSize: 15,)),

@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/all.dart';
 import 'package:kuma_flutter_app/model/api/social_user.dart';
 import 'package:kuma_flutter_app/repository/social_client.dart';
-import 'package:kuma_flutter_app/routes/routes.dart';
-import 'package:kuma_flutter_app/screen/home_screen.dart';
 
 class KakaoClient extends SocialClient{
 

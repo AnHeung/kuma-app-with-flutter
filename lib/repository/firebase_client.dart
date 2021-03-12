@@ -49,6 +49,9 @@ class FirebaseClient{
       } else if (e.code == 'wrong-password') {
         print('비밀번호가 틀렸습니다. 다시 입력해주세요');
         return {LoginStatus.WrongPassword:userData};
+      }else{
+        print('파이어베이스 로그인 Exception $e');
+        return {LoginStatus.Failure:userData};
       }
     }catch(e){
       print('signIn Exception $e');
