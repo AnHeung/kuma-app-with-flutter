@@ -6,7 +6,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:kuma_flutter_app/bloc/login/login_bloc.dart';
 import 'package:kuma_flutter_app/repository/api_repository.dart';
+import 'package:kuma_flutter_app/util/sharepref_util.dart';
 import 'package:meta/meta.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -18,12 +20,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   AuthBloc({this.repository}) : super(const AuthState.unKnown()){
 
-    subscription = repository.user.listen((User user) {
+    subscription = repository.userStream.listen((User user) {
       if (user == null) {
-        print('User is currently signed out!');
+        print('유저가 로그아웃 하였습니다.');
         add(ChangeAuth(status: AuthStatus.UnAuth));
       } else {
-        print('User is signed in!');
+        print('유저가 로그인 하였습니다.');
         add(ChangeAuth(status: AuthStatus.Auth));
       }
     });
@@ -42,6 +44,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async* {
     if(event is ChangeAuth){
       yield* _mapToChangeAuth(event);
+    }else if(event is SignOut){
+      yield* _mapToSignOut();
     }
   }
 
@@ -60,5 +64,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         yield AuthState.unKnown();
         break;
     }
+  }
+
+  Stream<AuthState> _mapToSignOut() async*{
+    await repository.logout();
+    await removeUserData();
   }
 }

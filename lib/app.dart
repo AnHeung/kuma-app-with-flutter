@@ -115,11 +115,10 @@ class App extends StatelessWidget {
               ),
           Routes.LOGIN: (context) =>
               BlocProvider(
-                create: (context) =>
-                    LoginBloc(repository: context.read<ApiRepository>()),
+                create: (context) => LoginBloc(repository: context.read<ApiRepository>()),
                 child: LoginScreen(),
               ),
-          Routes.REGISTER : (context)=> BlocProvider(create:(_)=>RegisterBloc() , child: RegisterScreen(),)
+          Routes.REGISTER : (context)=> BlocProvider(create:(_)=>RegisterBloc(repository: context.read<ApiRepository>()) , child: RegisterScreen(),)
         },
       ),
     ) ,);

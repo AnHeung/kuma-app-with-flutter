@@ -1,14 +1,17 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/all.dart';
+import 'package:kuma_flutter_app/bloc/login/login_bloc.dart';
 import 'package:kuma_flutter_app/model/api/social_user.dart';
 import 'package:kuma_flutter_app/repository/social_client.dart';
 
 class KakaoClient extends SocialClient{
 
-  final BuildContext context;
+  static final KakaoClient _instance = KakaoClient._();
 
-  KakaoClient({@required this.context}): assert(context != null){
+  factory KakaoClient(){
+    return _instance;
+  }
+
+  KakaoClient._(){
     KakaoContext.clientId = "c2de908819754be96af4d46766eaa8eb";
     KakaoContext.javascriptClientId = "145316ccaf6edd8159668aee4133c4a5";
   }
@@ -50,10 +53,11 @@ class KakaoClient extends SocialClient{
         await logout();
         return null;
       }else{
-        print('email : ${user.kakaoAccount.email} unique Id :${user.id}');
-        return SocialUserData(id: user.id.toString(), email: user.kakaoAccount.email);
+        print('email : ${user.kakaoAccount.email} unique Id :${user.id} userNick : ${user.kakaoAccount.profile.nickname}');
+        return SocialUserData(uniqueId: user.id.toString(), email: user.kakaoAccount.email ,userName: user.kakaoAccount.profile.nickname, socialType: SocialType.KAKAO);
       }
     }
+    return null;
   }
 
   loginWithKakaoTalk() async{

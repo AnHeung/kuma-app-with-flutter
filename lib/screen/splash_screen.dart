@@ -25,7 +25,6 @@ class SplashScreen extends StatelessWidget {
             builder: (context, state) {
               bool isLoading = state is SplashLoadInProgress;
               if(state is SplashLoadSuccess){
-                BlocProvider.of<AuthBloc>(context).add(ChangeAuth(status: state.isLogin ? AuthStatus.Auth : AuthStatus.UnAuth));
                 WidgetsBinding.instance.addPostFrameCallback((_) => Navigator.pop(context));
               }else if(state is SplashLoadFailure){
                 WidgetsBinding.instance.addPostFrameCallback((_) {

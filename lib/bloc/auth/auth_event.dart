@@ -16,3 +16,5 @@ class ChangeAuth extends AuthEvent{
   const ChangeAuth({this.status});
 
 }
+
+class SignOut extends AuthEvent{}

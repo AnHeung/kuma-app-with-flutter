@@ -9,7 +9,6 @@ import 'package:kuma_flutter_app/repository/api_repository.dart';
 import 'package:meta/meta.dart';
 
 part 'login_event.dart';
-
 part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
@@ -23,8 +22,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   ) async* {
     if (event is Login) {
       yield* _mapToLogin(event);
-    } else if (event is Logout) {
-      yield* _mapToLogout(event);
     }
   }
 
@@ -35,6 +32,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
       Map<LoginStatus, SocialUserData> loginData = await repository.login(
           context: event.context, type: event.type);
+
       LoginStatus status = loginData.keys.first;
       SocialUserData data = loginData.values.first;
 
@@ -51,8 +49,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         case LoginStatus.Failure:
           yield LoginState.failure();
           break;
-        case LoginStatus.Loading:
-        case LoginStatus.Initial:
+        default:
           yield LoginState._();
           break;
       }
@@ -60,11 +57,5 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       print('_mapToLogin Error:$e}');
       yield LoginState.failure();
     }
-  }
-
-  Stream<LoginState> _mapToLogout(Logout event) async* {
-    LoginStatus status =
-        await repository.logout(type: event.type, context: event.context);
-    print(status);
   }
 }

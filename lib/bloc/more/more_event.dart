@@ -9,8 +9,6 @@ abstract class MoreEvent extends Equatable{
   const MoreEvent();
 }
 
-class MakeAuthScreen extends MoreEvent{}
 
-class MakeUnAuthScreen extends MoreEvent{}
 
 

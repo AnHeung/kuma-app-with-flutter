@@ -1,6 +1,6 @@
 part of 'login_bloc.dart';
 
-enum SocialType{ KAKAO ,GOOGLE}
+enum SocialType{ KAKAO ,GOOGLE , EMAIL,  UNKNOWN}
 
 @immutable
 abstract class LoginEvent extends Equatable {
@@ -19,16 +19,5 @@ class Login extends LoginEvent {
 
   @override
   List<Object> get props => [type];
-}
-
-class Logout extends LoginEvent{
-
-  final SocialType type;
-  final BuildContext context;
-
-  const Logout({this.type, this.context});
-
-  @override
-  List<Object> get props =>[type,context];
 }
 

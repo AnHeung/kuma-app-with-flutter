@@ -10,9 +10,7 @@ class SplashLoadInProgress extends SplashState {}
 
 class SplashLoadSuccess extends SplashState {
 
-  bool isLogin;
-
-  SplashLoadSuccess({this.isLogin});
+  SplashLoadSuccess();
 }
 
 class SplashLoadFailure extends SplashState {}

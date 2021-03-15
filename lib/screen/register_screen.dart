@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kuma_flutter_app/bloc/register/register_bloc.dart';
+import 'package:kuma_flutter_app/enums/register_status.dart';
 import 'package:kuma_flutter_app/model/api/social_user.dart';
+import 'package:kuma_flutter_app/routes/routes.dart';
 import 'package:kuma_flutter_app/util/view_utils.dart';
 import 'package:kuma_flutter_app/widget/custom_text.dart';
 import 'package:kuma_flutter_app/widget/loading_indicator.dart';
 
 class RegisterScreen extends StatefulWidget {
-
 
   @override
   _RegisterScreenState createState() => _RegisterScreenState();
@@ -19,7 +20,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   var secondTermCheck = false;
   var allTermCheck = false;
 
-
   @override
   Widget build(BuildContext context) {
 
@@ -29,7 +29,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
       appBar: AppBar(
         title: Text('약관동의'),
       ),
-      body: BlocBuilder<RegisterBloc,RegisterState>(
+      body: BlocConsumer<RegisterBloc,RegisterState>(
+            listener: (context,state){
+
+              switch(state.status){
+                case RegisterStatus.AlreadyInUse :
+                  showToast(msg: RegisterStatus.AlreadyInUse.msg);
+                  Navigator.pop(context);
+                  break;
+                case RegisterStatus.RegisterFailure :
+                  showToast(msg: RegisterStatus.RegisterFailure.msg);
+                  break;
+                case RegisterStatus.RegisterComplete :
+                  showToast(msg:RegisterStatus.RegisterComplete.msg);
+                  Navigator.pushNamedAndRemoveUntil(context, Routes.HOME, (route) => false);
+                  break;
+                default:
+                  break;
+              }
+            },
             builder: (context,state){
               RegisterStatus status = state.status;
               if(status == RegisterStatus.Loading){
@@ -48,7 +66,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         child: Row(
                           children: [
                             TextButton(onPressed: ()=>{}, child: CustomText(text:'모든 약관에 동의' , fontSize: 20, fontWeight: FontWeight.w700, fontColor: Colors.black, ),),
-                            Expanded(child: SizedBox()),
+                            Spacer(),
                             Checkbox(value: allTermCheck, onChanged: ((value)=>{
                               setState((){
                                 allTermCheck = value;
@@ -62,7 +80,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         child: Row(
                           children: [
                             TextButton(onPressed: ()=>{}, child: CustomText(text:'이용에 대한 동의(필수)',  fontSize: 15, fontColor: Colors.black, ),),
-                            Expanded(child: SizedBox()),
+                            Spacer(),
                             Checkbox(value: firstTermCheck, onChanged: (bool value){
                               setState(() {
                                 firstTermCheck = value;
@@ -92,9 +110,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             }),
                           ],
                         ),),
-                      Expanded(
-                        child: Container(),
-                      ),
+                      Spacer(),
                       Container(
                         color: allTermCheck ? Colors.blue : Colors.black45,
                         margin: EdgeInsets.only(bottom: 20, left: 20, right: 20),

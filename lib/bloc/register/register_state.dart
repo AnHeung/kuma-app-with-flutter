@@ -1,7 +1,5 @@
 part of 'register_bloc.dart';
 
-enum RegisterStatus {RegisterComplete , AlreadyInUse, RegisterFailure, Loading ,Initial}
-
 @immutable
 class RegisterState  extends Equatable{
 

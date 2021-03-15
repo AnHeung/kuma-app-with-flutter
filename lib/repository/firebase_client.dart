@@ -2,12 +2,13 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:kuma_flutter_app/bloc/auth/auth_bloc.dart';
 import 'package:kuma_flutter_app/bloc/login/login_bloc.dart';
 import 'package:kuma_flutter_app/enums/login_status.dart';
+import 'package:kuma_flutter_app/enums/register_status.dart';
 import 'package:kuma_flutter_app/model/api/social_user.dart';
 import 'package:kuma_flutter_app/repository/kakao_client.dart';
 import 'package:kuma_flutter_app/repository/social_client.dart';
+import 'package:kuma_flutter_app/util/sharepref_util.dart';
 
 class FirebaseClient{
 
@@ -17,7 +18,11 @@ class FirebaseClient{
 
   FirebaseClient({FirebaseAuth firebaseAuth}): _firebaseAuth = firebaseAuth ??  FirebaseAuth.instance;
 
-  Stream<User> get user {
+  get user {
+    return FirebaseAuth.instance.currentUser;
+  }
+
+  Stream<User> get userStream {
     return FirebaseAuth.instance
         .authStateChanges();
  }
@@ -29,17 +34,24 @@ class FirebaseClient{
     try {
     switch(type){
       case SocialType.KAKAO :
-        socialClient = KakaoClient(context: context);
+        socialClient = KakaoClient();
         userData = await socialClient.login();
          break;
       case SocialType.GOOGLE :
+        print('소셜 타입 구글');
         break;
+      case SocialType.EMAIL:
+        print('소셜 타입 이메일');
+        break;
+      case SocialType.UNKNOWN:
+        return {LoginStatus.Failure:userData};
     }
 
     await _firebaseAuth.signInWithEmailAndPassword(
         email: userData.email,
-        password: userData.id
+        password: userData.uniqueId
     );
+    await saveUserData(userData: userData);
     return {LoginStatus.LoginSuccess:userData};
 
     } on FirebaseAuthException catch (e) {
@@ -59,40 +71,53 @@ class FirebaseClient{
     }
   }
 
-  Future<void> logOut({SocialType type, BuildContext context}) async {
+  Future<void> logout() async {
     try {
 
-      switch(type){
-        case SocialType.KAKAO :
-          socialClient = KakaoClient(context: context);
-          await socialClient.logout();
-          return await _firebaseAuth.signOut();
-        case SocialType.GOOGLE :
-          break;
+      SocialUserData data = await getUserData();
+      if(data.socialType != null){
+        switch(data.socialType){
+          case SocialType.KAKAO:
+            socialClient = KakaoClient();
+            break;
+          case SocialType.GOOGLE:
+            break;
+          case SocialType.EMAIL:
+            break;
+          case SocialType.UNKNOWN:
+            print('로그아웃 실패');
+            return;
+        }
+        await socialClient.logout();
+        return await _firebaseAuth.signOut();
       }
+
     } on Exception {
       print('로그아웃 실패');
     }
   }
 
-   Future<LoginStatus> register (String email, String pw) async{
+   Future<RegisterStatus> register (String email, String pw) async{
     try {
       await _firebaseAuth.createUserWithEmailAndPassword(
           email: email,
           password: pw
       );
-      return LoginStatus.LoginSuccess;
+      return RegisterStatus.RegisterComplete;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
-        return LoginStatus.WrongPassword;
+        print('비밀번호가 너무 짧습니다.');
+        return RegisterStatus.RegisterFailure;
       } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
-        return LoginStatus.Failure;
+        print(RegisterStatus.AlreadyInUse.msg);
+        return RegisterStatus.AlreadyInUse;
+      }else{
+        print("register FirebaseAuthException $e");
+        return RegisterStatus.RegisterFailure;
       }
     } catch (e) {
-      print("register $e");
-      return LoginStatus.Failure;
+      print("register Exception $e");
+      return RegisterStatus.RegisterFailure;
     }
 }
 }

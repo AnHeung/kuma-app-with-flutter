@@ -9,5 +9,7 @@ class Routes{
   static const SEARCH = '/image/search';
   static const LOGIN = '/login';
   static const REGISTER = '/register';
+  static const Account = '/account';
+  static const Notification = '/notification';
 
 }

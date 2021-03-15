@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:kuma_flutter_app/bloc/auth/auth_bloc.dart';
 import 'package:kuma_flutter_app/bloc/login/login_bloc.dart';
 import 'package:kuma_flutter_app/enums/login_status.dart';
+import 'package:kuma_flutter_app/enums/register_status.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_detail_item.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_item.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_ranking_item.dart';
@@ -34,12 +34,14 @@ class ApiRepository {
           String rankType, String limit, String searchType) =>
       searchApiClient.getRankingItemList(rankType, limit, searchType);
 
-  register(String email, String pw)=> firebaseClient.register(email, pw);
+  Future<RegisterStatus> register(String email, String pw)=> firebaseClient.register(email, pw);
 
   Future<Map<LoginStatus , SocialUserData>> login({SocialType type ,BuildContext context})=> firebaseClient.login(type: type, context: context);
 
-  logout({SocialType type ,BuildContext context})=> firebaseClient.logOut(type: type, context: context);
+  logout()=> firebaseClient.logout();
 
-  Stream<User> get user =>firebaseClient.user;
+  Stream<User> get userStream =>firebaseClient.userStream;
+
+  User get user =>firebaseClient.user;
 
 }

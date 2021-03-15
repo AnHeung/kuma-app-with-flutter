@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kuma_flutter_app/repository/api_repository.dart';
+import 'package:kuma_flutter_app/util/sharepref_util.dart';
 import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -25,11 +27,8 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
   }
 
   Stream<SplashState> _mapToSplashInit(SplashInit event) async*{
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      bool isLogin = (prefs.getString("id")!= null && prefs.getString("pw")!= null);
-      print('isLogin :  $isLogin');
-      await prefs.setBool('isLogin', isLogin);
+      await printUserData();
       await Future.delayed(Duration(seconds: 2));
-      yield SplashLoadSuccess(isLogin: isLogin);
+      yield SplashLoadSuccess();
   }
 }

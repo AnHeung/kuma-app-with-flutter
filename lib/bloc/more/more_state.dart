@@ -8,17 +8,12 @@ abstract class MoreState extends Equatable{
   @override
   List<Object> get props =>[];
 
-
 }
 
-class MoreInitial extends MoreState {
+class MoreInitial extends MoreState {}
 
-}
+class MoreLoadSuccess extends MoreState {}
 
-class MoreAuth extends MoreState{
+class MoreLoadingInProgress extends MoreState {}
 
-}
 
-class MoreUnAuth extends MoreState{
-
-}

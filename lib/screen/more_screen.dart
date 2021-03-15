@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kuma_flutter_app/bloc/auth/auth_bloc.dart';
 import 'package:kuma_flutter_app/bloc/login/login_bloc.dart';
 import 'package:kuma_flutter_app/bloc/more/more_bloc.dart';
+import 'package:kuma_flutter_app/enums/more_type.dart';
 import 'package:kuma_flutter_app/routes/routes.dart';
 import 'package:kuma_flutter_app/widget/custom_text.dart';
 
@@ -25,17 +26,68 @@ class MoreScreen extends StatelessWidget {
       );
   }
   Widget _moreContainer(BuildContext context){
-    return Center(
-      child: TextButton(
-        onPressed: ()=>{
-          BlocProvider.of<LoginBloc>(context).add(Logout(type:SocialType.KAKAO, context: context))
-        },
-        child: Text('로그아웃'),
+
+    double statusBarHeight = MediaQuery.of(context).padding.top + 20;
+
+    return Scaffold(
+      body: Padding(
+        padding: EdgeInsets.only(top: statusBarHeight ,left: 20 , right: 20),
+        child: Column(
+          children: [
+            Container(alignment :Alignment.centerLeft,child: CustomText(text:'더보기' , fontSize: 20, fontWeight: FontWeight.w700, fontColor: Colors.black,)),
+           _topContainer()
+          ],
+        ),
       ),
     );
   }
 
+   Widget _topContainer(){
+
+    return  ListView.separated(separatorBuilder: (context, idx){
+         return SizedBox(
+           height: 10,
+         );
+       }, physics: BouncingScrollPhysics(),
+         scrollDirection: Axis.vertical,
+         itemCount: MoreType.values.length,
+         shrinkWrap: true,
+         itemBuilder: (context,idx){
+          final IconData icon = MoreType.values[idx].icon;
+          final String title = MoreType.values[idx].title;
+          final MoreType type = MoreType.values[idx];
+           return GestureDetector(
+             onTap: (){
+               switch(type){
+                 case MoreType.Account:
+                   break;
+                 case MoreType.Notification:
+                   break;
+                 case MoreType.Logout:
+                   BlocProvider.of<AuthBloc>(context).add(SignOut());
+                   break;
+                 case MoreType.VersionInfo:
+                   break;
+               }
+             },
+             child: Container(
+               height: 50,
+               child: Row(
+                   children: [
+                     Icon(icon),
+                     Padding(
+                       padding: const EdgeInsets.only(left:10.0),
+                       child: CustomText(text:title , fontColor: Colors.black, fontSize: 15,),
+                     ),
+                   ],
+                 ),
+             ),
+           );
+         },);
+  }
+
   Widget _needLoginContainer(BuildContext context){
+
     return Center(
       child: Padding(
         padding: EdgeInsets.all(10),
