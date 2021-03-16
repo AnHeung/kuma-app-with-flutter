@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:kuma_flutter_app/bloc/auth/auth_bloc.dart';
 import 'package:kuma_flutter_app/bloc/login/login_bloc.dart';
 import 'package:kuma_flutter_app/enums/login_status.dart';
 import 'package:kuma_flutter_app/enums/register_status.dart';
@@ -87,8 +88,8 @@ class FirebaseClient {
             return;
         }
         await socialClient.logout();
-        return await _firebaseAuth.signOut();
       }
+      return await _firebaseAuth.signOut();
     } on Exception {
       print('로그아웃 실패');
     }

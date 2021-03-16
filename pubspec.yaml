@@ -24,6 +24,7 @@ dependencies:
   auto_size_text: ^2.1.0
   json_annotation: ^3.0.1
   kakao_flutter_sdk: ^0.5.4
+  google_sign_in: ^4.5.9
   meta: ^1.1.8
   image_picker: ^0.6.7+14
   pretty_dio_logger: ^1.1.0
