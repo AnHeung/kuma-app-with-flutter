@@ -33,9 +33,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
 
     if(userData!= null && userData.uniqueId.isNotEmpty && userData.email.isNotEmpty){
 
-      String id = userData.email;
-      String pw = userData.uniqueId;
-      RegisterStatus status = await repository.register(id, pw);
+      RegisterStatus status = await repository.register(userData: userData);
       await Future.delayed(Duration(seconds: 1));
 
       if(status == RegisterStatus.RegisterComplete){

@@ -35,7 +35,9 @@ class _ImageState extends State<ImageItem> {
           break;
       case ImageType.NETWORK : image= NetworkImage(widget.imgRes);
           break;
-      case ImageType.NO_IMAGE : image=  AssetImage('assets/images/no_image.png' ,);
+      case ImageType.ASSETS : image= AssetImage(widget.imgRes);
+      break;
+      case ImageType.NO_IMAGE : image=  AssetImage('assets/images/no_image.png',);
         break;
       default : image = AssetImage('assets/images/no_image.png' ,);
         break;

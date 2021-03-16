@@ -193,7 +193,9 @@ showOneBtnDialog(
         actions: <Widget>[
           TextButton(
             child: Text(confirmTxt ?? '확인'),
-            onPressed: confirmFunction,
+            onPressed: confirmFunction != null
+                ? confirmFunction
+                : () => Navigator.pop(context),
           ),
         ],
       );
@@ -204,7 +206,9 @@ showOneBtnDialog(
 checkImageType(String res) {
   if (res.isEmpty) {
     return ImageType.NO_IMAGE;
-  } else if (res.startsWith("/data")) {
+  }else if(res.contains("assets/")) {
+    return ImageType.ASSETS;
+  }else if (res.startsWith("/data")) {
     return ImageType.FILE;
   } else {
     return ImageType.NETWORK;

@@ -10,6 +10,7 @@ class Routes{
   static const LOGIN = '/login';
   static const REGISTER = '/register';
   static const Account = '/account';
+  static const Setting = '/setting';
   static const Notification = '/notification';
 
 }

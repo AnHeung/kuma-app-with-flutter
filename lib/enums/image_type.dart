@@ -1,1 +1,1 @@
-enum ImageType {FILE, NETWORK , NO_IMAGE }
+enum ImageType {FILE, NETWORK ,ASSETS, NO_IMAGE }

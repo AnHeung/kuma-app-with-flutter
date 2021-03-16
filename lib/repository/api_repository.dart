@@ -34,7 +34,7 @@ class ApiRepository {
           String rankType, String limit, String searchType) =>
       searchApiClient.getRankingItemList(rankType, limit, searchType);
 
-  Future<RegisterStatus> register(String email, String pw)=> firebaseClient.register(email, pw);
+  Future<RegisterStatus> register({SocialUserData userData})=> firebaseClient.register(userData: userData);
 
   Future<Map<LoginStatus , SocialUserData>> login({SocialType type ,BuildContext context})=> firebaseClient.login(type: type, context: context);
 
@@ -43,5 +43,7 @@ class ApiRepository {
   Stream<User> get userStream =>firebaseClient.userStream;
 
   User get user =>firebaseClient.user;
+
+  withdraw ()=> firebaseClient.withdraw();
 
 }

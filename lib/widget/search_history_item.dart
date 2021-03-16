@@ -28,6 +28,7 @@ class SearchHistoryItem extends StatelessWidget {
               children: list
                   .map(
                     (historyItem) => GestureDetector(
+                      behavior: HitTestBehavior.translucent,
                       onTap: () {
                         BlocProvider.of<SearchHistoryBloc>(context).add(
                             SearchHistoryWrite(

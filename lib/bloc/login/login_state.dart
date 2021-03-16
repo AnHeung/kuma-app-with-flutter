@@ -13,6 +13,7 @@ class LoginState extends Equatable{
    const LoginState.success():this._(status:LoginStatus.LoginSuccess);
    const LoginState.wrongPassword():this._(status:LoginStatus.WrongPassword);
    const LoginState.failure():this._(status:LoginStatus.Failure);
+   const LoginState.checkEmail():this._(status:LoginStatus.CheckEmail);
 
   @override
   List<Object> get props =>[status];

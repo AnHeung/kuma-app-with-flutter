@@ -18,7 +18,6 @@ class AnimationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('build ani');
     return Scaffold(
         extendBody: true,
         body: NestedScrollView(

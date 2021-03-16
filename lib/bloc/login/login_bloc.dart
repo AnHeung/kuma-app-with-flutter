@@ -49,6 +49,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         case LoginStatus.Failure:
           yield LoginState.failure();
           break;
+        case LoginStatus.CheckEmail:
+          yield LoginState.checkEmail();
+          break;
         default:
           yield LoginState._();
           break;

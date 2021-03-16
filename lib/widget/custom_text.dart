@@ -11,7 +11,6 @@ class CustomText extends StatelessWidget {
   final bool isEllipsis;
   final int maxLines;
 
-
   CustomText(
       {@required this.text,
       fontSize,
@@ -19,7 +18,7 @@ class CustomText extends StatelessWidget {
       isDynamic,
       isEllipsis,
       maxLines,
-        fontWeight})
+      fontWeight})
       : this.fontSize = fontSize ?? 13,
         this.fontColor = fontColor ?? Colors.white,
         this.isEllipsis = isEllipsis ?? false,
@@ -30,15 +29,21 @@ class CustomText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return isDynamic
-        ? Text(
+        ? AutoSizeText(text,
+            style: TextStyle(
+                fontSize: fontSize.toDouble(),
+                color: fontColor,
+                fontWeight: fontWeight),
+            overflow: isEllipsis ? TextOverflow.ellipsis : null,
+            maxLines: maxLines > 0 ? maxLines : null)
+        : Text(
             text,
-            style: TextStyle(fontSize: fontSize.toDouble(), color: fontColor , fontWeight: fontWeight ),
+            style: TextStyle(
+                fontSize: fontSize.toDouble(),
+                color: fontColor,
+                fontWeight: fontWeight),
             overflow: isEllipsis ? TextOverflow.ellipsis : null,
             maxLines: maxLines > 0 ? maxLines : null,
-          )
-        : AutoSizeText(text,
-            style: TextStyle(fontSize: fontSize.toDouble(), color: fontColor , fontWeight: fontWeight),
-            overflow: isEllipsis ? TextOverflow.ellipsis : null,
-            maxLines: maxLines > 0 ? maxLines : null);
+          );
   }
 }

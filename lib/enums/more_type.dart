@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum MoreType {Account , Notification , Logout , VersionInfo}
+enum MoreType {Account , Notification , Logout , VersionInfo, Setting}
 
 extension  MoreTypeExtension on MoreType{
 
@@ -15,6 +15,8 @@ extension  MoreTypeExtension on MoreType{
         return Icons.logout;
       case MoreType.VersionInfo :
         return Icons.info_outline;
+      case MoreType.Setting :
+        return Icons.settings;
     }
   }
 
@@ -29,6 +31,8 @@ extension  MoreTypeExtension on MoreType{
         return "로그아웃";
       case MoreType.VersionInfo :
         return "버전 정보";
+      case MoreType.Setting :
+        return "설정";
     }
   }
 }
