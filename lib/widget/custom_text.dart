@@ -10,6 +10,7 @@ class CustomText extends StatelessWidget {
   final bool isDynamic;
   final bool isEllipsis;
   final int maxLines;
+  final TextAlign textAlign;
 
   CustomText(
       {@required this.text,
@@ -18,13 +19,14 @@ class CustomText extends StatelessWidget {
       isDynamic,
       isEllipsis,
       maxLines,
-      fontWeight})
+      fontWeight, textAlign,})
       : this.fontSize = fontSize ?? 13,
         this.fontColor = fontColor ?? Colors.white,
         this.isEllipsis = isEllipsis ?? false,
         this.isDynamic = isDynamic ?? false,
         this.maxLines = maxLines ?? 0,
-        this.fontWeight = fontWeight ?? FontWeight.normal;
+        this.fontWeight = fontWeight ?? FontWeight.normal,
+        this.textAlign = textAlign?? TextAlign.left;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +37,7 @@ class CustomText extends StatelessWidget {
                 color: fontColor,
                 fontWeight: fontWeight),
             overflow: isEllipsis ? TextOverflow.ellipsis : null,
-            maxLines: maxLines > 0 ? maxLines : null)
+            maxLines: maxLines > 0 ? maxLines : null,textAlign: textAlign,)
         : Text(
             text,
             style: TextStyle(
@@ -44,6 +46,7 @@ class CustomText extends StatelessWidget {
                 fontWeight: fontWeight),
             overflow: isEllipsis ? TextOverflow.ellipsis : null,
             maxLines: maxLines > 0 ? maxLines : null,
+            textAlign: textAlign
           );
   }
 }

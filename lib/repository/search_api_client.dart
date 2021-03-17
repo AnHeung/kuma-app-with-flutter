@@ -23,8 +23,7 @@ abstract class SearchApiClient {
   @GET("/mal/ranking")
   Future<SearchRankingApiResult> getRankingItemList(
       @Query("ranking_type") String rankType,
-      @Query("limit") String limit,
-      @Query("search_type") String searchType);
+      @Query("limit") String limit);
 
   factory SearchApiClient(Dio dio, {String baseUrl}) = _SearchApiClient;
 }

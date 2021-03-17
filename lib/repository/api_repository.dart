@@ -31,8 +31,8 @@ class ApiRepository {
   Future<SearchMalDetailApiItem> getDetailApiItem(String id , String type) => searchApiClient.getMalApiDetailItem(id, type);
 
   Future<SearchRankingApiResult> getRankingItemList(
-          String rankType, String limit, String searchType) =>
-      searchApiClient.getRankingItemList(rankType, limit, searchType);
+          String rankType, String limit) =>
+      searchApiClient.getRankingItemList(rankType, limit);
 
   Future<RegisterStatus> register({SocialUserData userData})=> firebaseClient.register(userData: userData);
 

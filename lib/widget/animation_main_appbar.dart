@@ -21,17 +21,18 @@ class AnimationMainAppbar extends StatelessWidget {
 
   Timer timer;
   int currentPage = 0;
-  PageController controller;
+  PageController controller = PageController(initialPage: 0, keepPage: false);
   int totalPageCount = 0;
   int scrollTime = 3;
   VoidCallback pageControlListener ;
 
 
   AnimationMainAppbar(){
+    print('mainAppbar');
     pageControlListener = () {
-      if(controller.hasClients)currentPage = controller.page.ceil();
+      if(controller?.hasClients ?? false)currentPage = controller.page.ceil();
     };
-    controller = PageController(initialPage: currentPage, keepPage: false)..addListener(pageControlListener);
+    controller?.addListener(pageControlListener);
   }
 
   _disposeJob(){

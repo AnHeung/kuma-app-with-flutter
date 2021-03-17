@@ -203,6 +203,33 @@ showOneBtnDialog(
   );
 }
 
+showCheckListDialog(
+    {String title,
+      String content,
+      String confirmTxt,
+      BuildContext context,
+      VoidCallback confirmFunction}) {
+  showDialog(
+    context: context,
+    barrierColor: Colors.black12.withOpacity(0.6), // background color
+    barrierDismissible: false, // should dialog be dismissed when tapped outside
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text(title ?? '알림'),
+        content: Text(content ?? '내용'),
+        actions: <Widget>[
+          TextButton(
+            child: Text(confirmTxt ?? '확인'),
+            onPressed: confirmFunction != null
+                ? confirmFunction
+                : () => Navigator.pop(context),
+          ),
+        ],
+      );
+    },
+  );
+}
+
 checkImageType(String res) {
   if (res.isEmpty) {
     return ImageType.NO_IMAGE;

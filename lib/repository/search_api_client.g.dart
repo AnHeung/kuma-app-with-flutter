@@ -72,16 +72,13 @@ class _SearchApiClient implements SearchApiClient {
   }
 
   @override
-  Future<SearchRankingApiResult> getRankingItemList(
-      rankType, limit, searchType) async {
+  Future<SearchRankingApiResult> getRankingItemList(rankType, limit) async {
     ArgumentError.checkNotNull(rankType, 'rankType');
     ArgumentError.checkNotNull(limit, 'limit');
-    ArgumentError.checkNotNull(searchType, 'searchType');
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'ranking_type': rankType,
-      r'limit': limit,
-      r'search_type': searchType
+      r'limit': limit
     };
     final _data = <String, dynamic>{};
     final _result = await _dio.request<Map<String, dynamic>>('/mal/ranking',

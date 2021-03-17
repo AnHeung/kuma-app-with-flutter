@@ -4,8 +4,6 @@ import 'package:kuma_flutter_app/bloc/account/account_bloc.dart';
 import 'package:kuma_flutter_app/bloc/auth/auth_bloc.dart';
 import 'package:kuma_flutter_app/bloc/login/login_bloc.dart';
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
-import 'package:kuma_flutter_app/enums/image_type.dart';
-import 'package:kuma_flutter_app/model/api/social_user.dart';
 import 'package:kuma_flutter_app/model/user_account.dart';
 import 'package:kuma_flutter_app/routes/routes.dart';
 import 'package:kuma_flutter_app/util/string_util.dart';
@@ -19,6 +17,9 @@ import 'package:kuma_flutter_app/widget/refresh_container.dart';
 class AccountScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
+    final double itemHeight = 50;
+
 
     return BlocListener<AuthBloc,AuthState>(
         listener: (context,state){
@@ -42,7 +43,21 @@ class AccountScreen extends StatelessWidget {
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     Container(
-                        padding: EdgeInsets.only(left: 20, top: 15),
+                        padding: EdgeInsets.only(
+                          left: 20,
+                        ),
+                        alignment: Alignment.centerLeft,
+                        color: Colors.black12,
+                        height: itemHeight,
+                        width: double.infinity,
+                        child: CustomText(
+                          text: '계정',
+                          fontColor: Colors.black,
+                          fontSize: 15,
+                        )),
+                    Container(
+                        height: itemHeight,
+                        padding: EdgeInsets.only(left: 20),
                         alignment: Alignment.centerLeft,
                         child: CustomText(
                           text: '닉네임',
@@ -54,7 +69,7 @@ class AccountScreen extends StatelessWidget {
                           left: 20,
                         ),
                         alignment: Alignment.centerLeft,
-                        height: 40,
+                        height: itemHeight,
                         child: CustomText(
                           text: accountData.userName,
                           fontColor: Colors.blueAccent,
@@ -62,20 +77,8 @@ class AccountScreen extends StatelessWidget {
                           fontSize: 20,
                         )),
                     Container(
-                        padding: EdgeInsets.only(
-                          left: 20,
-                        ),
-                        alignment: Alignment.centerLeft,
-                        color: Colors.black12,
-                        height: 40,
-                        width: double.infinity,
-                        child: CustomText(
-                          text: '계정',
-                          fontColor: Colors.black,
-                          fontSize: 15,
-                        )),
-                    Container(
-                        padding: EdgeInsets.only(left: 20, top: 15),
+                        height: itemHeight,
+                        padding: EdgeInsets.only(left: 20),
                         alignment: Alignment.centerLeft,
                         child: CustomText(
                           text: '이메일',
@@ -87,7 +90,7 @@ class AccountScreen extends StatelessWidget {
                           left: 20,
                         ),
                         alignment: Alignment.centerLeft,
-                        height: 50,
+                        height: itemHeight,
                         child: CustomText(
                           text: accountData.email,
                           fontColor: Colors.black,
@@ -99,42 +102,45 @@ class AccountScreen extends StatelessWidget {
                       ),
                       alignment: Alignment.centerLeft,
                       color: Colors.black12,
-                      height: 50,
+                      height: itemHeight,
                       width: double.infinity,
                       child: Text('로그인 타입'),
                     ),
                     Container(
-                        padding: EdgeInsets.only(left: 20, top: 15),
+                      height: itemHeight,
+                        padding: EdgeInsets.only(left: 20),
                         alignment: Alignment.centerLeft,
                         child: CustomText(
                           text: accountData.loginType,
                           fontColor: Colors.grey,
                           fontSize: 13,
                         )),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 20),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 30,
-                            height: 30,
-                            child: ImageItem(
-                              type: ImageShapeType.CIRCLE,
-                              imgRes: accountData.socialType.iconRes,
-                            ),
-                          ),
-                          Container(
-                              padding: EdgeInsets.only(
-                                left: 20,
+                    Container(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 20),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 30,
+                              height: 30,
+                              child: ImageItem(
+                                type: ImageShapeType.CIRCLE,
+                                imgRes: accountData.socialType.iconRes,
                               ),
-                              alignment: Alignment.centerLeft,
-                              height: 50,
-                              child: CustomText(
-                                text: enumToString(accountData.socialType),
-                                fontColor: Colors.black,
-                                fontSize: 15,
-                              ))
-                        ],
+                            ),
+                            Container(
+                                padding: EdgeInsets.only(
+                                  left: 20,
+                                ),
+                                alignment: Alignment.centerLeft,
+                                height: itemHeight,
+                                child: CustomText(
+                                  text: enumToString(accountData.socialType),
+                                  fontColor: Colors.black,
+                                  fontSize: 15,
+                                ))
+                          ],
+                        ),
                       ),
                     ),
                     Container(
@@ -143,7 +149,7 @@ class AccountScreen extends StatelessWidget {
                       ),
                       alignment: Alignment.centerLeft,
                       color: Colors.black12,
-                      height: 50,
+                      height: itemHeight,
                       width: double.infinity,
                       child: Text('계정탈퇴 및 초기화'),
                     ),
@@ -158,7 +164,7 @@ class AccountScreen extends StatelessWidget {
                               left: 20,
                             ),
                             alignment: Alignment.centerLeft,
-                            height: 50,
+                            height: itemHeight,
                             child: CustomText(
                               text: '탈퇴하기',
                               fontColor: Colors.black,

@@ -10,6 +10,7 @@ import 'package:kuma_flutter_app/bloc/login/login_bloc.dart';
 import 'package:kuma_flutter_app/bloc/register/register_bloc.dart';
 import 'package:kuma_flutter_app/bloc/search/search_bloc.dart';
 import 'package:kuma_flutter_app/bloc/search_history/search_history_bloc.dart';
+import 'package:kuma_flutter_app/bloc/setting/setting_bloc.dart';
 import 'package:kuma_flutter_app/bloc/splash/splash_bloc.dart';
 import 'package:kuma_flutter_app/bloc/tab/tab_cubit.dart';
 import 'package:kuma_flutter_app/repository/api_repository.dart';
@@ -54,8 +55,11 @@ class App extends StatelessWidget {
             searchApiClient: searchApiClient,
             firebaseClient: firebaseClient);
       },
-      child: BlocProvider(
-        create: (context) =>AuthBloc(repository: context.read<ApiRepository>()),
+      child: MultiBlocProvider(
+        providers: [
+        BlocProvider(create: (context) =>AuthBloc(repository: context.read<ApiRepository>())),
+          BlocProvider(create: (context) =>SettingBloc(repository: context.read<ApiRepository>())),
+        ],
         child: MaterialApp(
         title: "쿠마앱",
         theme: ThemeData(
@@ -78,14 +82,7 @@ class App extends StatelessWidget {
                 BlocProvider(
                   create: (_) => TabCubit(),
                 ),
-                BlocProvider(
-                    create: (_) =>
-                    AnimationBloc(
-                        repository: context.read<ApiRepository>())
-                      ..add(AnimationLoad(
-                          rankType: "all",
-                          searchType: "all",
-                          limit: "30"))),
+                BlocProvider(create: (_) => AnimationBloc(repository: context.read<ApiRepository>(),settingBloc: BlocProvider.of<SettingBloc>(context))..add(AnimationLoad(rankType: "all", searchType: "all", limit: "30"))),
                 BlocProvider(
                     create: (_) =>
                     AnimationSeasonBloc(
@@ -125,7 +122,7 @@ class App extends StatelessWidget {
           Routes.REGISTER : (context)=> BlocProvider(create:(_)=>RegisterBloc(repository: context.read<ApiRepository>()) , child: RegisterScreen(),),
           Routes.Account : (context)=> BlocProvider(create:(_)=>AccountBloc(repository: context.read<ApiRepository>())..add(AccountLoad()) , child: AccountScreen(),),
           Routes.Notification : (context)=> BlocProvider(create:(_)=>RegisterBloc(repository: context.read<ApiRepository>()) , child: NotificationScreen(),),
-          Routes.Setting : (context)=> BlocProvider(create:(_)=>RegisterBloc(repository: context.read<ApiRepository>()) , child: SettingScreen(),)
+          Routes.Setting : (context)=>SettingScreen(),
         },
       ),
     ) ,);
