@@ -25,8 +25,9 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
       yield* _mapToSettingLoad();
     }else if(event is SettingChange){
       yield* _mapToSettingChange(event);
+    }else if(event is SettingScreenExit){
+      yield SettingChangeComplete();
     }
-
   }
 
   Stream<SettingState> _mapToSettingLoad() async*{

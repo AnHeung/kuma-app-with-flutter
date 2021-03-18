@@ -22,3 +22,5 @@ class SettingChange extends SettingEvent {
   @override
   List<Object> get props=>[config];
 }
+
+class SettingScreenExit extends SettingEvent {}

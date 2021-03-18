@@ -22,7 +22,7 @@ changeAniLoadItemCount({String aniLoadItemCount = "30"}) async {
   prefs.setString("aniLoadItemCount", aniLoadItemCount);
 }
 
-changeRankingType({String rankingType ="all"}) async {
+changeRankingType({String rankingType ="airing,upcoming,movie"}) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs.setString("rankingType", rankingType);
 }
@@ -37,7 +37,7 @@ getSettingConfig() async{
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool isAutoScroll = prefs.getBool("autoScroll") ?? true;
   String aniLoadCount = prefs.getString("aniLoadItemCount") ?? "30";
-  String rankingType = prefs.getString("rankingType") ?? "all";
+  String rankingType = prefs.getString("rankingType") ?? "airing,upcoming,movie";
   return SettingConfig(isAutoScroll: isAutoScroll , aniLoadItemCount: aniLoadCount, rankingType:rankingType);
 }
 

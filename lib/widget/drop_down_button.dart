@@ -19,16 +19,17 @@ class CustomDropDown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Container(
-          width: 100,
-          height: 50,
+          width: 90,
+          height: 35,
           decoration: BoxDecoration(
-              color: Colors.grey[100], borderRadius: BorderRadius.circular(30)),
+              color: Colors.grey[300], borderRadius: BorderRadius.circular(20)),
           child: Container(
             padding:
-            const EdgeInsets.only(left: 30, top: 10, bottom: 5),
+            const EdgeInsets.only(left: 30, right: 10),
             child: DropdownButton<String>(
               value: value,
               hint: Text(

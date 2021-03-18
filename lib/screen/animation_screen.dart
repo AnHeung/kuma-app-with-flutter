@@ -43,16 +43,13 @@ class AnimationScreen extends StatelessWidget {
                         ? loadState.rankingList
                         : [];
 
-                    return Stack(
-                      children: [
-                        ListView(
-                          padding: EdgeInsets.zero,
-                          children: mainItemList
-                              .map((item) => _makeMainItem(context, item))
-                              .toList(),
-                        ),
-
-                      ],
+                    return Container(
+                      child: ListView(
+                            padding: EdgeInsets.zero,
+                            children: mainItemList
+                                .map((item) => _makeMainItem(context, item))
+                                .toList(),
+                          ),
                     );
                     break;
                   case AnimationLoadInProgress:
@@ -117,7 +114,7 @@ class AnimationScreen extends StatelessWidget {
   }
 
   Widget _makeMainItem(BuildContext context, final AnimationMainItem item) {
-    double heightSize = (MediaQuery.of(context).size.height) * 0.40;
+    double heightSize = (MediaQuery.of(context).size.height) * 0.35;
 
     return Container(
       height: heightSize,
@@ -150,7 +147,6 @@ class AnimationScreen extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        print('clickItem : ${item.image}');
         Navigator.pushNamed(context, Routes.IMAGE_DETAIL, arguments: item);
       },
       child: Container(

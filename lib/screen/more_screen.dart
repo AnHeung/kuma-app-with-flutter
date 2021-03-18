@@ -6,6 +6,7 @@ import 'package:kuma_flutter_app/enums/more_type.dart';
 import 'package:kuma_flutter_app/routes/routes.dart';
 import 'package:kuma_flutter_app/util/view_utils.dart';
 import 'package:kuma_flutter_app/widget/custom_text.dart';
+import 'package:kuma_flutter_app/widget/loading_indicator.dart';
 import 'package:package_info/package_info.dart';
 
 class MoreScreen extends StatelessWidget {
@@ -14,10 +15,11 @@ class MoreScreen extends StatelessWidget {
     return BlocBuilder<MoreBloc, MoreState>(
       builder: (context, state) {
         final status = context.select((AuthBloc bloc) => bloc.state.status);
-        print('state :$status');
         if (status == AuthStatus.Auth) {
           return _moreContainer(context);
-        } else {
+        }else if(status == AuthStatus.UnKnown) {
+          return LoadingIndicator(isVisible: true,);
+        }else {
           return _needLoginContainer(context);
         }
       },

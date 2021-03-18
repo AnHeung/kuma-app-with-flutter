@@ -28,6 +28,5 @@ class SettingLoadSuccess extends SettingState {
   List<Object> get props =>[config];
 }
 
-class SettingChangeComplete extends SettingState {
-}
+class SettingChangeComplete extends SettingState {}
 
