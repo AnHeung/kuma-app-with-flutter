@@ -200,15 +200,15 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
         break;
       case 3:
         if (_pageIndicatorAnimation.status == AnimationStatus.completed) {
-          await _goToLogin();
+          await _goToHome();
         }
         break;
     }
   }
 
-  Future<void> _goToLogin() async {
+  Future<void> _goToHome() async {
     await _rippleAnimationController.forward();
-    Navigator.restorablePushReplacementNamed(context, Routes.HOME);
+    Navigator.pushReplacementNamed(context, Routes.HOME);
   }
 
   @override
@@ -223,7 +223,7 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
               child: Column(
                 children: <Widget>[
                   Header(
-                    onSkip: () async => await _goToLogin(),
+                    onSkip: () async => await _goToHome(),
                   ),
                   Expanded(
                     child: _getPage(),
