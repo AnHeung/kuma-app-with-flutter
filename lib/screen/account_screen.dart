@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/account/account_bloc.dart';
 import 'package:kuma_flutter_app/bloc/auth/auth_bloc.dart';
 import 'package:kuma_flutter_app/bloc/login/login_bloc.dart';
@@ -72,7 +73,7 @@ class AccountScreen extends StatelessWidget {
                         height: itemHeight,
                         child: CustomText(
                           text: accountData.userName,
-                          fontColor: Colors.blueAccent,
+                          fontColor: kBlue,
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
                         )),
@@ -161,14 +162,16 @@ class AccountScreen extends StatelessWidget {
                         } ,title: "회원탈퇴",content: "회원탈퇴를 하시겠습니까?"),
                         child: Container(
                             padding: EdgeInsets.only(
+                              top: 10,
                               left: 20,
                             ),
                             alignment: Alignment.centerLeft,
                             height: itemHeight,
                             child: CustomText(
+                              fontWeight: FontWeight.w700,
                               text: '탈퇴하기',
-                              fontColor: Colors.black,
-                              fontSize: 15,
+                              fontColor: Colors.red[300],
+                              fontSize: 20,
                             ))),
                   ],
                 );

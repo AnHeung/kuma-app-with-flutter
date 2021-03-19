@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/account/account_bloc.dart';
 import 'package:kuma_flutter_app/bloc/animation/animation_bloc.dart';
 import 'package:kuma_flutter_app/bloc/animation_detail/animation_detail_bloc.dart';
@@ -20,6 +21,7 @@ import 'package:kuma_flutter_app/repository/search_api_client.dart';
 import 'package:kuma_flutter_app/routes/routes.dart';
 import 'package:kuma_flutter_app/screen/account_screen.dart';
 import 'package:kuma_flutter_app/screen/animation_detail_screen.dart';
+import 'package:kuma_flutter_app/screen/first_screen.dart';
 import 'package:kuma_flutter_app/screen/home_screen.dart';
 import 'package:kuma_flutter_app/screen/login_screen.dart';
 import 'package:kuma_flutter_app/screen/notification_screen.dart';
@@ -27,6 +29,7 @@ import 'package:kuma_flutter_app/screen/register_screen.dart';
 import 'package:kuma_flutter_app/screen/search_screen.dart';
 import 'package:kuma_flutter_app/screen/setting_screen.dart';
 import 'package:kuma_flutter_app/screen/splash_screen.dart';
+import 'package:kuma_flutter_app/util/view_utils.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 class App extends StatelessWidget {
@@ -64,7 +67,7 @@ class App extends StatelessWidget {
         title: "쿠마앱",
         theme: ThemeData(
           fontFamily: 'NanumPenScript',
-          primarySwatch: Colors.blue,
+          primarySwatch: createMaterialColor(kBlue),
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         initialRoute: Routes.SPLASH,
@@ -73,8 +76,14 @@ class App extends StatelessWidget {
               BlocProvider(
                 create: (_) =>
                 SplashBloc(repository: context.read<ApiRepository>())
-                  ..add(SplashInit()),
+                  ..add(SplashLoad()),
                 child: SplashScreen(),
+              ),
+          Routes.FIRST_LAUNCH: (context) =>
+              BlocProvider(
+                create: (_) =>
+                SplashBloc(repository: context.read<ApiRepository>()),
+                child: FirstScreen(),
               ),
           Routes.HOME: (context) {
             return MultiBlocProvider(

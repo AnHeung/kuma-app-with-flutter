@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/login/login_bloc.dart';
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
 import 'package:kuma_flutter_app/enums/login_status.dart';
@@ -79,7 +80,7 @@ class LoginScreen extends StatelessWidget {
                   ),
                   Container(
                     decoration: BoxDecoration(
-                        color: Colors.blue,
+                        color: kBlue,
                         borderRadius: BorderRadius.all(Radius.circular(10))
                     ),
                     height: 50,

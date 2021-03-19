@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/auth/auth_bloc.dart';
 import 'package:kuma_flutter_app/bloc/more/more_bloc.dart';
 import 'package:kuma_flutter_app/enums/more_type.dart';
@@ -134,7 +135,7 @@ class MoreScreen extends StatelessWidget {
             Container(
               height: 30,
               margin: EdgeInsets.only(top: 10),
-              color: Colors.blue,
+              color: kBlue,
               child: TextButton(
                   onPressed: () => {Navigator.pushNamed(context, Routes.LOGIN)},
                   child: CustomText(

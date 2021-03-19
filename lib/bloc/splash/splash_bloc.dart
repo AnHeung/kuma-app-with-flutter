@@ -13,20 +13,22 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
 
   final ApiRepository repository;
 
-  SplashBloc({this.repository}) : super(SplashLoadInProgress());
+  SplashBloc({this.repository}) : super(SplashInit());
 
   @override
   Stream<SplashState> mapEventToState(
     SplashEvent event,
   ) async* {
-    if(event is SplashInit){
-      yield* _mapToSplashInit(event);
+    if(event is SplashLoad){
+      yield* _mapToSplashInit();
     }
   }
 
-  Stream<SplashState> _mapToSplashInit(SplashInit event) async*{
+  Stream<SplashState> _mapToSplashInit() async*{
+      yield SplashLoadInProgress();
       await printUserData();
-      await Future.delayed(Duration(seconds: 2));
-      yield SplashLoadSuccess();
+      bool isAppFirstLaunch = await appFirstLaunch();
+      await Future.delayed(Duration(seconds: 1));
+      yield SplashLoadSuccess(isAppFirstLaunch: isAppFirstLaunch);
   }
 }

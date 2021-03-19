@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/search/search_bloc.dart';
 import 'package:kuma_flutter_app/bloc/search_history/search_history_bloc.dart';
 import 'package:kuma_flutter_app/model/item/animation_main_item.dart';
@@ -149,7 +150,7 @@ class SearchScreen extends StatelessWidget {
                 .of(context)
                 .size
                 .height * 0.6),
-        color: Colors.blue,
+        color: kBlue,
         child: Stack(
           fit: StackFit.expand,
           children: [

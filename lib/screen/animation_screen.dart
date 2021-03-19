@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/animation/animation_bloc.dart';
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
 import 'package:kuma_flutter_app/model/item/animation_main_item.dart';
@@ -69,19 +70,19 @@ class AnimationScreen extends StatelessWidget {
 
     switch (type) {
       case "airing":
-        color = Colors.cyan;
+        color = kLightBlue;
         break;
       case "movie":
-        color = Colors.grey;
+        color = Colors.deepPurpleAccent[100];
         break;
       case "upcoming":
-        color = Colors.greenAccent;
+        color = Colors.pink[200];
         break;
       case "tv":
         color = Colors.deepPurpleAccent;
         break;
       case "ova":
-        color = Colors.pink;
+        color = Colors.grey;
         break;
     }
     return color;

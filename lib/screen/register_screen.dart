@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/register/register_bloc.dart';
 import 'package:kuma_flutter_app/enums/register_status.dart';
 import 'package:kuma_flutter_app/model/api/social_user.dart';
@@ -112,7 +113,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),),
                       Spacer(),
                       Container(
-                        color: allTermCheck ? Colors.blue : Colors.black45,
+                        color: allTermCheck ? kBlue : Colors.black45,
                         margin: EdgeInsets.only(bottom: 20, left: 20, right: 20),
                         alignment: Alignment.bottomCenter,
                         child: SizedBox( height:50 , width: double.infinity ,child: TextButton(onPressed: ()=>{

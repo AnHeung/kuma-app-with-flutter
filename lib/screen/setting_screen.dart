@@ -104,7 +104,7 @@ class SettingScreen extends StatelessWidget {
                                             width: width,
                                             decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(10)) ,
                                                 color: _isCheck(config.rankingType ,categoryKey)
-                                                ? Colors.blue
+                                                ? kBlue
                                                 : Colors.grey),
                                             child: GestureDetector(onTap: (){
                                               String rankType = categoryKeyList.reduce((acc, rankCategory){
@@ -144,7 +144,7 @@ class SettingScreen extends StatelessWidget {
                               initialLabelIndex: config.isAutoScroll ? 0 : 1,
                               minWidth: 50.0,
                               cornerRadius: 10.0,
-                              activeBgColor: Colors.cyan,
+                              activeBgColor: kBlue,
                               activeFgColor: Colors.white,
                               inactiveBgColor: Colors.grey,
                               inactiveFgColor: Colors.white,

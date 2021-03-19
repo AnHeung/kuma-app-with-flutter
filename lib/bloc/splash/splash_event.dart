@@ -7,4 +7,5 @@ abstract class SplashEvent extends Equatable{
   List<Object> get props =>[];
 }
 
-class SplashInit extends SplashEvent{}
+class SplashLoad extends SplashEvent{}
+

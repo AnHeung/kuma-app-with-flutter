@@ -12,6 +12,11 @@ saveUserData({SocialUserData userData}) async {
   prefs.setString("socialType", enumToString(userData.socialType));
 }
 
+ appFirstLaunch() async{
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  return prefs.getBool("firstLaunch") ?? true;
+}
+
 changeAutoConfig({bool isAutoScroll = true}) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs.setBool("autoScroll", isAutoScroll);

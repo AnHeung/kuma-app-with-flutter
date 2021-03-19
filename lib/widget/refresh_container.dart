@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/widget/custom_text.dart';
 
 class RefreshContainer extends StatelessWidget {
@@ -17,12 +18,12 @@ class RefreshContainer extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                child: CustomText(text: "다시 시도해주세요", fontSize: 10, fontColor: Colors.blue,),
+                child: CustomText(text: "다시 시도해주세요", fontSize: 10, fontColor: kBlue,),
               ),
               Container(
                 color: Colors.transparent,
                 alignment: Alignment.center,
-                child: Icon(Icons.refresh, color: Colors.blue, size: 30,),
+                child: Icon(Icons.refresh, color: kBlue, size: 30,),
       ),
             ],
           ),
