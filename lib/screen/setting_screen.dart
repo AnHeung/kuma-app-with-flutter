@@ -55,8 +55,9 @@ class SettingScreen extends StatelessWidget {
                                 items: itemCountList
                                     .map(
                                       (item) => DropdownMenuItem(
-                                        child: Text(
-                                          item.toString(),
+                                        child: CustomText(
+                                          fontSize: 13,
+                                          text:item.toString(),
                                           textAlign: TextAlign.center,
                                         ),
                                         value: item,
@@ -102,7 +103,7 @@ class SettingScreen extends StatelessWidget {
 
                                           return Container(
                                             width: width,
-                                            decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(10)) ,
+                                            decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(30)) ,
                                                 color: _isCheck(config.rankingType ,categoryKey)
                                                 ? kBlue
                                                 : Colors.grey),

@@ -26,7 +26,7 @@ class CustomDropDown extends StatelessWidget {
           width: 90,
           height: 35,
           decoration: BoxDecoration(
-              color: Colors.grey[300], borderRadius: BorderRadius.circular(20)),
+              color: Colors.grey, borderRadius: BorderRadius.circular(20)),
           child: Container(
             padding:
             const EdgeInsets.only(left: 30, right: 10),

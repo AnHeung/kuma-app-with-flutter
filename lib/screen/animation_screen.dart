@@ -65,28 +65,27 @@ class AnimationScreen extends StatelessWidget {
       );
   }
 
-  Color _setItemColor(String type) {
-    Color color = Colors.grey;
-
-    switch (type) {
-      case "airing":
-        color = kLightBlue;
-        break;
-      case "movie":
-        color = Colors.deepPurpleAccent[100];
-        break;
-      case "upcoming":
-        color = Colors.pink[200];
-        break;
-      case "tv":
-        color = Colors.deepPurpleAccent;
-        break;
-      case "ova":
-        color = Colors.grey;
-        break;
-    }
-    return color;
-  }
+  // Color _setItemColor(String type) {
+  //   Color color = Colors.grey;
+  //   switch (type) {
+  //     case "airing":
+  //       color = kLightBlue;
+  //       break;
+  //     case "movie":
+  //       color = Colors.deepPurpleAccent[100];
+  //       break;
+  //     case "upcoming":
+  //       color = Colors.pink[200];
+  //       break;
+  //     case "tv":
+  //       color = Colors.deepPurpleAccent;
+  //       break;
+  //     case "ova":
+  //       color = Colors.grey;
+  //       break;
+  //   }
+  //   return color;
+  // }
 
   Widget _buildSilverAppbar(Widget appbar){
     return  SliverAppBar(
@@ -118,19 +117,18 @@ class AnimationScreen extends StatelessWidget {
   }
 
   Widget _makeMainItem(BuildContext context, final AnimationMainItem item) {
-    double heightSize = (MediaQuery.of(context).size.height) * 0.35;
+    double heightSize = (MediaQuery.of(context).size.height) * 0.4;
 
     return Container(
       height: heightSize,
       padding: EdgeInsets.all(10),
-      color: _setItemColor(item.type),
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 20, bottom: 20),
+            padding: const EdgeInsets.only(left:8 ,top: 20, bottom: 10),
             child: Container(
                 width: MediaQuery.of(context).size.width,
-                child: CustomText(text: item.koreaType, fontSize: 20)),
+                child: CustomText(text: item.koreaType, fontSize: 30, fontColor: kBlack,)),
           ),
           Expanded(
             child: ListView(
@@ -147,7 +145,6 @@ class AnimationScreen extends StatelessWidget {
 
   Widget _makeScrollItem(BuildContext context, final RankingItem item) {
     double width = MediaQuery.of(context).size.width / 3;
-    double heightSize = (MediaQuery.of(context).size.height) * 0.20;
 
     return GestureDetector(
       onTap: () {
@@ -155,23 +152,9 @@ class AnimationScreen extends StatelessWidget {
       },
       child: Container(
         padding: EdgeInsets.only(left: 8, bottom: 8),
-        height: heightSize,
         width: width,
         child: Column(
           children: [
-            Expanded(
-              flex: 1,
-              child: Container(
-                alignment: Alignment.centerLeft,
-                margin: EdgeInsets.only(bottom: 10),
-                child: CustomText(
-                  text: item.title,
-                  maxLines: 2,
-                  isDynamic: true,
-                  isEllipsis: true,
-                ),
-              ),
-            ),
             Expanded(
               flex: 4,
               child: Container(
@@ -181,6 +164,21 @@ class AnimationScreen extends StatelessWidget {
                 ),
               ),
             ),
+            Expanded(
+              flex: 1,
+              child: Container(
+                alignment: Alignment.topLeft,
+                margin: EdgeInsets.only( top: 10),
+                child: CustomText(
+                  fontWeight: FontWeight.w700,
+                  fontColor: kBlack,
+                  text: item.title,
+                  maxLines: 2,
+                  isDynamic: true,
+                  isEllipsis: true,
+                ),
+              ),
+            )
           ],
         ),
       ),

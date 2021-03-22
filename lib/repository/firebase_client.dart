@@ -71,7 +71,7 @@ class FirebaseClient {
     }
   }
 
-  Future<void> logout() async {
+  Future<bool> logout() async {
     try {
       SocialUserData data = await getUserData();
       if (data.socialType != null) {
@@ -85,25 +85,29 @@ class FirebaseClient {
             break;
           case SocialType.UNKNOWN:
             print('로그아웃 실패');
-            return;
+            return false;
         }
         await socialClient.logout();
       }
-      return await _firebaseAuth.signOut();
-    } on Exception {
-      print('로그아웃 실패');
+      await _firebaseAuth.signOut();
+      return true;
+    } on Exception catch (e) {
+      print('로그아웃 실패 :$e');
+      return false;
     }
   }
 
   withdraw() async {
-      await _firebaseAuth.currentUser
-          .delete()
-          .then((res) => print('계정 삭제 성공'))
-          .catchError((err) async{
+    await _firebaseAuth.currentUser
+        .delete()
+        .then((res) => print('계정 삭제 성공'))
+        .catchError((err) async {
       print("withdraw  User Exception $err");
-      var credential = EmailAuthProvider.credential(email: _firebaseAuth.currentUser.email, password: _firebaseAuth.currentUser.uid);
+      var credential = EmailAuthProvider.credential(
+          email: _firebaseAuth.currentUser.email,
+          password: _firebaseAuth.currentUser.uid);
       await _firebaseAuth.currentUser.reauthenticateWithCredential(credential);
-      });
+    });
   }
 
   Future<RegisterStatus> register({SocialUserData userData}) async {

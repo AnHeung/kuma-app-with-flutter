@@ -67,7 +67,7 @@ class App extends StatelessWidget {
         title: "쿠마앱",
         theme: ThemeData(
           fontFamily: 'NanumPenScript',
-          primarySwatch: createMaterialColor(kBlue),
+          primarySwatch: createMaterialColor(kBlack),
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         initialRoute: Routes.SPLASH,

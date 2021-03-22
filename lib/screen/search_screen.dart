@@ -152,7 +152,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 .of(context)
                 .size
                 .height * 0.6),
-        color: kBlue,
+        color: kBlack,
         child: ListView(
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
