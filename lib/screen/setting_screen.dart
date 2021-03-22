@@ -56,6 +56,7 @@ class SettingScreen extends StatelessWidget {
                                     .map(
                                       (item) => DropdownMenuItem(
                                         child: CustomText(
+                                          fontColor: kBlack,
                                           fontSize: 13,
                                           text:item.toString(),
                                           textAlign: TextAlign.center,
@@ -155,10 +156,8 @@ class SettingScreen extends StatelessWidget {
                                 FontAwesomeIcons.times
                               ],
                               onToggle: (index) {
-                                BlocProvider.of<SettingBloc>(context).add(
-                                    SettingChange(
-                                        config: config.copyWith(
-                                            isAutoScroll: index == 0)));
+                                print("index $index");
+                                BlocProvider.of<SettingBloc>(context).add(SettingChange(config: config.copyWith(isAutoScroll: index == 0)));
                               },
                             ),
                           ],

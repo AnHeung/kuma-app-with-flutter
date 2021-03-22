@@ -38,7 +38,7 @@ getAutoScroll({bool isAutoScroll}) async {
   return isAutoScroll;
 }
 
-getSettingConfig() async{
+Future<SettingConfig> getSettingConfig() async{
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool isAutoScroll = prefs.getBool("autoScroll") ?? true;
   String aniLoadCount = prefs.getString("aniLoadItemCount") ?? "30";

@@ -25,9 +25,10 @@ class AnimationSeasonLoadFailure extends AnimationSeasonState{
 class AnimationSeasonLoadSuccess extends AnimationSeasonState{
 
   final List<AnimationSeasonItem> seasonItems;
+  final bool isAutoScroll;
 
-  AnimationSeasonLoadSuccess({this.seasonItems});
+  AnimationSeasonLoadSuccess({this.seasonItems, this.isAutoScroll});
 
   @override
-  List<Object> get props =>[seasonItems];
+  List<Object> get props =>[seasonItems,isAutoScroll];
 }

@@ -137,14 +137,14 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
     setState(() {
       _slideAnimationLightCard = Tween<Offset>(
         begin: Offset.zero,
-        end: Offset(-13.0, 0.0),
+        end: Offset(-3.0, 0.0),
       ).animate(CurvedAnimation(
         parent: _cardsAnimationController,
         curve: Curves.easeIn,
       ));
       _slideAnimationDarkCard = Tween<Offset>(
         begin: Offset.zero,
-        end: Offset(-11.5, 0.0),
+        end: Offset(-1.5, 0.0),
       ).animate(CurvedAnimation(
         parent: _cardsAnimationController,
         curve: Curves.easeIn,

@@ -95,7 +95,7 @@ class App extends StatelessWidget {
                 BlocProvider(
                     create: (_) =>
                     AnimationSeasonBloc(
-                        repository: context.read<ApiRepository>())
+                        repository: context.read<ApiRepository>(),settingBloc: BlocProvider.of<SettingBloc>(context))
                       ..add(AnimationSeasonLoad(limit: "7"))),
               ],
               child: HomeScreen(),

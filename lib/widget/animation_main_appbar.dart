@@ -32,7 +32,6 @@ class AnimationMainAppbar extends StatelessWidget {
     pageControlListener = () {
       if(controller?.hasClients ?? false)currentPage = controller.page.ceil();
     };
-    controller?.addListener(pageControlListener);
   }
 
   _disposeJob(){
@@ -43,7 +42,7 @@ class AnimationMainAppbar extends StatelessWidget {
   }
 
   _resumeJob(){
-    print('resumeJob');
+    controller?.addListener(pageControlListener);
     timer = timer ?? Timer.periodic(Duration(seconds: scrollTime), (timer) {
       print("controller.hasClient ${controller.hasClients} currentPage : $currentPage totalPageCount: $totalPageCount ");
       if(controller.hasClients) {
@@ -66,50 +65,51 @@ class AnimationMainAppbar extends StatelessWidget {
         showToast(msg: errMsg);
       },
       builder: (context, seasonState) {
-        switch(seasonState.runtimeType){
-          case AnimationSeasonLoadSuccess :
-            List<AnimationSeasonItem> list = seasonState is AnimationSeasonLoadSuccess
-                ? seasonState.seasonItems
-                : [];
-            totalPageCount = list.length <= 0 ? 0 : list.length - 1;
-
-            return  FocusDetector(
-              onFocusGained: _resumeJob,
-              onFocusLost: _disposeJob,
-              child: FlexibleSpaceBar(
-                stretchModes: [
-                  StretchMode.zoomBackground,
-                  StretchMode.blurBackground,
-                  StretchMode.fadeTitle,
-                ],
-                background: Stack(
-                  fit: StackFit.expand,
-                  children: [
-                    Container(
-                      color: Colors.white,
-                      child: PageView(
-                        controller: controller,
-                        scrollDirection: Axis.horizontal,
-                        children: list
-                            .map((data) => GestureDetector(
-                          onTap: () => Navigator.pushNamed(
-                              context, Routes.IMAGE_DETAIL,
-                              arguments: RankingItem(
-                                  id: data.id, title: data.title)),
-                          child: _pageViewContainer(data),
-                        ))
-                            .toList(),
-                      ),
+        if(seasonState is AnimationSeasonLoadSuccess) {
+          List<AnimationSeasonItem> list = seasonState.seasonItems;
+          totalPageCount = list.length <= 0 ? 0 : list.length - 1;
+          bool isAutoScroll = seasonState.isAutoScroll;
+          if(isAutoScroll)_disposeJob();
+          return FocusDetector(
+            onFocusGained: isAutoScroll?_resumeJob: null,
+            onFocusLost: isAutoScroll? _disposeJob : null,
+            child: FlexibleSpaceBar(
+              stretchModes: [
+                StretchMode.zoomBackground,
+                StretchMode.blurBackground,
+                StretchMode.fadeTitle,
+              ],
+              background: Stack(
+                fit: StackFit.expand,
+                children: [
+                  Container(
+                    color: Colors.white,
+                    child: PageView(
+                      controller: controller,
+                      scrollDirection: Axis.horizontal,
+                      children: list
+                          .map((data) =>
+                          GestureDetector(
+                            onTap: () =>
+                                Navigator.pushNamed(
+                                    context, Routes.IMAGE_DETAIL,
+                                    arguments: RankingItem(
+                                        id: data.id, title: data.title)),
+                            child: _pageViewContainer(data),
+                          ))
+                          .toList(),
                     ),
-                    _indicatorWidget(context: context , indicatorSize: list.length)
-                  ],
-                ),
+                  ),
+                  _indicatorWidget(context: context, indicatorSize: list.length)
+                ],
               ),
-            );
-          case AnimationSeasonLoadInProgress :
-            return LoadingIndicator(isVisible: seasonState is AnimationSeasonLoadInProgress,);
-          default  :
-            return EmptyContainer(title: '자료없음');
+            ),
+          );
+        }else if(seasonState is AnimationSeasonLoadInProgress){
+          return LoadingIndicator(isVisible: seasonState is AnimationSeasonLoadInProgress,);
+        }else{
+          return EmptyContainer(title: '자료없음');
+
         }
       },
     );

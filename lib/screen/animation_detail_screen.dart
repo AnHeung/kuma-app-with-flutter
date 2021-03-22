@@ -161,7 +161,7 @@ class AnimationDetailScreen extends StatelessWidget {
   Widget _buildDetailTopGenresContainer({BuildContext context, String genres}) {
 
     final width = MediaQuery.of(context).size.width/8-10;
-
+    final List genreList = genres.split(",").length > 7 ? genres.split(",").sublist(0,8) :genres.split(",") ;
     return Flexible(
       flex: 2,
       fit: FlexFit.loose,
@@ -169,8 +169,7 @@ class AnimationDetailScreen extends StatelessWidget {
         padding: const EdgeInsets.only(top:10.0,bottom: 5),
         child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: genres
-                  .split(",")
+              children: genreList
                   .map((genre) => Padding(
                     padding: const EdgeInsets.only(left:10),
                     child: Container(
