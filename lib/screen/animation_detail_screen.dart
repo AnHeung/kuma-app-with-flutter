@@ -18,6 +18,8 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class AnimationDetailScreen extends StatelessWidget {
 
+  final indicatorRate = 0.7;
+  final topContainerHeight = 0.4;
 
   @override
   Widget build(BuildContext context) {
@@ -39,34 +41,18 @@ class AnimationDetailScreen extends StatelessWidget {
                       .add(AnimationDetailLoad(id: id, type: type)));
             } else if (state is AnimationDetailLoadSuccess) {
               final AnimationDetailItem detailItem = state.detailItem;
-              return Stack(children: [
-                ImageItem(
-                  type: ImageShapeType.FLAT,
-                  imgRes: detailItem.image,
-                  opacity: 0.5,
-                ),
-                ListView(shrinkWrap: true, children: [
-                  _buildDetailTopContainer(context: context ,detailItem: detailItem),
-                  _buildTopPictureContainer(pictures: detailItem.pictures),
-                  Container(
-                    child: CustomText(
-                      fontSize: 15,
-                      text: detailItem.synopsis,
-                      fontColor: Colors.black,
-                    ),
-                    margin: EdgeInsets.only(left: 10, top: 10),
+              return Stack(
+                children: [
+                  ImageItem(
+                    type: ImageShapeType.FLAT,
+                    imgRes: detailItem.image,
+                    opacity: 0.3,
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: 20, left: 10),
-                    child: CustomText(
-                      text: '관련애니 목록',
-                      fontColor: Colors.black,
-                      fontSize: 30,
-                    ),
+                    child:_buildAniDetailContainer(context:context, detailItem: detailItem ),
                   ),
-                  _buildRelateContainer(relatedItem: detailItem.relatedAnime)
-                ]),
-              ]);
+                ],
+              );
             } else {
               return LoadingIndicator(
                 isVisible: isLoading,
@@ -76,91 +62,127 @@ class AnimationDetailScreen extends StatelessWidget {
         ));
   }
 
+  Widget _buildAniDetailContainer({BuildContext context , AnimationDetailItem detailItem}){
+    return ListView(
+        shrinkWrap: true,
+        children: [
+          _buildDetailTopContainer(context: context ,detailItem: detailItem),
+          Container(
+            child: CustomText(
+              fontSize: 15,
+              text: detailItem.synopsis,
+              fontColor: Colors.black,
+            ),
+            margin: EdgeInsets.only(left: 10, top: 20),
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 20, left: 10),
+            child: CustomText(
+              text: '이미지',
+              fontColor: Colors.black,
+              fontSize: 30,
+            ),
+          ),
+          _buildTopPictureContainer(pictures: detailItem.pictures),
+          Container(
+            margin: EdgeInsets.only(top: 20, left: 10),
+            child: CustomText(
+              text: '관련애니 목록',
+              fontColor: Colors.black,
+              fontSize: 30,
+            ),
+          ),
+          _buildRelateContainer(relatedItem: detailItem.relatedAnime)
+        ]);
+  }
+
   Widget _buildDetailTopContainer({BuildContext context, AnimationDetailItem detailItem}){
 
-    final double topHeight = MediaQuery.of(context).size.height * 0.5;
+    final double topHeight = MediaQuery.of(context).size.height * topContainerHeight;
 
-    return Container(
-      height: topHeight,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            flex: 1,
-            child: Container(
-              margin: EdgeInsets.all(10),
-              child: GestureDetector(
-                onTap: () => imageAlert(context, detailItem.title,
-                    [detailItem.image], 0),
+    return Stack(
+      children: [
+        Container(
+          padding: EdgeInsets.all(20),
+          height: topHeight,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                flex: 1,
                 child: Container(
-                  height: topHeight,
-                  child: Hero(
-                    tag: 'detail img popup tag',
-                    child: ImageItem(
-                      type: ImageShapeType.FLAT,
-                      imgRes: detailItem.image,
+                  child: GestureDetector(
+                    onTap: () => imageAlert(context, detailItem.title,
+                        [detailItem.image], 0),
+                    child: Container(
+                      height: topHeight,
+                      child: Hero(
+                        tag: 'detail img popup tag',
+                        child: ImageItem(
+                          type: ImageShapeType.FLAT,
+                          imgRes: detailItem.image,
+                        ),
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
+              Expanded(
+                flex: 1,
+                child: Container(
+                  height: double.infinity,
+                  margin: EdgeInsets.all(10),
+                  child: Column(
+                    children: [
+                      Expanded(
+                        flex: 3,
+                        child: Column(
+                          children: [
+                            _buildTopContainerItem(
+                                text: "${detailItem.title}",
+                                fontSize: 20,
+                                fontWeight: FontWeight.w700),
+                            _buildTopContainerItem(
+                                text: "(${detailItem.startSeason})",
+                                fontSize: 17,
+                                fontWeight: FontWeight.w700),
+                            _buildTopContainerItem(
+                              text: detailItem.rank != null
+                                  ? '랭킹:${detailItem.rank}위'
+                                  : "랭킹:기록없음",
+                              fontSize: 15,
+                            ),
+                            _buildTopContainerItem(
+                              text: '시즌 시작일:${detailItem.startDate}',
+                              fontSize: 15,
+                            ),
+                            _buildTopContainerItem(
+                              text: '시즌 종료일:${detailItem.endDate}',
+                              fontSize: 15,
+                            ),
+                            _buildTopContainerItem(
+                              text: detailItem.numEpisodes != "0"
+                                  ? '화수:${detailItem.numEpisodes}'
+                                  : "화수:정보없음",
+                              fontSize: 15,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
+                          return _buildLikeIndicator(height:constraints.maxHeight * indicatorRate , percent: detailItem.percent, percentText: detailItem.percentText, indicatorColor:  Colors.greenAccent );
+                        }),
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            ],
           ),
-          Expanded(
-            flex: 1,
-            child: Container(
-              height: double.infinity,
-              margin: EdgeInsets.all(10),
-              child: Column(
-                children: [
-                  Expanded(
-                    flex: 3,
-                    child: Column(
-                      children: [
-                        _buildTopContainer(
-                            text: "${detailItem.title}",
-                            fontSize: 17,
-                            fontWeight: FontWeight.w700),
-                        _buildTopContainer(
-                            text: "(${detailItem.startSeason})",
-                            fontSize: 17,
-                            fontWeight: FontWeight.w700),
-                        _buildTopContainer(
-                          text: detailItem.rank != null
-                              ? '랭킹:${detailItem.rank}위'
-                              : "랭킹:기록없음",
-                          fontSize: 15,
-                        ),
-                        _buildTopContainer(
-                          text: '시즌 시작일:${detailItem.startDate}',
-                          fontSize: 15,
-                        ),
-                        _buildTopContainer(
-                          text: '시즌 종료일:${detailItem.endDate}',
-                          fontSize: 15,
-                        ),
-                        _buildTopContainer(
-                          text: detailItem.numEpisodes != "0"
-                              ? '화수:${detailItem.numEpisodes}'
-                              : "화수:정보없음",
-                          fontSize: 15,
-                        ),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    flex: 2,
-                    child: LayoutBuilder(builder:
-                        (BuildContext context,
-                        BoxConstraints constraints) {
-                      return _buildLikeIndicator(height:constraints.maxHeight * 0.8 , percent: detailItem.percent, percentText: detailItem.percentText, indicatorColor:  Colors.deepPurpleAccent );
-                    }),
-                  ),
-                ],
-              ),
-            ),
-          )
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -217,10 +239,10 @@ class AnimationDetailScreen extends StatelessWidget {
     return Container(
         margin: EdgeInsets.only(top: 5),
         alignment:
-        AlignmentDirectional.bottomStart,
+        AlignmentDirectional.bottomCenter,
         child: CircularPercentIndicator(
           radius: height,
-          lineWidth: 15.0,
+          lineWidth: 10.0,
           animation: true,
           percent: percent,
           center: Text(
@@ -234,7 +256,7 @@ class AnimationDetailScreen extends StatelessWidget {
         ));
   }
 
-  AppBar _buildAppbar({String id, String, type,RankingItem infoItem , BuildContext context}){
+  AppBar _buildAppbar({String id, String type,RankingItem infoItem , BuildContext context}){
     return AppBar(
         title: CustomText(
           text: infoItem.title,
@@ -286,13 +308,14 @@ class AnimationDetailScreen extends StatelessWidget {
         ]);
   }
 
-  Widget _buildTopContainer(
+  Widget _buildTopContainerItem(
       {int fontSize, String text, FontWeight fontWeight = FontWeight.normal}) {
     return Flexible(
       flex: 1,
       child: Container(
-          alignment: Alignment.centerLeft,
+          alignment: Alignment.center,
           child: CustomText(
+            textAlign: TextAlign.center,
               text: text,
               fontSize: fontSize,
               fontWeight: fontWeight,

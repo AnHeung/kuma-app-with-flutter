@@ -90,9 +90,12 @@ class AnimationScreen extends StatelessWidget {
 
   Widget _buildSilverAppbar(Widget appbar){
     return  SliverAppBar(
+      backgroundColor: Colors.white,
       flexibleSpace: appbar,
       centerTitle: true,
       title: CustomText(
+        fontColor: Colors.black,
+        fontWeight: FontWeight.w700,
         text: "메인",
         fontSize: 15,
       ),

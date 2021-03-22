@@ -154,6 +154,7 @@ class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
   }
 
   void _setPageIndicatorAnimation({bool isClockwiseAnimation = true}) {
+
     var multiplicator = isClockwiseAnimation ? 2 : -2;
 
     setState(() {

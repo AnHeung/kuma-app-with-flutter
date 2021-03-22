@@ -11,9 +11,14 @@ import 'package:kuma_flutter_app/widget/loading_indicator.dart';
 import 'package:kuma_flutter_app/widget/search_history_item.dart';
 import 'package:kuma_flutter_app/widget/search_image_item.dart';
 
-class SearchScreen extends StatelessWidget {
+class SearchScreen extends StatefulWidget {
 
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  @override
+  _SearchScreenState createState() => _SearchScreenState();
+}
+
+class _SearchScreenState extends State<SearchScreen> {
+
   Icon _searchIcon = Icon(Icons.search);
   Widget _appBarTitle = Text('검색페이지');
   List<AnimationSearchItem> searchItemList;
@@ -43,12 +48,9 @@ class SearchScreen extends StatelessWidget {
           }
         },
         builder: (context,state){
-
           searchItemList = (state is SearchItemLoadSuccess) ? state.list :[];
-
           return Scaffold(
             resizeToAvoidBottomInset: false,
-            key: _scaffoldKey,
             appBar: _searchAppbar(context),
             body: Stack(
               children: <Widget>[
@@ -144,17 +146,14 @@ class SearchScreen extends StatelessWidget {
       visible: searchItemList.isNotEmpty,
       child: Container(
         constraints: BoxConstraints(
-            minHeight: 100,
+            minHeight: 50,
             minWidth: double.infinity,
             maxHeight: MediaQuery
                 .of(context)
                 .size
                 .height * 0.6),
         color: kBlue,
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            ListView(
+        child: ListView(
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
               children: searchItemList
@@ -176,9 +175,7 @@ class SearchScreen extends StatelessWidget {
                   ))
                   .toList(),
             ),
-          ],
         ),
-      ),
-    );
+      );
   }
 }

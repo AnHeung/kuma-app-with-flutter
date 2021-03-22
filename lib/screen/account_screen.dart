@@ -168,10 +168,8 @@ class AccountScreen extends StatelessWidget {
                             alignment: Alignment.centerLeft,
                             height: itemHeight,
                             child: CustomText(
-                              fontWeight: FontWeight.w700,
                               text: '탈퇴하기',
                               fontColor: Colors.red[300],
-                              fontSize: 20,
                             ))),
                   ],
                 );
