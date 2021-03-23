@@ -26,12 +26,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   Stream<LoginState> _mapToLogin(Login event) async* {
-
     try {
       yield LoginState.loading();
-
-      Map<LoginStatus, SocialUserData> loginData = await repository.login(
-          context: event.context, type: event.type);
+      Map<LoginStatus, SocialUserData> loginData = await repository.login(context: event.context, type: event.type);
 
       LoginStatus status = loginData.keys.first;
       SocialUserData data = loginData.values.first;

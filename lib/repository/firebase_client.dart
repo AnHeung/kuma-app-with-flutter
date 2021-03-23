@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:kuma_flutter_app/bloc/auth/auth_bloc.dart';
 import 'package:kuma_flutter_app/bloc/login/login_bloc.dart';
 import 'package:kuma_flutter_app/enums/login_status.dart';
 import 'package:kuma_flutter_app/enums/register_status.dart';
@@ -46,13 +45,19 @@ class FirebaseClient {
           return {LoginStatus.Failure: userData};
       }
       if (userData == null) return {LoginStatus.CheckEmail: userData};
-
+      print('userData $userData');
       await _firebaseAuth
           .signInWithEmailAndPassword(
               email: userData.email, password: userData.uniqueId)
           .then((result) =>
-              result.user.updateProfile(displayName: userData.userName));
-      await saveUserData(userData: userData);
+              result.user.updateProfile(displayName: userData.userName))
+          .then((result) async => await saveUserData(userData: userData))
+          .catchError((e) {
+        var errorCode = e.code;
+        var errMsg = e.message;
+        print('errorCode :$errorCode errMsg : $errMsg');
+        throw FirebaseAuthException(message: errMsg, code: errorCode);
+      });
       return {LoginStatus.LoginSuccess: userData};
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -89,25 +94,55 @@ class FirebaseClient {
         }
         await socialClient.logout();
       }
-      await _firebaseAuth.signOut();
-      return true;
+      return await _firebaseAuth.signOut()
+            .then((res)async=>await removeUserData())
+            .then((res)=>true)
+            .catchError((e) async{
+         print("logout  User Exception $e");
+          await _reAuthenticateUser()
+              .then((res) async {
+                 await logout();
+              }).catchError((e) {
+                 var errorCode = e.code;
+               var errMsg = e.message;
+               throw Exception("logout 오류 발생 :$errMsg 코드:$errorCode}");
+        });
+      });
     } on Exception catch (e) {
       print('로그아웃 실패 :$e');
       return false;
     }
   }
 
-  withdraw() async {
-    await _firebaseAuth.currentUser
-        .delete()
-        .then((res) => print('계정 삭제 성공'))
-        .catchError((err) async {
-      print("withdraw  User Exception $err");
-      var credential = EmailAuthProvider.credential(
-          email: _firebaseAuth.currentUser.email,
-          password: _firebaseAuth.currentUser.uid);
-      await _firebaseAuth.currentUser.reauthenticateWithCredential(credential);
-    });
+  Future<bool> withdraw() async {
+    try {
+      return await _firebaseAuth.currentUser.delete().then((res) async {
+        await removeUserData();
+        print('계정 삭제 성공');
+        return true;
+      }).catchError((err) async {
+        print("withdraw  User Exception $err");
+        await _reAuthenticateUser()
+              .then((res) async {
+                await withdraw();
+             }).catchError((e) {
+              var errorCode = e.code;
+              var errMsg = e.message;
+              throw Exception("회원탈퇴 오류 발생 :$errMsg 코드:$errorCode}");
+           });
+      });
+    } on Exception catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+  _reAuthenticateUser() async {
+    SocialUserData userData = await getUserData();
+    var credential = EmailAuthProvider.credential(
+        email: userData.email, password: userData.uniqueId);
+
+    return _firebaseAuth.currentUser.reauthenticateWithCredential(credential);
   }
 
   Future<RegisterStatus> register({SocialUserData userData}) async {

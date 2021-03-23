@@ -19,6 +19,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc({this.repository}) : super(const AuthState.unKnown()){
 
     subscription = repository.userStream.listen((User user) {
+      print('auth user: $user');
       if (user == null) {
         print('유저가 로그아웃 하였습니다.');
         add(ChangeAuth(status: AuthStatus.UnAuth));
@@ -67,7 +68,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Stream<AuthState> _mapToSignOut() async*{
     yield AuthState.unKnown();
     bool logoutSuccess = await repository.logout();
-    if(logoutSuccess) await removeUserData();
-    else yield AuthState.unAuth();
+    if(logoutSuccess) yield AuthState.unAuth();
+    else yield AuthState.auth();
   }
 }

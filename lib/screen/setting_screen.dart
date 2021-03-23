@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/setting/setting_bloc.dart';
 import 'package:kuma_flutter_app/model/setting_config.dart';
+import 'package:kuma_flutter_app/widget/custom_snack_bar.dart';
 import 'package:kuma_flutter_app/widget/custom_text.dart';
 import 'package:kuma_flutter_app/widget/drop_down_button.dart';
 import 'package:kuma_flutter_app/widget/empty_container.dart';
@@ -23,7 +24,12 @@ class SettingScreen extends StatelessWidget {
         BlocProvider.of<SettingBloc>(context).add(SettingScreenExit());
         return true;
       },
-      child: Scaffold(
+      child: BlocListener<SettingBloc, SettingState>(
+        listenWhen: (prev,cur)=>cur is SettingChange,
+        listener: (context,state){
+        if(state is SettingChange) ScaffoldMessenger.of(context).showSnackBar(CustomSnackBar(msg: "설정값 변경 성공",));
+      },
+      child:  Scaffold(
         appBar: AppBar(
           title: Text('설정'),
         ),
@@ -55,21 +61,18 @@ class SettingScreen extends StatelessWidget {
                               items: itemCountList
                                   .map(
                                     (item) => DropdownMenuItem(
-                                      child: CustomText(
-                                        fontColor: kBlack,
-                                        fontSize: 13.0,
-                                        text: item.toString(),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                      value: item,
-                                    ),
-                                  )
+                                  child: CustomText(
+                                    fontColor: kBlack,
+                                    fontSize: 13.0,
+                                    text: item.toString(),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  value: item,
+                                ),
+                              )
                                   .toList(),
                               onChanged: (item) => {
-                                BlocProvider.of<SettingBloc>(context).add(
-                                    SettingChange(
-                                        config: config.copyWith(
-                                            aniLoadItemCount: item)))
+                                BlocProvider.of<SettingBloc>(context).add(ChangeSetting(config: config.copyWith(aniLoadItemCount: item)))
                               },
                               hint: config.aniLoadItemCount,
                             ),
@@ -91,7 +94,7 @@ class SettingScreen extends StatelessWidget {
                               child: LayoutBuilder(
                                 builder: (context, constraints) {
                                   double width = constraints.maxWidth /
-                                          categoryList.length -
+                                      categoryList.length -
                                       7;
                                   return Container(
                                     margin: EdgeInsets.only(left: 20),
@@ -99,15 +102,15 @@ class SettingScreen extends StatelessWidget {
                                     child: ListView.separated(
                                       separatorBuilder: (context, index) =>
                                           SizedBox(
-                                        width: 3,
-                                      ),
+                                            width: 3,
+                                          ),
                                       itemBuilder: (context, idx) {
                                         List<String> categoryKeyList =
-                                            categoryList.keys.toList();
+                                        categoryList.keys.toList();
                                         String categoryKey =
-                                            categoryKeyList[idx];
+                                        categoryKeyList[idx];
                                         String category =
-                                            categoryList.values.toList()[idx];
+                                        categoryList.values.toList()[idx];
 
                                         return Container(
                                           width: width,
@@ -115,28 +118,28 @@ class SettingScreen extends StatelessWidget {
                                               borderRadius: BorderRadius.all(
                                                   Radius.circular(30)),
                                               color: _isCheck(
-                                                      config.rankingType,
-                                                      categoryKey)
+                                                  config.rankingType,
+                                                  categoryKey)
                                                   ? kBlue
                                                   : kDisabled),
                                           child: GestureDetector(
                                               onTap: () {
                                                 String rankType = categoryKeyList.reduce((acc, rankCategory) {
-                                                          if (rankCategory == "upcoming") {
-                                                            acc += ",$rankCategory";
-                                                          } else if (!_isCheck(config.rankingType, rankCategory) && rankCategory == categoryKey) {
-                                                            acc += ",$rankCategory";
-                                                          } else if (_isCheck(config.rankingType, rankCategory) && rankCategory != categoryKey) {
-                                                            acc += ",$rankCategory";
-                                                          }
-                                                          return acc;
-                                                        }) ?? "airing,upcoming";
+                                                  if (rankCategory == "upcoming") {
+                                                    acc += ",$rankCategory";
+                                                  } else if (!_isCheck(config.rankingType, rankCategory) && rankCategory == categoryKey) {
+                                                    acc += ",$rankCategory";
+                                                  } else if (_isCheck(config.rankingType, rankCategory) && rankCategory != categoryKey) {
+                                                    acc += ",$rankCategory";
+                                                  }
+                                                  return acc;
+                                                }) ?? "airing,upcoming";
                                                 BlocProvider.of<SettingBloc>(
-                                                        context)
-                                                    .add(SettingChange(
-                                                        config: config.copyWith(
-                                                            rankingType:
-                                                                rankType)));
+                                                    context)
+                                                    .add(ChangeSetting(
+                                                    config: config.copyWith(
+                                                        rankingType:
+                                                        rankType)));
                                               },
                                               behavior: HitTestBehavior.translucent,
                                               child: Container(
@@ -184,7 +187,7 @@ class SettingScreen extends StatelessWidget {
                               onToggle: (index) {
                                 print("index $index");
                                 BlocProvider.of<SettingBloc>(context).add(
-                                    SettingChange(
+                                    ChangeSetting(
                                         config: config.copyWith(
                                             isAutoScroll: index == 0)));
                               },
@@ -200,7 +203,7 @@ class SettingScreen extends StatelessWidget {
                 );
               },
             )),
-      ),
+      ),)
     );
   }
 

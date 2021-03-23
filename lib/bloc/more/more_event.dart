@@ -9,6 +9,10 @@ abstract class MoreEvent extends Equatable{
   const MoreEvent();
 }
 
+class MoreSignOut extends MoreEvent{
+
+}
+
 
 
 

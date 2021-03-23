@@ -111,8 +111,6 @@ class _SearchScreenState extends State<SearchScreen> {
     searchItemList.clear();
   }
 
-  _clearSearchHistory() {}
-
   _setSearchBar(BuildContext context) {
     _searchIcon = Icon(Icons.close);
     _appBarTitle = TextField(
@@ -163,14 +161,10 @@ class _SearchScreenState extends State<SearchScreen> {
                     title: searchItem.title,
                     onTap: () {
                       BlocProvider.of<SearchHistoryBloc>(context).add(
-                          SearchHistoryWrite(
-                              searchItem: AnimationSearchItem(
-                                  id: searchItem.id,
-                                  image: searchItem.image,
-                                  title: searchItem.title)));
-                      Navigator.pushNamed(context, Routes.IMAGE_DETAIL,
-                          arguments: RankingItem(
-                              id: searchItem.id, title: searchItem.title));
+                          SearchHistoryWrite(searchItem: AnimationSearchItem(id: searchItem.id, image: searchItem.image, title: searchItem.title)));
+                      BlocProvider.of<SearchBloc>(context).add(SearchClear());
+                      Navigator.pushNamed(context, Routes.IMAGE_DETAIL, arguments: RankingItem(id: searchItem.id, title: searchItem.title));
+
                     },
                   ))
                   .toList(),

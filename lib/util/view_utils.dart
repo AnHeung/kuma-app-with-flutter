@@ -157,7 +157,7 @@ _controlPage({int listSize, PageController controller, MoveState state}) {
 // }
 
 showToast({String msg}) {
-  if (msg.isNotEmpty)
+  if (msg!= null && msg.isNotEmpty)
     Fluttertoast.showToast(
         msg: msg,
         toastLength: Toast.LENGTH_SHORT,

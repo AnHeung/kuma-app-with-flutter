@@ -13,11 +13,11 @@ class SettingLoad extends SettingEvent{
 
 }
 
-class SettingChange extends SettingEvent {
+class ChangeSetting extends SettingEvent {
 
   final SettingConfig config;
 
-  const SettingChange({this.config});
+  const ChangeSetting({this.config});
 
   @override
   List<Object> get props=>[config];

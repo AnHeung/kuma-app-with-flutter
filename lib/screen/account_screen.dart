@@ -22,15 +22,19 @@ class AccountScreen extends StatelessWidget {
     final double itemHeight = 50;
 
 
-    return BlocListener<AuthBloc,AuthState>(
-        listener: (context,state){
-          if(state.status == AuthStatus.UnAuth) Navigator.pushNamedAndRemoveUntil(context, Routes.HOME, (route) => false);
-        },
-      child: Scaffold(
+    return Scaffold(
           appBar: AppBar(
             title: Text('계정 설정'),
           ),
-          body: BlocBuilder<AccountBloc, AccountState>(
+          body: BlocConsumer<AccountBloc, AccountState>(
+            listener: (context,state){
+              if(state is AccountWithdrawFailure){
+                showToast(msg: state.errMsg);
+              }else if(state is AccountWithdrawSuccess){
+                showToast(msg: state.successMsg);
+                Navigator.pushNamedAndRemoveUntil(context, Routes.HOME, (route) => false);
+              }
+            },
             builder: (context, state) {
               if (state is AccountLoadInProgress) {
                 return LoadingIndicator(
@@ -178,14 +182,14 @@ class AccountScreen extends StatelessWidget {
                   callback: () =>
                       BlocProvider.of<AccountBloc>(context).add(AccountLoad()),
                 );
+              }else if(state is AccountWithdrawFailure){
+                showToast(msg:"계정 삭제 실패 다시시도해 주세요");
+                Navigator.pushNamedAndRemoveUntil(context, Routes.HOME, (route) => false);
               }
               return EmptyContainer(
                 title: "로딩 안됨.",
               );
             },
-          )),
-    );
+          ));
   }
-
-  _accountContainer() {}
 }

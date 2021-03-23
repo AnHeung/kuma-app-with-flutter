@@ -32,8 +32,9 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
 
   Stream<AccountState> _mapToWithdraw() async* {
     yield AccountLoadInProgress();
-    await repository.withdraw();
-    await removeUserData();
+    bool withdrawResult = await repository.withdraw();
+    if(withdrawResult) yield AccountWithdrawSuccess(successMsg: "회원탈퇴 성공");
+    else yield AccountWithdrawFailure(errMsg: "회원탈퇴 실패 다시 시도해주세요");
   }
 
   Stream<AccountState> _mapToAccountLoad() async* {

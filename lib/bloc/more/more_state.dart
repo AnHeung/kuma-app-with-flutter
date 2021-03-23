@@ -12,8 +12,20 @@ abstract class MoreState extends Equatable{
 
 class MoreInitial extends MoreState {}
 
+class MoreLoadingInProgress extends MoreState {}
+
 class MoreLoadSuccess extends MoreState {}
 
-class MoreLoadingInProgress extends MoreState {}
+class MoreNeedLogin extends MoreState {}
+
+class MoreLoadFailure extends MoreState {
+
+  final String errMsg;
+
+  const MoreLoadFailure({this.errMsg});
+
+  @override
+  List<Object> get props =>[errMsg];
+}
 
 

@@ -23,7 +23,7 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
   ) async* {
     if(event is SettingLoad){
       yield* _mapToSettingLoad();
-    }else if(event is SettingChange){
+    }else if(event is ChangeSetting){
       yield* _mapToSettingChange(event);
     }else if(event is SettingScreenExit){
       yield SettingChangeComplete();
@@ -36,8 +36,9 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     yield SettingLoadSuccess(config: config);
   }
 
-  Stream<SettingState> _mapToSettingChange(SettingChange event) async*{
+  Stream<SettingState> _mapToSettingChange(ChangeSetting event) async*{
     await changeSettingConfig(config: event.config);
+    yield SettingChange();
     yield SettingLoadSuccess(config: event.config);
   }
 }
