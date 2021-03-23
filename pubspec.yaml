@@ -61,5 +61,14 @@ flutter:
             - asset: assets/fonts/NanumPenScript-Regular.ttf
               weight: 400
 
+    - family: DoHyeon
+      fonts:
+            - asset: assets/fonts/DoHyeon-Regular.ttf
+              weight: 700
+
+    - family: NanumGothic
+      fonts:
+            - asset: assets/fonts/NanumGothic-Regular.ttf
+
   uses-material-design: true
 

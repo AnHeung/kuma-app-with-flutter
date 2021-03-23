@@ -23,6 +23,7 @@ const Color kDarkBlue = Color(0xFF1046B3);
 const Color kWhite = Color(0xFFFFFFFF);
 const Color kGrey = Color(0xFFF4F5F7);
 const Color kBlack = Color(0xFF2D3243);
+const Color kDisabled = Color(0xFFdcdcdc);
 
 // Padding
 const double kPaddingS = 8.0;
@@ -41,3 +42,42 @@ const Duration kLoginAnimationDuration = Duration(milliseconds: 1500);
 
 // Assets
 const String kGoogleLogoPath = 'assets/images/google_logo.png';
+const String doHyunFont = 'DoHyeon';
+const String nanumFont = 'NanumPenScript';
+const String nanumGothicFont = 'NanumGothic';
+
+//Setting
+const double kSettingFontSize = 13;
+
+//더보기
+const double kMoreFontSize = 15;
+const double kMoreLoginFontSize = 10;
+const double kMoreTitleFontSize = 20;
+
+//View_Util
+const double dialogFontSize = 20            ;
+const double toastFontSize = 15;
+
+
+
+//애니메인
+const double kAnimationFontSize = 15;
+const double kAnimationTitleFontSize = 20;
+const double kAnimationItemTitleFontSize = 25;
+
+//애니상세
+const double kAnimationDetailGenreFontSize = 8;
+const double kAnimationDetailFontSize = 15;
+const double kAnimationDetailIndicatorFontSize = 10;
+const double kAnimationDetailTitleFontSize = 25;
+
+//계정페이지
+const double kAccountFontSize = 15;
+const double kAccountTitleFontSize = 20;
+
+//로그인 페이지
+const double kLoginFontSize = 12;
+
+//회원가입 페이지
+const double kRegisterFontSize = 15;
+const double kRegisterTitleFontSize = 20;

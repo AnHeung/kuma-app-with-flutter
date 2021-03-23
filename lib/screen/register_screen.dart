@@ -66,7 +66,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       Container(
                         child: Row(
                           children: [
-                            TextButton(onPressed: ()=>{}, child: CustomText(text:'모든 약관에 동의' , fontSize: 20, fontWeight: FontWeight.w700, fontColor: Colors.black, ),),
+                            TextButton(onPressed: ()=>{}, child: CustomText(text:'모든 약관에 동의' , fontSize: kRegisterTitleFontSize, fontWeight: FontWeight.w700, fontColor: Colors.black, ),),
                             Spacer(),
                             Checkbox(value: allTermCheck, onChanged: ((value)=>{
                               setState((){
@@ -80,7 +80,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       Container(
                         child: Row(
                           children: [
-                            TextButton(onPressed: ()=>{}, child: CustomText(text:'이용에 대한 동의(필수)',  fontSize: 15, fontColor: Colors.black, ),),
+                            TextButton(onPressed: ()=>{}, child: CustomText(text:'이용에 대한 동의(필수)',  fontSize: kRegisterFontSize, fontColor: Colors.black, ),),
                             Spacer(),
                             Checkbox(value: firstTermCheck, onChanged: (bool value){
                               setState(() {
@@ -97,7 +97,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       Container(
                         child: Row(
                           children: [
-                            TextButton(onPressed: ()=>{}, child: CustomText(text:'개인정보수집 이용에 대한 안내' ,   fontSize: 15, fontColor: Colors.black,),),
+                            TextButton(onPressed: ()=>{}, child: CustomText(text:'개인정보수집 이용에 대한 안내' ,   fontSize: kRegisterFontSize, fontColor: Colors.black,),),
                             Expanded(child: SizedBox()),
                             Checkbox(value: secondTermCheck, onChanged: (value)=>{
                               setState(() {
@@ -120,7 +120,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           if(allTermCheck){
                             BlocProvider.of<RegisterBloc>(context).add(UserRegister(userData: userData))
                           }
-                        }, child: CustomText(text:'완료', fontSize: 20,),)), )
+                        }, child: CustomText(text:'완료', fontSize: kRegisterTitleFontSize,),)), )
 
                     ],
                   ),

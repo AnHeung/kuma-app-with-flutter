@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kuma_flutter_app/app_constants.dart';
 
 class CustomDropDown extends StatelessWidget {
   final String value;
@@ -7,7 +8,7 @@ class CustomDropDown extends StatelessWidget {
   final List<DropdownMenuItem> items;
   final Function onChanged;
 
-  const CustomDropDown(
+  const  CustomDropDown(
       {Key key,
         this.value,
         this.hint,
@@ -26,7 +27,7 @@ class CustomDropDown extends StatelessWidget {
           width: 90,
           height: 35,
           decoration: BoxDecoration(
-              color: Colors.grey, borderRadius: BorderRadius.circular(20)),
+              color: kDisabled, borderRadius: BorderRadius.circular(20)),
           child: Container(
             padding:
             const EdgeInsets.only(left: 30, right: 10),

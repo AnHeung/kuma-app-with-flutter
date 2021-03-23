@@ -7,17 +7,7 @@ abstract class AnimationEvent extends Equatable{
   List<Object> get props =>[];
 }
 
-class AnimationLoad extends AnimationEvent{
-
-  final String rankType;
-  final String limit;
-  final String searchType;
-
-  AnimationLoad({this.rankType, this.limit, this.searchType});
-
-  @override
-  List<Object> get props =>[rankType, limit,searchType];
-}
+class AnimationLoad extends AnimationEvent{}
 
 class AnimationUpdate extends AnimationEvent{
 

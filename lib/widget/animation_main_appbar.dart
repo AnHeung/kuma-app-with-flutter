@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:focus_detector/focus_detector.dart';
+import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/animation_season/animation_season_bloc.dart';
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
 import 'package:kuma_flutter_app/model/item/animation_main_item.dart';
@@ -133,7 +134,7 @@ class AnimationMainAppbar extends StatelessWidget {
             child: CustomText(
               maxLines: 1,
               fontWeight: FontWeight.w700,
-              fontSize:25,
+              fontSize:kAnimationTitleFontSize,
               text: item.title,
             ),
           ),

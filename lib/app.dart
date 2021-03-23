@@ -66,7 +66,7 @@ class App extends StatelessWidget {
         child: MaterialApp(
         title: "쿠마앱",
         theme: ThemeData(
-          fontFamily: 'NanumPenScript',
+          fontFamily: doHyunFont,
           primarySwatch: createMaterialColor(kBlack),
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
@@ -91,7 +91,7 @@ class App extends StatelessWidget {
                 BlocProvider(
                   create: (_) => TabCubit(),
                 ),
-                BlocProvider(create: (_) => AnimationBloc(repository: context.read<ApiRepository>(),settingBloc: BlocProvider.of<SettingBloc>(context))..add(AnimationLoad(rankType: "all", searchType: "all", limit: "30"))),
+                BlocProvider(create: (_) => AnimationBloc(repository: context.read<ApiRepository>(),settingBloc: BlocProvider.of<SettingBloc>(context))..add(AnimationLoad())),
                 BlocProvider(
                     create: (_) =>
                     AnimationSeasonBloc(

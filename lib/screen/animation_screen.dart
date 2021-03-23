@@ -13,16 +13,66 @@ import 'package:kuma_flutter_app/widget/image_item.dart';
 import 'package:kuma_flutter_app/widget/loading_indicator.dart';
 import 'package:kuma_flutter_app/widget/refresh_container.dart';
 
-class AnimationScreen extends StatelessWidget {
+class AnimationScreen extends StatefulWidget {
+
+  @override
+  _AnimationScreenState createState() => _AnimationScreenState();
+}
+
+class _AnimationScreenState extends State<AnimationScreen> {
 
   final AnimationMainAppbar animationMainAppbar = AnimationMainAppbar();
+  final ScrollController _scrollController = ScrollController();
+  final scrollbarExpandedHeight = 450;
+  double appbarOpacity = 0;
+  VoidCallback _scrollListener;
+
+
+  _AnimationScreenState(){
+    _scrollListener = (){
+      if(_scrollController.hasClients){
+        _changeAppbar(_scrollController.offset);
+      }
+    };
+    _scrollController.addListener(_scrollListener) ;
+  }
+
+  _changeAppbar(double scrollPosition){
+    if(scrollPosition == 0){
+      setState(() {
+        appbarOpacity = 0;
+      });
+    }else if(scrollPosition > 100 && scrollPosition <150){
+      setState(() {
+        appbarOpacity = 0.5;
+      });
+    }else if(scrollPosition > 300 && scrollPosition <350){
+      setState(() {
+        appbarOpacity = 0.7;
+      });
+    } else if(scrollPosition > 400 && scrollPosition <500){
+      setState(() {
+        appbarOpacity = 1;
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController?.removeListener(_scrollListener);
+    _scrollController?.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
         extendBody: true,
         body: NestedScrollView(
+          controller: _scrollController,
           headerSliverBuilder: (context, isScrolled) {
+            print('isScrolled : $isScrolled');
             return [
               _buildSilverAppbar(animationMainAppbar)
             ];
@@ -33,10 +83,7 @@ class AnimationScreen extends StatelessWidget {
                   case AnimationLoadFailure :
                     return RefreshContainer(
                       callback: () => BlocProvider.of<AnimationBloc>(context)
-                          .add(AnimationLoad(
-                          rankType: "all",
-                          searchType: "all",
-                          limit: "30")),
+                          .add(AnimationLoad()),
                     );
                   case AnimationLoadSuccess:
                     final List<AnimationMainItem> mainItemList =
@@ -65,43 +112,25 @@ class AnimationScreen extends StatelessWidget {
       );
   }
 
-  // Color _setItemColor(String type) {
-  //   Color color = Colors.grey;
-  //   switch (type) {
-  //     case "airing":
-  //       color = kLightBlue;
-  //       break;
-  //     case "movie":
-  //       color = Colors.deepPurpleAccent[100];
-  //       break;
-  //     case "upcoming":
-  //       color = Colors.pink[200];
-  //       break;
-  //     case "tv":
-  //       color = Colors.deepPurpleAccent;
-  //       break;
-  //     case "ova":
-  //       color = Colors.grey;
-  //       break;
-  //   }
-  //   return color;
-  // }
-
   Widget _buildSilverAppbar(Widget appbar){
     return  SliverAppBar(
       backgroundColor: Colors.white,
       flexibleSpace: appbar,
       centerTitle: true,
-      title: CustomText(
-        fontColor: Colors.black,
-        fontWeight: FontWeight.w700,
-        text: "메인",
-        fontSize: 15,
+      title: Opacity (
+        opacity: appbarOpacity,
+        child: CustomText(
+          fontColor:  Colors.black,
+          fontWeight: FontWeight.w700,
+          fontFamily: doHyunFont,
+          text: "ANIMATION",
+          fontSize: kAnimationTitleFontSize,
+        ),
       ),
       actions: <Widget>[
         IconButton(
           color: Colors.white,
-          icon: Icon(Icons.notifications_none),
+          icon:  Opacity(opacity:appbarOpacity ,child: Icon(Icons.notifications_none , color: kBlack,),),
           tooltip: "알림",
           onPressed: () => {print('알림')},
         ),
@@ -128,7 +157,7 @@ class AnimationScreen extends StatelessWidget {
             padding: const EdgeInsets.only(left:8 ,top: 20, bottom: 10),
             child: Container(
                 width: MediaQuery.of(context).size.width,
-                child: CustomText(text: item.koreaType, fontSize: 30, fontColor: kBlack,)),
+                child: CustomText(text: item.koreaType, fontSize: kAnimationItemTitleFontSize, fontColor: kBlack, fontFamily: nanumFont,)),
           ),
           Expanded(
             child: ListView(

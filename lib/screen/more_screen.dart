@@ -39,7 +39,7 @@ class MoreScreen extends StatelessWidget {
                 alignment: Alignment.centerLeft,
                 child: CustomText(
                   text: '더보기',
-                  fontSize: 20,
+                  fontSize: kMoreTitleFontSize,
                   fontWeight: FontWeight.w700,
                   fontColor: Colors.black,
                 )),
@@ -113,7 +113,7 @@ class MoreScreen extends StatelessWidget {
                   child: CustomText(
                     text: title,
                     fontColor: Colors.black,
-                    fontSize: 15,
+                    fontSize: kMoreFontSize,
                   ),
                 ),
               ],
@@ -140,7 +140,7 @@ class MoreScreen extends StatelessWidget {
                   onPressed: () => {Navigator.pushNamed(context, Routes.LOGIN)},
                   child: CustomText(
                     text: "로그인/회원가입",
-                    fontSize: 13,
+                    fontSize: kMoreLoginFontSize,
                   )),
             )
           ],

@@ -30,7 +30,6 @@ class SearchImageItem extends StatelessWidget {
               margin: EdgeInsets.only(left: 30),
               child: CustomText(
                 fontColor: Colors.white,
-                fontSize: 15,
                 text: title,
                 isEllipsis: true,
                 isDynamic: true,

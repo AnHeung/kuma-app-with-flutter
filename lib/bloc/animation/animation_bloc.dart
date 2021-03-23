@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:kuma_flutter_app/bloc/animation_season/animation_season_bloc.dart';
 import 'package:kuma_flutter_app/bloc/setting/setting_bloc.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_ranking_item.dart';
 import 'package:kuma_flutter_app/model/item/animation_main_item.dart';
@@ -33,13 +32,13 @@ class AnimationBloc extends Bloc<AnimationEvent, AnimationState> {
     AnimationEvent event,
   ) async* {
     if (event is AnimationLoad) {
-      yield* _mapToAnimationLoad(event);
+      yield* _mapToAnimationLoad();
     } else if (event is AnimationUpdate) {
       yield* _mapToAnimationLoadUpdate(event);
     }
   }
 
-  Stream<AnimationState> _mapToAnimationLoad(AnimationLoad event) async* {
+  Stream<AnimationState> _mapToAnimationLoad() async* {
     try {
       yield AnimationLoadInProgress();
 

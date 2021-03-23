@@ -68,7 +68,7 @@ class AnimationDetailScreen extends StatelessWidget {
         child: CustomText(
           text: '이미지',
           fontColor: Colors.black,
-          fontSize: 30,
+          fontSize: kAnimationDetailTitleFontSize,
         ),
       ),
       _buildTopPictureContainer(pictures: detailItem.pictures),
@@ -77,7 +77,7 @@ class AnimationDetailScreen extends StatelessWidget {
         child: CustomText(
           text: '관련애니 목록',
           fontColor: Colors.black,
-          fontSize: 30,
+          fontSize: kAnimationDetailTitleFontSize,
         ),
       ),
       _buildRelateContainer(relatedItem: detailItem.relatedAnime)
@@ -106,31 +106,31 @@ class AnimationDetailScreen extends StatelessWidget {
                       children: [
                         _buildTopContainerItem(
                             text: "${detailItem.title}",
-                            fontSize: 20,
+                            fontSize: 17,
                             fontWeight: FontWeight.w700),
                         _buildTopContainerItem(
                             text: "(${detailItem.startSeason})",
-                            fontSize: 17,
+                            fontSize: 15,
                             fontWeight: FontWeight.w700),
                         _buildTopContainerItem(
                           text: detailItem.rank != null
                               ? '랭킹:${detailItem.rank}위'
                               : "랭킹:기록없음",
-                          fontSize: 15,
+                          fontSize: 13,
                         ),
                         _buildTopContainerItem(
                           text: '시즌 시작일:${detailItem.startDate}',
-                          fontSize: 15,
+                          fontSize: 13,
                         ),
                         _buildTopContainerItem(
                           text: '시즌 종료일:${detailItem.endDate}',
-                          fontSize: 15,
+                          fontSize: 13,
                         ),
                         _buildTopContainerItem(
                           text: detailItem.numEpisodes != "0"
                               ? '화수:${detailItem.numEpisodes}'
                               : "화수:정보없음",
-                          fontSize: 15,
+                          fontSize: 13,
                         ),
                         _buildDetailTopGenresContainer(
                           context: context,
@@ -161,10 +161,9 @@ class AnimationDetailScreen extends StatelessWidget {
   Widget _buildDetailTopGenresContainer({BuildContext context, String genres}) {
 
     final width = MediaQuery.of(context).size.width/8-10;
-    final List genreList = genres.split(",").length > 7 ? genres.split(",").sublist(0,8) :genres.split(",") ;
+    final List genreList = genres.split(",").length > 7 ? genres.split(",").sublist(0,7) :genres.split(",") ;
     return Flexible(
       flex: 2,
-      fit: FlexFit.loose,
       child: Padding(
         padding: const EdgeInsets.only(top:10.0,bottom: 5),
         child: Row(
@@ -180,10 +179,9 @@ class AnimationDetailScreen extends StatelessWidget {
                             shape: BoxShape.circle,
                           ),
                           child: CustomText(
-                            fontSize: 8,
+                            fontSize: kAnimationDetailGenreFontSize,
                             text: genre,
                             isEllipsis: true,
-                            isDynamic: true,
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -192,7 +190,7 @@ class AnimationDetailScreen extends StatelessWidget {
             ) ??
             _buildTopContainerItem(
               text: "장르 : $genres",
-              fontSize: 10,
+              fontSize: kAnimationDetailGenreFontSize,
             ),
       ),
     );
@@ -208,12 +206,12 @@ class AnimationDetailScreen extends StatelessWidget {
           child: CustomText(
             text: '개요',
             fontColor: Colors.black,
-            fontSize: 30,
+            fontSize: kAnimationDetailTitleFontSize,
           ),
         ),
         Container(
           child: CustomText(
-            fontSize: 15,
+            fontSize: kAnimationDetailFontSize,
             text: detailItem.synopsis,
             fontColor: Colors.black,
           ),
@@ -305,10 +303,7 @@ class AnimationDetailScreen extends StatelessWidget {
                 length: relatedItem.length,
                 builderFunction: (BuildContext context, idx) {
                   final RelatedAnimeItem item = relatedItem[idx];
-                  return _relatedItem(
-                      context,
-                      RelatedAnimeItem(
-                          id: item.id, title: item.title, image: item.image));
+                  return _relatedItem(context, RelatedAnimeItem(id: item.id, title: item.title, image: item.image));
                 }),
           )
         : EmptyContainer(
@@ -332,7 +327,7 @@ class AnimationDetailScreen extends StatelessWidget {
           percent: percent,
           center: CustomText(
             text: percentText,
-            fontSize: 13,
+            fontSize: kAnimationDetailIndicatorFontSize,
             textAlign: TextAlign.center,
           ),
           circularStrokeCap: CircularStrokeCap.round,
@@ -345,7 +340,6 @@ class AnimationDetailScreen extends StatelessWidget {
     return AppBar(
         title: CustomText(
           text: infoItem.title,
-          fontSize: 15,
         ),
         actions: <Widget>[
           IconButton(
@@ -394,7 +388,7 @@ class AnimationDetailScreen extends StatelessWidget {
   }
 
   Widget _buildTopContainerItem(
-      {int fontSize, String text, FontWeight fontWeight = FontWeight.normal}) {
+      {double fontSize, String text, FontWeight fontWeight = FontWeight.normal}) {
     return Flexible(
       flex: 1,
       child: Container(
@@ -447,8 +441,8 @@ class AnimationDetailScreen extends StatelessWidget {
               child: Container(
                 alignment: Alignment.center,
                 height: 50,
+                padding: EdgeInsets.only(left: 3),
                 child: CustomText(
-                  fontSize: 17,
                   fontColor: Colors.black,
                   text: item.title,
                   maxLines: 2,

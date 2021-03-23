@@ -73,7 +73,9 @@ class LoginScreen extends StatelessWidget {
                             padding: const EdgeInsets.only(left: 8.0),
                             child: Container(width: 100,
                                 child: CustomText(
-                                  text: "카카오톡 로그인", fontSize: 15,)),
+                                  fontFamily: doHyunFont,
+                                  fontWeight: FontWeight.w700,
+                                  text: "카카오톡 로그인", fontSize: kLoginFontSize,)),
                           )
                         ],
                       ),),
@@ -99,7 +101,9 @@ class LoginScreen extends StatelessWidget {
                             padding: const EdgeInsets.only(left: 8.0),
                             child: Container(width: 100,
                                 child: CustomText(
-                                  text: "구글 로그인", fontSize: 15,)),
+                                  fontFamily: doHyunFont,
+                                  fontWeight: FontWeight.w700,
+                                  text: "구글 로그인", fontSize: kLoginFontSize,)),
                           )
                         ],
                       ),),
@@ -122,7 +126,9 @@ class LoginScreen extends StatelessWidget {
                             padding: const EdgeInsets.only(left: 8.0),
                             child: Container(width: 100,
                                 child: CustomText(
-                                  text: "이메일 로그인", fontSize: 15,)),
+                                  fontFamily: doHyunFont,
+                                  fontWeight: FontWeight.w700,
+                                  text: "이메일 로그인", fontSize: kLoginFontSize,)),
                           )
                         ],
                       ),),

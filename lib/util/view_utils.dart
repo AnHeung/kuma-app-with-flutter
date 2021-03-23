@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
 import 'package:kuma_flutter_app/enums/image_type.dart';
 import 'package:kuma_flutter_app/enums/move_state.dart';
@@ -78,10 +79,11 @@ imageAlert(
               child: Container(
                 height: btnHeight,
                 child: CustomText(
+                  fontFamily: doHyunFont,
                   fontWeight: FontWeight.w700,
-                  fontColor: Colors.black54,
+                  fontColor: Colors.black,
                   text: "나가기",
-                  fontSize: 30,
+                  fontSize: dialogFontSize,
                 ),
               ),
             ),
@@ -163,7 +165,7 @@ showToast({String msg}) {
         timeInSecForIosWeb: 1,
         backgroundColor: Colors.red,
         textColor: Colors.white,
-        fontSize: 16.0);
+        fontSize: toastFontSize);
 }
 
 showBaseDialog(

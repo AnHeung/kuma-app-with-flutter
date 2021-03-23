@@ -19,7 +19,7 @@ class SettingScreen extends StatelessWidget {
     SettingConfig config = SettingConfig.empty;
 
     return WillPopScope(
-      onWillPop: ()async{
+      onWillPop: () async {
         BlocProvider.of<SettingBloc>(context).add(SettingScreenExit());
         return true;
       },
@@ -46,33 +46,33 @@ class SettingScreen extends StatelessWidget {
                           children: [
                             CustomText(
                               text: "홈화면에 보여줄 아이템 갯수",
-                              fontSize: 20,
+                              fontSize: kSettingFontSize,
                               fontColor: Colors.black,
                             ),
                             Spacer(),
                             CustomDropDown(
-                                value: config.aniLoadItemCount,
-                                items: itemCountList
-                                    .map(
-                                      (item) => DropdownMenuItem(
-                                        child: CustomText(
-                                          fontColor: kBlack,
-                                          fontSize: 13,
-                                          text:item.toString(),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                        value: item,
+                              value: config.aniLoadItemCount,
+                              items: itemCountList
+                                  .map(
+                                    (item) => DropdownMenuItem(
+                                      child: CustomText(
+                                        fontColor: kBlack,
+                                        fontSize: 13.0,
+                                        text: item.toString(),
+                                        textAlign: TextAlign.center,
                                       ),
-                                    )
-                                    .toList(),
-                                onChanged: (item) => {
-                                  BlocProvider.of<SettingBloc>(context).add(
-                                      SettingChange(
-                                          config: config.copyWith(
-                                              aniLoadItemCount: item)))
-                                },
-                                hint: config.aniLoadItemCount,
-                              ),
+                                      value: item,
+                                    ),
+                                  )
+                                  .toList(),
+                              onChanged: (item) => {
+                                BlocProvider.of<SettingBloc>(context).add(
+                                    SettingChange(
+                                        config: config.copyWith(
+                                            aniLoadItemCount: item)))
+                              },
+                              hint: config.aniLoadItemCount,
+                            ),
                           ],
                         ),
                       ),
@@ -83,52 +83,78 @@ class SettingScreen extends StatelessWidget {
                           children: [
                             CustomText(
                               text: "표시할 카테고리",
-                              fontSize: 20,
+                              fontSize: kSettingFontSize,
                               fontColor: Colors.black,
                             ),
-                          Expanded(
-                            flex: 1,
-                            child: LayoutBuilder(builder: (context, constraints){
-                                  double width = constraints.maxWidth/categoryList.length-7;
-                                  print(width);
+                            Expanded(
+                              flex: 1,
+                              child: LayoutBuilder(
+                                builder: (context, constraints) {
+                                  double width = constraints.maxWidth /
+                                          categoryList.length -
+                                      7;
                                   return Container(
                                     margin: EdgeInsets.only(left: 20),
-                                      height: 40,
-                                      child: ListView.separated(
-                                        separatorBuilder: (context, index) =>SizedBox(width: 3,),
-                                        itemBuilder: (context, idx) {
-
-                                          List<String> categoryKeyList = categoryList.keys.toList();
-                                          String categoryKey =  categoryKeyList[idx];
-                                          String category = categoryList.values.toList()[idx];
-
-                                          return Container(
-                                            width: width,
-                                            decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(30)) ,
-                                                color: _isCheck(config.rankingType ,categoryKey)
-                                                ? kBlue
-                                                : Colors.grey),
-                                            child: GestureDetector(onTap: (){
-                                              String rankType = categoryKeyList.reduce((acc, rankCategory){
-                                                  if(rankCategory =="upcoming"){
-                                                    acc += ",$rankCategory";
-                                                  }else if (!_isCheck(config.rankingType, rankCategory) && rankCategory == categoryKey) {
-                                                    acc += ",$rankCategory";
-                                                  } else if (_isCheck(config.rankingType, rankCategory) && rankCategory != categoryKey) {
-                                                    acc += ",$rankCategory";
-                                                  }
-                                                return acc;
-                                              }) ?? "airing,upcoming";
-                                              BlocProvider.of<SettingBloc>(context).add(SettingChange(config: config.copyWith(rankingType: rankType)));
-                                            } , behavior: HitTestBehavior.translucent, child: Container(alignment:Alignment.center,child: CustomText(text:category , maxLines: 1, isEllipsis: true))),
-                                          );
-                                        },
-                                        itemCount: categoryList.length,
-                                        scrollDirection: Axis.horizontal,
+                                    height: 40,
+                                    child: ListView.separated(
+                                      separatorBuilder: (context, index) =>
+                                          SizedBox(
+                                        width: 3,
                                       ),
-                                    );
-                                },),
-                          )
+                                      itemBuilder: (context, idx) {
+                                        List<String> categoryKeyList =
+                                            categoryList.keys.toList();
+                                        String categoryKey =
+                                            categoryKeyList[idx];
+                                        String category =
+                                            categoryList.values.toList()[idx];
+
+                                        return Container(
+                                          width: width,
+                                          decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(30)),
+                                              color: _isCheck(
+                                                      config.rankingType,
+                                                      categoryKey)
+                                                  ? kBlue
+                                                  : kDisabled),
+                                          child: GestureDetector(
+                                              onTap: () {
+                                                String rankType = categoryKeyList.reduce((acc, rankCategory) {
+                                                          if (rankCategory == "upcoming") {
+                                                            acc += ",$rankCategory";
+                                                          } else if (!_isCheck(config.rankingType, rankCategory) && rankCategory == categoryKey) {
+                                                            acc += ",$rankCategory";
+                                                          } else if (_isCheck(config.rankingType, rankCategory) && rankCategory != categoryKey) {
+                                                            acc += ",$rankCategory";
+                                                          }
+                                                          return acc;
+                                                        }) ?? "airing,upcoming";
+                                                BlocProvider.of<SettingBloc>(
+                                                        context)
+                                                    .add(SettingChange(
+                                                        config: config.copyWith(
+                                                            rankingType:
+                                                                rankType)));
+                                              },
+                                              behavior: HitTestBehavior.translucent,
+                                              child: Container(
+                                                  alignment: Alignment.center,
+                                                  child: CustomText(
+                                                      text: category,
+                                                      fontSize: 8.0,
+                                                      maxLines: 1,
+                                                      isEllipsis: true))),
+                                        );
+                                      },
+                                      itemCount: categoryList.length,
+                                      scrollDirection: Axis.horizontal,
+                                    ),
+                                  );
+                                },
+                              ),
+                            )
                           ],
                         ),
                       ),
@@ -138,7 +164,7 @@ class SettingScreen extends StatelessWidget {
                           children: [
                             CustomText(
                               text: "홈화면 자동 스크롤",
-                              fontSize: 20,
+                              fontSize: kSettingFontSize,
                               fontColor: Colors.black,
                             ),
                             Spacer(),
@@ -148,7 +174,7 @@ class SettingScreen extends StatelessWidget {
                               cornerRadius: 10.0,
                               activeBgColor: kBlue,
                               activeFgColor: Colors.white,
-                              inactiveBgColor: Colors.grey,
+                              inactiveBgColor: kDisabled,
                               inactiveFgColor: Colors.white,
                               labels: ['', ''],
                               icons: [
@@ -157,7 +183,10 @@ class SettingScreen extends StatelessWidget {
                               ],
                               onToggle: (index) {
                                 print("index $index");
-                                BlocProvider.of<SettingBloc>(context).add(SettingChange(config: config.copyWith(isAutoScroll: index == 0)));
+                                BlocProvider.of<SettingBloc>(context).add(
+                                    SettingChange(
+                                        config: config.copyWith(
+                                            isAutoScroll: index == 0)));
                               },
                             ),
                           ],
@@ -175,5 +204,5 @@ class SettingScreen extends StatelessWidget {
     );
   }
 
-  _isCheck(String rankType , String key) =>rankType.split(",").contains(key);
+  _isCheck(String rankType, String key) => rankType.split(",").contains(key);
 }

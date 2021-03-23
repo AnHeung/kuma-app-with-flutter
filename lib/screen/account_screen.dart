@@ -54,7 +54,7 @@ class AccountScreen extends StatelessWidget {
                         child: CustomText(
                           text: '계정',
                           fontColor: Colors.black,
-                          fontSize: 15,
+                          fontSize: kAccountFontSize,
                         )),
                     Container(
                         height: itemHeight,
@@ -63,7 +63,7 @@ class AccountScreen extends StatelessWidget {
                         child: CustomText(
                           text: '닉네임',
                           fontColor: Colors.grey,
-                          fontSize: 13,
+                          fontSize: kAccountFontSize,
                         )),
                     Container(
                         padding: EdgeInsets.only(
@@ -75,7 +75,7 @@ class AccountScreen extends StatelessWidget {
                           text: accountData.userName,
                           fontColor: kBlue,
                           fontWeight: FontWeight.bold,
-                          fontSize: 20,
+                          fontSize: kAccountTitleFontSize,
                         )),
                     Container(
                         height: itemHeight,
@@ -84,7 +84,7 @@ class AccountScreen extends StatelessWidget {
                         child: CustomText(
                           text: '이메일',
                           fontColor: Colors.grey,
-                          fontSize: 13,
+                          fontSize: kAccountFontSize,
                         )),
                     Container(
                         padding: EdgeInsets.only(
@@ -95,7 +95,7 @@ class AccountScreen extends StatelessWidget {
                         child: CustomText(
                           text: accountData.email,
                           fontColor: Colors.black,
-                          fontSize: 15,
+                          fontSize: kAccountFontSize,
                         )),
                     Container(
                       padding: EdgeInsets.only(
@@ -114,7 +114,7 @@ class AccountScreen extends StatelessWidget {
                         child: CustomText(
                           text: accountData.loginType,
                           fontColor: Colors.grey,
-                          fontSize: 13,
+                          fontSize: kAccountFontSize,
                         )),
                     Container(
                       child: Padding(
@@ -138,7 +138,7 @@ class AccountScreen extends StatelessWidget {
                                 child: CustomText(
                                   text: enumToString(accountData.socialType),
                                   fontColor: Colors.black,
-                                  fontSize: 15,
+                                  fontSize: kAccountFontSize,
                                 ))
                           ],
                         ),
