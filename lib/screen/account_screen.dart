@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/account/account_bloc.dart';
-import 'package:kuma_flutter_app/bloc/auth/auth_bloc.dart';
 import 'package:kuma_flutter_app/bloc/login/login_bloc.dart';
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
 import 'package:kuma_flutter_app/model/user_account.dart';
@@ -18,8 +17,6 @@ import 'package:kuma_flutter_app/widget/refresh_container.dart';
 class AccountScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
-    final double itemHeight = 50;
 
     return Scaffold(
           appBar: AppBar(
@@ -52,7 +49,7 @@ class AccountScreen extends StatelessWidget {
                         ),
                         alignment: Alignment.centerLeft,
                         color: Colors.black12,
-                        height: itemHeight,
+                        height: kAccountItemHeight,
                         width: double.infinity,
                         child: CustomText(
                           fontFamily: doHyunFont,
@@ -61,7 +58,7 @@ class AccountScreen extends StatelessWidget {
                           fontSize: kAccountFontSize,
                         )),
                     Container(
-                        height: itemHeight,
+                        height: kAccountItemHeight,
                         padding: EdgeInsets.only(left: 20),
                         alignment: Alignment.centerLeft,
                         child: CustomText(
@@ -75,7 +72,7 @@ class AccountScreen extends StatelessWidget {
                           left: 20,
                         ),
                         alignment: Alignment.centerLeft,
-                        height: itemHeight,
+                        height: kAccountItemHeight,
                         child: CustomText(
                           fontFamily: doHyunFont,
                           text: accountData.userName,
@@ -84,7 +81,7 @@ class AccountScreen extends StatelessWidget {
                           fontSize: kAccountTitleFontSize,
                         )),
                     Container(
-                        height: itemHeight,
+                        height: kAccountItemHeight,
                         padding: EdgeInsets.only(left: 20),
                         alignment: Alignment.centerLeft,
                         child: CustomText(
@@ -98,7 +95,7 @@ class AccountScreen extends StatelessWidget {
                           left: 20,
                         ),
                         alignment: Alignment.centerLeft,
-                        height: itemHeight,
+                        height: kAccountItemHeight,
                         child: CustomText(
                           fontFamily: doHyunFont,
                           text: accountData.email,
@@ -106,12 +103,13 @@ class AccountScreen extends StatelessWidget {
                           fontSize: kAccountFontSize,
                         )),
                     Container(
+                      margin: EdgeInsets.only(top:10,bottom: 10),
                       padding: EdgeInsets.only(
                         left: 20,
                       ),
                       alignment: Alignment.centerLeft,
                       color: Colors.black12,
-                      height: itemHeight,
+                      height: kAccountItemHeight,
                       width: double.infinity,
                       child:  CustomText(
                         fontFamily: doHyunFont,
@@ -121,7 +119,7 @@ class AccountScreen extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      height: itemHeight,
+                      height: kAccountItemHeight,
                         padding: EdgeInsets.only(left: 20),
                         alignment: Alignment.centerLeft,
                         child: CustomText(
@@ -150,7 +148,7 @@ class AccountScreen extends StatelessWidget {
                                   left: 20,
                                 ),
                                 alignment: Alignment.centerLeft,
-                                height: itemHeight,
+                                height: kAccountItemHeight,
                                 child: CustomText(
                                   fontFamily: doHyunFont,
                                   text: enumToString(accountData.loginType),
@@ -162,12 +160,13 @@ class AccountScreen extends StatelessWidget {
                       ),
                     ),
                     Container(
+                      margin: EdgeInsets.only(top:10, bottom: 10),
                       padding: EdgeInsets.only(
                         left: 20,
                       ),
                       alignment: Alignment.centerLeft,
                       color: Colors.black12,
-                      height: itemHeight,
+                      height: kAccountItemHeight,
                       width: double.infinity,
                       child: Text('계정탈퇴 및 초기화'),
                     ),
@@ -183,7 +182,7 @@ class AccountScreen extends StatelessWidget {
                               left: 20,
                             ),
                             alignment: Alignment.centerLeft,
-                            height: itemHeight,
+                            height: kAccountItemHeight,
                             child: CustomText(
                               fontFamily: doHyunFont,
                               text: '탈퇴하기',

@@ -74,6 +74,7 @@ const double kAnimationDetailTitleFontSize = 25;
 //계정페이지
 const double kAccountFontSize = 15;
 const double kAccountTitleFontSize = 20;
+const double kAccountItemHeight = 40;
 
 //로그인 페이지
 const double kLoginFontSize = 12;
