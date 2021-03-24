@@ -6,12 +6,14 @@ import 'package:kuma_flutter_app/bloc/login/login_bloc.dart';
 import 'package:kuma_flutter_app/enums/login_status.dart';
 import 'package:kuma_flutter_app/enums/register_status.dart';
 import 'package:kuma_flutter_app/model/api/social_user.dart';
+import 'package:kuma_flutter_app/repository/email_client.dart';
+import 'package:kuma_flutter_app/repository/google_client.dart';
 import 'package:kuma_flutter_app/repository/kakao_client.dart';
 import 'package:kuma_flutter_app/repository/social_client.dart';
 import 'package:kuma_flutter_app/util/sharepref_util.dart';
 
 class FirebaseClient {
-  SocialClient socialClient;
+  LoginClient loginClient;
   FirebaseAuth _firebaseAuth;
 
   FirebaseClient({FirebaseAuth firebaseAuth})
@@ -25,27 +27,32 @@ class FirebaseClient {
     return FirebaseAuth.instance.authStateChanges();
   }
 
-  Future<Map<LoginStatus, SocialUserData>> login(
-      {SocialType type, BuildContext context}) async {
-    SocialUserData userData = SocialUserData.empty;
+  Future<Map<LoginStatus, LoginUserData>> login(
+      {LoginType type, BuildContext context}) async {
+    LoginUserData userData = LoginUserData.empty;
 
-    try {
       switch (type) {
-        case SocialType.KAKAO:
-          socialClient = KakaoClient();
-          userData = await socialClient.login();
+        case LoginType.KAKAO:
+          loginClient = KakaoClient();
           break;
-        case SocialType.GOOGLE:
-          print('소셜 타입 구글');
+        case LoginType.GOOGLE:
+          loginClient = GoogleClient();
           break;
-        case SocialType.EMAIL:
-          print('소셜 타입 이메일');
+        case LoginType.EMAIL:
+          loginClient = EmailClient();
           break;
-        case SocialType.UNKNOWN:
+        default:
           return {LoginStatus.Failure: userData};
       }
-      if (userData == null) return {LoginStatus.CheckEmail: userData};
-      print('userData $userData');
+      userData = await loginClient.login();
+      if (userData == null) return {LoginStatus.Failure: userData};
+      if (userData != null && userData.uniqueId == null && userData.loginType == LoginType.EMAIL) return {LoginStatus.NeedLoginScreen: userData};
+
+      return await firebaseSignIn(userData: userData);
+  }
+
+  Future<Map<LoginStatus, LoginUserData>> firebaseSignIn({LoginUserData userData}) async {
+    try {
       await _firebaseAuth
           .signInWithEmailAndPassword(
               email: userData.email, password: userData.uniqueId)
@@ -78,34 +85,36 @@ class FirebaseClient {
 
   Future<bool> logout() async {
     try {
-      SocialUserData data = await getUserData();
-      if (data.socialType != null) {
-        switch (data.socialType) {
-          case SocialType.KAKAO:
-            socialClient = KakaoClient();
+      LoginUserData data = await getUserData();
+      if (data.loginType != null) {
+        switch (data.loginType) {
+          case LoginType.KAKAO:
+            loginClient = KakaoClient();
             break;
-          case SocialType.GOOGLE:
+          case LoginType.GOOGLE:
+            loginClient = GoogleClient();
             break;
-          case SocialType.EMAIL:
+          case LoginType.EMAIL:
+            loginClient = EmailClient();
             break;
-          case SocialType.UNKNOWN:
+          default:
             print('로그아웃 실패');
             return false;
         }
-        await socialClient.logout();
+        await loginClient?.logout();
       }
-      return await _firebaseAuth.signOut()
-            .then((res)async=>await removeUserData())
-            .then((res)=>true)
-            .catchError((e) async{
-         print("logout  User Exception $e");
-          await _reAuthenticateUser()
-              .then((res) async {
-                 await logout();
-              }).catchError((e) {
-                 var errorCode = e.code;
-               var errMsg = e.message;
-               throw Exception("logout 오류 발생 :$errMsg 코드:$errorCode}");
+      return await _firebaseAuth
+          .signOut()
+          .then((res) async => await removeUserData())
+          .then((res) => true)
+          .catchError((e) async {
+        print("logout  User Exception $e");
+        await _reAuthenticateUser().then((res) async {
+          await logout();
+        }).catchError((e) {
+          var errorCode = e.code;
+          var errMsg = e.message;
+          throw Exception("logout 오류 발생 :$errMsg 코드:$errorCode}");
         });
       });
     } on Exception catch (e) {
@@ -117,19 +126,18 @@ class FirebaseClient {
   Future<bool> withdraw() async {
     try {
       return await _firebaseAuth.currentUser.delete().then((res) async {
-        await removeUserData();
+        await removeAllData();
         print('계정 삭제 성공');
         return true;
       }).catchError((err) async {
         print("withdraw  User Exception $err");
-        await _reAuthenticateUser()
-              .then((res) async {
-                await withdraw();
-             }).catchError((e) {
-              var errorCode = e.code;
-              var errMsg = e.message;
-              throw Exception("회원탈퇴 오류 발생 :$errMsg 코드:$errorCode}");
-           });
+        await _reAuthenticateUser().then((res) async {
+          await withdraw();
+        }).catchError((e) {
+          var errorCode = e.code;
+          var errMsg = e.message;
+          throw Exception("회원탈퇴 오류 발생 :$errMsg 코드:$errorCode}");
+        });
       });
     } on Exception catch (e) {
       print(e);
@@ -138,14 +146,13 @@ class FirebaseClient {
   }
 
   _reAuthenticateUser() async {
-    SocialUserData userData = await getUserData();
+    LoginUserData userData = await getUserData();
     var credential = EmailAuthProvider.credential(
         email: userData.email, password: userData.uniqueId);
-
     return _firebaseAuth.currentUser.reauthenticateWithCredential(credential);
   }
 
-  Future<RegisterStatus> register({SocialUserData userData}) async {
+  Future<RegisterStatus> register({LoginUserData userData}) async {
     try {
       await _firebaseAuth
           .createUserWithEmailAndPassword(

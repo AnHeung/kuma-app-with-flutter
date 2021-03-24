@@ -84,7 +84,7 @@ class AnimationMainAppbar extends StatelessWidget {
                 fit: StackFit.expand,
                 children: [
                   Container(
-                    color: Colors.white,
+                    color: kWhite,
                     child: PageView(
                       controller: controller,
                       scrollDirection: Axis.horizontal,
@@ -132,7 +132,10 @@ class AnimationMainAppbar extends StatelessWidget {
             padding: EdgeInsets.only(bottom: 30 , left: 20),
             alignment: Alignment.bottomLeft,
             child: CustomText(
+              fontColor: Colors.white,
               maxLines: 1,
+              isEllipsis: true,
+              fontFamily: doHyunFont,
               fontWeight: FontWeight.w700,
               fontSize:kAnimationTitleFontSize,
               text: item.title,

@@ -1,8 +1,8 @@
 import 'package:kuma_flutter_app/model/api/social_user.dart';
 
-abstract class SocialClient {
+abstract class LoginClient {
 
-  Future<SocialUserData> login();
+  Future<LoginUserData> login();
 
   logout();
 

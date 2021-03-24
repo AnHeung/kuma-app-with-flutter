@@ -18,7 +18,7 @@ class RefreshContainer extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                child: CustomText(text: "다시 시도해주세요", fontSize: 10, fontColor: kBlue,),
+                child: CustomText(text: "다시 시도해주세요", fontSize: 10.0, fontColor: kBlue,),
               ),
               Container(
                 color: Colors.transparent,

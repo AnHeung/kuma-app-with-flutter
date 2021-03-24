@@ -4,15 +4,15 @@ import 'package:kuma_flutter_app/model/setting_config.dart';
 import 'package:kuma_flutter_app/util/string_util.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-saveUserData({SocialUserData userData}) async {
+saveUserData({LoginUserData userData}) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs.setString("id", userData.email);
   prefs.setString("pw", userData.uniqueId);
   prefs.setString("userName", userData.userName);
-  prefs.setString("socialType", enumToString(userData.socialType));
+  prefs.setString("loginType", enumToString(userData.loginType));
 }
 
- appFirstLaunch() async{
+appFirstLaunch() async{
   SharedPreferences prefs = await SharedPreferences.getInstance();
   return prefs.getBool("firstLaunch") ?? true;
 }
@@ -57,15 +57,23 @@ changeSettingConfig({SettingConfig config}) async{
 
 removeUserData() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.remove("id");
+  prefs.remove("pw");
+  prefs.remove("userName");
+  prefs.remove("loginType");
+}
+
+removeAllData() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs.clear();
 }
 
 getUserData()async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  return SocialUserData(uniqueId:prefs.getString("pw"),email:prefs.getString("id") , socialType: enumFromString(prefs.getString("socialType"), SocialType.values));
+  return LoginUserData(uniqueId:prefs.getString("pw"),email:prefs.getString("id") , loginType: enumFromString(prefs.getString("loginType"), LoginType.values));
 }
 
 printUserData() async{
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  print('userId : ${prefs.getString("id")}, userPw :${prefs.getString("pw")}, socialType: ${prefs.getString("socialType")} userName:${prefs.getString("userName")} isAutoScroll : ${prefs.getBool("autoScroll")}');
+  print('userId : ${prefs.getString("id")}, userPw :${prefs.getString("pw")}, loginType: ${prefs.getString("loginType")} userName:${prefs.getString("userName")} isAutoScroll : ${prefs.getBool("autoScroll")}');
 }

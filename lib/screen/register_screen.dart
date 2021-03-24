@@ -24,7 +24,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
 
-    SocialUserData userData = ModalRoute.of(context).settings.arguments;
+    LoginUserData userData = ModalRoute.of(context).settings.arguments;
 
     return Scaffold(
       appBar: AppBar(
@@ -120,7 +120,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           if(allTermCheck){
                             BlocProvider.of<RegisterBloc>(context).add(UserRegister(userData: userData))
                           }
-                        }, child: CustomText(text:'완료', fontSize: kRegisterTitleFontSize,),)), )
+                        }, child: CustomText(fontColor:kWhite, text:'완료', fontSize: kRegisterTitleFontSize, fontFamily: doHyunFont,),)), )
 
                     ],
                   ),

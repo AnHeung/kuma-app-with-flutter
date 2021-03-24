@@ -3,13 +3,12 @@ import 'package:kuma_flutter_app/bloc/login/login_bloc.dart';
 import 'package:kuma_flutter_app/model/api/social_user.dart';
 import 'package:kuma_flutter_app/repository/social_client.dart';
 
-class KakaoClient extends SocialClient{
+class KakaoClient extends LoginClient{
 
   static final KakaoClient _instance = KakaoClient._();
 
-  factory KakaoClient(){
-    return _instance;
-  }
+  factory KakaoClient()=> _instance;
+
 
   KakaoClient._(){
     KakaoContext.clientId = "c2de908819754be96af4d46766eaa8eb";
@@ -19,7 +18,7 @@ class KakaoClient extends SocialClient{
   @override
   login() async{
     try {
-      SocialUserData user;
+      LoginUserData user;
       if(await isKakaoTalkInstalled()) user = await loginWithKakaoTalk();
       else user =  await loginWithKakao();
       return user;
@@ -32,7 +31,7 @@ class KakaoClient extends SocialClient{
   _issueAccessToken(String authCode) async{
     var token = await AuthApi.instance.issueAccessToken(authCode);
     AccessTokenStore.instance.toStore(token);
-    SocialUserData kakaoUserInfo = await getKakaoAccountInfo();
+    LoginUserData kakaoUserInfo = await getKakaoAccountInfo();
     if(kakaoUserInfo!= null) return kakaoUserInfo;
   }
 
@@ -46,7 +45,7 @@ class KakaoClient extends SocialClient{
     }
   }
 
-  Future<SocialUserData> getKakaoAccountInfo()async{
+  Future<LoginUserData> getKakaoAccountInfo()async{
     var user = await UserApi.instance.me();
     if(user.kakaoAccount!= null){
       if(user.kakaoAccount.email == null){
@@ -54,7 +53,7 @@ class KakaoClient extends SocialClient{
         return null;
       }else{
         print('email : ${user.kakaoAccount.email} unique Id :${user.id} userNick : ${user.kakaoAccount.profile.nickname}');
-        return SocialUserData(uniqueId: user.id.toString(), email: user.kakaoAccount.email ,userName: user.kakaoAccount.profile.nickname, socialType: SocialType.KAKAO);
+        return LoginUserData(uniqueId: user.id.toString(), email: user.kakaoAccount.email ,userName: user.kakaoAccount.profile.nickname, loginType: LoginType.KAKAO);
       }
     }
     return null;
@@ -71,7 +70,7 @@ class KakaoClient extends SocialClient{
 
   @override
   logout() async{
-    await UserApi.instance.unlink();
+    await UserApi.instance?.unlink();
   }
 
 }

@@ -9,6 +9,7 @@ import 'package:kuma_flutter_app/repository/api_repository.dart';
 import 'package:meta/meta.dart';
 
 part 'login_event.dart';
+
 part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
@@ -17,45 +18,52 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc({this.repository}) : super(LoginState._());
 
   @override
-  Stream<LoginState> mapEventToState(
-    LoginEvent event,
-  ) async* {
+  Stream<LoginState> mapEventToState(LoginEvent event,) async* {
     if (event is Login) {
       yield* _mapToLogin(event);
+    } else if (event is DirectLogin) {
+      yield* _mapToDirectLogin(event);
     }
   }
 
-  Stream<LoginState> _mapToLogin(Login event) async* {
-    try {
-      yield LoginState.loading();
-      Map<LoginStatus, SocialUserData> loginData = await repository.login(context: event.context, type: event.type);
+  Stream<LoginState> _mapToDirectLogin(DirectLogin event) async* {
+    yield LoginState.loading();
+    Map<LoginStatus, LoginUserData> loginData = await repository.firebaseSignIn(
+        userData: event.userData);
+    yield getLoginStatus(loginData);
+  }
 
-      LoginStatus status = loginData.keys.first;
-      SocialUserData data = loginData.values.first;
+  Stream<LoginState> _mapToLogin(Login event) async* {
+    yield LoginState.loading();
+    Map<LoginStatus, LoginUserData> loginData = await repository.login(
+        context: event.context, type: event.type);
+    yield getLoginStatus(loginData);
+  }
+
+  LoginState getLoginStatus(Map<LoginStatus, LoginUserData> loginData)  {
+    try {
+      final LoginStatus status = loginData.keys.first;
+      final LoginUserData data = loginData.values.first;
 
       switch (status) {
         case LoginStatus.NeedRegister:
-          yield LoginState.needRegister(userData: data);
-          break;
+          return LoginState.needRegister(userData: data);
         case LoginStatus.LoginSuccess:
-          yield LoginState.success();
-          break;
+          return LoginState.success();
         case LoginStatus.WrongPassword:
-          yield LoginState.wrongPassword();
-          break;
+          return LoginState.wrongPassword();
         case LoginStatus.Failure:
-          yield LoginState.failure();
-          break;
+          return LoginState.failure();
         case LoginStatus.CheckEmail:
-          yield LoginState.checkEmail();
-          break;
+          return LoginState.checkEmail();
+        case LoginStatus.NeedLoginScreen:
+          return LoginState.needLoginScreen();
         default:
-          yield LoginState._();
-          break;
+          return LoginState._();
       }
-    }on Exception catch(e){
+    } on Exception catch (e) {
       print('_mapToLogin Error:$e}');
-      yield LoginState.failure();
+      return LoginState.failure();
     }
   }
 }

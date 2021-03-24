@@ -30,6 +30,5 @@ class SettingLoadSuccess extends SettingState {
 
 class SettingChangeComplete extends SettingState {}
 
-class SettingChange extends SettingState {}
 
 

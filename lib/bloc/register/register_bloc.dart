@@ -28,7 +28,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
 
   Stream<RegisterState> _mapToUserRegister(UserRegister event) async*{
     yield RegisterState.loading();
-    SocialUserData userData = event.userData;
+    LoginUserData userData = event.userData;
     print('넘어온 userData :$userData');
 
     if(userData!= null && userData.uniqueId.isNotEmpty && userData.email.isNotEmpty){

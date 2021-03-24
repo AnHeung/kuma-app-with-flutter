@@ -40,17 +40,12 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
   Stream<AccountState> _mapToAccountLoad() async* {
     yield AccountLoadInProgress();
     User user = repository.user;
-    SocialUserData data = await getUserData();
-    String loginType = (data.socialType != SocialType.UNKNOWN &&
-            data.socialType != SocialType.EMAIL)
-        ? "소셜"
-        : "이메일";
+    LoginUserData data = await getUserData();
 
     yield AccountLoadSuccess(
         accountData: UserAccount(
             email: user.email,
             userName: user.displayName.isEmpty ? user.email : user.displayName,
-            socialType: data.socialType,
-            loginType: loginType));
+            loginType: data.loginType));
   }
 }

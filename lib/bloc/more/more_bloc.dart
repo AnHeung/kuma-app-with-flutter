@@ -19,14 +19,14 @@ class MoreBloc extends Bloc<MoreEvent, MoreState> {
     MoreEvent event,
   ) async* {
     if(event is MoreSignOut){
-      yield* _mapToSignOut();
+      // yield* _mapToSignOut();
     }
   }
 
-  Stream<MoreState> _mapToSignOut() async*{
-    yield MoreLoadingInProgress();
-    bool logoutSuccess = await repository.logout();
-    if(logoutSuccess) yield MoreNeedLogin();
-    else yield MoreLoadFailure();
-  }
+  // Stream<MoreState> _mapToSignOut() async*{
+  //   yield MoreLoadingInProgress();
+  //   bool logoutSuccess = await repository.logout();
+  //   if(logoutSuccess) yield MoreNeedLogin();
+  //   else yield MoreLoadFailure();
+  // }
 }

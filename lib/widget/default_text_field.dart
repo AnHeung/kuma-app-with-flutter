@@ -7,21 +7,22 @@ class DefaultTextField extends StatelessWidget {
   final TextEditingController controller;
   final int maxLines;
   final bool isObscureText;
+  final FormFieldValidator validator;
 
   DefaultTextField(
       {this.title,
       this.textSize,
       this.controller,
       this.maxLines,
-      this.isObscureText});
+      this.isObscureText, this.validator});
 
   @override
   Widget build(BuildContext context) {
 
-
-    return TextField(
-
-      style: TextStyle(fontSize: textSize ?? 12),
+    return TextFormField(
+      autofocus: true,
+      validator: validator,
+      style: TextStyle(fontSize: textSize ?? 13),
       controller: controller,
       textAlignVertical: TextAlignVertical.center,
       textAlign: TextAlign.left,

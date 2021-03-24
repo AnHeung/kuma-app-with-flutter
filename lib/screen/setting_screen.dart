@@ -24,12 +24,7 @@ class SettingScreen extends StatelessWidget {
         BlocProvider.of<SettingBloc>(context).add(SettingScreenExit());
         return true;
       },
-      child: BlocListener<SettingBloc, SettingState>(
-        listenWhen: (prev,cur)=>cur is SettingChange,
-        listener: (context,state){
-        if(state is SettingChange) ScaffoldMessenger.of(context).showSnackBar(CustomSnackBar(msg: "설정값 변경 성공",));
-      },
-      child:  Scaffold(
+      child: Scaffold(
         appBar: AppBar(
           title: Text('설정'),
         ),
@@ -145,6 +140,8 @@ class SettingScreen extends StatelessWidget {
                                               child: Container(
                                                   alignment: Alignment.center,
                                                   child: CustomText(
+                                                    fontFamily: doHyunFont,
+                                                    fontColor: kWhite,
                                                       text: category,
                                                       fontSize: 8.0,
                                                       maxLines: 1,
@@ -203,8 +200,7 @@ class SettingScreen extends StatelessWidget {
                 );
               },
             )),
-      ),)
-    );
+      ),);
   }
 
   _isCheck(String rankType, String key) => rankType.split(",").contains(key);

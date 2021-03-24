@@ -38,7 +38,6 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
 
   Stream<SettingState> _mapToSettingChange(ChangeSetting event) async*{
     await changeSettingConfig(config: event.config);
-    yield SettingChange();
     yield SettingLoadSuccess(config: event.config);
   }
 }

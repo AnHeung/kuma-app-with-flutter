@@ -25,7 +25,7 @@ class CustomText extends StatelessWidget {
     fontWeight,
     textAlign,
   })  : this.fontSize = fontSize ?? 13.0,
-        this.fontColor = fontColor ?? Colors.white,
+        this.fontColor = fontColor ?? kBlack,
         this.fontFamily = fontFamily ?? nanumGothicFont,
         this.isEllipsis = isEllipsis ?? false,
         this.isDynamic = isDynamic ?? false,

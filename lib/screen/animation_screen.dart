@@ -25,6 +25,7 @@ class _AnimationScreenState extends State<AnimationScreen> {
   final ScrollController _scrollController = ScrollController();
   final scrollbarExpandedHeight = 450;
   double appbarOpacity = 0;
+  Color appIconColors = kWhite;
   VoidCallback _scrollListener;
 
 
@@ -41,18 +42,22 @@ class _AnimationScreenState extends State<AnimationScreen> {
     if(scrollPosition == 0){
       setState(() {
         appbarOpacity = 0;
+        appIconColors = kWhite;
       });
-    }else if(scrollPosition > 100 && scrollPosition <150){
+    }else if(scrollPosition > 50 && scrollPosition <100){
       setState(() {
         appbarOpacity = 0.5;
+        appIconColors = Colors.black45;
       });
-    }else if(scrollPosition > 300 && scrollPosition <350){
+    }else if(scrollPosition > 200 && scrollPosition <250){
       setState(() {
         appbarOpacity = 0.7;
+        appIconColors = Colors.black87;
       });
     } else if(scrollPosition > 400 && scrollPosition <500){
       setState(() {
         appbarOpacity = 1;
+        appIconColors = kBlack;
       });
     }
   }
@@ -130,7 +135,7 @@ class _AnimationScreenState extends State<AnimationScreen> {
       actions: <Widget>[
         IconButton(
           color: Colors.white,
-          icon:  Opacity(opacity:appbarOpacity ,child: Icon(Icons.notifications_none , color: kBlack,),),
+          icon:  Icon(Icons.notifications_none , color: appIconColors,),
           tooltip: "알림",
           onPressed: () => {print('알림')},
         ),

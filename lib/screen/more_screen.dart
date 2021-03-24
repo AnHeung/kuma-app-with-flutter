@@ -139,6 +139,8 @@ class MoreScreen extends StatelessWidget {
               child: TextButton(
                   onPressed: () => {Navigator.pushNamed(context, Routes.LOGIN)},
                   child: CustomText(
+                    fontColor: kWhite,
+                    fontFamily: doHyunFont,
                     text: "로그인/회원가입",
                     fontSize: kMoreLoginFontSize,
                   )),

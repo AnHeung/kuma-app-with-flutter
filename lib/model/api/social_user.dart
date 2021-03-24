@@ -1,14 +1,14 @@
 import 'package:kuma_flutter_app/bloc/login/login_bloc.dart';
 
-class SocialUserData{
+class LoginUserData{
 
  final String uniqueId;
  final  String email;
  final String userName;
- final SocialType socialType;
+ final LoginType loginType;
 
- const SocialUserData({this.uniqueId , this.email, this.userName, this.socialType});
+ const LoginUserData({this.uniqueId , this.email, this.userName, this.loginType});
 
- static const empty = SocialUserData(email: '', uniqueId: '', userName: '', socialType:SocialType.UNKNOWN);
+ static const empty = LoginUserData(email: '', uniqueId: '', userName: '', loginType:LoginType.UNKNOWN);
 
 }

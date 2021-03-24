@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/login/login_bloc.dart';
 import 'package:kuma_flutter_app/bloc/more/more_bloc.dart';
 import 'package:kuma_flutter_app/bloc/tab/tab_cubit.dart';
@@ -21,7 +22,7 @@ class HomeScreen extends StatelessWidget {
         drawer: SafeArea(
           child: Drawer(
             child: Container(
-              color: Colors.white,
+              color: kWhite,
             ),
           ),
         ),

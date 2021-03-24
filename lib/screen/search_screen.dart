@@ -7,6 +7,7 @@ import 'package:kuma_flutter_app/model/item/animation_main_item.dart';
 import 'package:kuma_flutter_app/model/item/animation_search_item.dart';
 import 'package:kuma_flutter_app/routes/routes.dart';
 import 'package:kuma_flutter_app/util/view_utils.dart';
+import 'package:kuma_flutter_app/widget/custom_text.dart';
 import 'package:kuma_flutter_app/widget/loading_indicator.dart';
 import 'package:kuma_flutter_app/widget/search_history_item.dart';
 import 'package:kuma_flutter_app/widget/search_image_item.dart';
@@ -20,7 +21,7 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
 
   Icon _searchIcon = Icon(Icons.search);
-  Widget _appBarTitle = Text('검색페이지');
+  Widget _appBarTitle = CustomText(text:'검색페이지', fontColor: kWhite,fontFamily: doHyunFont, fontSize: 17.0,);
   List<AnimationSearchItem> searchItemList;
   List<AnimationSearchItem> searchHistoryList;
 
@@ -102,25 +103,27 @@ class _SearchScreenState extends State<SearchScreen> {
 
   _initialSearchBar() {
     _searchIcon = Icon(Icons.search);
-    _appBarTitle = Text('검색페이지');
+    _appBarTitle = CustomText(text:'검색페이지', fontColor: kWhite,fontFamily: doHyunFont, fontWeight: FontWeight.w700, fontSize: 17.0,);
     searchItemList.clear();
   }
 
   _clearSearchBar() {
-    _appBarTitle = Text("");
+    _appBarTitle = CustomText(text:'', fontColor: kWhite,fontFamily: doHyunFont, fontWeight: FontWeight.w700, fontSize: 17.0,);
     searchItemList.clear();
   }
 
   _setSearchBar(BuildContext context) {
     _searchIcon = Icon(Icons.close);
     _appBarTitle = TextField(
+      style: TextStyle(color: kWhite),
       onChanged: (value) {
         print('value:$value');
         BlocProvider.of<SearchBloc>(context)
             .add(SearchQueryUpdate(searchQuery: value));
           },
       autofocus: true,
-      decoration: InputDecoration(hintText: '검색...'),
+      decoration: InputDecoration(hintText: '검색...',hintStyle: TextStyle(color: kWhite), ),
+      cursorColor: kWhite,
     );
   }
 

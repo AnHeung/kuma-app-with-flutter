@@ -14,7 +14,7 @@ abstract class RegisterEvent extends Equatable{
 
 class UserRegister extends RegisterEvent{
 
-  final SocialUserData userData;
+  final LoginUserData userData;
 
   const UserRegister({this.userData});
 

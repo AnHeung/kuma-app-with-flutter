@@ -1,20 +1,20 @@
 part of 'login_bloc.dart';
 
-enum SocialType{ KAKAO ,GOOGLE , EMAIL,  UNKNOWN}
+enum LoginType{ KAKAO ,GOOGLE , EMAIL,  UNKNOWN}
 
-extension SocialTypeExtension on SocialType{
+extension SocialTypeExtension on LoginType{
 
   String get iconRes {
 
     switch(this){
-      case SocialType.KAKAO:
+      case LoginType.KAKAO:
         return "assets/images/kakao_talk_logo_color.png";
-      case SocialType.GOOGLE:
+      case LoginType.GOOGLE:
         return "assets/images/google_icon.png";
-      case SocialType.EMAIL:
-        return "assets/images/kakao_talk_logo.png";
-      case SocialType.UNKNOWN:
-        return "assets/images/kakao_talk_logo.png";
+      case LoginType.EMAIL:
+        return "assets/images/email_icon.png";
+      case LoginType.UNKNOWN:
+        return "assets/images/no_image.png";
 
     }
 
@@ -31,7 +31,7 @@ abstract class LoginEvent extends Equatable {
 
 class Login extends LoginEvent {
 
-  final SocialType type;
+  final LoginType type;
   final BuildContext context;
 
   const Login({this.type, this.context});
@@ -40,3 +40,13 @@ class Login extends LoginEvent {
   List<Object> get props => [type];
 }
 
+
+class DirectLogin extends LoginEvent {
+
+  final LoginUserData userData;
+
+  const DirectLogin({this.userData});
+
+  @override
+  List<Object> get props => [userData];
+}

@@ -4,10 +4,9 @@ class UserAccount {
 
   final String email;
   final String userName;
-  final String loginType;
-  final SocialType socialType;
+  final LoginType loginType;
 
-  UserAccount({this.email, this.userName, this.loginType, this.socialType});
+  UserAccount({this.email, this.userName, this.loginType});
 
 
 }

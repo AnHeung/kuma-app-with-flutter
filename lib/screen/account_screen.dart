@@ -21,7 +21,6 @@ class AccountScreen extends StatelessWidget {
 
     final double itemHeight = 50;
 
-
     return Scaffold(
           appBar: AppBar(
             title: Text('계정 설정'),
@@ -56,6 +55,7 @@ class AccountScreen extends StatelessWidget {
                         height: itemHeight,
                         width: double.infinity,
                         child: CustomText(
+                          fontFamily: doHyunFont,
                           text: '계정',
                           fontColor: Colors.black,
                           fontSize: kAccountFontSize,
@@ -65,6 +65,7 @@ class AccountScreen extends StatelessWidget {
                         padding: EdgeInsets.only(left: 20),
                         alignment: Alignment.centerLeft,
                         child: CustomText(
+                          fontFamily: doHyunFont,
                           text: '닉네임',
                           fontColor: Colors.grey,
                           fontSize: kAccountFontSize,
@@ -76,6 +77,7 @@ class AccountScreen extends StatelessWidget {
                         alignment: Alignment.centerLeft,
                         height: itemHeight,
                         child: CustomText(
+                          fontFamily: doHyunFont,
                           text: accountData.userName,
                           fontColor: kBlue,
                           fontWeight: FontWeight.bold,
@@ -86,6 +88,7 @@ class AccountScreen extends StatelessWidget {
                         padding: EdgeInsets.only(left: 20),
                         alignment: Alignment.centerLeft,
                         child: CustomText(
+                          fontFamily: doHyunFont,
                           text: '이메일',
                           fontColor: Colors.grey,
                           fontSize: kAccountFontSize,
@@ -97,6 +100,7 @@ class AccountScreen extends StatelessWidget {
                         alignment: Alignment.centerLeft,
                         height: itemHeight,
                         child: CustomText(
+                          fontFamily: doHyunFont,
                           text: accountData.email,
                           fontColor: Colors.black,
                           fontSize: kAccountFontSize,
@@ -109,14 +113,22 @@ class AccountScreen extends StatelessWidget {
                       color: Colors.black12,
                       height: itemHeight,
                       width: double.infinity,
-                      child: Text('로그인 타입'),
+                      child:  CustomText(
+                        fontFamily: doHyunFont,
+                        text: '로그인 타입',
+                        fontColor: kBlack,
+                        fontSize: kAccountFontSize,
+                      ),
                     ),
                     Container(
                       height: itemHeight,
                         padding: EdgeInsets.only(left: 20),
                         alignment: Alignment.centerLeft,
                         child: CustomText(
-                          text: accountData.loginType,
+                          fontFamily: doHyunFont,
+                          text: (accountData.loginType != LoginType.UNKNOWN && accountData.loginType != LoginType.EMAIL)
+                              ? "소셜"
+                              : "이메일",
                           fontColor: Colors.grey,
                           fontSize: kAccountFontSize,
                         )),
@@ -130,7 +142,7 @@ class AccountScreen extends StatelessWidget {
                               height: 30,
                               child: ImageItem(
                                 type: ImageShapeType.CIRCLE,
-                                imgRes: accountData.socialType.iconRes,
+                                imgRes: accountData.loginType.iconRes,
                               ),
                             ),
                             Container(
@@ -140,7 +152,8 @@ class AccountScreen extends StatelessWidget {
                                 alignment: Alignment.centerLeft,
                                 height: itemHeight,
                                 child: CustomText(
-                                  text: enumToString(accountData.socialType),
+                                  fontFamily: doHyunFont,
+                                  text: enumToString(accountData.loginType),
                                   fontColor: Colors.black,
                                   fontSize: kAccountFontSize,
                                 ))
@@ -172,6 +185,7 @@ class AccountScreen extends StatelessWidget {
                             alignment: Alignment.centerLeft,
                             height: itemHeight,
                             child: CustomText(
+                              fontFamily: doHyunFont,
                               text: '탈퇴하기',
                               fontColor: Colors.red[300],
                             ))),

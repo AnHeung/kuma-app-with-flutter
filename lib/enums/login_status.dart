@@ -1,6 +1,6 @@
 
 
-enum LoginStatus {Initial , NeedRegister , CheckEmail , LoginSuccess, WrongPassword, Failure , Loading}
+enum LoginStatus {Initial , NeedRegister , CheckEmail , LoginSuccess, NeedLoginScreen,  WrongPassword, Failure , Loading}
 
 
 extension LoginStatusExtension on LoginStatus{
@@ -19,6 +19,8 @@ extension LoginStatusExtension on LoginStatus{
         return '회원가입 필요';
       case LoginStatus.Failure:
         return '로그인 실패';
+      case LoginStatus.NeedLoginScreen:
+        return "로그인 필요";
       default:
         return "로그인 실패";
     }

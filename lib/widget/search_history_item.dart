@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/search_history/search_history_bloc.dart';
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
 import 'package:kuma_flutter_app/model/item/animation_main_item.dart';
@@ -57,6 +58,10 @@ class SearchHistoryItem extends StatelessWidget {
                             width: 90,
                             height: 90,
                             child: CustomText(
+                              fontFamily: doHyunFont,
+                              fontSize: 10.0,
+                              textAlign: TextAlign.center,
+                              fontColor: kWhite,
                               text: historyItem.title,
                               maxLines: 2,
                               isEllipsis: true,

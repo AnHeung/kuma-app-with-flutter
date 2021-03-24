@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
 import 'package:kuma_flutter_app/enums/image_type.dart';
 import 'package:kuma_flutter_app/widget/image_item.dart';
@@ -39,7 +40,7 @@ class PageState extends State<Pages>{
                 child: Center(
                     child: Text('This is Widget - 2',
                       style: TextStyle(fontSize: 25,
-                          color: Colors.white),))
+                          color: kWhite),))
             ),
 
             Container(
@@ -47,7 +48,7 @@ class PageState extends State<Pages>{
                 child: Center(
                     child: Text('This is Widget - 3',
                       style: TextStyle(fontSize: 25,
-                          color: Colors.white),))
+                          color: kWhite),))
             ),
 
           ],

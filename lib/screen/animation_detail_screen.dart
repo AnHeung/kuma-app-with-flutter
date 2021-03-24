@@ -106,25 +106,25 @@ class AnimationDetailScreen extends StatelessWidget {
                       children: [
                         _buildTopContainerItem(
                             text: "${detailItem.title}",
-                            fontSize: 17,
+                            fontSize: 17.0,
                             fontWeight: FontWeight.w700),
                         _buildTopContainerItem(
                             text: "(${detailItem.startSeason})",
-                            fontSize: 15,
+                            fontSize: 15.0,
                             fontWeight: FontWeight.w700),
                         _buildTopContainerItem(
                           text: detailItem.rank != null
                               ? '랭킹:${detailItem.rank}위'
                               : "랭킹:기록없음",
-                          fontSize: 13,
+                          fontSize: 13.0,
                         ),
                         _buildTopContainerItem(
                           text: '시즌 시작일:${detailItem.startDate}',
-                          fontSize: 13,
+                          fontSize: 13.0,
                         ),
                         _buildTopContainerItem(
                           text: '시즌 종료일:${detailItem.endDate}',
-                          fontSize: 13,
+                          fontSize: 13.0,
                         ),
                         _buildTopContainerItem(
                           text: detailItem.numEpisodes != "0"
@@ -179,6 +179,7 @@ class AnimationDetailScreen extends StatelessWidget {
                             shape: BoxShape.circle,
                           ),
                           child: CustomText(
+                            fontColor: kWhite,
                             fontSize: kAnimationDetailGenreFontSize,
                             text: genre,
                             isEllipsis: true,
@@ -326,6 +327,7 @@ class AnimationDetailScreen extends StatelessWidget {
           animation: true,
           percent: percent,
           center: CustomText(
+            fontColor: kWhite,
             text: percentText,
             fontSize: kAnimationDetailIndicatorFontSize,
             textAlign: TextAlign.center,
@@ -339,23 +341,14 @@ class AnimationDetailScreen extends StatelessWidget {
       {String id, String type, RankingItem infoItem, BuildContext context}) {
     return AppBar(
         title: CustomText(
+          fontFamily: doHyunFont,
+          fontColor: kWhite,
           text: infoItem.title,
         ),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.refresh),
             tooltip: "재시작",
-            onPressed: () => {
-              BlocProvider.of<AnimationDetailBloc>(context)
-                  .add(AnimationDetailLoad(id: id, type: type))
-            },
-          ),
-          IconButton(
-            icon: Icon(
-              Icons.favorite,
-              color: Colors.red,
-            ),
-            tooltip: "즐겨찾기",
             onPressed: () => {
               BlocProvider.of<AnimationDetailBloc>(context)
                   .add(AnimationDetailLoad(id: id, type: type))
@@ -397,6 +390,7 @@ class AnimationDetailScreen extends StatelessWidget {
             textAlign: TextAlign.center,
             text: text,
             fontSize: fontSize,
+            fontColor: kWhite,
             fontWeight: fontWeight,
             maxLines: 2,
             isEllipsis: true,
