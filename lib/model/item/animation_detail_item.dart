@@ -17,6 +17,8 @@ class AnimationDetailItem {
   String startSeason;
   List<String> pictures;
   List<RelatedAnimeItem> relatedAnime;
+  List<RecommendationAnimeItem> recommendationAnimes;
+  List<StudioItem> studioItems;
 
   AnimationDetailItem(
       {this.id,
@@ -35,7 +37,10 @@ class AnimationDetailItem {
         this.numEpisodes,
         this.startSeason,
         this.pictures,
-        this.relatedAnime});
+        this.relatedAnime,
+        this.recommendationAnimes,
+        this.studioItems,
+      });
 
 }
 
@@ -45,5 +50,18 @@ class RelatedAnimeItem {
   String image;
 
   RelatedAnimeItem({this.id, this.title, this.image});
+}
 
+class RecommendationAnimeItem {
+  int id;
+  String title;
+  String image;
+
+  RecommendationAnimeItem({this.id, this.title, this.image});
+}
+class StudioItem {
+  int id;
+  String name;
+
+  StudioItem({this.id, this.name});
 }

@@ -168,7 +168,7 @@ class _AnimationScreenState extends State<AnimationScreen> {
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: item.list
-                  .map((rankItem) => _makeScrollItem(context, rankItem))
+                  .map((rankItem) => _buildScrollItem(context, rankItem))
                   .toList(),
             ),
           ),
@@ -177,7 +177,7 @@ class _AnimationScreenState extends State<AnimationScreen> {
     );
   }
 
-  Widget _makeScrollItem(BuildContext context, final RankingItem item) {
+  Widget _buildScrollItem(BuildContext context, final RankingItem item) {
     double width = MediaQuery.of(context).size.width / 3;
 
     return GestureDetector(

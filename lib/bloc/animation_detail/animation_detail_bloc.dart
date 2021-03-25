@@ -33,9 +33,11 @@ class AnimationDetailBloc extends Bloc<AnimationDetailEvent, AnimationDetailStat
     } else{
       SearchMalDetailApiItemResult result = malDetailApiItem.result;
       List<RelatedAnimeItem> relateItemList = result.relatedAnime.map((item) => RelatedAnimeItem(id: item.id, image: item.image, title: item.title)).toList();
+      List<RecommendationAnimeItem> recommendList = result.recommendAnime.map((item) => RecommendationAnimeItem(id: item.id, image: item.image, title: item.title)).toList();
+      List<StudioItem> studioList = result.studios.map((item) => StudioItem(id: item.id,  name: item.name)).toList();
       yield AnimationDetailLoadSuccess(detailItem: AnimationDetailItem(id: result.id, image: result.image, title: result.title, startDate: result.startDate,
           endDate: result.endDate, star: result.star, popularity: result.popularity, rank: result.rank, percent:  double.parse(result.star) / 10.ceil(), percentText: "${(double.parse(result.star)*10).toStringAsFixed(1)}%", synopsis: result.synopsis,
-          status: result.status, genres: result.genres, numEpisodes: result.numEpisodes, startSeason: result.startSeason,pictures:result.pictures, relatedAnime: relateItemList));
+          status: result.status, genres: result.genres, numEpisodes: result.numEpisodes, startSeason: result.startSeason,pictures:result.pictures, relatedAnime: relateItemList, recommendationAnimes: recommendList, studioItems: studioList));
     }
   }
 }

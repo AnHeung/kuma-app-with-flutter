@@ -41,6 +41,8 @@ class SearchMalDetailApiItemResult {
   String startSeason;
   List<String> pictures;
   List<SearchMalDetailRelatedAnimeItem> relatedAnime;
+  List<SearchMalDetailRecommendationAnimeItem> recommendAnime;
+  List<SearchMalDetailStudioItem> studios;
 
   SearchMalDetailApiItemResult(
       {this.id,
@@ -57,7 +59,9 @@ class SearchMalDetailApiItemResult {
         this.numEpisodes,
         this.startSeason,
         this.pictures,
-        this.relatedAnime});
+        this.relatedAnime,
+        this.recommendAnime,
+        this.studios});
 
   SearchMalDetailApiItemResult.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -78,6 +82,18 @@ class SearchMalDetailApiItemResult {
       relatedAnime = new List<SearchMalDetailRelatedAnimeItem>();
       json['related_anime'].forEach((v) {
         relatedAnime.add(new SearchMalDetailRelatedAnimeItem.fromJson(v));
+      });
+    }
+    if (json['recommendations'] != null) {
+      recommendAnime = new List<SearchMalDetailRecommendationAnimeItem>();
+      json['recommendations'].forEach((v) {
+        recommendAnime.add(new SearchMalDetailRecommendationAnimeItem.fromJson(v));
+      });
+    }
+    if (json['studios'] != null) {
+      studios = new List<SearchMalDetailStudioItem>();
+      json['studios'].forEach((v) {
+        studios.add(new SearchMalDetailStudioItem.fromJson(v));
       });
     }
   }
@@ -101,6 +117,12 @@ class SearchMalDetailApiItemResult {
     if (this.relatedAnime != null) {
       data['related_anime'] = this.relatedAnime.map((v) => v.toJson()).toList();
     }
+    if (this.recommendAnime != null) {
+      data['recommendations'] = this.recommendAnime.map((v) => v.toJson()).toList();
+    }
+    if (this.studios != null) {
+      data['studios'] = this.studios.map((v) => v.toJson()).toList();
+    }
     return data;
   }
 }
@@ -123,6 +145,47 @@ class SearchMalDetailRelatedAnimeItem {
     data['id'] = this.id;
     data['title'] = this.title;
     data['image'] = this.image;
+    return data;
+  }
+}
+
+class SearchMalDetailRecommendationAnimeItem {
+  int id;
+  String title;
+  String image;
+
+  SearchMalDetailRecommendationAnimeItem({this.id, this.title, this.image});
+
+  SearchMalDetailRecommendationAnimeItem.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    title = json['title'];
+    image = json['image'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['title'] = this.title;
+    data['image'] = this.image;
+    return data;
+  }
+}
+
+class SearchMalDetailStudioItem {
+  int id;
+  String name;
+
+  SearchMalDetailStudioItem({this.id, this.name});
+
+  SearchMalDetailStudioItem.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
     return data;
   }
 }

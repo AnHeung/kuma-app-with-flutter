@@ -19,7 +19,9 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class AnimationDetailScreen extends StatelessWidget {
   final indicatorRate = 0.8;
-  final topContainerHeight = 0.25;
+  final topImageContainerHeightRate = 0.25;
+  final topContainerHeightRate = 0.45;
+  final topImageWidthRate = 0.4;
 
   @override
   Widget build(BuildContext context) {
@@ -80,13 +82,22 @@ class AnimationDetailScreen extends StatelessWidget {
           fontSize: kAnimationDetailTitleFontSize,
         ),
       ),
-      _buildRelateContainer(relatedItem: detailItem.relatedAnime)
+      _buildRelateContainer(relatedItem: detailItem.relatedAnime),
+      Container(
+        margin: EdgeInsets.only(top: 20, left: 10),
+        child: CustomText(
+          text: '추천애니',
+          fontColor: Colors.black,
+          fontSize: kAnimationDetailTitleFontSize,
+        ),
+      ),
+      _buildRecommendationContainer(recommendationItems: detailItem.recommendationAnimes)
     ]);
   }
 
   Widget _buildDetailTopContainer(
       {BuildContext context, AnimationDetailItem detailItem}) {
-    final double topHeight = MediaQuery.of(context).size.height * 0.45;
+    final double topHeight = MediaQuery.of(context).size.height * topContainerHeightRate;
 
     return Container(
       color: kBlack,
@@ -112,6 +123,10 @@ class AnimationDetailScreen extends StatelessWidget {
                             text: "(${detailItem.startSeason})",
                             fontSize: 15.0,
                             fontWeight: FontWeight.w700),
+                        _buildTopContainerItem(
+                          text:"제작사 : ${detailItem.studioItems.map((studio) =>studio.name).toString()}",
+                          fontSize: 13.0,
+                        ),
                         _buildTopContainerItem(
                           text: detailItem.rank != null
                               ? '랭킹:${detailItem.rank}위'
@@ -224,8 +239,8 @@ class AnimationDetailScreen extends StatelessWidget {
 
   Widget _buildDetailTopImageContainer(
       {BuildContext context, AnimationDetailItem detailItem}) {
-    final double topHeight = MediaQuery.of(context).size.height * topContainerHeight;
-    final double imageItemWidth = MediaQuery.of(context).size.width * 0.4;
+    final double topHeight = MediaQuery.of(context).size.height * topImageContainerHeightRate;
+    final double imageItemWidth = MediaQuery.of(context).size.width * topImageWidthRate;
 
     return Container(
       child: Stack(
@@ -311,6 +326,25 @@ class AnimationDetailScreen extends StatelessWidget {
             title: "관련 애니 없음",
             size: 50,
           );
+  }
+
+  Widget _buildRecommendationContainer({List<RecommendationAnimeItem> recommendationItems}) {
+    return recommendationItems.isNotEmpty
+        ? Padding(
+      padding: const EdgeInsets.only(top: 10 , bottom: 10),
+      child: _getPictureList(
+          size: 200,
+          margin: 10,
+          length: recommendationItems.length,
+          builderFunction: (BuildContext context, idx) {
+            final RecommendationAnimeItem item = recommendationItems[idx];
+            return _recommendItem(context, RelatedAnimeItem(id: item.id, title: item.title, image: item.image));
+          }),
+    )
+        : EmptyContainer(
+      title: "추천 애니 없음",
+      size: 50,
+    );
   }
 
   Widget _buildLikeIndicator(
@@ -415,6 +449,48 @@ class AnimationDetailScreen extends StatelessWidget {
           itemCount: length,
           shrinkWrap: true,
           itemBuilder: builderFunction),
+    );
+  }
+
+  Widget _recommendItem(BuildContext context, RelatedAnimeItem item) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushReplacementNamed(context, Routes.IMAGE_DETAIL,
+            arguments: RankingItem(id: item.id, title: item.title));
+      },
+      child: Container(
+        padding: EdgeInsets.only(left: 8, bottom: 8),
+        height: 150,
+        width: 150,
+        child: Column(
+          children: [
+            Expanded(
+              flex: 1,
+              child: Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.only(left: 3),
+                child: CustomText(
+                  fontColor: Colors.black,
+                  text: item.title,
+                  maxLines: 2,
+                  isDynamic: true,
+                  isEllipsis: true,
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 4,
+              child: Container(
+                alignment: Alignment.centerLeft,
+                child: ImageItem(
+                  imgRes: item.image,
+                  type: ImageShapeType.FLAT,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
