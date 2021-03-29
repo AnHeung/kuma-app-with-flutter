@@ -7,6 +7,7 @@ import 'package:focus_detector/focus_detector.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/animation_season/animation_season_bloc.dart';
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
+import 'package:kuma_flutter_app/model/item/animation_deatil_page_item.dart';
 import 'package:kuma_flutter_app/model/item/animation_main_item.dart';
 import 'package:kuma_flutter_app/model/item/animation_search_season_item.dart';
 import 'package:kuma_flutter_app/routes/routes.dart';
@@ -94,8 +95,8 @@ class AnimationMainAppbar extends StatelessWidget {
                             onTap: () =>
                                 Navigator.pushNamed(
                                     context, Routes.IMAGE_DETAIL,
-                                    arguments: RankingItem(
-                                        id: data.id, title: data.title)),
+                                    arguments: AnimationDetailPageItem(
+                                        id: data.id.toString(), title: data.title)),
                             child: _pageViewContainer(data),
                           ))
                           .toList(),
