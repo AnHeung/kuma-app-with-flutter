@@ -157,45 +157,42 @@ class _AnimationScreenState extends State<AnimationScreen> {
         if(state is AnimationScheduleLoadSuccess){
           List<AnimationScheduleItem> scheduleItems = state.scheduleItems;
           String currentDay = state.currentDay;
-          return Stack(
-            children: [
-              Container(
-                height: 240,
-                child: Column(
-                  children: [
-                    Container(
-                      height: 100,
-                      child: GridView.count( crossAxisCount: 7,
-                        scrollDirection: Axis.vertical,
-                        crossAxisSpacing: 10,
-                        children: dayList.map((day) => GestureDetector(
-                          onTap: ()=>BlocProvider.of<AnimationScheduleBloc>(context).add(AnimationScheduleLoad(day: getDayToNum(day))),
-                          child: Container(
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              color:  currentDay == day ? kLightBlue :  kDisabled,
-                              shape: BoxShape.circle,
-                            ),
-                            height: 40,
-                            child: CustomText(text:day , fontColor: kWhite, fontWeight: FontWeight.w700,),
-                          ),
-                        )).toList(),),
-                    ),
-                    Container(
-                      height: 130,
-                      margin: EdgeInsets.only(top: 10),
-                      child: ListView(
-                            shrinkWrap: true, padding: EdgeInsets.zero,
-                            scrollDirection: Axis.horizontal,
-                            children: scheduleItems.map((schedule) =>_buildScheduleScrollItem(context: context , item: schedule)).toList()
-                          ),
-                    ),
-                  ],
+          return Container(
+            height: 240,
+            child: Column(
+              children: [
+                Container(
+                  height: 100,
+                  child: GridView.count( crossAxisCount: 7,
+                    scrollDirection: Axis.vertical,
+                    crossAxisSpacing: 10,
+                    children: dayList.map((day) => GestureDetector(
+                      onTap: ()=>BlocProvider.of<AnimationScheduleBloc>(context).add(AnimationScheduleLoad(day: getDayToNum(day))),
+                      child: Container(
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color:  currentDay == day ? kLightBlue :  kDisabled,
+                          shape: BoxShape.circle,
+                        ),
+                        height: 40,
+                        child: CustomText(text:day , fontColor: kWhite, fontWeight: FontWeight.w700,),
+                      ),
+                    )).toList(),),
                 ),
-              ),
-            Container(color: Colors.transparent , child: LoadingIndicator(isVisible: true,))
-            ],
+                Container(
+                  height: 130,
+                  margin: EdgeInsets.only(top: 10),
+                  child: ListView(
+                        shrinkWrap: true, padding: EdgeInsets.zero,
+                        scrollDirection: Axis.horizontal,
+                        children: scheduleItems.map((schedule) =>_buildScheduleScrollItem(context: context , item: schedule)).toList()
+                      ),
+                ),
+              ],
+            ),
           );
+        }else if(state is AnimationScheduleLoadInProgress){
+          return Container(height:200 ,child: LoadingIndicator(isVisible: true,));
         }
         return EmptyContainer(title: "없음",);
       },
