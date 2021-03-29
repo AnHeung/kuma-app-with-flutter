@@ -10,6 +10,8 @@ import 'package:kuma_flutter_app/routes/routes.dart';
 import 'package:kuma_flutter_app/widget/custom_text.dart';
 import 'package:kuma_flutter_app/widget/image_item.dart';
 
+import '../model/item/animation_deatil_page_item.dart';
+
 class SearchHistoryItem extends StatelessWidget {
   final List<AnimationSearchItem> list;
 
@@ -38,8 +40,8 @@ class SearchHistoryItem extends StatelessWidget {
                                     image: historyItem.image,
                                     title: historyItem.title)));
                         Navigator.pushNamed(context, Routes.IMAGE_DETAIL,
-                            arguments: RankingItem(
-                                id: historyItem.id,
+                            arguments: AnimationDetailPageItem(
+                                id: historyItem.id.toString(),
                                 title: historyItem.title));
                       },
                       child: Stack(

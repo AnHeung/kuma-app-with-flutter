@@ -33,3 +33,13 @@ class AnimationScheduleLoadFailure extends AnimationScheduleState {
   @override
   List<Object> get props =>[errMsg];
 }
+
+class AnimationScheduleChange extends AnimationScheduleState {
+
+  final String day;
+
+  const AnimationScheduleChange({this.day});
+
+  @override
+  List<Object> get props =>[day];
+}

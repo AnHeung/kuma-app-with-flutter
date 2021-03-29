@@ -19,3 +19,13 @@ class AnimationScheduleLoad extends AnimationScheduleEvent{
   @override
   List<Object> get props =>[day];
 }
+
+class AnimationScheduleClick extends AnimationScheduleEvent{
+
+  final String day;
+
+  AnimationScheduleClick({this.day});
+
+  @override
+  List<Object> get props =>[day];
+}

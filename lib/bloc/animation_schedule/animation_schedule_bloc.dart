@@ -25,6 +25,8 @@ class AnimationScheduleBloc extends Bloc<AnimationScheduleEvent, AnimationSchedu
   ) async* {
     if(event is AnimationScheduleLoad){
       yield* _mapToScheduleLoad(event);
+    }else if(event is AnimationScheduleClick){
+      yield* _mapToScheduleChange(event);
     }
   }
 
@@ -36,8 +38,17 @@ class AnimationScheduleBloc extends Bloc<AnimationScheduleEvent, AnimationSchedu
       yield AnimationScheduleLoadFailure(errMsg: scheduleItem.msg);
     }else{
       if(scheduleItem.result != null && scheduleItem.result.length > 0)
+      yield AnimationScheduleChange(day: event.day);
       yield AnimationScheduleLoadSuccess(currentDay: getDayText(event.day) ,
-          scheduleItems: scheduleItem.result.map((schedule) => AnimationScheduleItem(title: schedule.title , id: schedule.id ,image: schedule.image ,startDate: schedule.startDate , score: schedule.score.toString())).toList());
+          scheduleItems: scheduleItem.result.map((schedule) => AnimationScheduleItem(title: schedule.title
+              , id: schedule.id
+              ,image: schedule.image
+              ,startDate: schedule.startDate
+              , score: schedule.score.toString())).toList());
     }
+  }
+
+  Stream<AnimationScheduleState> _mapToScheduleChange(AnimationScheduleClick event) async*{
+    yield AnimationScheduleChange(day: event.day);
   }
 }

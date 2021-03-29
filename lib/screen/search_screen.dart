@@ -12,6 +12,8 @@ import 'package:kuma_flutter_app/widget/loading_indicator.dart';
 import 'package:kuma_flutter_app/widget/search_history_item.dart';
 import 'package:kuma_flutter_app/widget/search_image_item.dart';
 
+import '../model/item/animation_deatil_page_item.dart';
+
 class SearchScreen extends StatefulWidget {
 
   @override
@@ -166,7 +168,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       BlocProvider.of<SearchHistoryBloc>(context).add(
                           SearchHistoryWrite(searchItem: AnimationSearchItem(id: searchItem.id, image: searchItem.image, title: searchItem.title)));
                       BlocProvider.of<SearchBloc>(context).add(SearchClear());
-                      Navigator.pushNamed(context, Routes.IMAGE_DETAIL, arguments: RankingItem(id: searchItem.id, title: searchItem.title));
+                      Navigator.pushNamed(context, Routes.IMAGE_DETAIL, arguments: AnimationDetailPageItem(id: searchItem.id.toString(), title: searchItem.title));
 
                     },
                   ))

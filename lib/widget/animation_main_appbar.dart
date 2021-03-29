@@ -58,6 +58,7 @@ class AnimationMainAppbar extends StatelessWidget {
     });
   }
 
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AnimationSeasonBloc, AnimationSeasonState>(

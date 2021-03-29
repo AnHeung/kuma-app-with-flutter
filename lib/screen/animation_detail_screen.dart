@@ -18,6 +18,9 @@ import 'package:kuma_flutter_app/widget/loading_indicator.dart';
 import 'package:kuma_flutter_app/widget/refresh_container.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
+import '../model/item/animation_deatil_page_item.dart';
+import '../model/item/animation_deatil_page_item.dart';
+
 class AnimationDetailScreen extends StatelessWidget {
   final indicatorRate = 0.8;
   final topImageContainerHeightRate = 0.25;
@@ -457,7 +460,7 @@ class AnimationDetailScreen extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.pushReplacementNamed(context, Routes.IMAGE_DETAIL,
-            arguments: RankingItem(id: item.id, title: item.title));
+            arguments: AnimationDetailPageItem(id: item.id.toString(), title: item.title));
       },
       child: Container(
         padding: EdgeInsets.only(left: 8, bottom: 8),
@@ -499,7 +502,7 @@ class AnimationDetailScreen extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.pushReplacementNamed(context, Routes.IMAGE_DETAIL,
-            arguments: RankingItem(id: item.id, title: item.title));
+            arguments: AnimationDetailPageItem(id: item.id.toString(), title: item.title));
       },
       child: Container(
         padding: EdgeInsets.only(left: 8, bottom: 8),

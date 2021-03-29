@@ -17,6 +17,20 @@ import 'package:kuma_flutter_app/widget/image_item.dart';
 import 'package:kuma_flutter_app/widget/loading_indicator.dart';
 import 'package:kuma_flutter_app/widget/refresh_container.dart';
 
+import '../bloc/animation_schedule/animation_schedule_bloc.dart';
+import '../bloc/animation_schedule/animation_schedule_bloc.dart';
+import '../bloc/animation_schedule/animation_schedule_bloc.dart';
+import '../bloc/animation_schedule/animation_schedule_bloc.dart';
+import '../bloc/animation_schedule/animation_schedule_bloc.dart';
+import '../bloc/animation_schedule/animation_schedule_bloc.dart';
+import '../bloc/animation_schedule/animation_schedule_bloc.dart';
+import '../bloc/animation_schedule/animation_schedule_bloc.dart';
+import '../bloc/animation_schedule/animation_schedule_bloc.dart';
+import '../bloc/animation_schedule/animation_schedule_bloc.dart';
+import '../util/string_util.dart';
+import '../widget/empty_container.dart';
+import '../widget/loading_indicator.dart';
+
 class AnimationScreen extends StatefulWidget {
   @override
   _AnimationScreenState createState() => _AnimationScreenState();
@@ -27,6 +41,7 @@ class _AnimationScreenState extends State<AnimationScreen> {
   final ScrollController _scrollController = ScrollController();
   final scrollbarExpandedHeight = 450;
   double appbarOpacity = 0;
+  String currentDay = "1";
   Color appIconColors = kWhite;
   VoidCallback _scrollListener;
 
@@ -87,115 +102,153 @@ class _AnimationScreenState extends State<AnimationScreen> {
     );
   }
 
-  Widget _buildRankingItems(){
+  Widget _buildRankingItems() {
     return Container(
       child: BlocBuilder<AnimationBloc, AnimationState>(
           builder: (context, loadState) {
-            switch (loadState.runtimeType) {
-              case AnimationLoadFailure:
-                return RefreshContainer(
-                  callback: () => BlocProvider.of<AnimationBloc>(context)
-                      .add(AnimationLoad()),
-                );
-              case AnimationLoadSuccess:
-                final List<AnimationMainItem> mainItemList =
+        switch (loadState.runtimeType) {
+          case AnimationLoadFailure:
+            return RefreshContainer(
+              callback: () =>
+                  BlocProvider.of<AnimationBloc>(context).add(AnimationLoad()),
+            );
+          case AnimationLoadSuccess:
+            final List<AnimationMainItem> mainItemList =
                 (loadState is AnimationLoadSuccess)
                     ? loadState.rankingList
                     : [];
-                return ListView(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  children: mainItemList
-                      .map((item) => _buildRankingItem(context, item))
-                      .toList(),
-                );
-                break;
-              case AnimationLoadInProgress:
-                return Container(
-                  height: 300,
-                  child: LoadingIndicator(
-                    isVisible: loadState is AnimationLoadInProgress,
-                  ),
-                );
-              default:
-                return EmptyContainer(
-                  title: "내용이 없습니다.",
-                );
-            }
-          }),
+            return ListView(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              children: mainItemList
+                  .map((item) => _buildRankingItem(context, item))
+                  .toList(),
+            );
+            break;
+          case AnimationLoadInProgress:
+            return Container(
+              height: 300,
+              child: LoadingIndicator(
+                isVisible: loadState is AnimationLoadInProgress,
+              ),
+            );
+          default:
+            return EmptyContainer(
+              title: "내용이 없습니다.",
+            );
+        }
+      }),
     );
   }
 
   Widget _buildScheduleItems() {
     return Container(
-      padding: EdgeInsets.only(top: 20, left: 18 , right: 20),
-      child:Column(
+      padding: EdgeInsets.only(top: 20, left: 18, right: 20),
+      child: Column(
+        children: [
+          Row(
             children: [
-              Row(
-                children: [
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    child: CustomText(text: "요일별 신작", fontFamily: doHyunFont,fontWeight: FontWeight.w700, fontSize: 20.0,),
-                  ),
-                  Spacer(),
-                  Container(
-                    alignment: Alignment.center,
-                    child: CustomText(text: "더보기 > ", fontFamily: doHyunFont,fontWeight: FontWeight.w700, fontSize: 13.0, fontColor: Colors.grey,),
-                  )
-                ],
+              Container(
+                alignment: Alignment.centerLeft,
+                child: CustomText(
+                  text: "요일별 신작",
+                  fontFamily: doHyunFont,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 20.0,
+                ),
               ),
-              _buildWeekendContainer()
+              Spacer(),
+              Container(
+                alignment: Alignment.center,
+                child: CustomText(
+                  text: "더보기 > ",
+                  fontFamily: doHyunFont,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 13.0,
+                  fontColor: Colors.grey,
+                ),
+              )
             ],
+          ),
+          _buildWeekendContainer()
+        ],
       ),
     );
   }
 
-  _buildWeekendContainer(){
+  _buildWeekendIndicator() {
+    final double itemWidth = MediaQuery.of(context).size.width / 7 - 6;
 
-    return BlocBuilder<AnimationScheduleBloc, AnimationScheduleState>(
-      builder: (context,state){
-        if(state is AnimationScheduleLoadSuccess){
-          List<AnimationScheduleItem> scheduleItems = state.scheduleItems;
-          String currentDay = state.currentDay;
-          return Container(
-            height: 240,
-            child: Column(
-              children: [
-                Container(
-                  height: 100,
-                  child: GridView.count( crossAxisCount: 7,
-                    scrollDirection: Axis.vertical,
-                    crossAxisSpacing: 10,
-                    children: dayList.map((day) => GestureDetector(
-                      onTap: ()=>BlocProvider.of<AnimationScheduleBloc>(context).add(AnimationScheduleLoad(day: getDayToNum(day))),
-                      child: Container(
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color:  currentDay == day ? kLightBlue :  kDisabled,
-                          shape: BoxShape.circle,
+    return Container(
+            height: 80,
+            child: Row(
+              children: dayList
+                  .map((day) => GestureDetector(
+                        onTap: () =>
+                            BlocProvider.of<AnimationScheduleBloc>(context).add(
+                                AnimationScheduleLoad(day: getDayToNum(day))),
+                        child: Container(
+                          width: itemWidth,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: currentDay == getDayToNum(day) ? kLightBlue : kDisabled,
+                            shape: BoxShape.circle,
+                          ),
+                          height: 40,
+                          child: CustomText(
+                            text: day,
+                            fontColor: kWhite,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
-                        height: 40,
-                        child: CustomText(text:day , fontColor: kWhite, fontWeight: FontWeight.w700,),
-                      ),
-                    )).toList(),),
-                ),
-                Container(
-                  height: 130,
-                  margin: EdgeInsets.only(top: 10),
-                  child: ListView(
-                        shrinkWrap: true, padding: EdgeInsets.zero,
-                        scrollDirection: Axis.horizontal,
-                        children: scheduleItems.map((schedule) =>_buildScheduleScrollItem(context: context , item: schedule)).toList()
-                      ),
-                ),
-              ],
+                      ))
+                  .toList(),
             ),
           );
-        }else if(state is AnimationScheduleLoadInProgress){
-          return Container(height:200 ,child: LoadingIndicator(isVisible: true,));
+  }
+
+  _changeDayView(String day){
+    setState(() {
+      currentDay = day;
+    });
+  }
+
+  _buildWeekendBottomContainer(){
+    return BlocBuilder<AnimationScheduleBloc,AnimationScheduleState>(builder: (context,state){
+      if(state is AnimationScheduleLoadSuccess){
+        final List<AnimationScheduleItem> scheduleItems = state.scheduleItems;
+        return Container(
+          height: 150,
+          margin: EdgeInsets.only(top: 10),
+          child: ListView(
+              padding: EdgeInsets.zero,
+              scrollDirection: Axis.horizontal,
+              children: scheduleItems
+                  .map((schedule) => _buildScheduleScrollItem(
+                  context: context, item: schedule))
+                  .toList()),
+        );
+      }
+      return Container(height:150 ,child: LoadingIndicator(isVisible: state is AnimationScheduleLoadInProgress,));
+    },);
+  }
+
+  _buildWeekendContainer() {
+    return BlocListener<AnimationScheduleBloc , AnimationScheduleState>(
+      listener: (context,state){
+        if(state is AnimationScheduleChange){
+          _changeDayView(state.day);
         }
-        return EmptyContainer(title: "없음",);
       },
+      child: Container(
+        height: 260,
+        child: Column(
+          children: [
+            _buildWeekendIndicator(),
+            _buildWeekendBottomContainer()
+          ],
+        ),
+      ),
     );
   }
 
@@ -244,7 +297,7 @@ class _AnimationScreenState extends State<AnimationScreen> {
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 8, top: 20, bottom: 10),
+            padding: const EdgeInsets.only(left: 8, bottom: 10),
             child: Container(
                 width: MediaQuery.of(context).size.width,
                 child: CustomText(
@@ -267,16 +320,19 @@ class _AnimationScreenState extends State<AnimationScreen> {
     );
   }
 
-  Widget _buildScheduleScrollItem({BuildContext context, final AnimationScheduleItem item}) {
+  Widget _buildScheduleScrollItem(
+      {BuildContext context, final AnimationScheduleItem item}) {
     final double width = MediaQuery.of(context).size.width / 4;
     final double height = 130;
 
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, Routes.IMAGE_DETAIL, arguments: AnimationDetailPageItem(id: item.id.toString() , title: item.title));
+        Navigator.pushNamed(context, Routes.IMAGE_DETAIL,
+            arguments: AnimationDetailPageItem(
+                id: item.id.toString(), title: item.title));
       },
       child: Container(
-        padding: EdgeInsets.only(left: 8, bottom: 8),
+        padding: EdgeInsets.only(left: 8),
         width: width,
         height: height,
         child: Column(
@@ -294,7 +350,7 @@ class _AnimationScreenState extends State<AnimationScreen> {
               flex: 1,
               child: Container(
                 alignment: Alignment.topLeft,
-                margin: EdgeInsets.only(top: 10),
+                margin: EdgeInsets.only(top: 5),
                 child: CustomText(
                   fontWeight: FontWeight.w700,
                   fontColor: kBlack,
@@ -316,7 +372,9 @@ class _AnimationScreenState extends State<AnimationScreen> {
 
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, Routes.IMAGE_DETAIL, arguments: AnimationDetailPageItem(id: item.id.toString(), title: item.title));
+        Navigator.pushNamed(context, Routes.IMAGE_DETAIL,
+            arguments: AnimationDetailPageItem(
+                id: item.id.toString(), title: item.title));
       },
       child: Container(
         padding: EdgeInsets.only(left: 8, bottom: 8),
