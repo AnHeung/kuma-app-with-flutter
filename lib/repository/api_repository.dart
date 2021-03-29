@@ -6,6 +6,7 @@ import 'package:kuma_flutter_app/enums/register_status.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_detail_item.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_item.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_ranking_item.dart';
+import 'package:kuma_flutter_app/model/api/search_mal_api_schedule_item.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_season_item.dart';
 import 'package:kuma_flutter_app/model/api/social_user.dart';
 import 'package:kuma_flutter_app/repository/firebase_client.dart';
@@ -23,6 +24,8 @@ class ApiRepository {
   ApiRepository({this.restClient, this.searchApiClient,this.firebaseClient});
 
   Future<SearchMalApiItem> getMalApiItem(String query) => searchApiClient.getSearchItems(query);
+
+  Future<SearchMalApiScheduleItem> getScheduleItems(String day) => searchApiClient.getScheduleItems(day);
 
   Future<SearchMalApiItem> getSearchItems(String query) => searchApiClient.getSearchItems(query);
 

@@ -10,7 +10,7 @@ import 'package:kuma_flutter_app/routes/routes.dart';
 import 'package:kuma_flutter_app/screen/animation_screen.dart';
 import 'package:kuma_flutter_app/screen/image_screen.dart';
 import 'package:kuma_flutter_app/screen/more_screen.dart';
-import 'package:kuma_flutter_app/screen/torrent_screen.dart';
+import 'package:kuma_flutter_app/screen/tag_search_screen.dart';
 import 'package:kuma_flutter_app/widget/tab_selector.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -50,8 +50,8 @@ class HomeScreen extends StatelessWidget {
       case AppTab.ANIMATION:
         widget = AnimationScreen();
         break;
-      case AppTab.TORRENT:
-        widget = TorrentScreen();
+      case AppTab.TAG:
+        widget = TagSearchScreen();
         break;
       case AppTab.IMAGE:
         widget = ImageScreen();

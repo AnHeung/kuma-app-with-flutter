@@ -5,7 +5,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/setting/setting_bloc.dart';
 import 'package:kuma_flutter_app/model/setting_config.dart';
-import 'package:kuma_flutter_app/widget/custom_snack_bar.dart';
 import 'package:kuma_flutter_app/widget/custom_text.dart';
 import 'package:kuma_flutter_app/widget/drop_down_button.dart';
 import 'package:kuma_flutter_app/widget/empty_container.dart';

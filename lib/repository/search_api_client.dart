@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_detail_item.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_item.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_ranking_item.dart';
+import 'package:kuma_flutter_app/model/api/search_mal_api_schedule_item.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_season_item.dart';
 import 'package:retrofit/http.dart';
 
@@ -24,6 +25,9 @@ abstract class SearchApiClient {
   Future<SearchRankingApiResult> getRankingItemList(
       @Query("ranking_type") String rankType,
       @Query("limit") String limit);
+
+  @GET("/mal/schedule/{day}")
+  Future<SearchMalApiScheduleItem> getScheduleItems(@Path("day") String day);
 
   factory SearchApiClient(Dio dio, {String baseUrl}) = _SearchApiClient;
 }

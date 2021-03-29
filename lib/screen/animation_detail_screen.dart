@@ -6,6 +6,7 @@ import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/animation_detail/animation_detail_bloc.dart';
 import 'package:kuma_flutter_app/enums/detail_animation_actions.dart';
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
+import 'package:kuma_flutter_app/model/item/animation_deatil_page_item.dart';
 import 'package:kuma_flutter_app/model/item/animation_detail_item.dart';
 import 'package:kuma_flutter_app/model/item/animation_main_item.dart';
 import 'package:kuma_flutter_app/routes/routes.dart';
@@ -25,8 +26,8 @@ class AnimationDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final RankingItem infoItem = ModalRoute.of(context).settings.arguments;
-    final String id = infoItem.id.toString();
+    final AnimationDetailPageItem infoItem = ModalRoute.of(context).settings.arguments;
+    final String id = infoItem.id;
     final String type = "all";
 
     BlocProvider.of<AnimationDetailBloc>(context)
@@ -372,7 +373,7 @@ class AnimationDetailScreen extends StatelessWidget {
   }
 
   AppBar _buildAppbar(
-      {String id, String type, RankingItem infoItem, BuildContext context}) {
+      {String id, String type, AnimationDetailPageItem infoItem, BuildContext context}) {
     return AppBar(
         title: CustomText(
           fontFamily: doHyunFont,

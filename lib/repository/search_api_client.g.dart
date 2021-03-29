@@ -92,4 +92,23 @@ class _SearchApiClient implements SearchApiClient {
     final value = SearchRankingApiResult.fromJson(_result.data);
     return value;
   }
+
+  @override
+  Future<SearchMalApiScheduleItem> getScheduleItems(day) async {
+    ArgumentError.checkNotNull(day, 'day');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/mal/schedule/$day',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = SearchMalApiScheduleItem.fromJson(_result.data);
+    return value;
+  }
 }

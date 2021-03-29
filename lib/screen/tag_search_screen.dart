@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class TorrentScreen extends StatelessWidget {
+class TagSearchScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        child: Text('토렌트'),
+        child: Text('태그검색'),
       ),
     );
   }

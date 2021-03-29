@@ -15,6 +15,7 @@ const List<String> itemCountList = [
 ];
 
 const Map<String,String> categoryList = {"airing":"상영중","upcoming":"상영예정","movie":"극장판","ova":"OVA","tv":"TV"};
+final List<String> dayList = ["월","화","수","목","금","토","일"];
 
 // Colors
 const Color kBlue = Color(0xFF306EFF);

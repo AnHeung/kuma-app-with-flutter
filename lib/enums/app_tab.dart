@@ -1,1 +1,1 @@
-enum AppTab {ANIMATION, TORRENT , IMAGE, MORE}
+enum AppTab {ANIMATION, TAG , IMAGE, MORE}

@@ -5,6 +5,7 @@ import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/account/account_bloc.dart';
 import 'package:kuma_flutter_app/bloc/animation/animation_bloc.dart';
 import 'package:kuma_flutter_app/bloc/animation_detail/animation_detail_bloc.dart';
+import 'package:kuma_flutter_app/bloc/animation_schedule/animation_schedule_bloc.dart';
 import 'package:kuma_flutter_app/bloc/animation_season/animation_season_bloc.dart';
 import 'package:kuma_flutter_app/bloc/auth/auth_bloc.dart';
 import 'package:kuma_flutter_app/bloc/login/login_bloc.dart';
@@ -92,11 +93,8 @@ class App extends StatelessWidget {
                   create: (_) => TabCubit(),
                 ),
                 BlocProvider(create: (_) => AnimationBloc(repository: context.read<ApiRepository>(),settingBloc: BlocProvider.of<SettingBloc>(context))..add(AnimationLoad())),
-                BlocProvider(
-                    create: (_) =>
-                    AnimationSeasonBloc(
-                        repository: context.read<ApiRepository>(),settingBloc: BlocProvider.of<SettingBloc>(context))
-                      ..add(AnimationSeasonLoad(limit: "7"))),
+                BlocProvider(create: (_) => AnimationSeasonBloc(repository: context.read<ApiRepository>(),settingBloc: BlocProvider.of<SettingBloc>(context))..add(AnimationSeasonLoad(limit: "7"))),
+                BlocProvider(create: (_) => AnimationScheduleBloc(repository: context.read<ApiRepository>(),settingBloc: BlocProvider.of<SettingBloc>(context))..add(AnimationScheduleLoad(day:"1")))
               ],
               child: HomeScreen(),
             );
