@@ -82,7 +82,7 @@ class AnimationScheduleScreen extends StatelessWidget {
     double score = item.score != "null" ?  double.parse(item.score)/2 : 0;
 
     return GestureDetector(
-      onTap: ()=>Navigator.pushReplacementNamed(context,Routes.IMAGE_DETAIL, arguments: AnimationDetailPageItem(id: item.id.toString(), title: item.title)),
+      onTap: ()=>Navigator.pushNamed(context,Routes.IMAGE_DETAIL, arguments: AnimationDetailPageItem(id: item.id.toString(), title: item.title)),
       behavior: HitTestBehavior.translucent,
       child: Container(
         margin: EdgeInsets.only(top: 15),

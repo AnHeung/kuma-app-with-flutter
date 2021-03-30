@@ -25,7 +25,7 @@ class ImageTextScrollItem extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, Routes.IMAGE_DETAIL,
+        Navigator.pushReplacementNamed(context, Routes.IMAGE_DETAIL,
             arguments: AnimationDetailPageItem(
                 id: id, title: title));
       },
