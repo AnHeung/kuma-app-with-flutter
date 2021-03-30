@@ -64,13 +64,23 @@ const double toastFontSize = 15;
 //애니메인
 const double kAnimationFontSize = 15;
 const double kAnimationTitleFontSize = 20;
-const double kAnimationItemTitleFontSize = 25;
+const double kAnimationItemTitleFontSize = 20;
+const double kMainAppbarExpandedHeight = 450;
+const double kAnimationScheduleContainerHeight = 260;
+const double kAnimationRankingContainerHeightRate = 0.4;
+const String kAnimationScheduleTitle = "요일별 신작";
+const String kAnimationAppbarTitle = "ANIMATION";
 
 //애니상세
 const double kAnimationDetailGenreFontSize = 8;
 const double kAnimationDetailFontSize = 15;
 const double kAnimationDetailIndicatorFontSize = 10;
 const double kAnimationDetailTitleFontSize = 25;
+const double kAnimationImageContainerHeight = 150;
+const String kAnimationDetailRelateTitle = "관련애니 목록";
+const String kAnimationDetailRecommendTitle = "추천애니 목록";
+const String kAnimationDetailImageTitle = "이미지";
+const String kAnimationDetailSynopsisTitle = "개요";
 
 //계정페이지
 const double kAccountFontSize = 15;

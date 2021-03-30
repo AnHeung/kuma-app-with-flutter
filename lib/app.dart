@@ -22,6 +22,7 @@ import 'package:kuma_flutter_app/repository/search_api_client.dart';
 import 'package:kuma_flutter_app/routes/routes.dart';
 import 'package:kuma_flutter_app/screen/account_screen.dart';
 import 'package:kuma_flutter_app/screen/animation_detail_screen.dart';
+import 'package:kuma_flutter_app/screen/animation_schedule_screen.dart';
 import 'package:kuma_flutter_app/screen/first_screen.dart';
 import 'package:kuma_flutter_app/screen/home_screen.dart';
 import 'package:kuma_flutter_app/screen/login_screen.dart';
@@ -126,10 +127,11 @@ class App extends StatelessWidget {
                 create: (context) => LoginBloc(repository: context.read<ApiRepository>()),
                 child: LoginScreen(),
               ),
-          Routes.REGISTER : (context)=> BlocProvider(create:(_)=>RegisterBloc(repository: context.read<ApiRepository>()) , child: RegisterScreen(),),
+          Routes.REGISTER : (_)=> BlocProvider(create:(context)=>RegisterBloc(repository: context.read<ApiRepository>()) , child: RegisterScreen(),),
           Routes.Account : (context)=> BlocProvider(create:(_)=>AccountBloc(repository: context.read<ApiRepository>())..add(AccountLoad()) , child: AccountScreen(),),
           Routes.Notification : (context)=> BlocProvider(create:(_)=>RegisterBloc(repository: context.read<ApiRepository>()) , child: NotificationScreen(),),
           Routes.Setting : (context)=>SettingScreen(),
+          Routes.SCHEDULE : (_)=>BlocProvider(create:(context)=>AnimationScheduleBloc(repository: context.read<ApiRepository>())..add(AnimationScheduleLoad(day: "1")) , child: AnimationScheduleScreen(),),
         },
       ),
     ) ,);

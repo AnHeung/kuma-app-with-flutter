@@ -14,6 +14,9 @@ import 'package:kuma_flutter_app/screen/tag_search_screen.dart';
 import 'package:kuma_flutter_app/widget/tab_selector.dart';
 
 class HomeScreen extends StatelessWidget {
+
+  final AnimationScreen animationScreen = AnimationScreen();
+
   @override
   Widget build(BuildContext context) {
 
@@ -44,6 +47,7 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget _selectScreen({AppTab tab, BuildContext context}) {
+
     Widget widget = AnimationScreen();
 
     switch (tab) {

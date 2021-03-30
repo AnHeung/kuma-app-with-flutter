@@ -3,22 +3,22 @@ part of 'animation_schedule_bloc.dart';
 @immutable
 abstract class AnimationScheduleState extends Equatable{
 
-  @override
-  List<Object> get props =>[];
+  final String currentDay;
 
-  const AnimationScheduleState();
+  @override
+  List<Object> get props =>[currentDay];
+
+  const AnimationScheduleState({this.currentDay});
 
 }
 
 class AnimationScheduleLoadInProgress extends AnimationScheduleState {
-
+  AnimationScheduleLoadInProgress({currentDay}):super(currentDay: currentDay);
 }
 
 class AnimationScheduleLoadSuccess extends AnimationScheduleState {
   final List<AnimationScheduleItem> scheduleItems;
-  final String currentDay;
-
-  const AnimationScheduleLoadSuccess({this.scheduleItems , this.currentDay});
+  const AnimationScheduleLoadSuccess({this.scheduleItems , currentDay}) : super(currentDay: currentDay);
 
   @override
   List<Object> get props =>[scheduleItems,currentDay];
@@ -32,14 +32,4 @@ class AnimationScheduleLoadFailure extends AnimationScheduleState {
 
   @override
   List<Object> get props =>[errMsg];
-}
-
-class AnimationScheduleChange extends AnimationScheduleState {
-
-  final String day;
-
-  const AnimationScheduleChange({this.day});
-
-  @override
-  List<Object> get props =>[day];
 }

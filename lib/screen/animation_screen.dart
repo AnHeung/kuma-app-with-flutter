@@ -5,30 +5,20 @@ import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/animation/animation_bloc.dart';
 import 'package:kuma_flutter_app/bloc/animation_schedule/animation_schedule_bloc.dart';
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
-import 'package:kuma_flutter_app/model/item/animation_deatil_page_item.dart';
 import 'package:kuma_flutter_app/model/item/animation_main_item.dart';
 import 'package:kuma_flutter_app/model/item/animation_schedule_item.dart';
 import 'package:kuma_flutter_app/routes/routes.dart';
+import 'package:kuma_flutter_app/screen/animation_schedule_screen.dart';
+import 'package:kuma_flutter_app/util/navigator_util.dart';
 import 'package:kuma_flutter_app/util/string_util.dart';
 import 'package:kuma_flutter_app/widget/animation_main_appbar.dart';
 import 'package:kuma_flutter_app/widget/custom_text.dart';
-import 'package:kuma_flutter_app/widget/empty_container.dart';
-import 'package:kuma_flutter_app/widget/image_item.dart';
+import 'package:kuma_flutter_app/widget/image_text_scroll_item.dart';
 import 'package:kuma_flutter_app/widget/loading_indicator.dart';
 import 'package:kuma_flutter_app/widget/refresh_container.dart';
 
 import '../bloc/animation_schedule/animation_schedule_bloc.dart';
-import '../bloc/animation_schedule/animation_schedule_bloc.dart';
-import '../bloc/animation_schedule/animation_schedule_bloc.dart';
-import '../bloc/animation_schedule/animation_schedule_bloc.dart';
-import '../bloc/animation_schedule/animation_schedule_bloc.dart';
-import '../bloc/animation_schedule/animation_schedule_bloc.dart';
-import '../bloc/animation_schedule/animation_schedule_bloc.dart';
-import '../bloc/animation_schedule/animation_schedule_bloc.dart';
-import '../bloc/animation_schedule/animation_schedule_bloc.dart';
-import '../bloc/animation_schedule/animation_schedule_bloc.dart';
 import '../util/string_util.dart';
-import '../widget/empty_container.dart';
 import '../widget/loading_indicator.dart';
 
 class AnimationScreen extends StatefulWidget {
@@ -39,9 +29,7 @@ class AnimationScreen extends StatefulWidget {
 class _AnimationScreenState extends State<AnimationScreen> {
   final AnimationMainAppbar animationMainAppbar = AnimationMainAppbar();
   final ScrollController _scrollController = ScrollController();
-  final scrollbarExpandedHeight = 450;
   double appbarOpacity = 0;
-  String currentDay = "1";
   Color appIconColors = kWhite;
   VoidCallback _scrollListener;
 
@@ -95,7 +83,7 @@ class _AnimationScreenState extends State<AnimationScreen> {
           return [_buildSilverAppbar(animationMainAppbar)];
         },
         body: ListView(shrinkWrap: true, padding: EdgeInsets.zero, children: [
-          _buildScheduleItems(),
+          _buildScheduleItems(context: context),
           _buildRankingItems(),
         ]),
       ),
@@ -125,60 +113,65 @@ class _AnimationScreenState extends State<AnimationScreen> {
                   .toList(),
             );
             break;
-          case AnimationLoadInProgress:
+          default:
             return Container(
               height: 300,
               child: LoadingIndicator(
                 isVisible: loadState is AnimationLoadInProgress,
               ),
             );
-          default:
-            return EmptyContainer(
-              title: "내용이 없습니다.",
-            );
         }
       }),
     );
   }
 
-  Widget _buildScheduleItems() {
+  Widget _buildTitleContainer({String title}){
+    return Container(
+      alignment: Alignment.centerLeft,
+      child: CustomText(
+        text: title,
+        fontFamily: doHyunFont,
+        fontWeight: FontWeight.w700,
+        fontSize: kAnimationItemTitleFontSize,
+      ),
+    );
+  }
+
+  Widget _buildScheduleItems({BuildContext context}) {
+
+
     return Container(
       padding: EdgeInsets.only(top: 20, left: 18, right: 20),
       child: Column(
         children: [
           Row(
             children: [
-              Container(
-                alignment: Alignment.centerLeft,
-                child: CustomText(
-                  text: "요일별 신작",
-                  fontFamily: doHyunFont,
-                  fontWeight: FontWeight.w700,
-                  fontSize: 20.0,
-                ),
-              ),
+              _buildTitleContainer(title: kAnimationScheduleTitle),
               Spacer(),
-              Container(
-                alignment: Alignment.center,
-                child: CustomText(
-                  text: "더보기 > ",
-                  fontFamily: doHyunFont,
-                  fontWeight: FontWeight.w700,
-                  fontSize: 13.0,
-                  fontColor: Colors.grey,
+              GestureDetector(
+                onTap: ()=>navigateWithUpAnimation(context: context , navigateScreen: BlocProvider.value(value: BlocProvider.of<AnimationScheduleBloc>(context)..add(AnimationScheduleLoad(day: "1")), child: AnimationScheduleScreen(),)),
+                behavior: HitTestBehavior.translucent,
+                child: Container(
+                  alignment: Alignment.center,
+                  child: CustomText(
+                    text: "더보기 > ",
+                    fontFamily: doHyunFont,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 13.0,
+                    fontColor: Colors.grey,
+                  ),
                 ),
               )
             ],
           ),
-          _buildWeekendContainer()
+          _buildScheduleContainer()
         ],
       ),
     );
   }
 
-  _buildWeekendIndicator() {
+  _buildScheduleIndicator(String currentDay) {
     final double itemWidth = MediaQuery.of(context).size.width / 7 - 6;
-
     return Container(
             height: 80,
             child: Row(
@@ -196,8 +189,9 @@ class _AnimationScreenState extends State<AnimationScreen> {
                           ),
                           height: 40,
                           child: CustomText(
+                            isDynamic: true,
                             text: day,
-                            fontColor: kWhite,
+                            fontColor: currentDay == getDayToNum(day) ? kWhite : kBlack,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
@@ -207,48 +201,44 @@ class _AnimationScreenState extends State<AnimationScreen> {
           );
   }
 
-  _changeDayView(String day){
-    setState(() {
-      currentDay = day;
-    });
+  _buildScheduleBottomContainer(List<AnimationScheduleItem>  scheduleItems){
+    if(scheduleItems != null && scheduleItems.length > 0) {
+      return Container(
+        height: 160,
+        margin: EdgeInsets.only(top: 10),
+        child: ListView(
+            padding: EdgeInsets.zero,
+            scrollDirection: Axis.horizontal,
+            children: scheduleItems
+                .map((schedule) =>
+                ImageTextScrollItem(context: context,
+                  image: schedule.image,
+                  id: schedule.id.toString(),
+                  title: schedule.title,
+                  imageDiveRate: 4,))
+                .toList()),
+      );
+    }else{
+      return Container(height:160 ,child: LoadingIndicator(isVisible: true,));
+    }
   }
 
-  _buildWeekendBottomContainer(){
-    return BlocBuilder<AnimationScheduleBloc,AnimationScheduleState>(builder: (context,state){
-      if(state is AnimationScheduleLoadSuccess){
-        final List<AnimationScheduleItem> scheduleItems = state.scheduleItems;
+  _buildScheduleContainer() {
+    return BlocBuilder<AnimationScheduleBloc , AnimationScheduleState>(
+      builder: (context, state){
+        String currentDay =  state.currentDay ??  "-1";
+        List<AnimationScheduleItem> scheduleItems = state is AnimationScheduleLoadSuccess ? state.scheduleItems :[] ;
+
         return Container(
-          height: 150,
-          margin: EdgeInsets.only(top: 10),
-          child: ListView(
-              padding: EdgeInsets.zero,
-              scrollDirection: Axis.horizontal,
-              children: scheduleItems
-                  .map((schedule) => _buildScheduleScrollItem(
-                  context: context, item: schedule))
-                  .toList()),
+          height: kAnimationScheduleContainerHeight,
+          child: Column(
+            children: [
+              _buildScheduleIndicator(currentDay),
+              _buildScheduleBottomContainer(scheduleItems)
+            ],
+          ),
         );
-      }
-      return Container(height:150 ,child: LoadingIndicator(isVisible: state is AnimationScheduleLoadInProgress,));
-    },);
-  }
-
-  _buildWeekendContainer() {
-    return BlocListener<AnimationScheduleBloc , AnimationScheduleState>(
-      listener: (context,state){
-        if(state is AnimationScheduleChange){
-          _changeDayView(state.day);
-        }
       },
-      child: Container(
-        height: 260,
-        child: Column(
-          children: [
-            _buildWeekendIndicator(),
-            _buildWeekendBottomContainer()
-          ],
-        ),
-      ),
     );
   }
 
@@ -260,10 +250,9 @@ class _AnimationScreenState extends State<AnimationScreen> {
       title: Opacity(
         opacity: appbarOpacity,
         child: CustomText(
-          fontColor: Colors.black,
           fontWeight: FontWeight.w700,
           fontFamily: doHyunFont,
-          text: "ANIMATION",
+          text: kAnimationAppbarTitle,
           fontSize: kAnimationTitleFontSize,
         ),
       ),
@@ -284,12 +273,12 @@ class _AnimationScreenState extends State<AnimationScreen> {
       pinned: true,
       // flexibleSpace에 플레이스홀더를 추가
       // 최대 높이
-      expandedHeight: 450,
+      expandedHeight: kMainAppbarExpandedHeight,
     );
   }
 
   Widget _buildRankingItem(BuildContext context, final AnimationMainItem item) {
-    double heightSize = (MediaQuery.of(context).size.height) * 0.4;
+    double heightSize = (MediaQuery.of(context).size.height) * kAnimationRankingContainerHeightRate;
 
     return Container(
       height: heightSize,
@@ -298,115 +287,17 @@ class _AnimationScreenState extends State<AnimationScreen> {
         children: [
           Padding(
             padding: const EdgeInsets.only(left: 8, bottom: 10),
-            child: Container(
-                width: MediaQuery.of(context).size.width,
-                child: CustomText(
-                  text: item.koreaType,
-                  fontSize: kAnimationItemTitleFontSize,
-                  fontColor: kBlack,
-                  fontFamily: nanumFont,
-                )),
+            child: _buildTitleContainer(title: item.koreaType),
           ),
           Expanded(
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: item.list
-                  .map((rankItem) => _buildRankScrollItem(context, rankItem))
+                  .map((rankItem) => ImageTextScrollItem(context: context ,title: rankItem.title , id: rankItem.id.toString(), image: rankItem.image,type: ImageShapeType.FLAT,imageDiveRate: 3, ))
                   .toList(),
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildScheduleScrollItem(
-      {BuildContext context, final AnimationScheduleItem item}) {
-    final double width = MediaQuery.of(context).size.width / 4;
-    final double height = 130;
-
-    return GestureDetector(
-      onTap: () {
-        Navigator.pushNamed(context, Routes.IMAGE_DETAIL,
-            arguments: AnimationDetailPageItem(
-                id: item.id.toString(), title: item.title));
-      },
-      child: Container(
-        padding: EdgeInsets.only(left: 8),
-        width: width,
-        height: height,
-        child: Column(
-          children: [
-            Expanded(
-              flex: 4,
-              child: Container(
-                child: ImageItem(
-                  imgRes: item.image,
-                  type: ImageShapeType.FLAT,
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: Container(
-                alignment: Alignment.topLeft,
-                margin: EdgeInsets.only(top: 5),
-                child: CustomText(
-                  fontWeight: FontWeight.w700,
-                  fontColor: kBlack,
-                  text: item.title,
-                  maxLines: 2,
-                  isDynamic: true,
-                  isEllipsis: true,
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildRankScrollItem(BuildContext context, final RankingItem item) {
-    double width = MediaQuery.of(context).size.width / 3;
-
-    return GestureDetector(
-      onTap: () {
-        Navigator.pushNamed(context, Routes.IMAGE_DETAIL,
-            arguments: AnimationDetailPageItem(
-                id: item.id.toString(), title: item.title));
-      },
-      child: Container(
-        padding: EdgeInsets.only(left: 8, bottom: 8),
-        width: width,
-        child: Column(
-          children: [
-            Expanded(
-              flex: 4,
-              child: Container(
-                child: ImageItem(
-                  imgRes: item.image,
-                  type: ImageShapeType.FLAT,
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: Container(
-                alignment: Alignment.topLeft,
-                margin: EdgeInsets.only(top: 10),
-                child: CustomText(
-                  fontWeight: FontWeight.w700,
-                  fontColor: kBlack,
-                  text: item.title,
-                  maxLines: 2,
-                  isDynamic: true,
-                  isEllipsis: true,
-                ),
-              ),
-            )
-          ],
-        ),
       ),
     );
   }
