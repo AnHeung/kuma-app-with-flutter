@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
+import 'package:kuma_flutter_app/enums/navigation_push_type.dart';
 import 'package:kuma_flutter_app/model/item/animation_deatil_page_item.dart';
 import 'package:kuma_flutter_app/routes/routes.dart';
 import 'package:kuma_flutter_app/widget/custom_text.dart';
@@ -13,11 +14,12 @@ class ImageTextScrollItem extends StatelessWidget {
   final String id;
   final String title;
   final String image;
-  final ImageShapeType type;
+  final ImageShapeType imageShapeType;
   final int imageDiveRate;
   final BuildContext context;
+  final NavigationPushType pushType;
 
-  ImageTextScrollItem({this.context , this.id, this.title, this.image, type , imageDiveRate}): this.type = type ??  ImageShapeType.FLAT , this.imageDiveRate = imageDiveRate ?? 3;
+  ImageTextScrollItem({this.context , this.id, this.title, this.image, imageShapeType , imageDiveRate , pushType}): this.imageShapeType = imageShapeType ??  ImageShapeType.FLAT , this.imageDiveRate = imageDiveRate ?? 3 , this.pushType = pushType?? NavigationPushType.PUSH;
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +27,18 @@ class ImageTextScrollItem extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        Navigator.pushReplacementNamed(context, Routes.IMAGE_DETAIL,
-            arguments: AnimationDetailPageItem(
-                id: id, title: title));
+        switch(pushType){
+          case  NavigationPushType.PUSH:
+            Navigator.pushNamed(context, Routes.IMAGE_DETAIL,
+                arguments: AnimationDetailPageItem(
+                    id: id, title: title));
+            break;
+          case  NavigationPushType.REPLACE:
+            Navigator.pushReplacementNamed(context, Routes.IMAGE_DETAIL,
+                arguments: AnimationDetailPageItem(
+                    id: id, title: title));
+            break;
+        }
       },
       child: Container(
         padding: EdgeInsets.only(left: 8, bottom: 8),
@@ -39,7 +50,7 @@ class ImageTextScrollItem extends StatelessWidget {
               child: Container(
                 child: ImageItem(
                   imgRes: image,
-                  type: type,
+                  type: imageShapeType,
                 ),
               ),
             ),

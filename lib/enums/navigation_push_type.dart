@@ -1,0 +1,3 @@
+enum NavigationPushType {
+  REPLACE, PUSH
+}

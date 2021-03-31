@@ -7,7 +7,6 @@ import 'package:kuma_flutter_app/bloc/animation_schedule/animation_schedule_bloc
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
 import 'package:kuma_flutter_app/model/item/animation_main_item.dart';
 import 'package:kuma_flutter_app/model/item/animation_schedule_item.dart';
-import 'package:kuma_flutter_app/routes/routes.dart';
 import 'package:kuma_flutter_app/screen/animation_schedule_screen.dart';
 import 'package:kuma_flutter_app/util/navigator_util.dart';
 import 'package:kuma_flutter_app/util/string_util.dart';
@@ -293,7 +292,7 @@ class _AnimationScreenState extends State<AnimationScreen> {
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: item.list
-                  .map((rankItem) => ImageTextScrollItem(context: context ,title: rankItem.title , id: rankItem.id.toString(), image: rankItem.image,type: ImageShapeType.FLAT,imageDiveRate: 3, ))
+                  .map((rankItem) => ImageTextScrollItem(context: context ,title: rankItem.title , id: rankItem.id.toString(), image: rankItem.image,imageShapeType: ImageShapeType.FLAT,imageDiveRate: 3, ))
                   .toList(),
             ),
           ),

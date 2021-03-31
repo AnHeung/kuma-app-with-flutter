@@ -6,6 +6,7 @@ import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/animation_detail/animation_detail_bloc.dart';
 import 'package:kuma_flutter_app/enums/detail_animation_actions.dart';
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
+import 'package:kuma_flutter_app/enums/navigation_push_type.dart';
 import 'package:kuma_flutter_app/model/item/animation_deatil_page_item.dart';
 import 'package:kuma_flutter_app/model/item/animation_detail_item.dart';
 import 'package:kuma_flutter_app/util/view_utils.dart';
@@ -303,7 +304,7 @@ class AnimationDetailScreen extends StatelessWidget {
                 length: relatedItem.length,
                 builderFunction: (BuildContext context, idx) {
                   final RelatedAnimeItem item = relatedItem[idx];
-                  return ImageTextScrollItem(context:context, id: item.id.toString(), title: item.title, image: item.image, type: ImageShapeType.CIRCLE, imageDiveRate: 3,);
+                  return ImageTextScrollItem(context:context, id: item.id.toString(), title: item.title, image: item.image, imageShapeType: ImageShapeType.CIRCLE, imageDiveRate: 3,pushType: NavigationPushType.REPLACE,);
                 }),
           )
         : EmptyContainer(
@@ -322,7 +323,7 @@ class AnimationDetailScreen extends StatelessWidget {
           length: recommendationItems.length,
           builderFunction: (BuildContext context, idx) {
             final RecommendationAnimeItem item = recommendationItems[idx];
-            return ImageTextScrollItem(context: context, title: item.title ,id: item.id.toString(), imageDiveRate: 3, type: ImageShapeType.CIRCLE,image: item.image,);
+            return ImageTextScrollItem(context: context, title: item.title ,id: item.id.toString(), imageDiveRate: 3, imageShapeType: ImageShapeType.CIRCLE,image: item.image, pushType: NavigationPushType.REPLACE,);
           }),
     )
         : EmptyContainer(
