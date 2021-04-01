@@ -31,8 +31,8 @@ class TabSelector extends StatelessWidget {
       case AppTab.ANIMATION:
         title = "애니";
         break;
-      case AppTab.TAG:
-        title = "태그검색";
+      case AppTab.GENRE:
+        title = "장르검색";
         break;
       case AppTab.IMAGE:
         title = "이미지";
@@ -51,7 +51,7 @@ class TabSelector extends StatelessWidget {
       case AppTab.ANIMATION:
         icon = Icons.album;
         break;
-      case AppTab.TAG:
+      case AppTab.GENRE:
         icon = Icons.phone_android;
         break;
       case AppTab.IMAGE:

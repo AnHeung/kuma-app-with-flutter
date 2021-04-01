@@ -10,7 +10,7 @@ import 'package:kuma_flutter_app/routes/routes.dart';
 import 'package:kuma_flutter_app/screen/animation_screen.dart';
 import 'package:kuma_flutter_app/screen/image_screen.dart';
 import 'package:kuma_flutter_app/screen/more_screen.dart';
-import 'package:kuma_flutter_app/screen/tag_search_screen.dart';
+import 'package:kuma_flutter_app/screen/genre_search_screen.dart';
 import 'package:kuma_flutter_app/widget/tab_selector.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -22,13 +22,6 @@ class HomeScreen extends StatelessWidget {
 
     return BlocBuilder<TabCubit, AppTab>(builder: (context, currentTab) {
       return Scaffold(
-        drawer: SafeArea(
-          child: Drawer(
-            child: Container(
-              color: kWhite,
-            ),
-          ),
-        ),
         body: _selectScreen(tab: currentTab, context: context),
         floatingActionButton: Visibility(
           visible: currentTab != AppTab.MORE,
@@ -54,8 +47,8 @@ class HomeScreen extends StatelessWidget {
       case AppTab.ANIMATION:
         widget = AnimationScreen();
         break;
-      case AppTab.TAG:
-        widget = TagSearchScreen();
+      case AppTab.GENRE:
+        widget = GenreSearchScreen();
         break;
       case AppTab.IMAGE:
         widget = ImageScreen();

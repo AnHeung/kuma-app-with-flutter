@@ -17,6 +17,9 @@ const List<String> itemCountList = [
 const Map<String,String> categoryList = {"airing":"상영중","upcoming":"상영예정","movie":"극장판","ova":"OVA","tv":"TV"};
 final List<String> dayList = ["월","화","수","목","금","토","일"];
 
+const Map<String,String> genreList = {"액션":"1","어드벤쳐":"2","코미디":"4","드라마" :"8","호러":"14","음악":"19" ,"패러디" :"20" , "로맨스":"22" ,
+  "우주":"29","스포츠" :"30" ,"밀리터리":"38", "스릴러":"41" };
+
 // Colors
 const Color kBlue = Color(0xFF306EFF);
 const Color kLightBlue = Color(0xFF4985FD);
