@@ -96,3 +96,7 @@ const double kLoginFontSize = 12;
 //회원가입 페이지
 const double kRegisterFontSize = 15;
 const double kRegisterTitleFontSize = 20;
+
+//장르검색
+
+const double kGenreItemHeight = 50;

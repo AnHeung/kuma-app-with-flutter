@@ -111,4 +111,45 @@ class _SearchApiClient implements SearchApiClient {
     final value = SearchMalApiScheduleItem.fromJson(_result.data);
     return value;
   }
+
+  @override
+  Future<SearchMalAllGenreItem> getAllGenreItems(type, q, page, status, rated,
+      genre, startDate, endDate, genreExclude, limit, sort) async {
+    ArgumentError.checkNotNull(type, 'type');
+    ArgumentError.checkNotNull(q, 'q');
+    ArgumentError.checkNotNull(page, 'page');
+    ArgumentError.checkNotNull(status, 'status');
+    ArgumentError.checkNotNull(rated, 'rated');
+    ArgumentError.checkNotNull(genre, 'genre');
+    ArgumentError.checkNotNull(startDate, 'startDate');
+    ArgumentError.checkNotNull(endDate, 'endDate');
+    ArgumentError.checkNotNull(genreExclude, 'genreExclude');
+    ArgumentError.checkNotNull(limit, 'limit');
+    ArgumentError.checkNotNull(sort, 'sort');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'type': type,
+      r'q': q,
+      r'page': page,
+      r'status': status,
+      r'rated': rated,
+      r'genre': genre,
+      r'start_date': startDate,
+      r'end_date': endDate,
+      r'genre_exclude': genreExclude,
+      r'limit': limit,
+      r'sort': sort
+    };
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>('/mal/all',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = SearchMalAllGenreItem.fromJson(_result.data);
+    return value;
+  }
 }

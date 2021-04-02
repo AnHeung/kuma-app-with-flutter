@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:kuma_flutter_app/model/api/search_mal_api_all_genre_item.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_detail_item.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_item.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_ranking_item.dart';
@@ -28,6 +29,11 @@ abstract class SearchApiClient {
 
   @GET("/mal/schedule/{day}")
   Future<SearchMalApiScheduleItem> getScheduleItems(@Path("day") String day);
+
+  @GET("/mal/all")
+  Future<SearchMalAllGenreItem> getAllGenreItems(@Query("type") String type, @Query("q") String q, @Query("page") String page, @Query("status") String status
+      , @Query("rated") String rated, @Query("genre") String genre, @Query("start_date") String startDate,  @Query("end_date") String endDate, @Query("genre_exclude") String genreExclude,
+      @Query("limit") String limit,  @Query("sort") String sort);
 
   factory SearchApiClient(Dio dio, {String baseUrl}) = _SearchApiClient;
 }
