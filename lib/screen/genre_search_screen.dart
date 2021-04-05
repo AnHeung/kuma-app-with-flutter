@@ -182,25 +182,30 @@ class GenreSearchScreen extends StatelessWidget {
                               crossAxisSpacing: 10,
                               mainAxisSpacing: 20,
                               children: genreSearchItems
-                                  .map((data) => Container(
-                                          child: Column(
-                                        children: [
-                                          Expanded(
-                                              flex: 4,
-                                              child: ImageItem(
-                                                imgRes: data.image,
-                                                type: ImageShapeType.FLAT,
-                                              )),
-                                          Expanded(
-                                              flex: 1,
-                                              child: CustomText(
-                                                text: data.title,
-                                                maxLines: 2,
-                                                isEllipsis: true,
-                                                textAlign: TextAlign.center,
-                                              ))
-                                        ],
-                                      )))
+                                  .map((data) =>
+                                  GestureDetector(
+                                    onTap: ()=> print('test'),
+                                    child: Container(
+                                        child: Column(
+                                          children: [
+                                            Expanded(
+                                                flex: 4,
+                                                child: ImageItem(
+                                                  imgRes: data.image,
+                                                  type: ImageShapeType.FLAT,
+                                                )),
+                                            Expanded(
+                                                flex: 1,
+                                                child: CustomText(
+                                                  text: data.title,
+                                                  maxLines: 2,
+                                                  isEllipsis: true,
+                                                  textAlign: TextAlign.center,
+                                                ))
+                                          ],
+                                        )),
+                                  )
+                                  )
                                   .toList(),
                             ),
                           ),
