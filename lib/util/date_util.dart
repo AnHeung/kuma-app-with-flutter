@@ -16,3 +16,9 @@ getFourYearMapData(){
     return acc;
   });
 }
+
+getToday(){
+  DateTime now = DateTime.now();
+  DateFormat dateFormat = DateFormat('yyyy-MM-dd');
+  return dateFormat.format(now);
+}

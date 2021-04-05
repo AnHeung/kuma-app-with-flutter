@@ -22,8 +22,9 @@ class GenreSearchLoadInProgress extends GenreSearchState {
 
 class GenreSearchLoadSuccess extends GenreSearchState {
   final List<AnimationGenreSearchItem> genreSearchItems;
+  final GenreData genreData;
 
-  GenreSearchLoadSuccess({this.genreSearchItems , clickMap}) : super(clickMap: clickMap);
+  GenreSearchLoadSuccess({this.genreSearchItems , clickMap ,this.genreData}) : super(clickMap: clickMap);
 }
 
 class GenreSearchChangeView extends GenreSearchState {
@@ -34,5 +35,5 @@ class GenreSearchChangeView extends GenreSearchState {
 class GenreSearchLoadFailure extends GenreSearchState {
   final String errMSg;
 
-  GenreSearchLoadFailure({this.errMSg}) : super(clickMap: {});
+  GenreSearchLoadFailure({this.errMSg,Map<String, CategoryClickStatus> clickMap}) : super(clickMap:clickMap);
 }

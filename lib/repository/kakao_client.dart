@@ -70,7 +70,11 @@ class KakaoClient extends LoginClient{
 
   @override
   logout() async{
-    await UserApi.instance?.unlink();
+    try {
+      await UserApi.instance?.unlink();
+    }catch (e){
+      print("카카오 로그아웃 실패 $e");
+    }
   }
 
 }

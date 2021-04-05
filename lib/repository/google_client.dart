@@ -25,6 +25,10 @@ class GoogleClient extends LoginClient{
 
   @override
   logout() async{
-    await signIn?.signOut();
+    try {
+      await signIn?.signOut();
+    }catch(e){
+      print("구글 로그아웃 실패$e");
+    }
   }
 }

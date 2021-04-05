@@ -14,7 +14,7 @@ part 'genre_search_event.dart';
 
 part 'genre_search_state.dart';
 
-class GenreSearchBloc extends Bloc<GenreSearchEvent, GenreSearchState> {
+class   GenreSearchBloc extends Bloc<GenreSearchEvent, GenreSearchState> {
   final ApiRepository repository;
 
   GenreSearchBloc({this.repository}) : super(GenreSearchInitial());
@@ -47,10 +47,10 @@ class GenreSearchBloc extends Bloc<GenreSearchEvent, GenreSearchState> {
     SearchMalAllGenreItem genreItem = await repository.getAllGenreItems(type, q, page, status, rated, genre, startDate, endDate, genreExclude, limit, sort);
 
     if(genreItem.err){
-      yield GenreSearchLoadFailure(errMSg: genreItem.msg);
+      yield GenreSearchLoadFailure(errMSg: genreItem.msg, clickMap: clickMap);
     }else{
       yield GenreSearchLoadSuccess(genreSearchItems: genreItem.result.map((item) => AnimationGenreSearchItem(id: item.id , title: item.title , image: item.image , score: item.score, startDate: item.startDate , endDate: item.endDate,
-          type: item.type, airing: item.airing , episodes: item.episodes , rated: item.rated)).toList(), clickMap: clickMap);
+          type: item.type, airing: item.airing , episodes: item.episodes , rated: item.rated)).toList(), clickMap: clickMap, genreData: event.data);
     }
   }
 }
