@@ -7,8 +7,12 @@ import 'package:kuma_flutter_app/enums/category_click_status.dart';
 import 'package:kuma_flutter_app/enums/genre_title.dart';
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
 import 'package:kuma_flutter_app/model/genre_data.dart';
+import 'package:kuma_flutter_app/model/item/animation_deatil_page_item.dart';
 import 'package:kuma_flutter_app/model/item/animation_genre_search_item.dart';
+import 'package:kuma_flutter_app/routes/routes.dart';
+import 'package:kuma_flutter_app/screen/animation_detail_screen.dart';
 import 'package:kuma_flutter_app/util/date_util.dart';
+import 'package:kuma_flutter_app/util/navigator_util.dart';
 import 'package:kuma_flutter_app/widget/custom_text.dart';
 import 'package:kuma_flutter_app/widget/empty_container.dart';
 import 'package:kuma_flutter_app/widget/image_item.dart';
@@ -184,7 +188,7 @@ class GenreSearchScreen extends StatelessWidget {
                               children: genreSearchItems
                                   .map((data) =>
                                   GestureDetector(
-                                    onTap: ()=> print('test'),
+                                    onTap: ()=> Navigator.pushNamed(context,Routes.IMAGE_DETAIL, arguments: AnimationDetailPageItem(id: data.id, title: data.title)),
                                     child: Container(
                                         child: Column(
                                           children: [
