@@ -53,13 +53,12 @@ class _SearchApiClient implements SearchApiClient {
   }
 
   @override
-  Future<SearchMalDetailApiItem> getMalApiDetailItem(id, type) async {
+  Future<SearchMalDetailApiItem> getMalApiDetailItem(id) async {
     ArgumentError.checkNotNull(id, 'id');
-    ArgumentError.checkNotNull(type, 'type');
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'id': id, r'type': type};
+    final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>('/mal/detail',
+    final _result = await _dio.request<Map<String, dynamic>>('/mal/detail/$id',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'GET',
@@ -72,16 +71,17 @@ class _SearchApiClient implements SearchApiClient {
   }
 
   @override
-  Future<SearchRankingApiResult> getRankingItemList(rankType, limit) async {
+  Future<SearchRankingApiResult> getRankingItemList(
+      type, page, rankType, limit) async {
+    ArgumentError.checkNotNull(type, 'type');
+    ArgumentError.checkNotNull(page, 'page');
     ArgumentError.checkNotNull(rankType, 'rankType');
     ArgumentError.checkNotNull(limit, 'limit');
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{
-      r'ranking_type': rankType,
-      r'limit': limit
-    };
+    final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>('/mal/ranking',
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/mal/ranking/$type/$page/$rankType/$limit',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'GET',

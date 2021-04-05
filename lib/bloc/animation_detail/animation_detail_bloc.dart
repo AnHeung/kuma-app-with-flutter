@@ -25,9 +25,8 @@ class AnimationDetailBloc extends Bloc<AnimationDetailEvent, AnimationDetailStat
 
 
   Stream<AnimationDetailState> _mapToAnimationDetailLoad(AnimationDetailLoad event) async* {
-    String id = event.id ?? "all";
-    String type = event.type ?? "all";
-    SearchMalDetailApiItem malDetailApiItem = await repository.getDetailApiItem(id, type);
+    String id = event.id;
+    SearchMalDetailApiItem malDetailApiItem = await repository.getDetailApiItem(id);
     if(malDetailApiItem.err) {
       yield AnimationDetailLoadFailure(errMsg: malDetailApiItem.msg);
     } else{

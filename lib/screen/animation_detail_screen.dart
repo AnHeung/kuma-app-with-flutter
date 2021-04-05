@@ -33,7 +33,7 @@ class AnimationDetailScreen extends StatelessWidget {
     final String type = "all";
 
     BlocProvider.of<AnimationDetailBloc>(context)
-        .add(AnimationDetailLoad(id: id, type: type));
+        .add(AnimationDetailLoad(id: id));
     return Scaffold(
         appBar: _buildAppbar(
             id: id, type: type, infoItem: infoItem, context: context),
@@ -47,7 +47,7 @@ class AnimationDetailScreen extends StatelessWidget {
               showToast(msg: errMsg);
               return RefreshContainer(
                   callback: () => BlocProvider.of<AnimationDetailBloc>(context)
-                      .add(AnimationDetailLoad(id: id, type: type)));
+                      .add(AnimationDetailLoad(id: id)));
             } else if (state is AnimationDetailLoadSuccess) {
               final AnimationDetailItem detailItem = state.detailItem;
               return _buildAniDetailContainer(
@@ -369,7 +369,7 @@ class AnimationDetailScreen extends StatelessWidget {
             tooltip: "재시작",
             onPressed: () => {
               BlocProvider.of<AnimationDetailBloc>(context)
-                  .add(AnimationDetailLoad(id: id, type: type))
+                  .add(AnimationDetailLoad(id: id))
             },
           ),
           PopupMenuButton<DeTailAnimationActions>(
@@ -379,7 +379,7 @@ class AnimationDetailScreen extends StatelessWidget {
                   break;
                 case DeTailAnimationActions.REFRESH:
                   BlocProvider.of<AnimationDetailBloc>(context)
-                      .add(AnimationDetailLoad(id: id, type: type));
+                      .add(AnimationDetailLoad(id: id));
                   break;
               }
             },

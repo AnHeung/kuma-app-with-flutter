@@ -15,5 +15,4 @@ getFourYearMapData(){
     }
     return acc;
   });
-
 }

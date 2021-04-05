@@ -35,8 +35,8 @@ class ApiRepository {
   Future<SearchMalApiSeasonItem> getSeasonItems(String limit) =>
       searchApiClient.getSeasonItems(limit);
 
-  Future<SearchMalDetailApiItem> getDetailApiItem(String id, String type) =>
-      searchApiClient.getMalApiDetailItem(id, type);
+  Future<SearchMalDetailApiItem> getDetailApiItem(String id) =>
+      searchApiClient.getMalApiDetailItem(id);
 
   Future<SearchMalAllGenreItem> getAllGenreItems(
           String type,
@@ -53,8 +53,8 @@ class ApiRepository {
           startDate, endDate, genreExclude, limit, sort);
 
   Future<SearchRankingApiResult> getRankingItemList(
-          String rankType, String limit) =>
-      searchApiClient.getRankingItemList(rankType, limit);
+      String type, String page, String rankType, String limit) =>
+      searchApiClient.getRankingItemList(type,page, rankType, limit);
 
   Future<RegisterStatus> register({LoginUserData userData}) =>
       firebaseClient.register(userData: userData);

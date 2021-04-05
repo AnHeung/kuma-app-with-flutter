@@ -19,13 +19,15 @@ abstract class SearchApiClient {
   @GET("/mal/season")
   Future<SearchMalApiSeasonItem> getSeasonItems(@Query("limit") String limit);
 
-  @GET("/mal/detail")
-  Future<SearchMalDetailApiItem> getMalApiDetailItem(@Query("id") String id , @Query("type")String type);
+  @GET("/mal/detail/{id}")
+  Future<SearchMalDetailApiItem> getMalApiDetailItem(@Path("id") String id);
 
-  @GET("/mal/ranking")
+  @GET("/mal/ranking/{type}/{page}/{rank_type}/{limit}")
   Future<SearchRankingApiResult> getRankingItemList(
-      @Query("ranking_type") String rankType,
-      @Query("limit") String limit);
+      @Path("type") String type,
+      @Path("page") String page,
+      @Path("rank_type") String rankType,
+      @Path("limit") String limit);
 
   @GET("/mal/schedule/{day}")
   Future<SearchMalApiScheduleItem> getScheduleItems(@Path("day") String day);

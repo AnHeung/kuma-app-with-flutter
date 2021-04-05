@@ -43,10 +43,11 @@ class AnimationBloc extends Bloc<AnimationEvent, AnimationState> {
       yield AnimationLoadInProgress();
 
       SettingConfig config = await getSettingConfig();
-
+      String type = "anime";
+      String page = "1";
       String rankType = config.rankingType;
       String limit = config.aniLoadItemCount;
-      SearchRankingApiResult searchRankingApiResult = await repository.getRankingItemList(rankType, limit);
+      SearchRankingApiResult searchRankingApiResult = await repository.getRankingItemList(type,page,rankType, limit);
       bool isErr = searchRankingApiResult.err;
       if (isErr)
         yield AnimationLoadFailure(errMsg: searchRankingApiResult.msg);

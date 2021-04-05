@@ -13,8 +13,9 @@ abstract class GenreSearchEvent extends Equatable{
 class GenreLoad extends GenreSearchEvent{
 
   final GenreData data;
+  final Map<String,CategoryClickStatus> clickMap;
 
-  const GenreLoad({this.data});
+  const GenreLoad({this.data , this.clickMap});
 }
 
 class GenreItemClick extends GenreSearchEvent{

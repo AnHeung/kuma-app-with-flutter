@@ -10,12 +10,11 @@ abstract class AnimationDetailEvent extends Equatable{
 class AnimationDetailLoad extends AnimationDetailEvent{
 
   String id;
-  String type;
 
-  AnimationDetailLoad({this.id, this.type});
+  AnimationDetailLoad({this.id});
 
   @override
-  List<Object> get props =>[id, type];
+  List<Object> get props =>[id];
 }
 
 

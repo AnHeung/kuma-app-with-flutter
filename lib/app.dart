@@ -16,6 +16,7 @@ import 'package:kuma_flutter_app/bloc/search_history/search_history_bloc.dart';
 import 'package:kuma_flutter_app/bloc/setting/setting_bloc.dart';
 import 'package:kuma_flutter_app/bloc/splash/splash_bloc.dart';
 import 'package:kuma_flutter_app/bloc/tab/tab_cubit.dart';
+import 'package:kuma_flutter_app/model/genre_data.dart';
 import 'package:kuma_flutter_app/repository/api_repository.dart';
 import 'package:kuma_flutter_app/repository/firebase_client.dart';
 import 'package:kuma_flutter_app/repository/rest_client.dart';
@@ -97,7 +98,7 @@ class App extends StatelessWidget {
                 BlocProvider(create: (_) => AnimationBloc(repository: context.read<ApiRepository>(),settingBloc: BlocProvider.of<SettingBloc>(context))..add(AnimationLoad())),
                 BlocProvider(create: (_) => AnimationSeasonBloc(repository: context.read<ApiRepository>(),settingBloc: BlocProvider.of<SettingBloc>(context))..add(AnimationSeasonLoad(limit: "7"))),
                 BlocProvider(create: (_) => AnimationScheduleBloc(repository: context.read<ApiRepository>(),settingBloc: BlocProvider.of<SettingBloc>(context))..add(AnimationScheduleLoad(day:"1"))),
-                BlocProvider(create: (_) => GenreSearchBloc(repository: context.read<ApiRepository>()))
+                BlocProvider(create: (_) => GenreSearchBloc(repository: context.read<ApiRepository>())..add(GenreLoad(data: GenreData(),clickMap: {})))
               ],
               child: HomeScreen(),
             );

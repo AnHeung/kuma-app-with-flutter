@@ -95,9 +95,12 @@ class _AnimationScreenState extends State<AnimationScreen> {
           builder: (context, loadState) {
         switch (loadState.runtimeType) {
           case AnimationLoadFailure:
-            return RefreshContainer(
-              callback: () =>
-                  BlocProvider.of<AnimationBloc>(context).add(AnimationLoad()),
+            return Container(
+              height: 300,
+              child: RefreshContainer(
+                callback: () =>
+                    BlocProvider.of<AnimationBloc>(context).add(AnimationLoad()),
+              ),
             );
           case AnimationLoadSuccess:
             final List<AnimationMainItem> mainItemList =
@@ -137,7 +140,6 @@ class _AnimationScreenState extends State<AnimationScreen> {
   }
 
   Widget _buildScheduleItems({BuildContext context}) {
-
 
     return Container(
       padding: EdgeInsets.only(top: 20, left: 18, right: 20),
