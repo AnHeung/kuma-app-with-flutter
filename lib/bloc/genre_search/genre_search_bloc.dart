@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/enums/category_click_status.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_all_genre_item.dart';
 import 'package:kuma_flutter_app/model/genre_data.dart';
@@ -11,7 +10,6 @@ import 'package:kuma_flutter_app/repository/api_repository.dart';
 import 'package:meta/meta.dart';
 
 part 'genre_search_event.dart';
-
 part 'genre_search_state.dart';
 
 class   GenreSearchBloc extends Bloc<GenreSearchEvent, GenreSearchState> {

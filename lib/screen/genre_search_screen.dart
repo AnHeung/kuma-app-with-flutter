@@ -10,9 +10,7 @@ import 'package:kuma_flutter_app/model/genre_data.dart';
 import 'package:kuma_flutter_app/model/item/animation_deatil_page_item.dart';
 import 'package:kuma_flutter_app/model/item/animation_genre_search_item.dart';
 import 'package:kuma_flutter_app/routes/routes.dart';
-import 'package:kuma_flutter_app/screen/animation_detail_screen.dart';
 import 'package:kuma_flutter_app/util/date_util.dart';
-import 'package:kuma_flutter_app/util/navigator_util.dart';
 import 'package:kuma_flutter_app/widget/custom_text.dart';
 import 'package:kuma_flutter_app/widget/empty_container.dart';
 import 'package:kuma_flutter_app/widget/image_item.dart';
@@ -26,199 +24,26 @@ class GenreSearchScreen extends StatelessWidget {
       actions: [Container()],
       title: Text('장르검색'),
     );
-    final height = appBar.preferredSize.height;
+    final appBarHeight = appBar.preferredSize.height;
 
     return BlocBuilder<GenreSearchBloc, GenreSearchState>(
       builder: (context, state) {
-        List<AnimationGenreSearchItem> genreSearchItems =
-            state is GenreSearchLoadSuccess ? state.genreSearchItems : [];
+        List<AnimationGenreSearchItem> genreSearchItems = state is GenreSearchLoadSuccess ? state.genreSearchItems : [];
         Map<String, CategoryClickStatus> clickMap = state.clickMap;
-        GenreData genreData =
-            state is GenreSearchLoadSuccess ? state.genreData : GenreData();
+        GenreData genreData = state is GenreSearchLoadSuccess ? state.genreData : GenreData();
 
         return Stack(
           children: [
             Scaffold(
               key: _key,
               endDrawerEnableOpenDragGesture: false,
-              endDrawer: SafeArea(
-                child: Drawer(
-                  child: ListView(
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    children: [
-                      Container(
-                        color: kBlack,
-                        width: double.infinity,
-                        height: height,
-                        child: DrawerHeader(
-                          child: Text('Drawer Header'),
-                        ),
-                      ),
-                      TagItems(
-                        title: "장르",
-                        genreTitle: GenreTitle.GENRE,
-                        clickMap: clickMap,
-                        genreData: genreData,
-                      ),
-                      TagItems(
-                        title: "연도",
-                        genreTitle: GenreTitle.YEAR,
-                        clickMap: clickMap,
-                        genreData: genreData,
-                      )
-                    ],
-                  ),
-                ),
-              ),
+              endDrawer: _buildNavigationView(height: appBarHeight , genreData: genreData, clickMap: clickMap),
               appBar: appBar,
               body: Column(
                 children: [
-                  Container(
-                    height: kGenreItemHeight,
-                    padding: EdgeInsets.only(left: 10, right: 10),
-                    child: Row(
-                      children: [
-                        CustomText(
-                          fontColor: Colors.black,
-                          text: "선택된 필터",
-                          fontSize: 14.0,
-                        ),
-                        Spacer(),
-                        GestureDetector(
-                          onTap: () => _key.currentState.openEndDrawer(),
-                          child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.purple,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(5)),
-                              ),
-                              padding: EdgeInsets.only(right: 10, left: 10),
-                              height: 30,
-                              alignment: Alignment.centerRight,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  CustomText(
-                                    fontWeight: FontWeight.w700,
-                                    text: "필터",
-                                    fontColor: kWhite,
-                                    fontSize: 10.0,
-                                  ),
-                                  Icon(
-                                    Icons.filter_list,
-                                    color: Colors.white,
-                                    size: 15,
-                                  ),
-                                ],
-                              )),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Visibility(
-                    visible: clickMap.isNotEmpty,
-                    child: Container(
-                      height: kGenreItemHeight,
-                      decoration: BoxDecoration(
-                          border: Border(
-                              top: BorderSide(color: kBlack, width: 0.1),
-                              bottom: BorderSide(color: kBlack, width: 0.1))),
-                      padding: EdgeInsets.only(left: 10),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.check_box,
-                            color: Colors.purple,
-                          ),
-                          Expanded(
-                            child: Container(
-                              padding: EdgeInsets.only(left: 10),
-                              height: 25,
-                              child: ListView.separated(
-                                itemBuilder: (context, idx) {
-                                  final String item =
-                                      clickMap.keys.elementAt(idx);
-                                  return Container(
-                                    padding: EdgeInsets.only(left: 5, right: 5),
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(30),
-                                        border: Border.all(
-                                            width: 0.5, color: kBlack)),
-                                    child: Row(
-                                      children: [
-                                        CustomText(
-                                          text: item,
-                                          fontSize: 10.0,
-                                        ),
-                                        Icon(
-                                          Icons.close,
-                                          size: 10,
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                },
-                                separatorBuilder: (context, idx) {
-                                  return SizedBox(
-                                    width: 10,
-                                  );
-                                },
-                                itemCount: clickMap.length,
-                                scrollDirection: Axis.horizontal,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  genreSearchItems.isNotEmpty
-                      ? Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: GridView.count(
-                              crossAxisCount: 3,
-                              childAspectRatio: 0.7,
-                              scrollDirection: Axis.vertical,
-                              crossAxisSpacing: 10,
-                              mainAxisSpacing: 20,
-                              children: genreSearchItems
-                                  .map((data) =>
-                                  GestureDetector(
-                                    onTap: ()=> Navigator.pushNamed(context,Routes.IMAGE_DETAIL, arguments: AnimationDetailPageItem(id: data.id, title: data.title)),
-                                    child: Container(
-                                        child: Column(
-                                          children: [
-                                            Expanded(
-                                                flex: 4,
-                                                child: ImageItem(
-                                                  imgRes: data.image,
-                                                  type: ImageShapeType.FLAT,
-                                                )),
-                                            Expanded(
-                                                flex: 1,
-                                                child: CustomText(
-                                                  text: data.title,
-                                                  maxLines: 2,
-                                                  isEllipsis: true,
-                                                  textAlign: TextAlign.center,
-                                                ))
-                                          ],
-                                        )),
-                                  )
-                                  )
-                                  .toList(),
-                            ),
-                          ),
-                        )
-                      : Expanded(
-                          child: EmptyContainer(
-                            title: "검색 목록 없음",
-                          ),
-                        )
+                  _buildTopContainer(key: _key),
+                  _buildFilterContainer(clickMap: clickMap),
+                  _buildGridView(context: context, genreSearchItems: genreSearchItems)
                 ],
               ),
             ),
@@ -230,21 +55,226 @@ class GenreSearchScreen extends StatelessWidget {
       },
     );
   }
+  _buildFilterContainer({ Map<String, CategoryClickStatus> clickMap}){
+    return Visibility(
+      visible: clickMap.isNotEmpty,
+      child: Container(
+        height: kGenreItemHeight,
+        decoration: BoxDecoration(
+            border: Border(
+                top: BorderSide(color: kBlack, width: 0.1),
+                bottom: BorderSide(color: kBlack, width: 0.1))),
+        padding: EdgeInsets.only(left: 10),
+        child: Row(
+          children: [
+            Icon(
+              Icons.check_box,
+              color: Colors.purple,
+            ),
+            Expanded(
+              child: Container(
+                padding: EdgeInsets.only(left: 10),
+                height: 30,
+                child: ListView.separated(
+                  itemBuilder: (context, idx) {
+                    final String item = clickMap.keys.elementAt(idx);
+                    return Container(
+                      padding: EdgeInsets.only(left: 5, right: 5),
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          border: Border.all(
+                              width: 0.5, color: kBlack)),
+                      child: Row(
+                        children: [
+                          CustomText(
+                            fontFamily: doHyunFont,
+                            text: item,
+                            fontSize: 10.0,
+                          ),
+                          Icon(
+                            Icons.close,
+                            size: 10,
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                  separatorBuilder: (context, idx) {
+                    return SizedBox(
+                      width: 10,
+                    );
+                  },
+                  itemCount: clickMap.length,
+                  scrollDirection: Axis.horizontal,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  _buildTopContainer({ GlobalKey<ScaffoldState> key}){
+    return Container(
+      height: kGenreItemHeight,
+      padding: EdgeInsets.only(left: 10, right: 10),
+      child: Row(
+        children: [
+          CustomText(
+            fontFamily: doHyunFont,
+            fontColor: Colors.black,
+            text: "선택된 필터",
+            fontSize: 14.0,
+          ),
+          Spacer(),
+          GestureDetector(
+            onTap: () => key.currentState.openEndDrawer(),
+            child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.purple,
+                  borderRadius:
+                  BorderRadius.all(Radius.circular(5)),
+                ),
+                padding: EdgeInsets.only(right: 10, left: 10),
+                height: 30,
+                alignment: Alignment.centerRight,
+                child: Row(
+                  mainAxisAlignment:
+                  MainAxisAlignment.spaceEvenly,
+                  children: [
+                    CustomText(
+                      fontWeight: FontWeight.w700,
+                      text: "필터",
+                      fontColor: kWhite,
+                      fontSize: 10.0,
+                    ),
+                    Icon(
+                      Icons.filter_list,
+                      color: Colors.white,
+                      size: 15,
+                    ),
+                  ],
+                )),
+          ),
+        ],
+      ),
+    );
+  }
+
+  _buildGridView({BuildContext context, List<AnimationGenreSearchItem> genreSearchItems}){
+    return genreSearchItems.isNotEmpty ? Expanded(
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: GridView.count(
+          crossAxisCount: 3,
+          childAspectRatio: 0.7,
+          scrollDirection: Axis.vertical,
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 20,
+          children: genreSearchItems
+              .map((data) => GestureDetector(
+            onTap: () => Navigator.pushNamed(
+                context, Routes.IMAGE_DETAIL,
+                arguments: AnimationDetailPageItem(
+                    id: data.id,
+                    title: data.title)),
+            child: Container(
+                child: Column(
+                  children: [
+                    Expanded(
+                        flex: 4,
+                        child: ImageItem(
+                          imgRes: data.image,
+                          type: ImageShapeType.FLAT,
+                        )),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Expanded(
+                        flex: 1,
+                        child: CustomText(
+                          fontSize: 10.0,
+                          text: data.title,
+                          maxLines: 2,
+                          fontWeight: FontWeight.w700,
+                          isEllipsis: true,
+                          textAlign: TextAlign.center,
+                        ))
+                  ],
+                )),
+          ))
+              .toList(),
+        ),
+      ),
+    )
+    : Expanded(
+    child: EmptyContainer(
+    title: "검색 목록 없음",
+    ),
+    );
+  }
+
+  _buildNavigationView({double height , GenreData genreData , Map<String, CategoryClickStatus> clickMap}){
+    return SafeArea(
+      child: Drawer(
+        child: ListView(
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          children: [
+            Container(
+              color: kBlack,
+              width: double.infinity,
+              height: height,
+              child: DrawerHeader(
+                child: SizedBox(),
+              ),
+            ),
+            GenreItems(
+              title: "장르",
+              genreTitle: GenreTitle.GENRE,
+              clickMap: clickMap,
+              genreData: genreData,
+            ),
+            GenreItems(
+              title: "연도",
+              genreTitle: GenreTitle.YEAR,
+              clickMap: clickMap,
+              genreData: genreData,
+            ),
+            GenreItems(
+              title: "방영",
+              genreTitle: GenreTitle.AIRING,
+              clickMap: clickMap,
+              genreData: genreData,
+            ),
+            GenreItems(
+              title: "나이제한",
+              genreTitle: GenreTitle.RATED,
+              clickMap: clickMap,
+              genreData: genreData,
+            )
+          ],
+        ),
+      ),
+    );
+  }
 }
 
-class TagItems extends StatefulWidget {
+class GenreItems extends StatefulWidget {
   final String title;
   final GenreTitle genreTitle;
   final Map<String, CategoryClickStatus> clickMap;
   final GenreData genreData;
 
-  TagItems({this.title, this.genreTitle, this.clickMap, this.genreData});
+  GenreItems({this.title, this.genreTitle, this.clickMap, this.genreData});
 
   @override
-  _TagItemsState createState() => _TagItemsState();
+  _GenreItemsState createState() => _GenreItemsState();
 }
 
-class _TagItemsState extends State<TagItems> {
+class _GenreItemsState extends State<GenreItems> {
   bool isVisible = true;
 
   @override
@@ -288,9 +318,9 @@ class _TagItemsState extends State<TagItems> {
                 String key = data.key;
                 String value = data.value;
                 CategoryClickStatus status = widget.clickMap.containsKey(key)
-                ?widget.clickMap[key]
-                :CategoryClickStatus.NONE;
-                return CategoryItem(
+                    ? widget.clickMap[key]
+                    : CategoryClickStatus.NONE;
+                return GenreCategoryItem(
                   category: key,
                   categoryValue: value,
                   clickMap: widget.clickMap,
@@ -312,25 +342,26 @@ class _TagItemsState extends State<TagItems> {
         return genreList;
       case GenreTitle.YEAR:
         return getFourYearMapData();
-      case GenreTitle.AIR_TYPE:
-        return genreList;
       case GenreTitle.AIRING:
-        return genreList;
+        return airList;
+      case GenreTitle.RATED:
+        return ratedList;
       default:
         return {};
     }
   }
 }
 
-class CategoryItem extends StatelessWidget {
-  String category;
-  String categoryValue;
+class GenreCategoryItem extends StatelessWidget {
+
+  final String category;
+  final String categoryValue;
   Map<String, CategoryClickStatus> clickMap;
   CategoryClickStatus clickStatus;
   final GenreTitle genreTitle;
-  GenreData genreData;
+  final GenreData genreData;
 
-  CategoryItem(
+  GenreCategoryItem(
       {this.category,
       this.categoryValue,
       this.clickMap,
@@ -354,10 +385,16 @@ class CategoryItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
-              child: Text(category),
+              child: CustomText(
+                text: category,
+                fontColor: (clickStatus == CategoryClickStatus.INCLUDE ||
+                        clickStatus == CategoryClickStatus.EXCLUDE)
+                    ? Colors.purple
+                    : kBlack,
+              ),
             ),
             Spacer(),
-            _changeCategoryIcon(clickStatus)
+            _buildCategoryIcon(clickStatus)
           ],
         ),
       ),
@@ -386,12 +423,16 @@ class CategoryItem extends StatelessWidget {
     }
   }
 
-  _changeCategoryIcon(CategoryClickStatus status) {
+  _buildCategoryIcon(CategoryClickStatus status) {
     switch (status) {
       case CategoryClickStatus.INCLUDE:
-        return Icon(Icons.check_box);
+        return Icon(
+          Icons.check_box,
+          color: Colors.purple,
+        );
       case CategoryClickStatus.EXCLUDE:
-        return Icon(Icons.indeterminate_check_box_outlined);
+        return Icon(Icons.indeterminate_check_box_outlined,
+            color: Colors.purple);
       case CategoryClickStatus.NONE:
         return Icon(Icons.check_box_outline_blank);
     }
@@ -404,74 +445,60 @@ class CategoryItem extends StatelessWidget {
         String genreExclude = genreData.genreExclude;
 
         if (clickStatus == CategoryClickStatus.EXCLUDE) {
-          if (genreExclude.isEmpty) {
-            genreExclude = categoryValue;
-          } else {
-            genreExclude += ",$categoryValue";
-          }
-        } else if(clickStatus == CategoryClickStatus.INCLUDE){
-          if (genre.isEmpty) {
-            genre = categoryValue;
-          } else {
-            genre += ",$categoryValue";
-          }
-        }else{
-            genre = genre.split(",").fold("",(acc,genre){
-              if(categoryValue != genre){
-                if (acc.isEmpty) {
-                  acc = genre;
-                } else {
-                  acc += ",$genre";
-                }
-              }
-              return acc;
-            });
-            genreExclude = genreExclude.split(",").fold("",(acc,genreExclude){
-              if(categoryValue != genreExclude){
-                if (acc.isEmpty) {
-                  acc = genreExclude;
-                } else {
-                  acc += ",$genreExclude";
-                }
-              }
-              return acc;
-            });
+          genreExclude = _appendComma(baseString: genreExclude, appendString: categoryValue);
+        } else if (clickStatus == CategoryClickStatus.INCLUDE) {
+          genre = _appendComma(baseString: genre, appendString: categoryValue);
+        } else {
+          genre = _makeCategoryString(splitString: genre);
+          genreExclude = _makeCategoryString(splitString: genreExclude);
         }
-        // clickMap.entries.forEach((data){
-        //
-        //   String category = data.key;
-        //   CategoryClickStatus categoryStatus = data.value;
-        //   String categoryValue = genreList[category];
-        //
-        //   if(categoryStatus == CategoryClickStatus.EXCLUDE){
-        //     if(genreExclude.isEmpty){
-        //       genreExclude  = categoryValue;
-        //     }else{
-        //       genreExclude  += ",$categoryValue";
-        //     }
-        //   }else{
-        //     if(genre.isEmpty){
-        //       genre  = categoryValue;
-        //     }else{
-        //       genre  += ",$categoryValue";
-        //     }
-        //   }
-        // });
         return genreData.copyWith(genre: genre, genreExclude: genreExclude);
       case GenreTitle.YEAR:
-
         String startDate = categoryValue.split("~").first;
         String endDate = categoryValue.split("~").last;
 
-        if(genreData.startDate.isNotEmpty && genreData.endDate.isNotEmpty){
-          if(DateTime.parse(startDate).year > DateTime.parse(genreData.startDate).year)  startDate = genreData.startDate;
-          if(DateTime.parse(endDate).year < DateTime.parse(genreData.endDate).year) endDate = genreData.endDate;
+        if (genreData.startDate.isNotEmpty && genreData.endDate.isNotEmpty) {
+          if (clickStatus == CategoryClickStatus.NONE) {
+            if (DateTime.parse(endDate).year > DateTime.parse(genreData.endDate).year)
+              endDate = getFourYearMapData()[DateTime.parse(genreData.endDate).year.toString()]
+                  .split("~")
+                  .last;
+            if (DateTime.parse(startDate).year == DateTime.parse(genreData.startDate).year)
+              startDate = getFourYearMapData()[DateTime.parse(genreData.endDate).year.toString()]
+                  .split("~")
+                  .first;
+          } else {
+            if (DateTime.parse(startDate).year > DateTime.parse(genreData.startDate).year)
+              startDate = genreData.startDate;
+            if (DateTime.parse(endDate).year < DateTime.parse(genreData.endDate).year)
+              endDate = genreData.endDate;
+          }
         }
         return genreData.copyWith(startDate: startDate, endDate: endDate);
       case GenreTitle.AIRING:
-        break;
-      case GenreTitle.AIR_TYPE:
-        break;
+        String airing = "";
+        if (clickStatus == CategoryClickStatus.INCLUDE) airing = categoryValue;
+        return genreData.copyWith(status: airing);
+      case GenreTitle.RATED:
+        String rated = genreData.rated;
+        if (clickStatus == CategoryClickStatus.INCLUDE) rated = _appendComma(baseString: rated, appendString: categoryValue);
+        else rated = _makeCategoryString(splitString: rated);
+        return genreData.copyWith(rated: rated);
     }
+  }
+
+  _appendComma({String baseString, String appendString}) {
+    if (baseString.isEmpty) baseString = appendString;
+     else baseString += ",$appendString";
+    return baseString;
+  }
+
+  _makeCategoryString({String splitString}) {
+    return splitString.split(",").fold("", (acc, string) {
+          if (categoryValue != string)
+            acc = _appendComma(baseString: acc, appendString: string);
+          return acc;
+        }) ??
+        "";
   }
 }

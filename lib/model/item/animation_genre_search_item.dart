@@ -1,5 +1,3 @@
-import 'package:kuma_flutter_app/enums/category_click_status.dart';
-
 class AnimationGenreSearchItem {
 
   String id;

@@ -5,6 +5,7 @@ import 'package:kuma_flutter_app/enums/login_status.dart';
 import 'package:kuma_flutter_app/enums/register_status.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_all_genre_item.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_detail_item.dart';
+import 'package:kuma_flutter_app/model/api/search_mal_api_genre_list_item.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_item.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_ranking_item.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_schedule_item.dart';
@@ -37,6 +38,8 @@ class ApiRepository {
 
   Future<SearchMalDetailApiItem> getDetailApiItem(String id) =>
       searchApiClient.getMalApiDetailItem(id);
+
+  Future<SearchMalApiGenreListItem> getAllGenreList(String id) => searchApiClient.getGenreList();
 
   Future<SearchMalAllGenreItem> getAllGenreItems(
           String type,

@@ -16,9 +16,9 @@ const List<String> itemCountList = [
 
 const Map<String,String> categoryList = {"airing":"상영중","upcoming":"상영예정","movie":"극장판","ova":"OVA","tv":"TV"};
 final List<String> dayList = ["월","화","수","목","금","토","일"];
-
-const Map<String,String> genreList = {"액션":"1","어드벤쳐":"2","코미디":"4","드라마" :"8","헨타":"12","호러":"14","음악":"19" ,"패러디" :"20" , "로맨스":"22" ,
-  "우주":"29","스포츠" :"30" ,"유리":"35","밀리터리":"38", "스릴러":"41" ,"동인":"43"};
+const Map<String,String> genreList = {"액션":"1","어드벤쳐":"2","코미디":"4","드라마" :"8","헨타":"12","호러":"14","음악":"19" ,"패러디" :"20" , "로맨스":"22" , "우주":"29","스포츠" :"30" ,"유리":"35","밀리터리":"38", "스릴러":"41" ,"동인":"43"};
+const Map<String,String> airList = {"방영":"airing","완결":"completed","방영예정":"upcoming"};
+const Map<String,String> ratedList = {"모두":"g","어린이용":"pg","13세이하":"pg13","17세이상":"r17" , "성인":"r"};
 
 // Colors
 const Color kBlue = Color(0xFF306EFF);
@@ -99,4 +99,4 @@ const double kRegisterTitleFontSize = 20;
 
 //장르검색
 
-const double kGenreItemHeight = 50;
+const double kGenreItemHeight = 60;
