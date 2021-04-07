@@ -15,6 +15,7 @@ import 'package:kuma_flutter_app/widget/image_item.dart';
 import 'package:kuma_flutter_app/widget/loading_indicator.dart';
 
 class GenreSearchScreen extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     final GlobalKey<ScaffoldState> _key = new GlobalKey<ScaffoldState>();
@@ -181,54 +182,54 @@ class GenreSearchScreen extends StatelessWidget {
         }
         return genreSearchItems.isNotEmpty
             ? Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: GridView.count(
-                    crossAxisCount: 3,
-                    childAspectRatio: 0.7,
-                    scrollDirection: Axis.vertical,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 20,
-                    children: genreSearchItems
-                        .map((data) => GestureDetector(
-                              onTap: () => Navigator.pushNamed(
-                                  context, Routes.IMAGE_DETAIL,
-                                  arguments: AnimationDetailPageItem(
-                                      id: data.id, title: data.title)),
-                              child: Container(
-                                  child: Column(
-                                children: [
-                                  Expanded(
-                                      flex: 4,
-                                      child: ImageItem(
-                                        imgRes: data.image,
-                                        type: ImageShapeType.FLAT,
-                                      )),
-                                  SizedBox(
-                                    height: 5,
-                                  ),
-                                  Expanded(
-                                      flex: 1,
-                                      child: CustomText(
-                                        fontSize: 10.0,
-                                        text: data.title,
-                                        maxLines: 2,
-                                        fontWeight: FontWeight.w700,
-                                        isEllipsis: true,
-                                        textAlign: TextAlign.center,
-                                      ))
-                                ],
-                              )),
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: GridView.count(
+              crossAxisCount: 3,
+              childAspectRatio: 0.7,
+              scrollDirection: Axis.vertical,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 20,
+              children: genreSearchItems
+                  .map((data) => GestureDetector(
+                onTap: () => Navigator.pushNamed(
+                    context, Routes.IMAGE_DETAIL,
+                    arguments: AnimationDetailPageItem(
+                        id: data.id, title: data.title)),
+                child: Container(
+                    child: Column(
+                      children: [
+                        Expanded(
+                            flex: 4,
+                            child: ImageItem(
+                              imgRes: data.image,
+                              type: ImageShapeType.FLAT,
+                            )),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Expanded(
+                            flex: 1,
+                            child: CustomText(
+                              fontSize: 10.0,
+                              text: data.title,
+                              maxLines: 2,
+                              fontWeight: FontWeight.w700,
+                              isEllipsis: true,
+                              textAlign: TextAlign.center,
                             ))
-                        .toList(),
-                  ),
-                ),
-              )
+                      ],
+                    )),
+              ))
+                  .toList(),
+            ),
+          ),
+        )
             : Expanded(
-                child: EmptyContainer(
-                  title: "검색 목록 없음",
-                ),
-              );
+          child: EmptyContainer(
+            title: "검색 목록 없음",
+          ),
+        );
       },
     );
   }

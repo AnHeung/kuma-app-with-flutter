@@ -31,6 +31,7 @@ class AnimationScheduleBloc extends Bloc<AnimationScheduleEvent, AnimationSchedu
   Stream<AnimationScheduleState> _mapToScheduleLoad(AnimationScheduleLoad event) async*{
     yield AnimationScheduleLoadInProgress(currentDay: event.day);
     SearchMalApiScheduleItem scheduleItem = await repository.getScheduleItems(event.day);
+    print('_mapToScheduleLoad ${event.day} scheduleItem :$scheduleItem');
     if(scheduleItem.err){
       yield AnimationScheduleLoadFailure(errMsg: scheduleItem.msg);
     }else{

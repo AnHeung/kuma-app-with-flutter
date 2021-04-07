@@ -22,7 +22,7 @@ class AnimationScheduleScreen extends StatelessWidget {
       builder: (context, state) {
         List<AnimationScheduleItem> scheduleItems =
             state is AnimationScheduleLoadSuccess ? state.scheduleItems : [];
-        String currentDay = state.currentDay ?? "-1";
+        String currentDay = state.currentDay ?? "1";
 
         return Scaffold(
           backgroundColor: bgColor,

@@ -28,10 +28,10 @@ class SearchMalApiScheduleItem {
 }
 
 class Result {
-  int id;
+  String id;
   String title;
   String image;
-  double score;
+  String score;
   String startDate;
 
   Result({this.id, this.title, this.image, this.score, this.startDate});

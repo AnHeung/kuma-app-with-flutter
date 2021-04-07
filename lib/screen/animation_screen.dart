@@ -203,7 +203,6 @@ class _AnimationScreenState extends State<AnimationScreen> {
   }
 
   _buildScheduleBottomContainer(List<AnimationScheduleItem>  scheduleItems){
-    if(scheduleItems != null && scheduleItems.length > 0) {
       return Container(
         height: 160,
         margin: EdgeInsets.only(top: 10),
@@ -219,25 +218,28 @@ class _AnimationScreenState extends State<AnimationScreen> {
                   imageDiveRate: 4,))
                 .toList()),
       );
-    }else{
-      return Container(height:160 ,child: LoadingIndicator(isVisible: true,));
-    }
   }
 
   _buildScheduleContainer() {
     return BlocBuilder<AnimationScheduleBloc , AnimationScheduleState>(
       builder: (context, state){
-        String currentDay =  state.currentDay ??  "-1";
+        String currentDay =  state.currentDay ??  "1";
         List<AnimationScheduleItem> scheduleItems = state is AnimationScheduleLoadSuccess ? state.scheduleItems :[] ;
+        print("scheduleItems : $scheduleItems");
 
-        return Container(
-          height: kAnimationScheduleContainerHeight,
-          child: Column(
-            children: [
-              _buildScheduleIndicator(currentDay),
-              _buildScheduleBottomContainer(scheduleItems)
-            ],
-          ),
+        return Stack(
+          children: [
+            Container(
+              height: kAnimationScheduleContainerHeight,
+              child: Column(
+                children: [
+                  _buildScheduleIndicator(currentDay),
+                  _buildScheduleBottomContainer(scheduleItems)
+                ],
+              ),
+            ),
+            Container(height : kAnimationScheduleContainerHeight ,child: LoadingIndicator(isVisible: state is AnimationScheduleLoadInProgress,))
+          ],
         );
       },
     );

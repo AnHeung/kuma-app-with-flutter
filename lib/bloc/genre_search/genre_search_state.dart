@@ -7,19 +7,15 @@ abstract class GenreSearchState extends Equatable{
   List<Object> get props =>[];
 }
 
-class GenreSearchInitial extends GenreSearchState {
-  GenreSearchInitial({Map<String, CategoryClickStatus> clickMap});
+class GenreSearchInitial extends GenreSearchState {}
 
-}
-
-class GenreSearchLoadInProgress extends GenreSearchState {
-}
+class GenreSearchLoadInProgress extends GenreSearchState {}
 
 class GenreSearchLoadSuccess extends GenreSearchState {
   final List<AnimationGenreSearchItem> genreSearchItems;
   final GenreData genreData;
 
-  GenreSearchLoadSuccess({this.genreSearchItems , clickMap ,this.genreData});
+  GenreSearchLoadSuccess({this.genreSearchItems ,this.genreData});
 
   @override
   List<Object> get props=>[genreSearchItems,genreData];
@@ -32,14 +28,6 @@ class GenreListLoadSuccess extends GenreSearchState {
 
   @override
   List<Object> get props =>[genreListItems];
-}
-
-class GenreSearchChangeView extends GenreSearchState {
-  final List<String> categories;
-  GenreSearchChangeView({this.categories});
-
-  @override
-  List<Object> get props =>[categories];
 }
 
 class GenreSearchLoadFailure extends GenreSearchState {
