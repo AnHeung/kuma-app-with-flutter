@@ -71,7 +71,7 @@ class _SearchApiClient implements SearchApiClient {
   }
 
   @override
-  Future<SearchMalApiGenreListItem> getGenreList() async {
+  Future<SearchMalApiGenreListItem> getGenreCategoryList() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};

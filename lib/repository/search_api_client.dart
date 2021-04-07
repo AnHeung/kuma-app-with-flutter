@@ -24,7 +24,7 @@ abstract class SearchApiClient {
   Future<SearchMalDetailApiItem> getMalApiDetailItem(@Path("id") String id);
 
   @GET("/mal/genreList")
-  Future<SearchMalApiGenreListItem> getGenreList();
+  Future<SearchMalApiGenreListItem> getGenreCategoryList();
 
   @GET("/mal/ranking/{type}/{page}/{rank_type}/{limit}")
   Future<SearchRankingApiResult> getRankingItemList(

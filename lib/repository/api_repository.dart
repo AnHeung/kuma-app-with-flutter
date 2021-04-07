@@ -39,9 +39,9 @@ class ApiRepository {
   Future<SearchMalDetailApiItem> getDetailApiItem(String id) =>
       searchApiClient.getMalApiDetailItem(id);
 
-  Future<SearchMalApiGenreListItem> getAllGenreList(String id) => searchApiClient.getGenreList();
+  Future<SearchMalApiGenreListItem> getGenreCategoryList() => searchApiClient.getGenreCategoryList();
 
-  Future<SearchMalAllGenreItem> getAllGenreItems(
+  Future<SearchMalAllGenreItem> getAllGenreItems({
           String type,
           String q,
           String page,
@@ -52,7 +52,7 @@ class ApiRepository {
           String endDate,
           String genreExclude,
           String limit,
-          String sort) => searchApiClient.getAllGenreItems(type, q, page, status, rated, genre,
+          String sort}) => searchApiClient.getAllGenreItems(type, q, page, status, rated, genre,
           startDate, endDate, genreExclude, limit, sort);
 
   Future<SearchRankingApiResult> getRankingItemList(

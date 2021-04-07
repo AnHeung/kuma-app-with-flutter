@@ -98,7 +98,7 @@ class App extends StatelessWidget {
                 BlocProvider(create: (_) => AnimationBloc(repository: context.read<ApiRepository>(),settingBloc: BlocProvider.of<SettingBloc>(context))..add(AnimationLoad())),
                 BlocProvider(create: (_) => AnimationSeasonBloc(repository: context.read<ApiRepository>(),settingBloc: BlocProvider.of<SettingBloc>(context))..add(AnimationSeasonLoad(limit: "7"))),
                 BlocProvider(create: (_) => AnimationScheduleBloc(repository: context.read<ApiRepository>(),settingBloc: BlocProvider.of<SettingBloc>(context))..add(AnimationScheduleLoad(day:"1"))),
-                BlocProvider(create: (_) => GenreSearchBloc(repository: context.read<ApiRepository>())..add(GenreLoad(data: GenreData(),clickMap: {})))
+                BlocProvider(create: (_) => GenreSearchBloc(repository: context.read<ApiRepository>())..add(GenreLoad(data: GenreData()))..add(GenreCategoryListLoad()))
               ],
               child: HomeScreen(),
             );

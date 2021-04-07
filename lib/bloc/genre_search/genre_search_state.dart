@@ -3,37 +3,56 @@ part of 'genre_search_bloc.dart';
 @immutable
 abstract class GenreSearchState extends Equatable{
 
-  final Map<String,CategoryClickStatus> clickMap;
-
-  const GenreSearchState({this.clickMap});
-
   @override
-  List<Object> get props =>[clickMap];
+  List<Object> get props =>[];
 }
 
 class GenreSearchInitial extends GenreSearchState {
-  GenreSearchInitial({Map<String, CategoryClickStatus> clickMap}) : super(clickMap: {});
+  GenreSearchInitial({Map<String, CategoryClickStatus> clickMap});
 
 }
 
 class GenreSearchLoadInProgress extends GenreSearchState {
-  GenreSearchLoadInProgress({Map<String, CategoryClickStatus> clickMap}) : super(clickMap: clickMap);
 }
 
 class GenreSearchLoadSuccess extends GenreSearchState {
   final List<AnimationGenreSearchItem> genreSearchItems;
   final GenreData genreData;
 
-  GenreSearchLoadSuccess({this.genreSearchItems , clickMap ,this.genreData}) : super(clickMap: clickMap);
+  GenreSearchLoadSuccess({this.genreSearchItems , clickMap ,this.genreData});
+
+  @override
+  List<Object> get props=>[genreSearchItems,genreData];
+}
+
+class GenreListLoadSuccess extends GenreSearchState {
+  final List<GenreListItem> genreListItems;
+
+  GenreListLoadSuccess({this.genreListItems});
+
+  @override
+  List<Object> get props =>[genreListItems];
 }
 
 class GenreSearchChangeView extends GenreSearchState {
   final List<String> categories;
-  GenreSearchChangeView({this.categories}) : super(clickMap: {});
+  GenreSearchChangeView({this.categories});
+
+  @override
+  List<Object> get props =>[categories];
 }
 
 class GenreSearchLoadFailure extends GenreSearchState {
   final String errMSg;
 
-  GenreSearchLoadFailure({this.errMSg,Map<String, CategoryClickStatus> clickMap}) : super(clickMap:clickMap);
+  GenreSearchLoadFailure({this.errMSg});
+}
+class GenreListLoadFailure extends GenreSearchState {
+  final String errMSg;
+
+  GenreListLoadFailure({this.errMSg});
+
+  @override
+  List<Object> get props =>[errMSg];
+
 }
