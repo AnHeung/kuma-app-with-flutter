@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
+import 'package:kuma_flutter_app/bloc/genre_search/genre_category_list_bloc/genre_category_list_bloc.dart';
 import 'package:kuma_flutter_app/bloc/genre_search/genre_search_bloc.dart';
 import 'package:kuma_flutter_app/enums/category_click_status.dart';
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
@@ -25,22 +26,27 @@ class GenreSearchScreen extends StatelessWidget {
     );
     final appBarHeight = appBar.preferredSize.height;
 
-    return Stack(
-      children: [
-        Scaffold(
-          key: _key,
-          endDrawerEnableOpenDragGesture: false,
-          endDrawer: _buildNavigationView(height: appBarHeight),
-          appBar: appBar,
-          body: Column(
-            children: [
-              _buildTopContainer(key: _key),
-              _buildFilterContainer(),
-              _buildGridView(context: context)
-            ],
-          ),
-        ),
-      ],
+    return BlocBuilder<GenreSearchBloc, GenreSearchState>(
+      builder: (context,state){
+        return Stack(
+          children: [
+            Scaffold(
+                key: _key,
+                endDrawerEnableOpenDragGesture: false,
+                endDrawer: _buildNavigationView(height: appBarHeight),
+                appBar: appBar,
+                body: Column(
+                          children: [
+                            _buildTopContainer(key: _key),
+                            _buildFilterContainer(),
+                            _buildGridView(context: context)
+                          ],
+                        ),
+            ),
+            LoadingIndicator(isVisible: state is GenreSearchLoadInProgress,)
+          ],
+        );
+      },
     );
   }
 
@@ -49,8 +55,7 @@ class GenreSearchScreen extends StatelessWidget {
     List<GenreListItem> genreListItems = [];
     List<GenreNavItem> genreClickItems = [];
 
-    return BlocBuilder<GenreSearchBloc, GenreSearchState>(
-      buildWhen: (prev, cur) => cur is GenreListLoadSuccess,
+    return BlocBuilder<GenreCategoryListBloc, GenreCategoryListState>(
       builder: (context, state) {
         if (state is GenreListLoadSuccess) {
           genreListItems = state.genreListItems;
@@ -85,7 +90,7 @@ class GenreSearchScreen extends StatelessWidget {
                       itemBuilder: (context, idx) {
                         final GenreNavItem item = genreClickItems[idx];
                         return GestureDetector(
-                          onTap: ()=> BlocProvider.of<GenreSearchBloc>(context).add(GenreItemRemove(navItem: item , genreListItems:genreListItems)),
+                          onTap: ()=> BlocProvider.of<GenreCategoryListBloc>(context).add(GenreItemRemove(navItem: item , genreListItems:genreListItems)),
                           child: Container(
                             padding: EdgeInsets.only(left: 5, right: 5 , top: 2, bottom: 2),
                             alignment: Alignment.center,
@@ -175,7 +180,6 @@ class GenreSearchScreen extends StatelessWidget {
     List<AnimationGenreSearchItem> genreSearchItems = [];
 
     return BlocBuilder<GenreSearchBloc, GenreSearchState>(
-      buildWhen: (prev, cur) => cur is GenreSearchLoadSuccess,
       builder: (context, state) {
         if (state is GenreSearchLoadSuccess) {
           genreSearchItems = state.genreSearchItems;
@@ -237,17 +241,14 @@ class GenreSearchScreen extends StatelessWidget {
   _buildNavigationView({double height}) {
     List<GenreListItem> genreListItems = [];
 
-    return BlocBuilder<GenreSearchBloc, GenreSearchState>(
+    return BlocBuilder<GenreCategoryListBloc, GenreCategoryListState>(
       builder: (context, state) {
         if (state is GenreListLoadSuccess) {
-          genreListItems = state.genreListItems;
+         genreListItems = state.genreListItems;
         }
         return SafeArea(
           child: Drawer(
-            child: Stack(
-              children: [
-                Container(
-                  child: ListView(
+            child: ListView(
                           scrollDirection: Axis.vertical,
                           shrinkWrap: true,
                           children: genreListItems
@@ -256,10 +257,6 @@ class GenreSearchScreen extends StatelessWidget {
                                   genreListItems:genreListItems
                                   ))
                               .toList()),
-                ),
-                LoadingIndicator(isVisible: state is GenreSearchLoadInProgress,)
-              ],
-            ),
           ),
         );
       },
@@ -341,7 +338,7 @@ class GenreCategoryItem extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
-        BlocProvider.of<GenreSearchBloc>(context).add(GenreItemClick(navItem: navItem , genreListItems: genreListItems));
+        BlocProvider.of<GenreCategoryListBloc>(context).add(GenreItemClick(navItem: navItem , genreListItems: genreListItems));
       },
       child: Container(
         height: 40,

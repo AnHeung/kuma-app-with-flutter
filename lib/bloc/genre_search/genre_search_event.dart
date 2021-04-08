@@ -21,26 +21,3 @@ class GenreLoad extends GenreSearchEvent{
 }
 
 
-class GenreCategoryListLoad extends GenreSearchEvent{}
-
-
-class GenreItemClick extends GenreSearchEvent{
-  final GenreNavItem navItem;
-  final List<GenreListItem> genreListItems;
-
-  GenreItemClick({this.navItem, this.genreListItems});
-
-  @override
-  List<Object> get props =>[navItem , genreListItems];
-}
-
-
-class GenreItemRemove extends GenreSearchEvent{
-  final GenreNavItem navItem;
-  final List<GenreListItem> genreListItems;
-
-  GenreItemRemove({this.navItem, this.genreListItems});
-
-  @override
-  List<Object> get props =>[navItem , genreListItems];
-}

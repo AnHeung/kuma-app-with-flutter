@@ -8,6 +8,7 @@ import 'package:kuma_flutter_app/bloc/animation_detail/animation_detail_bloc.dar
 import 'package:kuma_flutter_app/bloc/animation_schedule/animation_schedule_bloc.dart';
 import 'package:kuma_flutter_app/bloc/animation_season/animation_season_bloc.dart';
 import 'package:kuma_flutter_app/bloc/auth/auth_bloc.dart';
+import 'package:kuma_flutter_app/bloc/genre_search/genre_category_list_bloc/genre_category_list_bloc.dart';
 import 'package:kuma_flutter_app/bloc/genre_search/genre_search_bloc.dart';
 import 'package:kuma_flutter_app/bloc/login/login_bloc.dart';
 import 'package:kuma_flutter_app/bloc/register/register_bloc.dart';
@@ -66,6 +67,7 @@ class App extends StatelessWidget {
         providers: [
         BlocProvider(create: (context) =>AuthBloc(repository: context.read<ApiRepository>())),
           BlocProvider(create: (context) =>SettingBloc(repository: context.read<ApiRepository>())),
+          BlocProvider(create: (context) => GenreCategoryListBloc(repository: context.read<ApiRepository>())..add(GenreCategoryListLoad()))
         ],
         child: MaterialApp(
         title: "쿠마앱",
@@ -98,7 +100,7 @@ class App extends StatelessWidget {
                 BlocProvider(create: (_) => AnimationBloc(repository: context.read<ApiRepository>(),settingBloc: BlocProvider.of<SettingBloc>(context))..add(AnimationLoad())),
                 BlocProvider(create: (_) => AnimationSeasonBloc(repository: context.read<ApiRepository>(),settingBloc: BlocProvider.of<SettingBloc>(context))..add(AnimationSeasonLoad(limit: "7"))),
                 BlocProvider(create: (_) => AnimationScheduleBloc(repository: context.read<ApiRepository>(),settingBloc: BlocProvider.of<SettingBloc>(context))..add(AnimationScheduleLoad(day:"1"))),
-                BlocProvider(create: (_) => GenreSearchBloc(repository: context.read<ApiRepository>())..add(GenreLoad(data: GenreData()))..add(GenreCategoryListLoad()))
+                BlocProvider(create: (_) => GenreSearchBloc(repository: context.read<ApiRepository>(), genreCategoryListBloc: BlocProvider.of<GenreCategoryListBloc>(context))),
               ],
               child: HomeScreen(),
             );

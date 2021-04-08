@@ -225,8 +225,6 @@ class _AnimationScreenState extends State<AnimationScreen> {
       builder: (context, state){
         String currentDay =  state.currentDay ??  "1";
         List<AnimationScheduleItem> scheduleItems = state is AnimationScheduleLoadSuccess ? state.scheduleItems :[] ;
-        print("scheduleItems : $scheduleItems");
-
         return Stack(
           children: [
             Container(

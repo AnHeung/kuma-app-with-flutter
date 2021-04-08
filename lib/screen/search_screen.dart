@@ -78,8 +78,7 @@ class _SearchScreenState extends State<SearchScreen> {
   _searchActionWidget(BuildContext context) {
     return IconButton(
       onPressed: () =>
-          BlocProvider.of<SearchBloc>(context)
-              .add(SearchBtnClick(isClick: _searchIcon.icon == Icons.search)),
+          BlocProvider.of<SearchBloc>(context).add(SearchBtnClick(isClick: _searchIcon.icon == Icons.search)),
       icon: _searchIcon,
     );
   }
