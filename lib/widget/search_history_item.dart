@@ -24,6 +24,7 @@ class SearchHistoryItem extends StatelessWidget {
         child: Container(
           height: MediaQuery.of(context).size.height,
           child: GridView.count(
+              padding: EdgeInsets.zero,
               crossAxisCount: 3,
               scrollDirection: Axis.vertical,
               crossAxisSpacing: 10,

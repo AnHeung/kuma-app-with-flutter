@@ -87,6 +87,7 @@ class GenreSearchScreen extends StatelessWidget {
                     padding: EdgeInsets.only(left: 10),
                     height: 20,
                     child: ListView.separated(
+                      padding: EdgeInsets.zero,
                       itemBuilder: (context, idx) {
                         final GenreNavItem item = genreClickItems[idx];
                         return GestureDetector(
@@ -189,6 +190,7 @@ class GenreSearchScreen extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(10.0),
             child: GridView.count(
+              padding: EdgeInsets.zero,
               crossAxisCount: 3,
               childAspectRatio: 0.7,
               scrollDirection: Axis.vertical,
@@ -249,6 +251,7 @@ class GenreSearchScreen extends StatelessWidget {
         return SafeArea(
           child: Drawer(
             child: ListView(
+                          padding: EdgeInsets.zero,
                           scrollDirection: Axis.vertical,
                           shrinkWrap: true,
                           children: genreListItems
