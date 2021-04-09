@@ -57,6 +57,24 @@ class ImageTextScrollItem extends StatelessWidget {
                           type: imageShapeType,
                         ),
                       ),
+                      score.isNotEmpty ? Container(
+                        padding: EdgeInsets.only(left: 5, bottom: 5),
+                          alignment: AlignmentDirectional.bottomStart,
+                          child: CircularPercentIndicator(
+                            radius: 30,
+                            lineWidth: 3.0,
+                            animation: true,
+                            percent: double.parse(score)/10,
+                            center: CustomText(
+                              fontFamily: doHyunFont,
+                              fontWeight: FontWeight.w700,
+                              fontColor: kWhite,
+                              text: "${(double.parse(score) * 10).toStringAsFixed(0)}%",
+                              fontSize: 10.0,
+                            ),
+                            circularStrokeCap: CircularStrokeCap.round,
+                            progressColor: kGreen,
+                          )) : SizedBox()
                     ],
                   ),
                 ),

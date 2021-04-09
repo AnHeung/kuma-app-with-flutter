@@ -29,6 +29,7 @@ const Color kGrey = Color(0xFFF4F5F7);
 const Color kBlack = Color(0xFF2D3243);
 const Color kPurple = Color(0xFF6464FF);
 const Color kDisabled = Color(0xFFdcdcdc);
+const Color kGreen = Color(0xFF18CCA8);
 
 // Padding
 const double kPaddingS = 8.0;
