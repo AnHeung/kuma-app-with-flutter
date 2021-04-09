@@ -108,6 +108,7 @@ class _AnimationScreenState extends State<AnimationScreen> {
                     ? loadState.rankingList
                     : [];
             return ListView(
+              padding: EdgeInsets.zero,
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               children: mainItemList
@@ -292,6 +293,7 @@ class _AnimationScreenState extends State<AnimationScreen> {
           ),
           Expanded(
             child: ListView(
+              padding: EdgeInsets.zero,
               scrollDirection: Axis.horizontal,
               children: item.list
                   .map((rankItem) => ImageTextScrollItem(context: context ,title: rankItem.title , id: rankItem.id.toString(), image: rankItem.image, score : rankItem.score , imageShapeType: ImageShapeType.FLAT,imageDiveRate: 3, ))

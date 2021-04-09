@@ -63,7 +63,7 @@ class AnimationDetailScreen extends StatelessWidget {
 
   Widget _buildAniDetailContainer(
       {BuildContext context, AnimationDetailItem detailItem}) {
-    return ListView(shrinkWrap: true, children: [
+    return ListView(shrinkWrap: true, padding: EdgeInsets.zero, children: [
       _buildDetailTopImageContainer(context: context, detailItem: detailItem),
       _buildDetailTopContainer(context: context, detailItem: detailItem),
       _buildDetailTopSynopsisContainer(context: context, detailItem: detailItem),
@@ -419,6 +419,7 @@ class AnimationDetailScreen extends StatelessWidget {
     return Container(
       height: height,
       child: ListView.separated(
+          padding: EdgeInsets.zero,
           separatorBuilder: (BuildContext context, int index) {
             return SizedBox(
               width: margin,
