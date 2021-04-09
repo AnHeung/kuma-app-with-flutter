@@ -29,12 +29,13 @@ class SearchRankingApiItem {
 
 @JsonSerializable()
 class SearchRankingData {
-  int id;
+  String id;
   String title;
   String image;
-  int ranking;
+  String ranking;
+  String score;
 
-  SearchRankingData({this.id, this.title, this.image, this.ranking});
+  SearchRankingData({this.id, this.title, this.image, this.ranking,this.score});
 
   factory SearchRankingData.fromJson(Map<String, dynamic> json) => _$SearchRankingDataFromJson(json);
   Map<String, dynamic> toJson() => _$SearchRankingDataToJson(this);

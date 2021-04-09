@@ -8,11 +8,12 @@ class AnimationMainItem {
 }
 
 class RankingItem {
-  int id;
+  String id;
   String title;
   String image;
-  int ranking;
+  String ranking;
+  String score;
 
-  RankingItem({this.id, this.title, this.image, this.ranking});
+  RankingItem({this.id, this.title, this.image, this.ranking,this.score});
 
 }

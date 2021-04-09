@@ -170,7 +170,7 @@ class AnimationDetailScreen extends StatelessWidget {
 
     final width = MediaQuery.of(context).size.width/8-10;
     final List genreList = genres.split(",").length > 7 ? genres.split(",").sublist(0,7) :genres.split(",") ;
-    return Flexible(
+    return genreList.length > 0 && genres.isNotEmpty ? Flexible(
       flex: 2,
       child: Padding(
         padding: const EdgeInsets.only(top:10.0,bottom: 5),
@@ -196,13 +196,9 @@ class AnimationDetailScreen extends StatelessWidget {
                         ),
                   ))
                   .toList(),
-            ) ??
-            _buildTopContainerItem(
-              text: "장르 : $genres",
-              fontSize: kAnimationDetailGenreFontSize,
-            ),
-      ),
-    );
+            )
+      )
+    ) : Container();
   }
 
   Widget _buildDetailTopSynopsisContainer(

@@ -64,7 +64,7 @@ class AnimationBloc extends Bloc<AnimationEvent, AnimationState> {
                             id: data.id,
                             title: data.title,
                             image: data.image,
-                            ranking: data.ranking))
+                            ranking: data.ranking , score:data.score))
                         .toList()))
                 .toList());
     }on Exception{

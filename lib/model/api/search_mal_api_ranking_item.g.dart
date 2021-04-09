@@ -48,10 +48,11 @@ Map<String, dynamic> _$SearchRankingApiItemToJson(
 
 SearchRankingData _$SearchRankingDataFromJson(Map<String, dynamic> json) {
   return SearchRankingData(
-    id: json['id'] as int,
+    id: json['id'] as String,
     title: json['title'] as String,
     image: json['image'] as String,
-    ranking: json['ranking'] as int,
+    ranking: json['ranking'] as String,
+    score: json['score'] as String,
   );
 }
 
@@ -61,4 +62,5 @@ Map<String, dynamic> _$SearchRankingDataToJson(SearchRankingData instance) =>
       'title': instance.title,
       'image': instance.image,
       'ranking': instance.ranking,
+      'score': instance.score,
     };

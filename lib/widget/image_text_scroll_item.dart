@@ -8,18 +8,20 @@ import 'package:kuma_flutter_app/model/item/animation_deatil_page_item.dart';
 import 'package:kuma_flutter_app/routes/routes.dart';
 import 'package:kuma_flutter_app/widget/custom_text.dart';
 import 'package:kuma_flutter_app/widget/image_item.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class ImageTextScrollItem extends StatelessWidget {
 
   final String id;
   final String title;
   final String image;
+  final String score;
   final ImageShapeType imageShapeType;
   final int imageDiveRate;
   final BuildContext context;
   final NavigationPushType pushType;
 
-  ImageTextScrollItem({this.context , this.id, this.title, this.image, imageShapeType , imageDiveRate , pushType}): this.imageShapeType = imageShapeType ??  ImageShapeType.FLAT , this.imageDiveRate = imageDiveRate ?? 3 , this.pushType = pushType?? NavigationPushType.PUSH;
+  ImageTextScrollItem({this.context , this.id, this.title, this.image, score , imageShapeType , imageDiveRate , pushType}): this.imageShapeType = imageShapeType ??  ImageShapeType.FLAT , this.imageDiveRate = imageDiveRate ?? 3 , this.pushType = pushType?? NavigationPushType.PUSH , this.score = score ?? "";
 
   @override
   Widget build(BuildContext context) {
@@ -41,36 +43,40 @@ class ImageTextScrollItem extends StatelessWidget {
         }
       },
       child: Container(
-        padding: EdgeInsets.only(left: 8, bottom: 8),
-        width: width,
-        child: Column(
-          children: [
-            Expanded(
-              flex: 4,
-              child: Container(
-                child: ImageItem(
-                  imgRes: image,
-                  type: imageShapeType,
+            padding: EdgeInsets.only(left: 8, bottom: 8),
+            width: width,
+            child: Column(
+              children: [
+                Expanded(
+                  flex: 4,
+                  child: Stack(
+                    children: [
+                      Container(
+                        child: ImageItem(
+                          imgRes: image,
+                          type: imageShapeType,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
+                Expanded(
+                  flex: 2,
+                  child: Container(
+                    alignment: Alignment.topLeft,
+                    margin: EdgeInsets.only(top: 10),
+                    child: CustomText(
+                      fontWeight: FontWeight.w700,
+                      fontColor: kBlack,
+                      text: title,
+                      maxLines: 2,
+                      isDynamic: true,
+                      isEllipsis: true,
+                    ),
+                  ),
+                )
+              ],
             ),
-            Expanded(
-              flex: 2,
-              child: Container(
-                alignment: Alignment.topLeft,
-                margin: EdgeInsets.only(top: 10),
-                child: CustomText(
-                  fontWeight: FontWeight.w700,
-                  fontColor: kBlack,
-                  text: title,
-                  maxLines: 2,
-                  isDynamic: true,
-                  isEllipsis: true,
-                ),
-              ),
-            )
-          ],
-        ),
       ),
     );
   }

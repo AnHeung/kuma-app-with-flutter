@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
+import 'package:kuma_flutter_app/widget/custom_text.dart';
 
 class CustomDropDown extends StatelessWidget {
   final String value;
@@ -33,10 +34,10 @@ class CustomDropDown extends StatelessWidget {
             const EdgeInsets.only(left: 30, right: 10),
             child: DropdownButton<String>(
               value: value,
-              hint: Text(
-                hint,
-                style: TextStyle(fontSize: 20),
-                overflow: TextOverflow.ellipsis,
+              hint: CustomText(
+                text:hint,
+                fontSize: 10.0,
+                isEllipsis: true,
               ),
               style: Theme.of(context).textTheme.title,
               items: items,

@@ -119,7 +119,7 @@ class PieChart extends CustomPainter {
 
   double arcAngle = 2 * pi * (percentage / 100); // 호(arc)의 각도를 정함. 정해진 각도만큼만 그리도록 함.
 
-  paint..color = Colors.deepPurpleAccent; // 호를 그릴 때는 색을 바꿔줌.
+  paint..color = kPurple; // 호를 그릴 때는 색을 바꿔줌.
   canvas.drawArc(Rect.fromCircle(center: center, radius: radius), -pi / 2, arcAngle, false, paint); // 호(arc)를 그림.
 
   drawText(canvas, size, "$percentage / 100"); // 텍스트를 화면에 표시함.

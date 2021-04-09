@@ -294,7 +294,7 @@ class _AnimationScreenState extends State<AnimationScreen> {
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: item.list
-                  .map((rankItem) => ImageTextScrollItem(context: context ,title: rankItem.title , id: rankItem.id.toString(), image: rankItem.image,imageShapeType: ImageShapeType.FLAT,imageDiveRate: 3, ))
+                  .map((rankItem) => ImageTextScrollItem(context: context ,title: rankItem.title , id: rankItem.id.toString(), image: rankItem.image, score : rankItem.score , imageShapeType: ImageShapeType.FLAT,imageDiveRate: 3, ))
                   .toList(),
             ),
           ),

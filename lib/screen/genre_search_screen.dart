@@ -80,7 +80,7 @@ class GenreSearchScreen extends StatelessWidget {
               children: [
                 Icon(
                   Icons.check_box,
-                  color: Colors.purple,
+                  color: kPurple,
                 ),
                 Expanded(
                   child: Container(
@@ -148,7 +148,7 @@ class GenreSearchScreen extends StatelessWidget {
             onTap: () => key.currentState.openEndDrawer(),
             child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.purple,
+                  color: kPurple,
                   borderRadius: BorderRadius.all(Radius.circular(5)),
                 ),
                 padding: EdgeInsets.only(right: 10, left: 10),
@@ -297,7 +297,7 @@ class _GenreItemsState extends State<GenreItem> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
-                    child: Text(widget.genreListItem.koreaType),
+                    child: CustomText(text:widget.genreListItem.koreaType , fontSize: 15.0, fontFamily: doHyunFont,),
                   ),
                   Spacer(),
                   isVisible
@@ -347,10 +347,11 @@ class GenreCategoryItem extends StatelessWidget {
           children: [
             Container(
               child: CustomText(
+                fontFamily: doHyunFont,
                 text: navItem.category,
                 fontColor: (navItem.clickStatus == CategoryClickStatus.INCLUDE ||
                     navItem.clickStatus == CategoryClickStatus.EXCLUDE)
-                    ? Colors.purple
+                    ? kPurple
                     : kBlack,
               ),
             ),
@@ -367,11 +368,11 @@ class GenreCategoryItem extends StatelessWidget {
       case CategoryClickStatus.INCLUDE:
         return Icon(
           Icons.check_box,
-          color: Colors.purple,
+          color: kPurple,
         );
       case CategoryClickStatus.EXCLUDE:
         return Icon(Icons.indeterminate_check_box_outlined,
-            color: Colors.purple);
+            color: kPurple);
       case CategoryClickStatus.NONE:
         return Icon(Icons.check_box_outline_blank);
     }

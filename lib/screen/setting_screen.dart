@@ -53,11 +53,10 @@ class SettingScreen extends StatelessWidget {
                             CustomDropDown(
                               value: config.aniLoadItemCount,
                               items: itemCountList
-                                  .map(
-                                    (item) => DropdownMenuItem(
+                                  .map((item) => DropdownMenuItem(
                                   child: CustomText(
                                     fontColor: kBlack,
-                                    fontSize: 13.0,
+                                    fontSize: 12.0,
                                     text: item.toString(),
                                     textAlign: TextAlign.center,
                                   ),
@@ -83,13 +82,13 @@ class SettingScreen extends StatelessWidget {
                               fontSize: kSettingFontSize,
                               fontColor: Colors.black,
                             ),
+                            SizedBox(width: 50,),
                             Expanded(
                               flex: 1,
                               child: LayoutBuilder(
                                 builder: (context, constraints) {
-                                  double width = constraints.maxWidth /
-                                      categoryList.length -
-                                      7;
+                                  print(categoryList.length);
+                                  double width = constraints.maxWidth / categoryList.length - 7;
                                   return Container(
                                     margin: EdgeInsets.only(left: 20),
                                     height: 40,

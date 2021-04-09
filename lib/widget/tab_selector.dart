@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/enums/app_tab.dart';
 
 class TabSelector extends StatelessWidget {
@@ -12,7 +13,7 @@ class TabSelector extends StatelessWidget {
   Widget build(BuildContext context) {
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
-      fixedColor:Colors.deepPurpleAccent,
+      fixedColor:kPurple,
       currentIndex: AppTab.values.indexOf(tab),
       onTap: (index)=>onTabSelected(AppTab.values[index]),
       items:
