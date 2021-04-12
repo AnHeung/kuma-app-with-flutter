@@ -64,7 +64,7 @@ class AnimationScheduleScreen extends StatelessWidget {
                 );
               },
               padding: EdgeInsets.zero,
-              physics: BouncingScrollPhysics(),
+              physics: ClampingScrollPhysics(),
               scrollDirection: Axis.vertical,
               itemCount: items.length,
               itemBuilder: (context, idx) {

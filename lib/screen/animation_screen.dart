@@ -81,7 +81,7 @@ class _AnimationScreenState extends State<AnimationScreen> {
         headerSliverBuilder: (context, isScrolled) {
           return [_buildSilverAppbar(animationMainAppbar)];
         },
-        body: ListView(shrinkWrap: true, padding: EdgeInsets.zero, children: [
+        body: ListView(shrinkWrap: true, padding: EdgeInsets.zero, physics: ClampingScrollPhysics(),children: [
           _buildScheduleItems(context: context),
           _buildRankingItems(),
         ]),
@@ -293,6 +293,7 @@ class _AnimationScreenState extends State<AnimationScreen> {
           ),
           Expanded(
             child: ListView(
+              physics: ClampingScrollPhysics(),
               padding: EdgeInsets.zero,
               scrollDirection: Axis.horizontal,
               children: item.list

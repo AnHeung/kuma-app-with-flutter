@@ -88,11 +88,12 @@ class SettingScreen extends StatelessWidget {
                               child: LayoutBuilder(
                                 builder: (context, constraints) {
                                   print(categoryList.length);
-                                  double width = constraints.maxWidth / categoryList.length - 7;
+                                  double width = constraints.maxWidth / categoryList.length - 8;
                                   return Container(
                                     margin: EdgeInsets.only(left: 20),
                                     height: 40,
                                     child: ListView.separated(
+                                      physics: ClampingScrollPhysics(),
                                       separatorBuilder: (context, index) =>
                                           SizedBox(
                                             width: 3,

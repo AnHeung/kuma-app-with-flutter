@@ -87,6 +87,7 @@ class GenreSearchScreen extends StatelessWidget {
                     padding: EdgeInsets.only(left: 10),
                     height: 20,
                     child: ListView.separated(
+                      physics: ClampingScrollPhysics(),
                       padding: EdgeInsets.zero,
                       itemBuilder: (context, idx) {
                         final GenreNavItem item = genreClickItems[idx];
@@ -253,6 +254,7 @@ class GenreSearchScreen extends StatelessWidget {
             child: ListView(
                           padding: EdgeInsets.zero,
                           scrollDirection: Axis.vertical,
+                          physics: ClampingScrollPhysics(),
                           shrinkWrap: true,
                           children: genreListItems
                               .map((item) => GenreItem(

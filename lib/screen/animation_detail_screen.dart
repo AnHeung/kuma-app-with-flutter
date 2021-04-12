@@ -63,7 +63,7 @@ class AnimationDetailScreen extends StatelessWidget {
 
   Widget _buildAniDetailContainer(
       {BuildContext context, AnimationDetailItem detailItem}) {
-    return ListView(shrinkWrap: true, padding: EdgeInsets.zero, children: [
+    return ListView(shrinkWrap: true, padding: EdgeInsets.zero, physics: ClampingScrollPhysics(),children: [
       _buildDetailTopImageContainer(context: context, detailItem: detailItem),
       _buildDetailTopContainer(context: context, detailItem: detailItem),
       _buildDetailTopSynopsisContainer(context: context, detailItem: detailItem),
