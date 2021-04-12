@@ -62,7 +62,8 @@ class GenreSearchBloc extends Bloc<GenreSearchEvent, GenreSearchState> {
         sort:sort);
 
     if (genreItem.err) {
-      yield GenreSearchState(status: GenreSearchStatus.failure, msg: genreItem.msg , genreSearchItems: state.genreSearchItems , genreData: state.genreData);
+      print('state.genreData :${state.genreData.rated}');
+      yield GenreSearchState(status: GenreSearchStatus.failure, msg: genreItem.msg , genreSearchItems: state.genreSearchItems , genreData: event.data);
     } else {
       List<AnimationGenreSearchItem> genreList = [];
       List<AnimationGenreSearchItem> newGenreList =  genreItem.result
