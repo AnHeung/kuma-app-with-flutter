@@ -1,36 +1,16 @@
 part of 'search_bloc.dart';
 
+enum SearchStatus { loading , initial , clear ,set, failure ,success}
+
 @immutable
-abstract class SearchState extends Equatable{
+class SearchState extends Equatable{
 
-  @override
-  List<Object> get props =>[];
-}
-
-class SearchLoadInProgress extends SearchState {}
-
-class ClearSearchScreen extends SearchState {}
-
-class InitialSearchScreen extends SearchState {}
-
-class SetSearchScreen extends SearchState {}
-
-class SearchLoadFailure extends SearchState {
-
-  final String errMsg;
-
-  SearchLoadFailure({this.errMsg});
-
-  @override
-  List<Object> get props =>[];
-}
-
-class SearchItemLoadSuccess extends SearchState{
-
+  final SearchStatus status;
   final List<AnimationSearchItem> list;
+  final String msg;
 
-  SearchItemLoadSuccess({this.list});
+  SearchState({this.status, this.list, this.msg});
 
   @override
-  List<Object> get props =>[list];
+  List<Object> get props =>[status,list, msg];
 }

@@ -15,7 +15,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
 
   final ApiRepository repository;
 
-  SearchBloc({this.repository}) : super(InitialSearchScreen());
+  SearchBloc({this.repository}) : super(SearchState(status: SearchStatus.initial));
 
   @override
   Stream<Transition<SearchEvent, SearchState>> transformEvents(
@@ -42,7 +42,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     SearchEvent event,
   ) async* {
     if (event is SearchQueryUpdate) {
-      yield* _mapToSearchUpdate(event);
+      yield* _mapToSearchUpdate(event ,state);
     } else if (event is SearchLoad) {
       yield* _mapToSearchLoad(event);
     } else if (event is SearchClear) {
@@ -55,23 +55,24 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
 
   Stream<SearchState> _mapToSearchBtnClick(SearchBtnClick event) async* {
     bool isClick = event.isClick;
-    if(isClick) yield SetSearchScreen();
-    else yield InitialSearchScreen();
+    if(isClick) yield SearchState(status: SearchStatus.set);
+    else yield SearchState(status: SearchStatus.initial);
   }
 
-  Stream<SearchState> _mapToSearchUpdate(SearchQueryUpdate event) async* {
+  Stream<SearchState> _mapToSearchUpdate(SearchQueryUpdate event , SearchState state) async* {
 
     String query = event.searchQuery;
 
     if(query.isEmpty){
-      yield SetSearchScreen();
+      yield SearchState(status: SearchStatus.initial);
     } else{
-      if(state is! SearchItemLoadSuccess){yield SearchLoadInProgress();}
+      yield SearchState(status: SearchStatus.loading , list: state.list);
       SearchMalApiItem searchItems = await repository.getSearchItems(query);
       if (searchItems.err) {
-        yield SearchLoadFailure(errMsg: searchItems.msg);
+        yield SearchState(status: SearchStatus.failure , msg: searchItems.msg);
       } else {
-        yield SearchItemLoadSuccess(
+        yield SearchState(
+            status: SearchStatus.success,
             list: searchItems.result
                 .map((result) => AnimationSearchItem(
                 id: result.id, title: result.title, image: result.image))
@@ -81,17 +82,18 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   }
 
   Stream<SearchState> _mapToSearchClear() async* {
-    yield InitialSearchScreen();
+    yield SearchState(status: SearchStatus.initial);
   }
 
   Stream<SearchState> _mapToSearchLoad(SearchLoad event) async* {
-    yield SearchLoadInProgress();
+    yield SearchState(status: SearchStatus.loading);
     String query = event.searchQuery;
     SearchMalApiItem searchItems = await repository.getSearchItems(query);
     if (searchItems.err) {
-      yield SearchLoadFailure(errMsg: searchItems.msg);
+      yield SearchState(status: SearchStatus.failure , msg: searchItems.msg);
     } else {
-      yield SearchItemLoadSuccess(
+      yield SearchState(
+          status: SearchStatus.success,
           list: searchItems.result
               .map((result) => AnimationSearchItem(
                   id: result.id, title: result.title, image: result.image))
