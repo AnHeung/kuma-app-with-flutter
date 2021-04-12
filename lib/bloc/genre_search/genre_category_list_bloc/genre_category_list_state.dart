@@ -1,34 +1,17 @@
 part of 'genre_category_list_bloc.dart';
 
+enum GenreCategoryStatus { initial , loading , success, failure }
+
 @immutable
-abstract class GenreCategoryListState extends Equatable{
+class GenreCategoryListState extends Equatable{
 
-  @override
-  List<Object> get props =>[];
-
-  const GenreCategoryListState();
-
-}
-
-class GenreCategoryListLoadInProgress extends GenreCategoryListState {}
-
-
-class GenreListLoadSuccess extends GenreCategoryListState {
+  final GenreCategoryStatus status;
   final List<GenreListItem> genreListItems;
   final GenreData genreData;
-
-  const GenreListLoadSuccess({this.genreListItems , this.genreData});
-
-  @override
-  List<Object> get props =>[genreListItems];
-}
-
-class GenreListLoadFailure extends GenreCategoryListState {
-  final String errMSg;
-
-  const GenreListLoadFailure({this.errMSg});
+  final String msg;
 
   @override
-  List<Object> get props =>[errMSg];
+  List<Object> get props =>[status , genreListItems , genreData , msg];
 
+  const  GenreCategoryListState({this.status, this.genreListItems, this.genreData, this.msg});
 }

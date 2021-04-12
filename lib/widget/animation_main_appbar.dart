@@ -8,7 +8,6 @@ import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/animation_season/animation_season_bloc.dart';
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
 import 'package:kuma_flutter_app/model/item/animation_deatil_page_item.dart';
-import 'package:kuma_flutter_app/model/item/animation_main_item.dart';
 import 'package:kuma_flutter_app/model/item/animation_search_season_item.dart';
 import 'package:kuma_flutter_app/routes/routes.dart';
 import 'package:kuma_flutter_app/util/view_utils.dart';
@@ -16,6 +15,7 @@ import 'package:kuma_flutter_app/widget/custom_text.dart';
 import 'package:kuma_flutter_app/widget/empty_container.dart';
 import 'package:kuma_flutter_app/widget/image_item.dart';
 import 'package:kuma_flutter_app/widget/loading_indicator.dart';
+import 'package:kuma_flutter_app/widget/refresh_container.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 
@@ -110,7 +110,9 @@ class AnimationMainAppbar extends StatelessWidget {
           );
         }else if(seasonState is AnimationSeasonLoadInProgress){
           return LoadingIndicator(isVisible: seasonState is AnimationSeasonLoadInProgress,);
-        }else{
+        }else if(seasonState is AnimationSeasonLoadFailure){
+          return RefreshContainer(callback: ()=>BlocProvider.of<AnimationSeasonBloc>(context).add(AnimationSeasonLoad(limit: "7")),);
+        } else{
           return EmptyContainer(title: '자료없음');
 
         }

@@ -1,33 +1,17 @@
 part of 'genre_search_bloc.dart';
 
+enum GenreSearchStatus { initial , success,  failure , loading }
+
 @immutable
-abstract class GenreSearchState extends Equatable{
+class GenreSearchState extends Equatable{
 
-  @override
-  List<Object> get props =>[];
-
-  const GenreSearchState();
-
-}
-
-class GenreSearchInitial extends GenreSearchState {}
-
-class GenreSearchLoadInProgress extends GenreSearchState {}
-
-class GenreSearchLoadSuccess extends GenreSearchState {
-
+  final GenreSearchStatus status;
   final List<AnimationGenreSearchItem> genreSearchItems;
   final GenreData genreData;
+  final String msg;
 
-  const GenreSearchLoadSuccess({this.genreSearchItems ,this.genreData});
+  const GenreSearchState({this.status = GenreSearchStatus.initial , this.genreSearchItems = const <AnimationGenreSearchItem>[], this.genreData, this.msg});
 
   @override
-  List<Object> get props=>[genreSearchItems,genreData];
-}
-
-
-class GenreSearchLoadFailure extends GenreSearchState {
-  final String errMSg;
-
-  const GenreSearchLoadFailure({this.errMSg});
+  List<Object> get props =>[status,genreSearchItems, genreData, msg];
 }

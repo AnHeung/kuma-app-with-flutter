@@ -1,5 +1,6 @@
 part of 'genre_category_list_bloc.dart';
 
+
 @immutable
 abstract class GenreCategoryListEvent extends Equatable{
 
@@ -14,21 +15,19 @@ class GenreCategoryListLoad extends GenreCategoryListEvent{}
 
 class GenreItemClick extends GenreCategoryListEvent{
   final GenreNavItem navItem;
-  final List<GenreListItem> genreListItems;
 
-  GenreItemClick({this.navItem, this.genreListItems});
+  GenreItemClick({this.navItem});
 
   @override
-  List<Object> get props =>[navItem , genreListItems];
+  List<Object> get props =>[navItem ];
 }
 
 
 class GenreItemRemove extends GenreCategoryListEvent{
   final GenreNavItem navItem;
-  final List<GenreListItem> genreListItems;
 
-  GenreItemRemove({this.navItem, this.genreListItems});
+  GenreItemRemove({this.navItem});
 
   @override
-  List<Object> get props =>[navItem , genreListItems];
+  List<Object> get props =>[navItem ];
 }

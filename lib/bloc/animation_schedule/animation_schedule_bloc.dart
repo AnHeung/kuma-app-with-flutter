@@ -22,11 +22,17 @@ class AnimationScheduleBloc extends Bloc<AnimationScheduleEvent, AnimationSchedu
   Stream<AnimationScheduleState> mapEventToState(
     AnimationScheduleEvent event,
   ) async* {
-    if(event is AnimationScheduleLoad){
+    if(event is AnimationScheduleInitLoad){
+      yield* _mapToScheduleInitLoad();
+    }else if(event is AnimationScheduleLoad){
       yield* _mapToScheduleLoad(event);
     }
   }
 
+  Stream<AnimationScheduleState> _mapToScheduleInitLoad() async*{
+    await Future.delayed(Duration(seconds: 1));
+    add(AnimationScheduleLoad(day: "1"));
+  }
 
   Stream<AnimationScheduleState> _mapToScheduleLoad(AnimationScheduleLoad event) async*{
     yield AnimationScheduleLoadInProgress(currentDay: event.day);

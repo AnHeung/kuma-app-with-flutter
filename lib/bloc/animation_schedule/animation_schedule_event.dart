@@ -10,6 +10,8 @@ abstract class AnimationScheduleEvent extends Equatable{
 
 }
 
+class AnimationScheduleInitLoad extends AnimationScheduleEvent{}
+
 class AnimationScheduleLoad extends AnimationScheduleEvent{
 
   final String day;

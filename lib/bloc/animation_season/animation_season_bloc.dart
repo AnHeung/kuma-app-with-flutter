@@ -26,7 +26,6 @@ class AnimationSeasonBloc extends Bloc<AnimationSeasonEvent, AnimationSeasonStat
     });
   }
 
-
   @override
   Stream<AnimationSeasonState> mapEventToState(
     AnimationSeasonEvent event,
@@ -38,6 +37,7 @@ class AnimationSeasonBloc extends Bloc<AnimationSeasonEvent, AnimationSeasonStat
 
   Stream<AnimationSeasonState> _mapToAnimationSeasonLoad(
       AnimationSeasonLoad event) async* {
+    yield AnimationSeasonLoadInProgress();
     String limit = event.limit;
     SearchMalApiSeasonItem items =  await repository.getSeasonItems(limit);
     bool isErr = items.err;

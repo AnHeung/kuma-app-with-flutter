@@ -2,19 +2,19 @@ import 'package:kuma_flutter_app/util/date_util.dart';
 
 class GenreData {
 
-  String type;
-  String q;
-  String page;
-  String status;
-  String rated;
-  String genre;
-  String startDate;
-  String endDate;
-  String genreExclude;
-  String limit;
-  String sort;
+  final String type;
+  final String q;
+  final String page;
+  final String status;
+  final String rated;
+  final String genre;
+  final String startDate;
+  final String endDate;
+  final String genreExclude;
+  final String limit;
+  final String sort;
 
-  GenreData({type, q, page, status, rated, genre, startDate, endDate, genreExclude, limit, sort}) : this.type = type ?? "" , this.q = q ?? ""  , this.page = page ?? "1" , this.rated = rated ?? "" , this.genre = genre ?? "" , this.startDate = startDate ?? "",
+  const GenreData({type, q, page, status, rated, genre, startDate, endDate, genreExclude, limit, sort}) : this.type = type ?? "" , this.q = q ?? ""  , this.page = page ?? "1" , this.rated = rated ?? "" , this.genre = genre ?? "" , this.startDate = startDate ?? "",
   this.endDate = endDate ?? "",  this.limit = limit ?? "",  this.sort = sort ?? "" , this.genreExclude = genreExclude ?? "" , this.status = status ?? "";
 
   GenreData copyWith({type, q, page, status, rated, genre, startDate, endDate, genreExclude, limit, sort}){
@@ -23,3 +23,4 @@ class GenreData {
   }
 
 }
+

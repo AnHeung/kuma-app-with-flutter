@@ -226,6 +226,11 @@ class _AnimationScreenState extends State<AnimationScreen> {
       builder: (context, state){
         String currentDay =  state.currentDay ??  "1";
         List<AnimationScheduleItem> scheduleItems = state is AnimationScheduleLoadSuccess ? state.scheduleItems :[] ;
+
+        if(state is AnimationScheduleLoadFailure){
+          return Container(height: kAnimationScheduleContainerHeight,child: RefreshContainer(callback: ()=>BlocProvider.of<AnimationScheduleBloc>(context).add(AnimationScheduleLoad(day: "1")),));
+        }
+
         return Stack(
           children: [
             Container(

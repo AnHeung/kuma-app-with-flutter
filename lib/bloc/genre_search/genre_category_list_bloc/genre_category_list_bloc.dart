@@ -19,7 +19,7 @@ class GenreCategoryListBloc extends Bloc<GenreCategoryListEvent, GenreCategoryLi
 
   final ApiRepository repository;
 
-  GenreCategoryListBloc({this.repository}) : super(GenreCategoryListLoadInProgress());
+  GenreCategoryListBloc({this.repository}) : super(GenreCategoryListState(status: GenreCategoryStatus.initial));
 
   @override
   Stream<Transition<GenreCategoryListEvent, GenreCategoryListState>> transformEvents(
@@ -44,21 +44,22 @@ class GenreCategoryListBloc extends Bloc<GenreCategoryListEvent, GenreCategoryLi
     GenreCategoryListEvent event,
   ) async* {
    if (event is GenreCategoryListLoad) {
-    yield* _mapToGenreCategoryListLoad();
+    yield* _mapToGenreCategoryListLoad(state);
     }else if(event is GenreItemClick){
-    yield* _mapToGenreItemClick(event);
+    yield* _mapToGenreItemClick(event ,state);
     }else if(event is GenreItemRemove){
-    yield* _mapToGenreItemRemove(event);
+    yield* _mapToGenreItemRemove(event,state);
     }
   }
 
-  Stream<GenreCategoryListState> _mapToGenreCategoryListLoad() async* {
-    yield GenreCategoryListLoadInProgress();
+  Stream<GenreCategoryListState> _mapToGenreCategoryListLoad(GenreCategoryListState state) async* {
+    yield GenreCategoryListState(status: GenreCategoryStatus.loading);
     SearchMalApiGenreListItem searchMalApiGenreListItem = await repository.getGenreCategoryList();
     if (searchMalApiGenreListItem.err) {
-      yield GenreListLoadFailure(errMSg: searchMalApiGenreListItem.msg);
+      yield GenreCategoryListState(status: GenreCategoryStatus.loading , msg: searchMalApiGenreListItem.msg);
     } else {
-      yield GenreListLoadSuccess(
+      yield GenreCategoryListState(
+          status: GenreCategoryStatus.success,
           genreListItems: searchMalApiGenreListItem.result
               .map((resultItem) => GenreListItem(
               koreaType: resultItem.typeKorea,
@@ -67,22 +68,22 @@ class GenreCategoryListBloc extends Bloc<GenreCategoryListEvent, GenreCategoryLi
                   category: result.category,
                   categoryValue: result.categoryValue,
                   clickStatus: CategoryClickStatus.NONE,
-                  genreType:  enumFromString<GenreType>(resultItem.type, GenreType.values))).toList())).toList() , genreData: GenreData());
+                  genreType:  enumFromString<GenreType>(resultItem.type, GenreType.values))).toList())).toList() , genreData: GenreData(page: "1"));
     }
   }
 
-  Stream<GenreCategoryListState> _mapToGenreItemClick(GenreItemClick event)async*{
+  Stream<GenreCategoryListState> _mapToGenreItemClick(GenreItemClick event , GenreCategoryListState state)async*{
     GenreNavItem clickItem = event.navItem.copyWith(clickStatus: _changeCategoryStatus(event.navItem.clickStatus, event.navItem.genreType));
-    List<GenreListItem> genreListItems = _getUpdateItem( event.genreListItems , clickItem);
+    List<GenreListItem> genreListItems = _getUpdateItem(state.genreListItems , clickItem);
     GenreData genreData = _getGenreData(genreListItems:genreListItems);
-    yield GenreListLoadSuccess(genreListItems:genreListItems ,genreData: genreData);
+    yield GenreCategoryListState(status: GenreCategoryStatus.success, genreListItems:genreListItems ,genreData: genreData.copyWith(page: "1"));
   }
 
-  Stream<GenreCategoryListState> _mapToGenreItemRemove(GenreItemRemove event)async*{
+  Stream<GenreCategoryListState> _mapToGenreItemRemove(GenreItemRemove event , GenreCategoryListState state)async*{
     GenreNavItem clickItem = event.navItem.copyWith(clickStatus: CategoryClickStatus.NONE);
-    List<GenreListItem> genreListItems= _getUpdateItem( event.genreListItems , clickItem);
+    List<GenreListItem> genreListItems= _getUpdateItem(state.genreListItems , clickItem);
     GenreData genreData = _getGenreData(genreListItems:genreListItems);
-    yield GenreListLoadSuccess(genreListItems:genreListItems , genreData:genreData);
+    yield GenreCategoryListState(status: GenreCategoryStatus.success, genreListItems:genreListItems , genreData:genreData.copyWith(page: "1"));
   }
 
   _getGenreData({List<GenreListItem> genreListItems}) {

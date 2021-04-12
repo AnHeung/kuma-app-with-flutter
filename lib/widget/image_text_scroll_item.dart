@@ -1,6 +1,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
 import 'package:kuma_flutter_app/enums/navigation_push_type.dart';
@@ -60,21 +61,24 @@ class ImageTextScrollItem extends StatelessWidget {
                       score.isNotEmpty ? Container(
                         padding: EdgeInsets.only(left: 5, bottom: 5),
                           alignment: AlignmentDirectional.bottomStart,
-                          child: CircularPercentIndicator(
-                            radius: 30,
-                            lineWidth: 3.0,
-                            animation: true,
-                            percent: double.parse(score)/10,
-                            center: CustomText(
-                              fontFamily: doHyunFont,
-                              fontWeight: FontWeight.w700,
-                              fontColor: kWhite,
-                              text: "${(double.parse(score) * 10).toStringAsFixed(0)}%",
-                              fontSize: 10.0,
+                          child:  Container(
+                              width: 30,
+                              height: 30,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                border:Border.all(width: 2, color: (_setIndicatorColor(score : (double.parse(score)) * 10))),
+                                borderRadius: BorderRadius.circular(30),
+                                color: kBlack,
+                              ),
+                              child: CustomText(
+                                fontFamily: doHyunFont,
+                                fontWeight: FontWeight.w700,
+                                fontColor: kWhite,
+                                text: "${((double.parse(score)) * 10).toStringAsFixed(0)}%",
+                                fontSize: 10.0,
+                              ),
                             ),
-                            circularStrokeCap: CircularStrokeCap.round,
-                            progressColor: kGreen,
-                          )) : SizedBox()
+                          ) : SizedBox()
                     ],
                   ),
                 ),
@@ -97,5 +101,16 @@ class ImageTextScrollItem extends StatelessWidget {
             ),
       ),
     );
+  }
+
+  _setIndicatorColor({double score}){
+    if(score < 100  && score > 80){
+      return kGreen;
+    }else if(score < 80 && score > 60){
+      return kPurple;
+    }else if(score < 60 && score > 40){
+      return Colors.yellow;
+    }
+      return Colors.red;
   }
 }
