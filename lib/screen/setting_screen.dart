@@ -56,7 +56,7 @@ class SettingScreen extends StatelessWidget {
                                   .map((item) => DropdownMenuItem(
                                   child: CustomText(
                                     fontColor: kBlack,
-                                    fontSize: 12.0,
+                                    fontSize: 10.0,
                                     text: item.toString(),
                                     textAlign: TextAlign.center,
                                   ),

@@ -26,7 +26,7 @@ class CustomDropDown extends StatelessWidget {
       children: <Widget>[
         Container(
           width: 90,
-          height: 35,
+          height: 30,
           decoration: BoxDecoration(
               color: kDisabled, borderRadius: BorderRadius.circular(20)),
           child: Container(
@@ -46,7 +46,7 @@ class CustomDropDown extends StatelessWidget {
               },
               isExpanded: true,
               underline: Container(),
-              icon: Icon(Icons.keyboard_arrow_down),
+              icon: Icon(Icons.keyboard_arrow_down,color: kWhite,),
             ),
           ),
         ),

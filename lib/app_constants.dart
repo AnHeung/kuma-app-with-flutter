@@ -88,9 +88,10 @@ const String kAnimationDetailImageTitle = "이미지";
 const String kAnimationDetailSynopsisTitle = "개요";
 
 //계정페이지
-const double kAccountFontSize = 15;
-const double kAccountTitleFontSize = 20;
+const double kAccountFontSize = 12;
+const double kAccountTitleFontSize = 15;
 const double kAccountItemHeight = 40;
+const double kAccountWithdrawBtnHeight = 50;
 
 //로그인 페이지
 const double kLoginFontSize = 12;

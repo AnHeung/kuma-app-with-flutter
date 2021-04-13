@@ -29,10 +29,16 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
   }
 
   Stream<AccountState> _mapToWithdraw() async* {
-    yield AccountLoadInProgress();
-    bool withdrawResult = await repository.withdraw();
-    if(withdrawResult) yield AccountWithdrawSuccess(successMsg: "회원탈퇴 성공");
-    else yield AccountWithdrawFailure(errMsg: "회원탈퇴 실패 다시 시도해주세요");
+    try {
+      yield AccountLoadInProgress();
+      bool withdrawResult = await repository.withdraw();
+      if (withdrawResult)
+        yield AccountWithdrawSuccess(successMsg: "회원탈퇴 성공");
+      else
+        yield AccountWithdrawFailure(errMsg: "회원탈퇴 실패 다시 시도해주세요");
+    }catch(e){
+      yield AccountWithdrawFailure(errMsg: "회원탈퇴 오류 : $e");
+    }
   }
 
   Stream<AccountState> _mapToAccountLoad() async* {
