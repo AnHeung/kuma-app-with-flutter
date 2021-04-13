@@ -22,10 +22,14 @@ class AnimationScheduleBloc extends Bloc<AnimationScheduleEvent, AnimationSchedu
   Stream<AnimationScheduleState> mapEventToState(
     AnimationScheduleEvent event,
   ) async* {
-    if(event is AnimationScheduleInitLoad){
-      yield* _mapToScheduleInitLoad();
-    }else if(event is AnimationScheduleLoad){
-      yield* _mapToScheduleLoad(event);
+    try {
+      if (event is AnimationScheduleInitLoad) {
+        yield* _mapToScheduleInitLoad();
+      } else if (event is AnimationScheduleLoad) {
+        yield* _mapToScheduleLoad(event);
+      }
+    }catch(e){
+      yield AnimationScheduleLoadFailure(errMsg:"error : $e");
     }
   }
 

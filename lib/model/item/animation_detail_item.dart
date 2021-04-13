@@ -1,18 +1,18 @@
 class AnimationDetailItem {
 
-  int id;
+  String id;
   String title;
   String image;
   String startDate;
   String endDate;
   String star;
   String popularity;
-  int rank;
-  double percent;
+  String rank;
+  String percent;
   String percentText;
   String synopsis;
   String status;
-  String genres;
+  List<AnimationDetailGenreItem> genres;
   String numEpisodes;
   String startSeason;
   List<String> pictures;
@@ -45,7 +45,7 @@ class AnimationDetailItem {
 }
 
 class RelatedAnimeItem {
-  int id;
+  String id;
   String title;
   String image;
 
@@ -53,15 +53,22 @@ class RelatedAnimeItem {
 }
 
 class RecommendationAnimeItem {
-  int id;
+  String id;
   String title;
   String image;
 
   RecommendationAnimeItem({this.id, this.title, this.image});
 }
 class StudioItem {
-  int id;
+  String id;
   String name;
 
   StudioItem({this.id, this.name});
+}
+
+class AnimationDetailGenreItem {
+  String id;
+  String name;
+
+  AnimationDetailGenreItem({this.id, this.name});
 }

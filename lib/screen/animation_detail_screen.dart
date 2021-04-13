@@ -4,11 +4,17 @@ import 'package:flutter/painting.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/animation_detail/animation_detail_bloc.dart';
+import 'package:kuma_flutter_app/bloc/genre_search/genre_category_list_bloc/genre_category_list_bloc.dart';
+import 'package:kuma_flutter_app/bloc/tab/tab_cubit.dart';
+import 'package:kuma_flutter_app/enums/app_tab.dart';
 import 'package:kuma_flutter_app/enums/detail_animation_actions.dart';
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
 import 'package:kuma_flutter_app/enums/navigation_push_type.dart';
+import 'package:kuma_flutter_app/model/genre_data.dart';
 import 'package:kuma_flutter_app/model/item/animation_deatil_page_item.dart';
 import 'package:kuma_flutter_app/model/item/animation_detail_item.dart';
+import 'package:kuma_flutter_app/model/item/genre_nav_item.dart';
+import 'package:kuma_flutter_app/routes/routes.dart';
 import 'package:kuma_flutter_app/util/view_utils.dart';
 import 'package:kuma_flutter_app/widget/custom_text.dart';
 import 'package:kuma_flutter_app/widget/empty_container.dart';
@@ -34,6 +40,7 @@ class AnimationDetailScreen extends StatelessWidget {
 
     BlocProvider.of<AnimationDetailBloc>(context)
         .add(AnimationDetailLoad(id: id));
+    print('id $id');
     return Scaffold(
         appBar: _buildAppbar(
             id: id, type: type, infoItem: infoItem, context: context),
@@ -166,10 +173,10 @@ class AnimationDetailScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildDetailTopGenresContainer({BuildContext context, String genres}) {
+  Widget _buildDetailTopGenresContainer({BuildContext context, List<AnimationDetailGenreItem> genres}) {
 
     final width = MediaQuery.of(context).size.width/8-10;
-    final List genreList = genres.split(",").length > 7 ? genres.split(",").sublist(0,7) :genres.split(",") ;
+    final List<AnimationDetailGenreItem> genreList = genres.length > 7 ? genres.sublist(0, 7) : genres ;
     return genreList.length > 0 && genres.isNotEmpty ? Flexible(
       flex: 2,
       child: Padding(
@@ -177,23 +184,31 @@ class AnimationDetailScreen extends StatelessWidget {
         child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: genreList
-                  .map((genre) => Padding(
-                    padding: const EdgeInsets.only(left:10),
-                    child: Container(
-                          width: width,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: kWhite.withOpacity(0.3),
-                            shape: BoxShape.circle,
+                  .map((genre) => GestureDetector(
+                    onTap: (){
+                      // Navigator.pop(context, (router)=>true );
+                      // BlocProvider.of<TabCubit>(context).tabUpdate(AppTab.GENRE);
+                      // BlocProvider.of<GenreCategoryListBloc>(context).add(GenreItemClick(navItem: GenreNavItem()));
+                    },
+                    behavior: HitTestBehavior.translucent,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left:10),
+                      child: Container(
+                            width: width,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: kWhite.withOpacity(0.3),
+                              shape: BoxShape.circle,
+                            ),
+                            child: CustomText(
+                              fontColor: kWhite,
+                              fontSize: kAnimationDetailGenreFontSize,
+                              text: genre.name,
+                              isEllipsis: true,
+                              textAlign: TextAlign.center,
+                            ),
                           ),
-                          child: CustomText(
-                            fontColor: kWhite,
-                            fontSize: kAnimationDetailGenreFontSize,
-                            text: genre,
-                            isEllipsis: true,
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
+                    ),
                   ))
                   .toList(),
             )
@@ -330,7 +345,7 @@ class AnimationDetailScreen extends StatelessWidget {
 
   Widget _buildLikeIndicator(
       {double height,
-      double percent,
+      String percent,
       String percentText,
       Color indicatorColor}) {
     return Container(
@@ -340,7 +355,7 @@ class AnimationDetailScreen extends StatelessWidget {
           radius: height,
           lineWidth: 8.0,
           animation: true,
-          percent: percent,
+          percent: double.parse(percent),
           center: CustomText(
             fontColor: kWhite,
             text: percentText,

@@ -17,7 +17,7 @@ class _SearchApiClient implements SearchApiClient {
   String baseUrl;
 
   @override
-  Future<SearchMalApiItem> getSearchItems(query) async {
+  Future<SearchMalApiSearchItem> getSearchItems(query) async {
     ArgumentError.checkNotNull(query, 'query');
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'q': query};
@@ -30,7 +30,7 @@ class _SearchApiClient implements SearchApiClient {
             extra: _extra,
             baseUrl: baseUrl),
         data: _data);
-    final value = SearchMalApiItem.fromJson(_result.data);
+    final value = SearchMalApiSearchItem.fromJson(_result.data);
     return value;
   }
 

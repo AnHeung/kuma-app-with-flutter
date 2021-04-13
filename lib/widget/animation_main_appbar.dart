@@ -30,7 +30,6 @@ class AnimationMainAppbar extends StatelessWidget {
 
 
   AnimationMainAppbar(){
-    print('mainAppbar');
     pageControlListener = () {
       if(controller?.hasClients ?? false)currentPage = controller.page.ceil();
     };

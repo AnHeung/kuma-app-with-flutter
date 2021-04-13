@@ -8,6 +8,10 @@ class GenreListItem{
   List<GenreNavItem> navItems;
 
   GenreListItem({this.type,this.koreaType, this.navItems});
+
+  GenreListItem copyWith({String type,  String koreaType, List<GenreNavItem> navItems}){
+    return GenreListItem(type: type?? this.type , koreaType: koreaType ?? this.koreaType , navItems: navItems ?? this.navItems);
+  }
 }
 
 class GenreNavItem{

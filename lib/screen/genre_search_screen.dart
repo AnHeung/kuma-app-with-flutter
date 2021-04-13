@@ -11,33 +11,47 @@ import 'package:kuma_flutter_app/model/item/animation_deatil_page_item.dart';
 import 'package:kuma_flutter_app/model/item/animation_genre_search_item.dart';
 import 'package:kuma_flutter_app/model/item/genre_nav_item.dart';
 import 'package:kuma_flutter_app/routes/routes.dart';
+import 'package:kuma_flutter_app/util/view_utils.dart';
 import 'package:kuma_flutter_app/widget/custom_text.dart';
 import 'package:kuma_flutter_app/widget/empty_container.dart';
 import 'package:kuma_flutter_app/widget/image_item.dart';
 import 'package:kuma_flutter_app/widget/loading_indicator.dart';
 
 class GenreSearchScreen extends StatelessWidget {
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
-    final GlobalKey<ScaffoldState> _key = new GlobalKey<ScaffoldState>();
+
     final AppBar appBar = AppBar(
-      actions: [Container()],
+      actions: [ Container(padding: EdgeInsets.only(right: 10),child: IconButton(
+        onPressed: ()=>showBaseDialog(title: "필터 삭제" , context: context , content: "필터를 전부 삭제하시겠습니까?" , confirmFunction: (){
+          BlocProvider.of<GenreCategoryListBloc>(context).add(GenreItemRemoveAll());
+          Navigator.pop(context);
+        } ,),
+        icon: Icon(Icons.delete_outline_rounded),
+
+    ))],
       title: Text('장르검색'),
     );
     final appBarHeight = appBar.preferredSize.height;
 
-    return BlocBuilder<GenreSearchBloc, GenreSearchState>(
+    return BlocConsumer<GenreSearchBloc, GenreSearchState>(
+      listener: (context,state){
+        if(state.status == GenreSearchStatus.failure) showToast(msg:state.msg);
+      },
       builder: (context, state) {
         return Stack(
           children: [
             Scaffold(
-              key: _key,
+              key: _scaffoldKey,
               endDrawerEnableOpenDragGesture: false,
               endDrawer: _buildNavigationView(height: appBarHeight),
               appBar: appBar,
               body: Column(
                 children: [
-                  _buildTopContainer(key: _key),
+                  _buildTopContainer(scaffoldKey: _scaffoldKey),
                   _buildFilterContainer(),
                   _buildTotalCountContainer(),
                   _buildGridView(context: context)
@@ -159,7 +173,7 @@ class GenreSearchScreen extends StatelessWidget {
     );
   }
 
-  _buildTopContainer({GlobalKey<ScaffoldState> key}) {
+  _buildTopContainer({GlobalKey<ScaffoldState> scaffoldKey}) {
     return Container(
       height: kGenreItemHeight,
       padding: EdgeInsets.only(left: 10, right: 10),
@@ -173,7 +187,8 @@ class GenreSearchScreen extends StatelessWidget {
           ),
           Spacer(),
           GestureDetector(
-            onTap: () => key.currentState.openEndDrawer(),
+            behavior: HitTestBehavior.translucent,
+            onTap: ()=>scaffoldKey.currentState.openEndDrawer(),
             child: Container(
                 decoration: BoxDecoration(
                   color: kPurple,
@@ -242,6 +257,7 @@ class GenreSearchScreen extends StatelessWidget {
       },
     );
   }
+
 }
 
 class GenreGridView extends StatefulWidget {
@@ -343,8 +359,7 @@ class _GenreGridViewState extends State<GenreGridView> {
             _scrollController.position.maxScrollExtent &&
         !_scrollController.position.outOfRange) {
       String nextPage = ((int.parse(widget.genreData.page) + 1).toString());
-      BlocProvider.of<GenreSearchBloc>(context)
-          .add(GenreLoad(data: widget.genreData.copyWith(page: nextPage)));
+      BlocProvider.of<GenreSearchBloc>(context).add(GenreLoad(data: widget.genreData.copyWith(page: nextPage)));
     }
   }
 }

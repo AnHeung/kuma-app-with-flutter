@@ -26,17 +26,17 @@ class SearchMalDetailApiItem {
 }
 
 class SearchMalDetailApiItemResult {
-  int id;
+  String id;
   String title;
   String image;
   String startDate;
   String endDate;
   String star;
   String popularity;
-  int rank;
+  String rank;
   String synopsis;
   String status;
-  String genres;
+  List<SearchMalDetailGenreItem> genres;
   String numEpisodes;
   String startSeason;
   List<String> pictures;
@@ -74,7 +74,12 @@ class SearchMalDetailApiItemResult {
     rank = json['rank'];
     synopsis = json['synopsis'];
     status = json['status'];
-    genres = json['genres'];
+    if (json['genres'] != null) {
+      genres = new List<SearchMalDetailGenreItem>();
+      json['genres'].forEach((v) {
+        genres.add(new SearchMalDetailGenreItem.fromJson(v));
+      });
+    }
     numEpisodes = json['num_episodes'];
     startSeason = json['start_season'];
     pictures = json['pictures'].cast<String>();
@@ -127,8 +132,27 @@ class SearchMalDetailApiItemResult {
   }
 }
 
+class SearchMalDetailGenreItem {
+  String id;
+  String name;
+
+  SearchMalDetailGenreItem({this.id, this.name});
+
+  SearchMalDetailGenreItem.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    return data;
+  }
+}
+
 class SearchMalDetailRelatedAnimeItem {
-  int id;
+  String id;
   String title;
   String image;
 
@@ -150,7 +174,7 @@ class SearchMalDetailRelatedAnimeItem {
 }
 
 class SearchMalDetailRecommendationAnimeItem {
-  int id;
+  String id;
   String title;
   String image;
 
@@ -172,7 +196,7 @@ class SearchMalDetailRecommendationAnimeItem {
 }
 
 class SearchMalDetailStudioItem {
-  int id;
+  String id;
   String name;
 
   SearchMalDetailStudioItem({this.id, this.name});

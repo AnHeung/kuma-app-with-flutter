@@ -49,7 +49,9 @@ class GenreCategoryListBloc extends Bloc<GenreCategoryListEvent, GenreCategoryLi
     yield* _mapToGenreItemClick(event ,state);
     }else if(event is GenreItemRemove){
     yield* _mapToGenreItemRemove(event,state);
-    }
+    }else if(event is GenreItemRemoveAll){
+     yield* _mapToGenreRemoveAll(state); 
+   }
   }
 
   Stream<GenreCategoryListState> _mapToGenreCategoryListLoad(GenreCategoryListState state) async* {
@@ -71,6 +73,11 @@ class GenreCategoryListBloc extends Bloc<GenreCategoryListEvent, GenreCategoryLi
                   genreType:  enumFromString<GenreType>(resultItem.type, GenreType.values))).toList())).toList() , genreData: GenreData(page: "1"));
     }
   }
+
+  Stream<GenreCategoryListState> _mapToGenreRemoveAll(GenreCategoryListState state)async*{
+    yield GenreCategoryListState(status: GenreCategoryStatus.success, genreListItems: state.genreListItems.map((item) => item.copyWith(navItems: item.navItems.map((navItem) => navItem.copyWith(clickStatus: CategoryClickStatus.NONE)).toList())).toList() , genreData:GenreData());
+  }
+
 
   Stream<GenreCategoryListState> _mapToGenreItemClick(GenreItemClick event , GenreCategoryListState state)async*{
     GenreNavItem clickItem = event.navItem.copyWith(clickStatus: _changeCategoryStatus(event.navItem.clickStatus, event.navItem.genreType));

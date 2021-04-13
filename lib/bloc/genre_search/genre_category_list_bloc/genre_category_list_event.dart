@@ -31,3 +31,5 @@ class GenreItemRemove extends GenreCategoryListEvent{
   @override
   List<Object> get props =>[navItem ];
 }
+
+class GenreItemRemoveAll extends GenreCategoryListEvent{}

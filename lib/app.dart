@@ -65,6 +65,7 @@ class App extends StatelessWidget {
       },
       child: MultiBlocProvider(
         providers: [
+          BlocProvider(create: (context) => TabCubit(),),
         BlocProvider(create: (context) =>AuthBloc(repository: context.read<ApiRepository>())),
           BlocProvider(create: (context) =>SettingBloc(repository: context.read<ApiRepository>())),
           BlocProvider(create: (context) => GenreCategoryListBloc(repository: context.read<ApiRepository>())..add(GenreCategoryListLoad()))
@@ -94,9 +95,6 @@ class App extends StatelessWidget {
           Routes.HOME: (context) {
             return MultiBlocProvider(
               providers: [
-                BlocProvider(
-                  create: (_) => TabCubit(),
-                ),
                 BlocProvider(create: (_) => AnimationBloc(repository: context.read<ApiRepository>(),settingBloc: BlocProvider.of<SettingBloc>(context))..add(AnimationLoad())),
                 BlocProvider(create: (_) => AnimationSeasonBloc(repository: context.read<ApiRepository>(),settingBloc: BlocProvider.of<SettingBloc>(context))..add(AnimationSeasonLoad(limit: "7"))),
                 BlocProvider(create: (_) => AnimationScheduleBloc(repository: context.read<ApiRepository>(),settingBloc: BlocProvider.of<SettingBloc>(context))..add(AnimationScheduleInitLoad())),

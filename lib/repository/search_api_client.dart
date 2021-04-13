@@ -2,9 +2,9 @@ import 'package:dio/dio.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_all_genre_item.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_detail_item.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_genre_list_item.dart';
-import 'package:kuma_flutter_app/model/api/search_mal_api_item.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_ranking_item.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_schedule_item.dart';
+import 'package:kuma_flutter_app/model/api/search_mal_api_search_item.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_season_item.dart';
 import 'package:retrofit/http.dart';
 
@@ -15,7 +15,7 @@ abstract class SearchApiClient {
   // manatoki, crawling , down , siteInfo , hotdeal , torrent , schedule
 
   @GET("/translate/title")
-  Future<SearchMalApiItem> getSearchItems(@Query("q") String query);
+  Future<SearchMalApiSearchItem> getSearchItems(@Query("q") String query);
 
   @GET("/mal/season")
   Future<SearchMalApiSeasonItem> getSeasonItems(@Query("limit") String limit);
