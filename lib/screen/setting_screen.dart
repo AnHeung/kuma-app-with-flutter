@@ -90,8 +90,9 @@ class SettingScreen extends StatelessWidget {
                                   print(categoryList.length);
                                   double width = constraints.maxWidth / categoryList.length - 8;
                                   return Container(
+                                    padding: EdgeInsets.zero,
                                     margin: EdgeInsets.only(left: 20),
-                                    height: 40,
+                                    height: 30,
                                     child: ListView.separated(
                                       physics: ClampingScrollPhysics(),
                                       separatorBuilder: (context, index) =>
@@ -114,7 +115,7 @@ class SettingScreen extends StatelessWidget {
                                               color: _isCheck(
                                                   config.rankingType,
                                                   categoryKey)
-                                                  ? kBlue
+                                                  ? kPurple
                                                   : kDisabled),
                                           child: GestureDetector(
                                               onTap: () {
@@ -167,26 +168,29 @@ class SettingScreen extends StatelessWidget {
                               fontColor: Colors.black,
                             ),
                             Spacer(),
-                            ToggleSwitch(
-                              initialLabelIndex: config.isAutoScroll ? 0 : 1,
-                              minWidth: 50.0,
-                              cornerRadius: 10.0,
-                              activeBgColor: kBlue,
-                              activeFgColor: Colors.white,
-                              inactiveBgColor: kDisabled,
-                              inactiveFgColor: Colors.white,
-                              labels: ['', ''],
-                              icons: [
-                                FontAwesomeIcons.check,
-                                FontAwesomeIcons.times
-                              ],
-                              onToggle: (index) {
-                                print("index $index");
-                                BlocProvider.of<SettingBloc>(context).add(
-                                    ChangeSetting(
-                                        config: config.copyWith(
-                                            isAutoScroll: index == 0)));
-                              },
+                            Container(
+                              height: 30,
+                              child: ToggleSwitch(
+                                initialLabelIndex: config.isAutoScroll ? 0 : 1,
+                                minWidth: 45.0,
+                                cornerRadius: 10.0,
+                                activeBgColor: kPurple,
+                                activeFgColor: Colors.white,
+                                inactiveBgColor: kDisabled,
+                                inactiveFgColor: Colors.white,
+                                labels: ['', ''],
+                                icons: [
+                                  FontAwesomeIcons.check,
+                                  FontAwesomeIcons.times
+                                ],
+                                onToggle: (index) {
+                                  print("index $index");
+                                  BlocProvider.of<SettingBloc>(context).add(
+                                      ChangeSetting(
+                                          config: config.copyWith(
+                                              isAutoScroll: index == 0)));
+                                },
+                              ),
                             ),
                           ],
                         ),

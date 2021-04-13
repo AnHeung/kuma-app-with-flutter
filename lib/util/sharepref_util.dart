@@ -17,6 +17,12 @@ appFirstLaunch() async{
   return prefs.getBool("firstLaunch") ?? true;
 }
 
+saveAppFirstLaunch({bool isAppFirst = false}) async{
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  return prefs.setBool("firstLaunch",isAppFirst);
+}
+
+
 changeAutoConfig({bool isAutoScroll = true}) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs.setBool("autoScroll", isAutoScroll);

@@ -10,7 +10,6 @@ class EmptyContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
       width: size,
       height: size,
       child: Center(

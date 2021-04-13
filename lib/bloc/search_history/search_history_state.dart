@@ -1,17 +1,20 @@
 part of 'search_history_bloc.dart';
 
 @immutable
-abstract class SearchHistoryState {}
+abstract class SearchHistoryState extends Equatable {
+  @override
+  List<Object> get props => [];
+
+  const SearchHistoryState();
+}
 
 class SearchHistoryInitial extends SearchHistoryState {}
 
-class SearchHistoryLoadSuccess extends SearchHistoryState{
-
+class SearchHistoryLoadSuccess extends SearchHistoryState {
   final List<AnimationSearchItem> list;
 
-
-  SearchHistoryLoadSuccess({this.list});
+  const SearchHistoryLoadSuccess({this.list});
 
   @override
-  List<Object> get props =>[list];
+  List<Object> get props => [list];
 }

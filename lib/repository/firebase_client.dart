@@ -139,7 +139,7 @@ class FirebaseClient {
           throw Exception("회원탈퇴 오류 발생 :$errMsg 코드:$errorCode}");
         });
       });
-    } on Exception catch (e) {
+    } catch (e) {
       print(e);
       return false;
     }

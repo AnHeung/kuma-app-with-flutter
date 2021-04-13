@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/splash/splash_bloc.dart';
 import 'package:kuma_flutter_app/routes/routes.dart';
+import 'package:kuma_flutter_app/util/sharepref_util.dart';
 import 'package:kuma_flutter_app/util/view_utils.dart';
 import 'package:kuma_flutter_app/widget/loading_indicator.dart';
 
@@ -24,8 +25,9 @@ class _SplashScreenState extends State<SplashScreen>
             bool isLoading = state is SplashLoadInProgress;
 
             if (state is SplashLoadSuccess) {
-              WidgetsBinding.instance.addPostFrameCallback((_) {
+              WidgetsBinding.instance.addPostFrameCallback((_) async{
                 if (state.isAppFirstLaunch) {
+                  await saveAppFirstLaunch(isAppFirst: false);
                   Navigator.pushNamedAndRemoveUntil(context, Routes.FIRST_LAUNCH, (route) => false);
                 } else {
                   Navigator.pop(context);
