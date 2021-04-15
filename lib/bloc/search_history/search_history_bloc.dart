@@ -36,7 +36,7 @@ class SearchHistoryBloc extends Bloc<SearchHistoryEvent, SearchHistoryState> {
     String path = await _getHistoryPath();
     final file = File('$path/search_history.json');
     _writeEmptyFile(file);
-    yield SearchHistoryLoadSuccess(list: []);
+    yield const SearchHistoryLoadSuccess(list: []);
   }
 
   Stream<SearchHistoryState> _mapToLoadHistory() async* {

@@ -21,7 +21,7 @@ class PageState extends State<Pages>{
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title: Text('PageView Widget in Flutter')),
+            title: const Text('PageView Widget in Flutter')),
         body: Center(child:
         PageView(
           controller: controller,
@@ -37,7 +37,7 @@ class PageState extends State<Pages>{
 
             Container(
                 color: Colors.green,
-                child: Center(
+                child: const Center(
                     child: Text('This is Widget - 2',
                       style: TextStyle(fontSize: 25,
                           color: kWhite),))
@@ -45,7 +45,7 @@ class PageState extends State<Pages>{
 
             Container(
                 color: Colors.lightBlue,
-                child: Center(
+                child: const Center(
                     child: Text('This is Widget - 3',
                       style: TextStyle(fontSize: 25,
                           color: kWhite),))

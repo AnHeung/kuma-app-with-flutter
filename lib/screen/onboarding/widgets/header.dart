@@ -16,7 +16,7 @@ class Header extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        HeaderLogo(
+        const HeaderLogo(
           color: kWhite,
           size: 32.0,
         ),

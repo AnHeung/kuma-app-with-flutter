@@ -23,7 +23,7 @@ class RefreshContainer extends StatelessWidget {
               Container(
                 color: Colors.transparent,
                 alignment: Alignment.center,
-                child: Icon(Icons.refresh, color: kBlue, size: 30,),
+                child: const Icon(Icons.refresh, color: kBlue, size: 30,),
       ),
             ],
           ),

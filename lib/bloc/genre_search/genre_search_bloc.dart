@@ -17,7 +17,7 @@ class GenreSearchBloc extends Bloc<GenreSearchEvent, GenreSearchState> {
   final ApiRepository repository;
   final GenreCategoryListBloc genreCategoryListBloc;
 
-  GenreSearchBloc({this.repository,this.genreCategoryListBloc}) : super(GenreSearchState(status: GenreSearchStatus.initial , genreData: GenreData())){
+  GenreSearchBloc({this.repository,this.genreCategoryListBloc}) : super(const GenreSearchState(status: GenreSearchStatus.initial , genreData: const GenreData())){
     genreCategoryListBloc.listen((state){
       if(state.status == GenreCategoryStatus.success){
           add(GenreLoad(data: state.genreData.copyWith(page: "1")));

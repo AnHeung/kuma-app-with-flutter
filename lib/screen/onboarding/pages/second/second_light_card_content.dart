@@ -8,15 +8,15 @@ class SecondLightCardContent extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
-        IconContainer(
+        const IconContainer(
           icon: Icons.brush,
           padding: kPaddingS,
         ),
-        IconContainer(
+        const IconContainer(
           icon: Icons.camera_alt,
           padding: kPaddingM,
         ),
-        IconContainer(
+        const IconContainer(
           icon: Icons.straighten,
           padding: kPaddingS,
         ),

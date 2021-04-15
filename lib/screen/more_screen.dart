@@ -53,11 +53,11 @@ class MoreScreen extends StatelessWidget {
   Widget _topContainer() {
     return ListView.separated(
       separatorBuilder: (context, idx) {
-        return SizedBox(
+        return const SizedBox(
           height: 10,
         );
       },
-      physics: BouncingScrollPhysics(),
+      physics: const BouncingScrollPhysics(),
       scrollDirection: Axis.vertical,
       itemCount: MoreType.values.length,
       shrinkWrap: true,
@@ -127,14 +127,14 @@ class MoreScreen extends StatelessWidget {
   Widget _needLoginContainer(BuildContext context) {
     return Center(
       child: Padding(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('로그인이 되어 있지 않습니다.'),
+            const Text('로그인이 되어 있지 않습니다.'),
             Container(
               height: 30,
-              margin: EdgeInsets.only(top: 10),
+              margin: const EdgeInsets.only(top: 10),
               color: kBlue,
               child: TextButton(
                   onPressed: () => {Navigator.pushNamed(context, Routes.LOGIN)},

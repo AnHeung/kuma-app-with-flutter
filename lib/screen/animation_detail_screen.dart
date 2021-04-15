@@ -4,17 +4,11 @@ import 'package:flutter/painting.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/animation_detail/animation_detail_bloc.dart';
-import 'package:kuma_flutter_app/bloc/genre_search/genre_category_list_bloc/genre_category_list_bloc.dart';
-import 'package:kuma_flutter_app/bloc/tab/tab_cubit.dart';
-import 'package:kuma_flutter_app/enums/app_tab.dart';
 import 'package:kuma_flutter_app/enums/detail_animation_actions.dart';
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
 import 'package:kuma_flutter_app/enums/navigation_push_type.dart';
-import 'package:kuma_flutter_app/model/genre_data.dart';
 import 'package:kuma_flutter_app/model/item/animation_deatil_page_item.dart';
 import 'package:kuma_flutter_app/model/item/animation_detail_item.dart';
-import 'package:kuma_flutter_app/model/item/genre_nav_item.dart';
-import 'package:kuma_flutter_app/routes/routes.dart';
 import 'package:kuma_flutter_app/util/view_utils.dart';
 import 'package:kuma_flutter_app/widget/custom_text.dart';
 import 'package:kuma_flutter_app/widget/empty_container.dart';
@@ -23,20 +17,24 @@ import 'package:kuma_flutter_app/widget/image_text_scroll_item.dart';
 import 'package:kuma_flutter_app/widget/loading_indicator.dart';
 import 'package:kuma_flutter_app/widget/refresh_container.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import '../model/item/animation_deatil_page_item.dart';
 
 class AnimationDetailScreen extends StatelessWidget {
   final indicatorRate = 0.82;
   final topImageContainerHeightRate = 0.25;
   final topContainerHeightRate = 0.5;
+  final topSelectContainerHeightRate = 0.3;
   final topImageWidthRate = 0.4;
 
   @override
   Widget build(BuildContext context) {
-    final AnimationDetailPageItem infoItem = ModalRoute.of(context).settings.arguments;
+    final AnimationDetailPageItem infoItem = ModalRoute
+        .of(context)
+        .settings
+        .arguments;
     final String id = infoItem.id;
-    final String type = "all";
+    const String type = "all";
 
     BlocProvider.of<AnimationDetailBloc>(context)
         .add(AnimationDetailLoad(id: id));
@@ -53,8 +51,9 @@ class AnimationDetailScreen extends StatelessWidget {
                   : "상세페이지 에러";
               showToast(msg: errMsg);
               return RefreshContainer(
-                  callback: () => BlocProvider.of<AnimationDetailBloc>(context)
-                      .add(AnimationDetailLoad(id: id)));
+                  callback: () =>
+                      BlocProvider.of<AnimationDetailBloc>(context)
+                          .add(AnimationDetailLoad(id: id)));
             } else if (state is AnimationDetailLoadSuccess) {
               final AnimationDetailItem detailItem = state.detailItem;
               return _buildAniDetailContainer(
@@ -70,23 +69,32 @@ class AnimationDetailScreen extends StatelessWidget {
 
   Widget _buildAniDetailContainer(
       {BuildContext context, AnimationDetailItem detailItem}) {
-    return ListView(shrinkWrap: true, padding: EdgeInsets.zero, physics: ClampingScrollPhysics(),children: [
-      _buildDetailTopImageContainer(context: context, detailItem: detailItem),
-      _buildDetailTopContainer(context: context, detailItem: detailItem),
-      _buildDetailTopSynopsisContainer(context: context, detailItem: detailItem),
-      _buildTitleContainer(title: kAnimationDetailImageTitle),
-      _buildTopPictureContainer(pictures: detailItem.pictures),
-      _buildTitleContainer(title: kAnimationDetailRelateTitle),
-      _buildRelateContainer(relatedItem: detailItem.relatedAnime),
-      _buildTitleContainer(title: kAnimationDetailRecommendTitle),
-      _buildRecommendationContainer(recommendationItems: detailItem.recommendationAnimes)
-    ]);
+
+    return ListView(shrinkWrap: true,
+        padding: EdgeInsets.zero,
+        physics: const ClampingScrollPhysics(),
+        children: [
+          _buildDetailTopImageContainer(
+              context: context, detailItem: detailItem),
+          _buildDetailTopSelectContainer(context: context, videoItem: detailItem.videoItems),
+          _buildDetailTopContainer(context: context, detailItem: detailItem),
+          _buildDetailTopSynopsisContainer(
+              context: context, detailItem: detailItem),
+          _buildTitleContainer(title: kAnimationDetailImageTitle),
+          _buildTopPictureContainer(pictures: detailItem.pictures),
+          _buildTitleContainer(title: kAnimationDetailRelateTitle),
+          _buildRelateContainer(relatedItem: detailItem.relatedAnime),
+          _buildTitleContainer(title: kAnimationDetailRecommendTitle),
+          _buildRecommendationContainer(
+              recommendationItems: detailItem.recommendationAnimes)
+        ]);
   }
 
-  Widget _buildTitleContainer({String title , Alignment alignment = Alignment.centerLeft}){
+  Widget _buildTitleContainer(
+      {String title, Alignment alignment = Alignment.centerLeft}) {
     return Container(
       alignment: alignment,
-      margin: EdgeInsets.only(top: 20, left: 10),
+      margin: const EdgeInsets.only(top: 20, left: 10),
       child: CustomText(
         text: title,
         fontColor: Colors.black,
@@ -95,9 +103,35 @@ class AnimationDetailScreen extends StatelessWidget {
     );
   }
 
+  Widget _buildDetailTopSelectContainer({BuildContext context, List<VideoItem> videoItem}) {
+    final double topHeight = MediaQuery
+        .of(context)
+        .size
+        .height * topSelectContainerHeightRate;
+
+    String videoUrl = videoItem!= null && videoItem.length > 0 ? videoItem[0].videoUrl : "";
+    final GlobalKey playerKey = GlobalKey();
+
+    return Visibility(
+      visible: videoUrl.isNotEmpty,
+      child: Container(
+        key: playerKey,
+        color: kBlack,
+        height: topHeight,
+        child: YoutubeVideoPlayer(
+          showVideoProgressIndicator: true,
+          url: videoUrl,
+        ),
+      ),
+    );
+  }
+
   Widget _buildDetailTopContainer(
       {BuildContext context, AnimationDetailItem detailItem}) {
-    final double topHeight = MediaQuery.of(context).size.height * topContainerHeightRate;
+    final double topHeight = MediaQuery
+        .of(context)
+        .size
+        .height * topContainerHeightRate;
 
     return Container(
       color: kBlack,
@@ -108,7 +142,7 @@ class AnimationDetailScreen extends StatelessWidget {
           Expanded(
             child: Container(
               height: double.infinity,
-              margin: EdgeInsets.all(10),
+              margin: const EdgeInsets.all(10),
               child: Column(
                 children: [
                   Expanded(
@@ -124,7 +158,8 @@ class AnimationDetailScreen extends StatelessWidget {
                             fontSize: 15,
                             fontWeight: FontWeight.w700),
                         _buildTopContainerItem(
-                          text:"제작사 : ${detailItem.studioItems.map((studio) =>studio.name).toString()}",
+                          text: "제작사 : ${detailItem.studioItems.map((
+                              studio) => studio.name).toString()}",
                           fontSize: 13,
                         ),
                         _buildTopContainerItem(
@@ -148,7 +183,7 @@ class AnimationDetailScreen extends StatelessWidget {
                           fontSize: 13,
                         ),
                         _buildDetailTopGenresContainer(
-                          context: context,
+                            context: context,
                             genres: detailItem.genres)
                       ],
                     ),
@@ -173,46 +208,51 @@ class AnimationDetailScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildDetailTopGenresContainer({BuildContext context, List<AnimationDetailGenreItem> genres}) {
-
-    final width = MediaQuery.of(context).size.width/8-10;
-    final List<AnimationDetailGenreItem> genreList = genres.length > 7 ? genres.sublist(0, 7) : genres ;
+  Widget _buildDetailTopGenresContainer(
+      {BuildContext context, List<AnimationDetailGenreItem> genres}) {
+    final width = MediaQuery
+        .of(context)
+        .size
+        .width / 8 - 10;
+    final List<AnimationDetailGenreItem> genreList = genres.length > 7 ? genres
+        .sublist(0, 7) : genres;
     return genreList.length > 0 && genres.isNotEmpty ? Flexible(
-      flex: 2,
-      child: Padding(
-        padding: const EdgeInsets.only(top:10.0,bottom: 5),
-        child: Row(
+        flex: 2,
+        child: Padding(
+            padding: const EdgeInsets.only(top: 10.0, bottom: 5),
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: genreList
-                  .map((genre) => GestureDetector(
-                    onTap: (){
+                  .map((genre) =>
+                  GestureDetector(
+                    onTap: () {
                       // Navigator.pop(context, (router)=>true );
                       // BlocProvider.of<TabCubit>(context).tabUpdate(AppTab.GENRE);
                       // BlocProvider.of<GenreCategoryListBloc>(context).add(GenreItemClick(navItem: GenreNavItem()));
                     },
                     behavior: HitTestBehavior.translucent,
                     child: Padding(
-                      padding: const EdgeInsets.only(left:10),
+                      padding: const EdgeInsets.only(left: 10),
                       child: Container(
-                            width: width,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              color: kWhite.withOpacity(0.3),
-                              shape: BoxShape.circle,
-                            ),
-                            child: CustomText(
-                              fontColor: kWhite,
-                              fontSize: kAnimationDetailGenreFontSize,
-                              text: genre.name,
-                              isEllipsis: true,
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
+                        width: width,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: kWhite.withOpacity(0.3),
+                          shape: BoxShape.circle,
+                        ),
+                        child: CustomText(
+                          fontColor: kWhite,
+                          fontSize: kAnimationDetailGenreFontSize,
+                          text: genre.name,
+                          isEllipsis: true,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
                     ),
                   ))
                   .toList(),
             )
-      )
+        )
     ) : Container();
   }
 
@@ -227,7 +267,7 @@ class AnimationDetailScreen extends StatelessWidget {
             text: detailItem.synopsis,
             fontColor: Colors.black,
           ),
-          margin: EdgeInsets.only(left: 10, top: 20),
+          margin: const EdgeInsets.only(left: 10, top: 20),
         ),
       ],
     );
@@ -235,8 +275,14 @@ class AnimationDetailScreen extends StatelessWidget {
 
   Widget _buildDetailTopImageContainer(
       {BuildContext context, AnimationDetailItem detailItem}) {
-    final double topHeight = MediaQuery.of(context).size.height * topImageContainerHeightRate;
-    final double imageItemWidth = MediaQuery.of(context).size.width * topImageWidthRate;
+    final double topHeight = MediaQuery
+        .of(context)
+        .size
+        .height * topImageContainerHeightRate;
+    final double imageItemWidth = MediaQuery
+        .of(context)
+        .size
+        .width * topImageWidthRate;
 
     return Container(
       child: Stack(
@@ -251,7 +297,7 @@ class AnimationDetailScreen extends StatelessWidget {
             ),
           ),
           Container(
-            padding: EdgeInsets.all(20),
+            padding: const EdgeInsets.all(20),
             width: imageItemWidth,
             height: topHeight,
             child: Column(
@@ -260,8 +306,9 @@ class AnimationDetailScreen extends StatelessWidget {
                 Expanded(
                   flex: 1,
                   child: GestureDetector(
-                    onTap: () => imageAlert(
-                        context, detailItem.title, [detailItem.image], 0),
+                    onTap: () =>
+                        imageAlert(
+                            context, detailItem.title, [detailItem.image], 0),
                     child: Container(
                       height: topHeight,
                       child: Hero(
@@ -308,33 +355,46 @@ class AnimationDetailScreen extends StatelessWidget {
   Widget _buildRelateContainer({List<RelatedAnimeItem> relatedItem}) {
     return relatedItem.isNotEmpty
         ? Padding(
-            padding: const EdgeInsets.only(top: 10),
-            child: _getPictureList(
-                height: 200,
-                margin: 10,
-                length: relatedItem.length,
-                builderFunction: (BuildContext context, idx) {
-                  final RelatedAnimeItem item = relatedItem[idx];
-                  return ImageTextScrollItem(context:context, id: item.id.toString(), title: item.title, image: item.image, imageShapeType: ImageShapeType.CIRCLE, imageDiveRate: 3,pushType: NavigationPushType.REPLACE,);
-                }),
-          )
+      padding: const EdgeInsets.only(top: 10),
+      child: _getPictureList(
+          height: 200,
+          margin: 10,
+          length: relatedItem.length,
+          builderFunction: (BuildContext context, idx) {
+            final RelatedAnimeItem item = relatedItem[idx];
+            return ImageTextScrollItem(context: context,
+              id: item.id.toString(),
+              title: item.title,
+              image: item.image,
+              imageShapeType: ImageShapeType.CIRCLE,
+              imageDiveRate: 3,
+              pushType: NavigationPushType.REPLACE,);
+          }),
+    )
         : EmptyContainer(
-            title: "관련 애니 없음",
-            size: 100,
-          );
+      title: "관련 애니 없음",
+      size: 100,
+    );
   }
 
-  Widget _buildRecommendationContainer({List<RecommendationAnimeItem> recommendationItems}) {
+  Widget _buildRecommendationContainer(
+      {List<RecommendationAnimeItem> recommendationItems}) {
     return recommendationItems.isNotEmpty
         ? Padding(
-      padding: const EdgeInsets.only(top: 10 , bottom: 10),
+      padding: const EdgeInsets.only(top: 10, bottom: 10),
       child: _getPictureList(
           height: 200,
           margin: 10,
           length: recommendationItems.length,
           builderFunction: (BuildContext context, idx) {
             final RecommendationAnimeItem item = recommendationItems[idx];
-            return ImageTextScrollItem(context: context, title: item.title ,id: item.id.toString(), imageDiveRate: 3, imageShapeType: ImageShapeType.CIRCLE,image: item.image, pushType: NavigationPushType.REPLACE,);
+            return ImageTextScrollItem(context: context,
+              title: item.title,
+              id: item.id.toString(),
+              imageDiveRate: 3,
+              imageShapeType: ImageShapeType.CIRCLE,
+              image: item.image,
+              pushType: NavigationPushType.REPLACE,);
           }),
     )
         : EmptyContainer(
@@ -343,13 +403,12 @@ class AnimationDetailScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildLikeIndicator(
-      {double height,
-      String percent,
-      String percentText,
-      Color indicatorColor}) {
+  Widget _buildLikeIndicator({double height,
+    String percent,
+    String percentText,
+    Color indicatorColor}) {
     return Container(
-        margin: EdgeInsets.only(top: 5, bottom: 10),
+        margin: const EdgeInsets.only(top: 5, bottom: 10),
         alignment: AlignmentDirectional.bottomCenter,
         child: CircularPercentIndicator(
           radius: height,
@@ -376,9 +435,10 @@ class AnimationDetailScreen extends StatelessWidget {
         ),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.refresh),
+            icon: const Icon(Icons.refresh),
             tooltip: "재시작",
-            onPressed: () => {
+            onPressed: () =>
+            {
               BlocProvider.of<AnimationDetailBloc>(context)
                   .add(AnimationDetailLoad(id: id))
             },
@@ -395,12 +455,12 @@ class AnimationDetailScreen extends StatelessWidget {
               }
             },
             itemBuilder: (BuildContext context) =>
-                <PopupMenuItem<DeTailAnimationActions>>[
-              PopupMenuItem<DeTailAnimationActions>(
+            <PopupMenuItem<DeTailAnimationActions>>[
+              const PopupMenuItem<DeTailAnimationActions>(
                 value: DeTailAnimationActions.ADD,
                 child: Text('배치에 추가'),
               ),
-              PopupMenuItem<DeTailAnimationActions>(
+              const PopupMenuItem<DeTailAnimationActions>(
                 value: DeTailAnimationActions.REFRESH,
                 child: Text('새로고침'),
               ),
@@ -410,7 +470,8 @@ class AnimationDetailScreen extends StatelessWidget {
   }
 
   Widget _buildTopContainerItem(
-      {double fontSize, String text, FontWeight fontWeight = FontWeight.normal}) {
+      {double fontSize, String text, FontWeight fontWeight = FontWeight
+          .normal}) {
     return Flexible(
       flex: 1,
       child: Container(
@@ -440,11 +501,110 @@ class AnimationDetailScreen extends StatelessWidget {
               width: margin,
             );
           },
-          physics: BouncingScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           scrollDirection: Axis.horizontal,
           itemCount: length,
           shrinkWrap: true,
           itemBuilder: builderFunction),
     );
+  }
+}
+
+class YoutubeVideoPlayer extends StatefulWidget {
+
+  final bool showVideoProgressIndicator;
+  final String url;
+
+  @override
+  _YoutubePlayerState createState() => _YoutubePlayerState();
+
+  YoutubeVideoPlayer({this.showVideoProgressIndicator,this.url});
+}
+
+class _YoutubePlayerState extends State<YoutubeVideoPlayer> {
+
+   YoutubePlayerController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = YoutubePlayerController(
+      initialVideoId: YoutubePlayer.convertUrlToId(widget.url),
+      flags: const YoutubePlayerFlags(
+        mute: false,
+        autoPlay: true,
+        disableDragSeek: false,
+        loop: false,
+        isLive: false,
+        forceHD: false,
+        enableCaption: true,
+      ),
+    );
+  }
+
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  void deactivate() {
+    _controller.pause();
+    super.deactivate();
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+
+    return YoutubePlayerBuilder(
+        player: YoutubePlayer(controller: _controller,
+          topActions: <Widget>[
+            const SizedBox(width: 8.0),
+            Expanded(
+              child: Text(
+                _controller.metadata.title,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 18.0,
+                ),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+              ),
+            ),
+            IconButton(
+              icon: const Icon(
+                Icons.settings,
+                color: Colors.white,
+                size: 25.0,
+              ),
+              onPressed: () {
+              },
+            ),
+          ],
+          bottomActions: [
+            CurrentPosition(),
+            const SizedBox(width: 10.0),
+            ProgressBar(isExpanded: true),
+            const SizedBox(width: 10.0),
+            RemainingDuration(),
+            FullScreenButton(),
+          ],
+          liveUIColor: kBlack,
+          progressColors: const ProgressBarColors(
+            playedColor: Colors.amber,
+            handleColor: Colors.amberAccent,
+          ), showVideoProgressIndicator: widget.showVideoProgressIndicator,),
+        builder: (context, player) {
+          return Column(
+            children: [
+              // some widgets
+              player,
+              //some other widgets
+            ],
+          );
+        });
   }
 }

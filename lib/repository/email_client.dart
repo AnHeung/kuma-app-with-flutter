@@ -15,7 +15,7 @@ class EmailClient extends LoginClient{
       LoginUserData data = await getUserData();
       String id = data.email;
       String pw = data.uniqueId;
-      if(id == null || pw == null) return LoginUserData(loginType: LoginType.EMAIL);
+      if(id == null || pw == null) return const LoginUserData(loginType: LoginType.EMAIL);
       return data;
   }
 

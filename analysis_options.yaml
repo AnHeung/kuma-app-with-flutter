@@ -1,0 +1,9 @@
+  analyzer:
+    errors:
+      prefer_const_declarations: error
+      prefer_const_constructors: error
+
+  linter:
+    rules:
+      prefer_const_declarations: true
+      prefer_const_constructors: true

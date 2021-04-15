@@ -43,6 +43,7 @@ class SearchMalDetailApiItemResult {
   List<SearchMalDetailRelatedAnimeItem> relatedAnime;
   List<SearchMalDetailRecommendationAnimeItem> recommendAnime;
   List<SearchMalDetailStudioItem> studios;
+  List<SearchMalDetailVideoItem> videos;
 
   SearchMalDetailApiItemResult(
       {this.id,
@@ -61,7 +62,7 @@ class SearchMalDetailApiItemResult {
         this.pictures,
         this.relatedAnime,
         this.recommendAnime,
-        this.studios});
+        this.studios , this.videos});
 
   SearchMalDetailApiItemResult.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -101,6 +102,12 @@ class SearchMalDetailApiItemResult {
         studios.add(new SearchMalDetailStudioItem.fromJson(v));
       });
     }
+    if (json['videos'] != null) {
+      videos = new List<SearchMalDetailVideoItem>();
+      json['videos'].forEach((v) {
+        videos.add(new SearchMalDetailVideoItem.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -127,6 +134,9 @@ class SearchMalDetailApiItemResult {
     }
     if (this.studios != null) {
       data['studios'] = this.studios.map((v) => v.toJson()).toList();
+    }
+    if (this.videos != null) {
+      data['videos'] = this.videos.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -210,6 +220,28 @@ class SearchMalDetailStudioItem {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['name'] = this.name;
+    return data;
+  }
+}
+
+class SearchMalDetailVideoItem{
+  String title;
+  String image_url;
+  String video_url;
+
+  SearchMalDetailVideoItem({this.title, this.image_url, this.video_url});
+
+  SearchMalDetailVideoItem.fromJson(Map<String, dynamic> json) {
+    title = json['title'];
+    image_url = json['image_url'];
+    video_url = json['video_url'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['title'] = this.title;
+    data['image_url'] = this.image_url;
+    data['video_url'] = this.video_url;
     return data;
   }
 }

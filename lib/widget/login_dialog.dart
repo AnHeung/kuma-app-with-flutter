@@ -37,7 +37,7 @@ class _LoginDialogState extends State<LoginDialog> {
   Widget _loginContainer({BuildContext context}) {
     return Container(
       height: 450,
-      padding: EdgeInsets.all(20),
+      padding: const EdgeInsets.all(20),
       child: Form(
         autovalidateMode: AutovalidateMode.always,
         key: _formKey,
@@ -46,7 +46,7 @@ class _LoginDialogState extends State<LoginDialog> {
           mainAxisSize: MainAxisSize.max,
           children: [
             Container(
-                padding: EdgeInsets.only(top: 20, bottom: 20),
+                padding: const EdgeInsets.only(top: 20, bottom: 20),
                 child: CustomText(
                   text: "로그인/회원가입",
                   fontFamily: doHyunFont,
@@ -66,7 +66,7 @@ class _LoginDialogState extends State<LoginDialog> {
               validator: (value) => validateUserPw(value),
             ),
             Container(
-                margin: EdgeInsets.only(top: 20),
+                margin: const EdgeInsets.only(top: 20),
                 width: MediaQuery.of(context).size.width,
                 color: kBlue,
                 child: TextButton(

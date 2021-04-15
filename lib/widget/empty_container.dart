@@ -13,7 +13,7 @@ class EmptyContainer extends StatelessWidget {
       width: size,
       height: size,
       child: Center(
-        child: Text(title , style: TextStyle(fontSize: 20.0 ,color: Colors.grey ,fontWeight: FontWeight.bold),),
+        child: Text(title , style: const TextStyle(fontSize: 20.0 ,color: Colors.grey ,fontWeight: FontWeight.bold),),
       ),
     );
   }

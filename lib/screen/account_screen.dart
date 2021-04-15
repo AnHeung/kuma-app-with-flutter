@@ -19,7 +19,7 @@ class AccountScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('계정 설정'),
+          title: const Text('계정 설정'),
         ),
         body: BlocConsumer<AccountBloc, AccountState>(
           listener: (context, state) {
@@ -44,7 +44,7 @@ class AccountScreen extends StatelessWidget {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Container(
-                      padding: EdgeInsets.only(
+                      padding: const EdgeInsets.only(
                         left: 20,
                       ),
                       alignment: Alignment.centerLeft,
@@ -59,7 +59,7 @@ class AccountScreen extends StatelessWidget {
                       )),
                   Container(
                       height: kAccountItemHeight,
-                      padding: EdgeInsets.only(left: 20),
+                      padding: const EdgeInsets.only(left: 20),
                       alignment: Alignment.centerLeft,
                       child: CustomText(
                         fontFamily: doHyunFont,
@@ -68,7 +68,7 @@ class AccountScreen extends StatelessWidget {
                         fontSize: kAccountFontSize,
                       )),
                   Container(
-                      padding: EdgeInsets.only(
+                      padding: const EdgeInsets.only(
                         left: 20,
                       ),
                       alignment: Alignment.centerLeft,
@@ -82,7 +82,7 @@ class AccountScreen extends StatelessWidget {
                       )),
                   Container(
                       height: kAccountItemHeight,
-                      padding: EdgeInsets.only(left: 20),
+                      padding: const EdgeInsets.only(left: 20),
                       alignment: Alignment.centerLeft,
                       child: CustomText(
                         fontFamily: doHyunFont,
@@ -91,7 +91,7 @@ class AccountScreen extends StatelessWidget {
                         fontSize: kAccountFontSize,
                       )),
                   Container(
-                      padding: EdgeInsets.only(
+                      padding: const EdgeInsets.only(
                         left: 20,
                       ),
                       alignment: Alignment.centerLeft,
@@ -103,8 +103,8 @@ class AccountScreen extends StatelessWidget {
                         fontSize: kAccountFontSize,
                       )),
                   Container(
-                    margin: EdgeInsets.only(top: 10, bottom: 10),
-                    padding: EdgeInsets.only(
+                    margin: const EdgeInsets.only(top: 10, bottom: 10),
+                    padding: const EdgeInsets.only(
                       left: 20,
                     ),
                     alignment: Alignment.centerLeft,
@@ -120,7 +120,7 @@ class AccountScreen extends StatelessWidget {
                   ),
                   Container(
                       height: kAccountItemHeight,
-                      padding: EdgeInsets.only(left: 20),
+                      padding: const EdgeInsets.only(left: 20),
                       alignment: Alignment.centerLeft,
                       child: CustomText(
                         fontFamily: doHyunFont,
@@ -145,7 +145,7 @@ class AccountScreen extends StatelessWidget {
                             ),
                           ),
                           Container(
-                              padding: EdgeInsets.only(
+                              padding: const EdgeInsets.only(
                                 left: 20,
                               ),
                               alignment: Alignment.centerLeft,
@@ -161,17 +161,17 @@ class AccountScreen extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(top: 10, bottom: 10),
-                    padding: EdgeInsets.only(
+                    margin: const EdgeInsets.only(top: 10, bottom: 10),
+                    padding: const EdgeInsets.only(
                       left: 20,
                     ),
                     alignment: Alignment.centerLeft,
                     color: Colors.black12,
                     height: kAccountItemHeight,
                     width: double.infinity,
-                    child: Text('계정탈퇴 및 초기화'),
+                    child: const Text('계정탈퇴 및 초기화'),
                   ),
-                  Spacer(),
+                  const Spacer(),
                   GestureDetector(
                     onTap: ()=>{
                       showBaseDialog(context: context, confirmFunction: (){

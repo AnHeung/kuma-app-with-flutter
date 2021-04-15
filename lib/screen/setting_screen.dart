@@ -25,7 +25,7 @@ class SettingScreen extends StatelessWidget {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text('설정'),
+          title: const Text('설정'),
         ),
         body: Padding(
             padding: const EdgeInsets.only(left: 15, right: 15),
@@ -49,7 +49,7 @@ class SettingScreen extends StatelessWidget {
                               fontSize: kSettingFontSize,
                               fontColor: Colors.black,
                             ),
-                            Spacer(),
+                            const Spacer(),
                             CustomDropDown(
                               value: config.aniLoadItemCount,
                               items: itemCountList
@@ -82,7 +82,7 @@ class SettingScreen extends StatelessWidget {
                               fontSize: kSettingFontSize,
                               fontColor: Colors.black,
                             ),
-                            SizedBox(width: 50,),
+                            const SizedBox(width: 50,),
                             Expanded(
                               flex: 1,
                               child: LayoutBuilder(
@@ -91,12 +91,12 @@ class SettingScreen extends StatelessWidget {
                                   double width = constraints.maxWidth / categoryList.length - 8;
                                   return Container(
                                     padding: EdgeInsets.zero,
-                                    margin: EdgeInsets.only(left: 20),
+                                    margin: const EdgeInsets.only(left: 20),
                                     height: 30,
                                     child: ListView.separated(
-                                      physics: ClampingScrollPhysics(),
+                                      physics: const ClampingScrollPhysics(),
                                       separatorBuilder: (context, index) =>
-                                          SizedBox(
+                                      const SizedBox(
                                             width: 3,
                                           ),
                                       itemBuilder: (context, idx) {
@@ -110,7 +110,7 @@ class SettingScreen extends StatelessWidget {
                                         return Container(
                                           width: width,
                                           decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.all(
+                                              borderRadius: const BorderRadius.all(
                                                   Radius.circular(30)),
                                               color: _isCheck(
                                                   config.rankingType,
@@ -167,7 +167,7 @@ class SettingScreen extends StatelessWidget {
                               fontSize: kSettingFontSize,
                               fontColor: Colors.black,
                             ),
-                            Spacer(),
+                            const Spacer(),
                             Container(
                               height: 30,
                               child: ToggleSwitch(

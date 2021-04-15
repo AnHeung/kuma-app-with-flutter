@@ -15,7 +15,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
 
   final ApiRepository repository;
 
-  RegisterBloc({this.repository}) : super(RegisterState._());
+  RegisterBloc({this.repository}) : super(const RegisterState._());
 
   @override
   Stream<RegisterState> mapEventToState(
@@ -27,22 +27,22 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   }
 
   Stream<RegisterState> _mapToUserRegister(UserRegister event) async*{
-    yield RegisterState.loading();
+    yield const RegisterState.loading();
     LoginUserData userData = event.userData;
     print('넘어온 userData :$userData');
 
     if(userData!= null && userData.uniqueId.isNotEmpty && userData.email.isNotEmpty){
 
       RegisterStatus status = await repository.register(userData: userData);
-      await Future.delayed(Duration(seconds: 1));
+      await Future.delayed(const Duration(seconds: 1));
 
       if(status == RegisterStatus.RegisterComplete){
         await saveUserData(userData: userData);
-        yield RegisterState.complete();
+        yield const RegisterState.complete();
       }else if(status == RegisterStatus.AlreadyInUse){
-        yield RegisterState.alreadyInUse();
+        yield const RegisterState.alreadyInUse();
       }else if(status == RegisterStatus.RegisterFailure){
-        yield RegisterState.failure();
+        yield const RegisterState.failure();
       }
     }
   }

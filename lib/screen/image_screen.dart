@@ -6,7 +6,7 @@ class ImageScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return  Center(
         child: Container(
-          child: Text('이미지'),
+          child: const Text('이미지'),
         ),
       );
   }

@@ -30,7 +30,7 @@ class DefaultTextField extends StatelessWidget {
       obscureText: isObscureText ?? false,
       decoration: InputDecoration(
           counterText: ' ',
-          border: OutlineInputBorder(),
+          border: const OutlineInputBorder(),
           labelText: title ?? '',
           //일반적으로 InputDecorator에 여러 줄의 TextField가 포함 된 경우 true로 설정되어 레이블을 TextField의 중앙에 정렬하는 기본 동작을 재정의합니다.
           alignLabelWithHint: true),

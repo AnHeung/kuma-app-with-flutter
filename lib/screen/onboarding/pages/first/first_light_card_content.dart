@@ -8,15 +8,15 @@ class FirstLightCardContent extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
-        IconContainer(
+        const IconContainer(
           icon: Icons.person,
           padding: kPaddingS,
         ),
-        IconContainer(
+        const IconContainer(
           icon: Icons.group,
           padding: kPaddingM,
         ),
-        IconContainer(
+        const IconContainer(
           icon: Icons.insert_emoticon,
           padding: kPaddingS,
         ),

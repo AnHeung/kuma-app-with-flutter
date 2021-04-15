@@ -10,7 +10,7 @@ class ThirdDarkCardContent extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            Icon(
+            const Icon(
               Icons.person_pin,
               color: kWhite,
               size: 32.0,
@@ -21,17 +21,17 @@ class ThirdDarkCardContent extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            Icon(
+            const Icon(
               Icons.person,
               color: kWhite,
               size: 32.0,
             ),
-            Icon(
+            const Icon(
               Icons.group,
               color: kWhite,
               size: 32.0,
             ),
-            Icon(
+            const Icon(
               Icons.insert_emoticon,
               color: kWhite,
               size: 32.0,

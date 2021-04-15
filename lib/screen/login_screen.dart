@@ -18,7 +18,7 @@ class LoginScreen extends StatelessWidget {
     return Scaffold(
         resizeToAvoidBottomInset: true,
         appBar:AppBar(
-          title: Text('로그인'),
+          title: const Text('로그인'),
         ),
         body: BlocConsumer<LoginBloc, LoginState>(
           listener: (context, state) {
@@ -79,9 +79,9 @@ class LoginScreen extends StatelessWidget {
    return Container(
      decoration: BoxDecoration(
          color: bgColor,
-         borderRadius: BorderRadius.all(Radius.circular(10))),
+         borderRadius: const BorderRadius.all(Radius.circular(10))),
      height: 50,
-     margin: EdgeInsets.only(left: 20, right: 20, top: 20),
+     margin: const EdgeInsets.only(left: 20, right: 20, top: 20),
      child: TextButton(
        onPressed: onPress,
        child: Row(

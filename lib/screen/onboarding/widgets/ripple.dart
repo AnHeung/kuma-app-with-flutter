@@ -20,7 +20,7 @@ class Ripple extends StatelessWidget {
       child: Container(
         width: 2 * radius,
         height: 2 * radius,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           shape: BoxShape.circle,
           color: kWhite,
         ),

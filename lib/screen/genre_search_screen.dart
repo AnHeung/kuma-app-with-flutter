@@ -25,15 +25,15 @@ class GenreSearchScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final AppBar appBar = AppBar(
-      actions: [ Container(padding: EdgeInsets.only(right: 10),child: IconButton(
+      actions: [ Container(padding: const EdgeInsets.only(right: 10),child: IconButton(
         onPressed: ()=>showBaseDialog(title: "필터 삭제" , context: context , content: "필터를 전부 삭제하시겠습니까?" , confirmFunction: (){
           BlocProvider.of<GenreCategoryListBloc>(context).add(GenreItemRemoveAll());
           Navigator.pop(context);
         } ,),
-        icon: Icon(Icons.delete_outline_rounded),
+        icon: const Icon(Icons.delete_outline_rounded),
 
     ))],
-      title: Text('장르검색'),
+      title: const Text('장르검색'),
     );
     final appBarHeight = appBar.preferredSize.height;
 
@@ -85,23 +85,23 @@ class GenreSearchScreen extends StatelessWidget {
           visible: genreClickItems.isNotEmpty,
           child: Container(
             height: kGenreItemHeight,
-            decoration: BoxDecoration(
+            decoration:const  BoxDecoration(
                 border: Border(
                     top: BorderSide(color: kBlack, width: 0.1),
                     bottom: BorderSide(color: kBlack, width: 0.1))),
-            padding: EdgeInsets.only(left: 10),
+            padding:const  EdgeInsets.only(left: 10),
             child: Row(
               children: [
-                Icon(
+                const Icon(
                   Icons.check_box_outlined,
                   color: kPurple,
                 ),
                 Expanded(
                   child: Container(
-                    padding: EdgeInsets.only(left: 10),
+                    padding: const EdgeInsets.only(left: 10),
                     height: 25,
                     child: ListView.separated(
-                      physics: ClampingScrollPhysics(),
+                      physics: const ClampingScrollPhysics(),
                       padding: EdgeInsets.zero,
                       itemBuilder: (context, idx) {
                         final GenreNavItem item = genreClickItems[idx];
@@ -110,7 +110,7 @@ class GenreSearchScreen extends StatelessWidget {
                               BlocProvider.of<GenreCategoryListBloc>(context)
                                   .add(GenreItemRemove(navItem: item)),
                           child: Container(
-                            padding: EdgeInsets.only(
+                            padding: const EdgeInsets.only(
                                 left: 5, right: 5, top: 4, bottom: 4),
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
@@ -124,7 +124,7 @@ class GenreSearchScreen extends StatelessWidget {
                                   fontSize: 12.0,
                                   fontColor: kGrey,
                                 ),
-                                Icon(
+                                const Icon(
                                   Icons.close,
                                   size: 10,
                                 ),
@@ -134,7 +134,7 @@ class GenreSearchScreen extends StatelessWidget {
                         );
                       },
                       separatorBuilder: (context, idx) {
-                        return SizedBox(
+                        return const SizedBox(
                           width: 10,
                         );
                       },
@@ -155,12 +155,12 @@ class GenreSearchScreen extends StatelessWidget {
     return BlocBuilder<GenreSearchBloc, GenreSearchState>(
       builder: (context, state) {
         return Container(
-          decoration: BoxDecoration(
+          decoration:const BoxDecoration(
               border: Border(
                   bottom: BorderSide(color: kBlack, width: 0.1))),
           alignment: Alignment.center,
           height: kGenreItemHeight,
-          padding: EdgeInsets.only(left: 10),
+          padding: const EdgeInsets.only(left: 10),
           child: Container(
             child: CustomText(
                 fontSize: 16.0,
@@ -176,7 +176,7 @@ class GenreSearchScreen extends StatelessWidget {
   _buildTopContainer({GlobalKey<ScaffoldState> scaffoldKey}) {
     return Container(
       height: kGenreItemHeight,
-      padding: EdgeInsets.only(left: 10, right: 10),
+      padding: const EdgeInsets.only(left: 10, right: 10),
       child: Row(
         children: [
           CustomText(
@@ -185,16 +185,16 @@ class GenreSearchScreen extends StatelessWidget {
             text: "선택된 필터",
             fontSize: 14.0,
           ),
-          Spacer(),
+          const Spacer(),
           GestureDetector(
             behavior: HitTestBehavior.translucent,
             onTap: ()=>scaffoldKey.currentState.openEndDrawer(),
             child: Container(
-                decoration: BoxDecoration(
+                decoration:const  BoxDecoration(
                   color: kPurple,
-                  borderRadius: BorderRadius.all(Radius.circular(5)),
+                  borderRadius: const BorderRadius.all(Radius.circular(5)),
                 ),
-                padding: EdgeInsets.only(right: 10, left: 10),
+                padding: const EdgeInsets.only(right: 10, left: 10),
                 height: kGenreFilterItemHeight,
                 alignment: Alignment.centerRight,
                 child: Row(
@@ -206,7 +206,7 @@ class GenreSearchScreen extends StatelessWidget {
                       fontColor: kWhite,
                       fontSize: 10.0,
                     ),
-                    Icon(
+                    const Icon(
                       Icons.filter_list,
                       color: Colors.white,
                       size: 15,
@@ -246,7 +246,7 @@ class GenreSearchScreen extends StatelessWidget {
             child: ListView(
                 padding: EdgeInsets.zero,
                 scrollDirection: Axis.vertical,
-                physics: ClampingScrollPhysics(),
+                physics: const ClampingScrollPhysics(),
                 shrinkWrap: true,
                 children: genreListItems
                     .map((item) => GenreItem(
@@ -266,7 +266,7 @@ class GenreGridView extends StatefulWidget {
 
   GenreGridView({genreSearchItems, genreData})
       : this.genreSearchItems = genreSearchItems ?? [],
-        this.genreData = genreData ?? GenreData();
+        this.genreData = genreData ?? const GenreData();
 
   @override
   _GenreGridViewState createState() => _GenreGridViewState();
@@ -327,7 +327,7 @@ class _GenreGridViewState extends State<GenreGridView> {
                               imgRes: genreSearchItem.image,
                               type: ImageShapeType.FLAT,
                             )),
-                        SizedBox(
+                        const SizedBox(
                           height: 5,
                         ),
                         Expanded(
@@ -380,11 +380,11 @@ class _GenreItemsState extends State<GenreItem> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(right: 10, left: 10),
+      padding: const EdgeInsets.only(right: 10, left: 10),
       child: Column(
         children: [
           Container(
-            padding: EdgeInsets.only(left: 10),
+            padding: const EdgeInsets.only(left: 10),
             height: 60,
             child: GestureDetector(
               behavior: HitTestBehavior.translucent,
@@ -403,10 +403,10 @@ class _GenreItemsState extends State<GenreItem> {
                       fontFamily: doHyunFont,
                     ),
                   ),
-                  Spacer(),
+                  const Spacer(),
                   isVisible
-                      ? Icon(Icons.arrow_drop_up_outlined)
-                      : Icon(Icons.arrow_drop_down_outlined)
+                      ? const Icon(Icons.arrow_drop_up_outlined)
+                      : const Icon(Icons.arrow_drop_down_outlined)
                 ],
               ),
             ),
@@ -414,7 +414,7 @@ class _GenreItemsState extends State<GenreItem> {
           Visibility(
             visible: isVisible,
             child: Container(
-              padding: EdgeInsets.only(left: 20, bottom: 10),
+              padding:const  EdgeInsets.only(left: 20, bottom: 10),
               child: Column(
                   children: widget.genreListItem.navItems.map((navItem) {
                 return GenreCategoryItem(
@@ -460,7 +460,7 @@ class GenreCategoryItem extends StatelessWidget {
                         : kBlack,
               ),
             ),
-            Spacer(),
+            const Spacer(),
             _buildCategoryIcon(navItem.clickStatus)
           ],
         ),
@@ -471,14 +471,14 @@ class GenreCategoryItem extends StatelessWidget {
   _buildCategoryIcon(CategoryClickStatus status) {
     switch (status) {
       case CategoryClickStatus.INCLUDE:
-        return Icon(
+        return const Icon(
           Icons.check_box_outlined,
           color: kPurple,
         );
       case CategoryClickStatus.EXCLUDE:
-        return Icon(Icons.indeterminate_check_box_outlined, color: kPurple);
+        return const Icon(Icons.indeterminate_check_box_outlined, color: kPurple);
       case CategoryClickStatus.NONE:
-        return Icon(Icons.check_box_outline_blank);
+        return const Icon(Icons.check_box_outline_blank);
     }
   }
 }

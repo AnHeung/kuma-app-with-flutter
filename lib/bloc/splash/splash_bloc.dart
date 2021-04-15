@@ -28,7 +28,7 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
       yield SplashLoadInProgress();
       await printUserData();
       bool isAppFirstLaunch = await appFirstLaunch();
-      await Future.delayed(Duration(seconds: 1));
+      await Future.delayed(const Duration(seconds: 1));
       yield SplashLoadSuccess(isAppFirstLaunch: isAppFirstLaunch);
   }
 }

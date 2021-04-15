@@ -5,7 +5,7 @@ class NotificationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('알림'),
+        title: const Text('알림'),
       ),
     );
   }

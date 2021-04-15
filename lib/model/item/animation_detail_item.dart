@@ -19,6 +19,7 @@ class AnimationDetailItem {
   List<RelatedAnimeItem> relatedAnime;
   List<RecommendationAnimeItem> recommendationAnimes;
   List<StudioItem> studioItems;
+  List<VideoItem> videoItems;
 
   AnimationDetailItem(
       {this.id,
@@ -40,7 +41,8 @@ class AnimationDetailItem {
         this.relatedAnime,
         this.recommendationAnimes,
         this.studioItems,
-      });
+        videoItems,
+      }): this.videoItems = videoItems ?? [];
 
 }
 
@@ -71,4 +73,14 @@ class AnimationDetailGenreItem {
   String name;
 
   AnimationDetailGenreItem({this.id, this.name});
+}
+
+class VideoItem{
+
+  String title;
+  String imageUrl;
+  String videoUrl;
+
+  VideoItem({this.title, this.imageUrl, this.videoUrl});
+
 }

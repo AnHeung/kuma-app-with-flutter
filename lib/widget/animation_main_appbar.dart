@@ -48,10 +48,10 @@ class AnimationMainAppbar extends StatelessWidget {
       print("controller.hasClient ${controller.hasClients} currentPage : $currentPage totalPageCount: $totalPageCount ");
       if(controller.hasClients) {
         if (currentPage == totalPageCount) {
-          controller?.animateToPage(0, duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+          controller?.animateToPage(0, duration: const Duration(milliseconds: 300), curve: Curves.easeIn);
           currentPage = 0;
         }else if (totalPageCount > 0) {
-          controller.nextPage(duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+          controller.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.easeIn);
         }
       }
     });
@@ -132,7 +132,7 @@ class AnimationMainAppbar extends StatelessWidget {
             imgRes: item.image,
           ),
           Container(
-            padding: EdgeInsets.only(bottom: 30 , left: 20),
+            padding: const EdgeInsets.only(bottom: 30 , left: 20),
             alignment: Alignment.bottomLeft,
             child: CustomText(
               fontColor: Colors.white,
@@ -159,9 +159,9 @@ class AnimationMainAppbar extends StatelessWidget {
             ? SmoothPageIndicator(
           controller: controller,
           count: indicatorSize,
-          effect: WormEffect(dotWidth: 10, dotHeight: 10),
+          effect: const WormEffect(dotWidth: 10, dotHeight: 10),
         )
-            : SizedBox(),
+            : const SizedBox(),
       ),
     );
   }

@@ -22,7 +22,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   Stream<Transition<SearchEvent, SearchState>> transformEvents(
       Stream<SearchEvent> events,
       TransitionFunction<SearchEvent, SearchState> transitionFn) {
-    final durationTime = 500;
+    const  durationTime = 500;
     final nonDebounceStream = events.where((event) {
       return event is! SearchQueryUpdate;
     });
@@ -31,7 +31,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
         .where((event) {
       return event is SearchQueryUpdate;
     })
-        .debounceTime(Duration(milliseconds: durationTime));
+        .debounceTime(const Duration(milliseconds: durationTime));
 
     return MergeStream([nonDebounceStream, debounceStream])
         .switchMap(transitionFn);

@@ -27,7 +27,7 @@ class HomeScreen extends StatelessWidget {
           visible: currentTab != AppTab.MORE,
           child: FloatingActionButton(
             onPressed: () => Navigator.pushNamed(context, Routes.SEARCH),
-            child: Icon(Icons.search),
+            child: const Icon(Icons.search),
           ),
         ),
         bottomNavigationBar: TabSelector(

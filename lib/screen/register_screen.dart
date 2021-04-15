@@ -28,7 +28,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('약관동의'),
+        title: const Text('약관동의'),
       ),
       body: BlocConsumer<RegisterBloc,RegisterState>(
             listener: (context,state){
@@ -67,7 +67,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         child: Row(
                           children: [
                             TextButton(onPressed: ()=>{}, child: CustomText(text:'모든 약관에 동의' , fontSize: kRegisterTitleFontSize, fontWeight: FontWeight.w700, fontColor: Colors.black, ),),
-                            Spacer(),
+                            const Spacer(),
                             Checkbox(value: allTermCheck, onChanged: ((value)=>{
                               setState((){
                                 allTermCheck = value;
@@ -81,7 +81,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         child: Row(
                           children: [
                             TextButton(onPressed: ()=>{}, child: CustomText(text:'이용에 대한 동의(필수)',  fontSize: kRegisterFontSize, fontColor: Colors.black, ),),
-                            Spacer(),
+                            const Spacer(),
                             Checkbox(value: firstTermCheck, onChanged: (bool value){
                               setState(() {
                                 firstTermCheck = value;
@@ -98,7 +98,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         child: Row(
                           children: [
                             TextButton(onPressed: ()=>{}, child: CustomText(text:'개인정보수집 이용에 대한 안내' ,   fontSize: kRegisterFontSize, fontColor: Colors.black,),),
-                            Expanded(child: SizedBox()),
+                            const Expanded(child: SizedBox()),
                             Checkbox(value: secondTermCheck, onChanged: (value)=>{
                               setState(() {
                                 secondTermCheck = value;
@@ -111,10 +111,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             }),
                           ],
                         ),),
-                      Spacer(),
+                      const Spacer(),
                       Container(
                         color: allTermCheck ? kBlue : Colors.black45,
-                        margin: EdgeInsets.only(bottom: 20, left: 20, right: 20),
+                        margin: const EdgeInsets.only(bottom: 20, left: 20, right: 20),
                         alignment: Alignment.bottomCenter,
                         child: SizedBox( height:50 , width: double.infinity ,child: TextButton(onPressed: ()=>{
                           if(allTermCheck){

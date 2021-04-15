@@ -46,13 +46,13 @@ class CustomDropDown extends StatelessWidget {
               },
               isExpanded: true,
               underline: Container(),
-              icon: Icon(Icons.keyboard_arrow_down,color: kWhite,),
+              icon: const Icon(Icons.keyboard_arrow_down,color: kWhite,),
             ),
           ),
         ),
         if (errorText != null)
           Padding(
-            padding: EdgeInsets.only(left: 30, top: 10),
+            padding: const EdgeInsets.only(left: 30, top: 10),
             child: Text(errorText, style: TextStyle(fontSize: 12, color: Colors.red[800]),),
           )
 

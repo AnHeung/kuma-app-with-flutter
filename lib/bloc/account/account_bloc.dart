@@ -33,9 +33,9 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
       yield AccountLoadInProgress();
       bool withdrawResult = await repository.withdraw();
       if (withdrawResult)
-        yield AccountWithdrawSuccess(successMsg: "회원탈퇴 성공");
+        yield const AccountWithdrawSuccess(successMsg: "회원탈퇴 성공");
       else
-        yield AccountWithdrawFailure(errMsg: "회원탈퇴 실패 다시 시도해주세요");
+        yield const AccountWithdrawFailure(errMsg: "회원탈퇴 실패 다시 시도해주세요");
     }catch(e){
       yield AccountWithdrawFailure(errMsg: "회원탈퇴 오류 : $e");
     }

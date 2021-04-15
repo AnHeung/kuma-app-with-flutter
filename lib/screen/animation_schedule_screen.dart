@@ -34,7 +34,7 @@ class AnimationScheduleScreen extends StatelessWidget {
             ),
           ),
           body: Padding(
-            padding: EdgeInsets.only(top: 15),
+            padding: const EdgeInsets.only(top: 15),
             child: Row(
               children: [
                 Container(
@@ -59,12 +59,12 @@ class AnimationScheduleScreen extends StatelessWidget {
         ? Container(
             child: ListView.separated(
               separatorBuilder: (BuildContext context, int index) {
-                return SizedBox(
+                return const SizedBox(
                   height: 10,
                 );
               },
               padding: EdgeInsets.zero,
-              physics: ClampingScrollPhysics(),
+              physics: const ClampingScrollPhysics(),
               scrollDirection: Axis.vertical,
               itemCount: items.length,
               itemBuilder: (context, idx) {
@@ -85,7 +85,7 @@ class AnimationScheduleScreen extends StatelessWidget {
       onTap: ()=>Navigator.pushNamed(context,Routes.IMAGE_DETAIL, arguments: AnimationDetailPageItem(id: item.id.toString(), title: item.title)),
       behavior: HitTestBehavior.translucent,
       child: Container(
-        margin: EdgeInsets.only(top: 15),
+        margin: const EdgeInsets.only(top: 15),
         child: Row(
           children: [
             Container(
@@ -101,7 +101,7 @@ class AnimationScheduleScreen extends StatelessWidget {
             ),
             Expanded(
               child: Container(
-                  margin: EdgeInsets.only(left: 10),
+                  margin: const EdgeInsets.only(left: 10),
                   height: 50,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -125,7 +125,7 @@ class AnimationScheduleScreen extends StatelessWidget {
                           width: double.infinity,
                           child: RatingBar(
                             rating: score,
-                            icon:Icon(Icons.star,size:20,color: Colors.white,),
+                            icon:const Icon(Icons.star,size:20,color: Colors.white,),
                             starCount: 5,
                             spacing: 5.0,
                             size: 10,

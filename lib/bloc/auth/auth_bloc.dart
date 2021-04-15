@@ -22,10 +22,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       print('auth user: $user');
       if (user == null) {
         print('유저가 로그아웃 하였습니다.');
-        add(ChangeAuth(status: AuthStatus.UnAuth));
+        add(const ChangeAuth(status: AuthStatus.UnAuth));
       } else {
         print('유저가 로그인 하였습니다.');
-        add(ChangeAuth(status: AuthStatus.Auth));
+        add(const ChangeAuth(status: AuthStatus.Auth));
       }
     });
   }
@@ -54,21 +54,21 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     switch(status){
       case AuthStatus.Auth:
-        yield AuthState.auth();
+        yield const AuthState.auth();
         break;
       case AuthStatus.UnAuth:
-        yield AuthState.unAuth();
+        yield const AuthState.unAuth();
         break;
       case AuthStatus.UnKnown:
-        yield AuthState.unKnown();
+        yield const AuthState.unKnown();
         break;
     }
   }
 
   Stream<AuthState> _mapToSignOut() async*{
-    yield AuthState.unKnown();
+    yield const AuthState.unKnown();
     bool logoutSuccess = await repository.logout();
-    if(logoutSuccess) yield AuthState.unAuth();
-    else yield AuthState.auth();
+    if(logoutSuccess) yield const AuthState.unAuth();
+    else yield const AuthState.auth();
   }
 }

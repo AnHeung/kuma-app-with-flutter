@@ -19,7 +19,7 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  Icon _searchIcon = Icon(Icons.search);
+  Icon _searchIcon = const Icon(Icons.search);
   Widget _appBarTitle = CustomText(
     text: '검색페이지',
     fontColor: kWhite,
@@ -94,13 +94,13 @@ class _SearchScreenState extends State<SearchScreen> {
                   .add(SearchHistoryClear());
               Navigator.pop(context);
             }),
-        icon: Icon(Icons.delete),
+        icon: const Icon(Icons.delete),
       ),
     );
   }
 
   _initialSearchBar() {
-    _searchIcon = Icon(Icons.search);
+    _searchIcon = const Icon(Icons.search);
     _appBarTitle = CustomText(
       text: '검색페이지',
       fontColor: kWhite,
@@ -123,18 +123,18 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   _setSearchBar(BuildContext context) {
-    _searchIcon = Icon(Icons.close);
+    _searchIcon = const Icon(Icons.close);
     _appBarTitle = TextField(
-      style: TextStyle(color: kWhite),
+      style: const TextStyle(color: kWhite),
       onChanged: (value) {
         print('value:$value');
         BlocProvider.of<SearchBloc>(context)
             .add(SearchQueryUpdate(searchQuery: value));
       },
       autofocus: true,
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         hintText: '검색...',
-        hintStyle: TextStyle(color: kWhite),
+        hintStyle: const TextStyle(color: kWhite),
       ),
       cursorColor: kWhite,
     );
@@ -147,7 +147,7 @@ class _SearchScreenState extends State<SearchScreen> {
         searchHistoryList =
             (state is SearchHistoryLoadSuccess) ? state.list : [];
         return Container(
-          margin: EdgeInsets.only(top: 30),
+          margin: const EdgeInsets.only(top: 30),
           child: SearchHistoryItem(
             list: searchHistoryList,
           ),

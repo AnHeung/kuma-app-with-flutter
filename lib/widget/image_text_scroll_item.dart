@@ -44,7 +44,7 @@ class ImageTextScrollItem extends StatelessWidget {
         }
       },
       child: Container(
-            padding: EdgeInsets.only(left: 8, bottom: 8),
+            padding: const EdgeInsets.only(left: 8, bottom: 8),
             width: width,
             child: Column(
               children: [
@@ -59,7 +59,7 @@ class ImageTextScrollItem extends StatelessWidget {
                         ),
                       ),
                       score.isNotEmpty ? Container(
-                        padding: EdgeInsets.only(left: 5, bottom: 5),
+                        padding: const EdgeInsets.only(left: 5, bottom: 5),
                           alignment: AlignmentDirectional.bottomStart,
                           child:  Container(
                               width: 30,
@@ -78,7 +78,7 @@ class ImageTextScrollItem extends StatelessWidget {
                                 fontSize: 10.0,
                               ),
                             ),
-                          ) : SizedBox()
+                          ) : const SizedBox()
                     ],
                   ),
                 ),
@@ -86,7 +86,7 @@ class ImageTextScrollItem extends StatelessWidget {
                   flex: 2,
                   child: Container(
                     alignment: Alignment.topLeft,
-                    margin: EdgeInsets.only(top: 10),
+                    margin: const EdgeInsets.only(top: 10),
                     child: CustomText(
                       fontWeight: FontWeight.w700,
                       fontColor: kBlack,

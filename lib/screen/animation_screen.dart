@@ -81,7 +81,7 @@ class _AnimationScreenState extends State<AnimationScreen> {
         headerSliverBuilder: (context, isScrolled) {
           return [_buildSilverAppbar(animationMainAppbar)];
         },
-        body: ListView(shrinkWrap: true, padding: EdgeInsets.zero, physics: ClampingScrollPhysics(),children: [
+        body: ListView(shrinkWrap: true, padding: EdgeInsets.zero, physics: const ClampingScrollPhysics(),children: [
           _buildScheduleItems(context: context),
           _buildRankingItems(),
         ]),
@@ -143,13 +143,13 @@ class _AnimationScreenState extends State<AnimationScreen> {
   Widget _buildScheduleItems({BuildContext context}) {
 
     return Container(
-      padding: EdgeInsets.only(top: 20, left: 18, right: 20),
+      padding: const EdgeInsets.only(top: 20, left: 18, right: 20),
       child: Column(
         children: [
           Row(
             children: [
               _buildTitleContainer(title: kAnimationScheduleTitle),
-              Spacer(),
+              const  Spacer(),
               GestureDetector(
                 onTap: ()=>navigateWithUpAnimation(context: context , navigateScreen: BlocProvider.value(value: BlocProvider.of<AnimationScheduleBloc>(context)..add(AnimationScheduleLoad(day: "1")), child: AnimationScheduleScreen(),)),
                 behavior: HitTestBehavior.translucent,
@@ -206,7 +206,7 @@ class _AnimationScreenState extends State<AnimationScreen> {
   _buildScheduleBottomContainer(List<AnimationScheduleItem>  scheduleItems){
       return Container(
         height: 160,
-        margin: EdgeInsets.only(top: 10),
+        margin: const EdgeInsets.only(top: 10),
         child: ListView(
             padding: EdgeInsets.zero,
             scrollDirection: Axis.horizontal,
@@ -289,7 +289,7 @@ class _AnimationScreenState extends State<AnimationScreen> {
 
     return Container(
       height: heightSize,
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       child: Column(
         children: [
           Padding(
@@ -298,7 +298,7 @@ class _AnimationScreenState extends State<AnimationScreen> {
           ),
           Expanded(
             child: ListView(
-              physics: ClampingScrollPhysics(),
+              physics: const ClampingScrollPhysics(),
               padding: EdgeInsets.zero,
               scrollDirection: Axis.horizontal,
               children: item.list

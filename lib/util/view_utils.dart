@@ -41,7 +41,7 @@ imageAlert(
     // should dialog be dismissed when tapped outside
     barrierLabel: "Dialog",
     // label for barrier
-    transitionDuration: Duration(milliseconds: 400),
+    transitionDuration: const Duration(milliseconds: 400),
     // how long it takes to popup dialog after button click
     pageBuilder: (_, __, ___) {
       double btnHeight = MediaQuery.of(context).size.height * 0.1;
@@ -49,7 +49,7 @@ imageAlert(
       return Stack(
         children: [
           PageView(
-            physics: NeverScrollableScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             controller: controller,
             scrollDirection: Axis.horizontal,
             children: imgList
@@ -97,7 +97,7 @@ imageAlert(
                   state: MoveState.RIGHT),
               child: Container(
                   alignment: Alignment.centerRight,
-                  child: Icon(
+                  child: const Icon(
                     Icons.chevron_right,
                     size: 100,
                     color: Colors.white70,
@@ -113,7 +113,7 @@ imageAlert(
                   state: MoveState.LEFT),
               child: Container(
                   alignment: Alignment.centerLeft,
-                  child: Icon(
+                  child: const Icon(
                     Icons.chevron_left,
                     size: 100,
                     color: Colors.white70,
@@ -128,7 +128,7 @@ imageAlert(
 
 _controlPage({int listSize, PageController controller, MoveState state}) {
   int currentPage = controller.page.ceil();
-  Duration duration = Duration(milliseconds: 300);
+  Duration duration = const Duration(milliseconds: 300);
   var curves = Curves.easeIn;
 
   switch (state) {
@@ -184,11 +184,11 @@ showBaseDialog(
         content: Text(content ?? '내용'),
         actions: <Widget>[
           TextButton(
-            child: Text('확인'),
+            child: const Text('확인'),
             onPressed: confirmFunction,
           ),
           TextButton(
-            child: Text('취소'),
+            child: const Text('취소'),
             onPressed: cancelFunction != null
                 ? cancelFunction
                 : () => Navigator.pop(context),

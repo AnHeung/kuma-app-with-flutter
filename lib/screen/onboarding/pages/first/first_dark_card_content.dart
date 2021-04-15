@@ -8,15 +8,15 @@ class FirstDarkCardContent extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
-        Padding(
+        const Padding(
           padding: const EdgeInsets.only(top: kPaddingL),
-          child: Icon(
+          child: const Icon(
             Icons.brush,
             color: kWhite,
             size: 32.0,
           ),
         ),
-        Padding(
+        const Padding(
           padding: const EdgeInsets.only(bottom: kPaddingL),
           child: Icon(
             Icons.camera_alt,
@@ -24,7 +24,7 @@ class FirstDarkCardContent extends StatelessWidget {
             size: 32.0,
           ),
         ),
-        Padding(
+        const  Padding(
           padding: const EdgeInsets.only(top: kPaddingL),
           child: Icon(
             Icons.straighten,

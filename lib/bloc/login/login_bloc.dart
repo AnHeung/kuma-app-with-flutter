@@ -15,7 +15,7 @@ part 'login_state.dart';
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final ApiRepository repository;
 
-  LoginBloc({this.repository}) : super(LoginState._());
+  LoginBloc({this.repository}) : super(const LoginState._());
 
   @override
   Stream<LoginState> mapEventToState(LoginEvent event,) async* {
@@ -27,14 +27,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   Stream<LoginState> _mapToDirectLogin(DirectLogin event) async* {
-    yield LoginState.loading();
+    yield const LoginState.loading();
     Map<LoginStatus, LoginUserData> loginData = await repository.firebaseSignIn(
         userData: event.userData);
     yield getLoginStatus(loginData);
   }
 
   Stream<LoginState> _mapToLogin(Login event) async* {
-    yield LoginState.loading();
+    yield const LoginState.loading();
     Map<LoginStatus, LoginUserData> loginData = await repository.login(
         context: event.context, type: event.type);
     yield getLoginStatus(loginData);
@@ -49,21 +49,21 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         case LoginStatus.NeedRegister:
           return LoginState.needRegister(userData: data);
         case LoginStatus.LoginSuccess:
-          return LoginState.success();
+          return const LoginState.success();
         case LoginStatus.WrongPassword:
-          return LoginState.wrongPassword();
+          return const LoginState.wrongPassword();
         case LoginStatus.Failure:
-          return LoginState.failure();
+          return const LoginState.failure();
         case LoginStatus.CheckEmail:
-          return LoginState.checkEmail();
+          return const LoginState.checkEmail();
         case LoginStatus.NeedLoginScreen:
-          return LoginState.needLoginScreen();
+          return const LoginState.needLoginScreen();
         default:
-          return LoginState._();
+          return const LoginState._();
       }
     } on Exception catch (e) {
       print('_mapToLogin Error:$e}');
-      return LoginState.failure();
+      return const LoginState.failure();
     }
   }
 }

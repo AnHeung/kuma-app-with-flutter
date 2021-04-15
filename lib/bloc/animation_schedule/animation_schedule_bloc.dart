@@ -34,7 +34,7 @@ class AnimationScheduleBloc extends Bloc<AnimationScheduleEvent, AnimationSchedu
   }
 
   Stream<AnimationScheduleState> _mapToScheduleInitLoad() async*{
-    await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 1));
     add(AnimationScheduleLoad(day: "1"));
   }
 

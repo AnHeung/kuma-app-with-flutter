@@ -19,21 +19,21 @@ class GenreCategoryListBloc extends Bloc<GenreCategoryListEvent, GenreCategoryLi
 
   final ApiRepository repository;
 
-  GenreCategoryListBloc({this.repository}) : super(GenreCategoryListState(status: GenreCategoryStatus.initial));
+  GenreCategoryListBloc({this.repository}) : super(const GenreCategoryListState(status: GenreCategoryStatus.initial));
 
   @override
   Stream<Transition<GenreCategoryListEvent, GenreCategoryListState>> transformEvents(
       Stream<GenreCategoryListEvent> events,
       TransitionFunction<GenreCategoryListEvent, GenreCategoryListState> transitionFn) {
 
-    final durationTime = 300;
+    const durationTime = 300;
     final nonDebounceStream = events.where((event){
       return event is! GenreItemClick && event is! GenreItemRemove;
     });
 
     final debounceStream = events
         .where((event)=>event is GenreItemClick || event is GenreItemRemove)
-        .debounceTime(Duration(milliseconds: durationTime));
+        .debounceTime(const Duration(milliseconds: durationTime));
 
     return MergeStream([nonDebounceStream,debounceStream])
         .switchMap(transitionFn);
@@ -55,7 +55,7 @@ class GenreCategoryListBloc extends Bloc<GenreCategoryListEvent, GenreCategoryLi
   }
 
   Stream<GenreCategoryListState> _mapToGenreCategoryListLoad(GenreCategoryListState state) async* {
-    yield GenreCategoryListState(status: GenreCategoryStatus.loading);
+    yield const GenreCategoryListState(status: GenreCategoryStatus.loading);
     SearchMalApiGenreListItem searchMalApiGenreListItem = await repository.getGenreCategoryList();
     if (searchMalApiGenreListItem.err) {
       yield GenreCategoryListState(status: GenreCategoryStatus.loading , msg: searchMalApiGenreListItem.msg);
@@ -70,12 +70,12 @@ class GenreCategoryListBloc extends Bloc<GenreCategoryListEvent, GenreCategoryLi
                   category: result.category,
                   categoryValue: result.categoryValue,
                   clickStatus: CategoryClickStatus.NONE,
-                  genreType:  enumFromString<GenreType>(resultItem.type, GenreType.values))).toList())).toList() , genreData: GenreData(page: "1"));
+                  genreType:  enumFromString<GenreType>(resultItem.type, GenreType.values))).toList())).toList() , genreData: const GenreData(page: "1"));
     }
   }
 
   Stream<GenreCategoryListState> _mapToGenreRemoveAll(GenreCategoryListState state)async*{
-    yield GenreCategoryListState(status: GenreCategoryStatus.success, genreListItems: state.genreListItems.map((item) => item.copyWith(navItems: item.navItems.map((navItem) => navItem.copyWith(clickStatus: CategoryClickStatus.NONE)).toList())).toList() , genreData:GenreData());
+    yield GenreCategoryListState(status: GenreCategoryStatus.success, genreListItems: state.genreListItems.map((item) => item.copyWith(navItems: item.navItems.map((navItem) => navItem.copyWith(clickStatus: CategoryClickStatus.NONE)).toList())).toList() , genreData:const GenreData());
   }
 
 
@@ -102,7 +102,7 @@ class GenreCategoryListBloc extends Bloc<GenreCategoryListEvent, GenreCategoryLi
       return acc;
     });
 
-    return clickNavItem.fold(GenreData(), (acc, navItem) {
+    return clickNavItem.fold(const GenreData(), (acc, navItem) {
 
       GenreData genreData = (acc as GenreData);
 

@@ -47,6 +47,7 @@ class AnimationDetailBloc extends Bloc<AnimationDetailEvent, AnimationDetailStat
         List<StudioItem> studioList = result.studios.map((item) =>
             StudioItem(id: item.id, name: item.name)).toList();
         List<AnimationDetailGenreItem> genreList = result.genres.map((item) => AnimationDetailGenreItem(id: item.id, name: item.name)).toList();
+        List<VideoItem> videoList = result.videos!= null ? result.videos.map((item) => VideoItem(title:item.title, videoUrl: item.video_url , imageUrl: item.image_url)).toList() : [];
 
         yield AnimationDetailLoadSuccess(detailItem: AnimationDetailItem(
             id: result.id,
@@ -68,7 +69,7 @@ class AnimationDetailBloc extends Bloc<AnimationDetailEvent, AnimationDetailStat
             pictures: result.pictures,
             relatedAnime: relateItemList,
             recommendationAnimes: recommendList,
-            studioItems: studioList));
+            studioItems: studioList , videoItems:videoList));
       }
     } catch (e) {
       yield AnimationDetailLoadFailure(

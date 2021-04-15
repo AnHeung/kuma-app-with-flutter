@@ -37,14 +37,14 @@ class _ImageState extends State<ImageItem> {
           break;
       case ImageType.ASSETS : image= AssetImage(widget.imgRes);
       break;
-      case ImageType.NO_IMAGE : image=  AssetImage('assets/images/no_image.png',);
+      case ImageType.NO_IMAGE : image=  const AssetImage('assets/images/no_image.png',);
         break;
-      default : image = AssetImage('assets/images/no_image.png' ,);
+      default : image = const AssetImage('assets/images/no_image.png' ,);
         break;
     }
 
     return Container(
-      constraints: BoxConstraints.expand(),
+      constraints: const BoxConstraints.expand(),
       decoration: BoxDecoration(
           shape: widget.type == ImageShapeType.CIRCLE ? BoxShape.circle: BoxShape.rectangle ,
           image:  DecorationImage(

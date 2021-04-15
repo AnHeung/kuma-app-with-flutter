@@ -9,15 +9,15 @@ class ThirdLightCardContent extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
-        IconContainer(
+        const IconContainer(
           icon: Icons.event_seat,
           padding: kPaddingS,
         ),
-        IconContainer(
+        const IconContainer(
           icon: Icons.business_center,
           padding: kPaddingM,
         ),
-        IconContainer(
+        const IconContainer(
           icon: Icons.assessment,
           padding: kPaddingS,
         ),
