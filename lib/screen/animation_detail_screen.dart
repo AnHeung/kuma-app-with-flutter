@@ -9,7 +9,6 @@ import 'package:kuma_flutter_app/enums/image_shape_type.dart';
 import 'package:kuma_flutter_app/enums/navigation_push_type.dart';
 import 'package:kuma_flutter_app/model/item/animation_deatil_page_item.dart';
 import 'package:kuma_flutter_app/model/item/animation_detail_item.dart';
-import 'package:kuma_flutter_app/util/vaildate_util.dart';
 import 'package:kuma_flutter_app/util/view_utils.dart';
 import 'package:kuma_flutter_app/widget/custom_text.dart';
 import 'package:kuma_flutter_app/widget/empty_container.dart';
@@ -17,8 +16,8 @@ import 'package:kuma_flutter_app/widget/image_item.dart';
 import 'package:kuma_flutter_app/widget/image_text_scroll_item.dart';
 import 'package:kuma_flutter_app/widget/loading_indicator.dart';
 import 'package:kuma_flutter_app/widget/refresh_container.dart';
+import 'package:kuma_flutter_app/widget/youtube_player.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import '../model/item/animation_deatil_page_item.dart';
 
@@ -26,7 +25,6 @@ class AnimationDetailScreen extends StatelessWidget {
   final indicatorRate = 0.82;
   final topImageContainerHeightRate = 0.25;
   final topContainerHeightRate = 0.5;
-  final topSelectContainerHeightRate = 0.3;
   final topImageWidthRate = 0.4;
 
   @override
@@ -40,7 +38,6 @@ class AnimationDetailScreen extends StatelessWidget {
 
     BlocProvider.of<AnimationDetailBloc>(context)
         .add(AnimationDetailLoad(id: id));
-    print('id $id');
     return Scaffold(
         appBar: _buildAppbar(
             id: id, type: type, infoItem: infoItem, context: context),
@@ -106,22 +103,13 @@ class AnimationDetailScreen extends StatelessWidget {
   }
 
   Widget _buildDetailTopSelectContainer({BuildContext context, List<VideoItem> videoItem}) {
-    final double topHeight = MediaQuery
-        .of(context)
-        .size
-        .height * topSelectContainerHeightRate;
 
     String videoUrl = videoItem!= null && videoItem.length > 0 ? videoItem[0].videoUrl : "";
     final GlobalKey playerKey = GlobalKey();
 
     return Visibility(
-      visible: videoUrl.isNotEmpty,
-      child: Container(
-        key: playerKey,
-        color: kBlack,
-        height: topHeight,
-        child: YoutubeVideoPlayer(url: videoUrl,),
-      ),
+        visible: videoUrl.isNotEmpty,
+        child: YoutubeVideoPlayer(url: videoUrl, scaffoldKey :playerKey),
     );
   }
 
@@ -505,71 +493,6 @@ class AnimationDetailScreen extends StatelessWidget {
           itemCount: length,
           shrinkWrap: true,
           itemBuilder: builderFunction),
-    );
-  }
-}
-
-class YoutubeVideoPlayer extends StatefulWidget {
-
-  final String url;
-
-  @override
-  _YoutubePlayerState createState() => _YoutubePlayerState();
-
-  YoutubeVideoPlayer({this.url});
-}
-
-class _YoutubePlayerState extends State<YoutubeVideoPlayer> {
-
-   YoutubePlayerController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-     _controller = YoutubePlayerController(
-      initialVideoId: getVideoId(widget.url),
-      flags: const YoutubePlayerFlags(
-        autoPlay: false,
-        mute: true,
-      ),
-    );
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  void deactivate() {
-    _controller.pause();
-    super.deactivate();
-  }
-
-   @override
-  Widget build(BuildContext context) {
-    return YoutubePlayer(
-      controller: _controller,
-      liveUIColor: kBlack,
-      topActions: <Widget>[
-        const Spacer(),
-        IconButton(
-          icon: const Icon(
-            Icons.video_collection,
-            color: Colors.white,
-            size: 25.0,
-          ),
-          onPressed: () {
-            print('Settings Tapped!');
-          },
-        ),
-      ],
-      bottomActions: [
-        CurrentPosition(controller: _controller,),
-        ProgressBar(isExpanded: true),
-        RemainingDuration(controller: _controller,),
-      ],
     );
   }
 }
