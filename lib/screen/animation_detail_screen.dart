@@ -18,7 +18,7 @@ import 'package:kuma_flutter_app/widget/image_text_scroll_item.dart';
 import 'package:kuma_flutter_app/widget/loading_indicator.dart';
 import 'package:kuma_flutter_app/widget/refresh_container.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'package:youtube_player_iframe/youtube_player_iframe.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import '../model/item/animation_deatil_page_item.dart';
 
@@ -526,28 +526,18 @@ class _YoutubePlayerState extends State<YoutubeVideoPlayer> {
   @override
   void initState() {
     super.initState();
-    _controller = YoutubePlayerController(
+     _controller = YoutubePlayerController(
       initialVideoId: getVideoId(widget.url),
-      params: const YoutubePlayerParams(
-        desktopMode: true,
+      flags: const YoutubePlayerFlags(
         autoPlay: false,
         mute: true,
-        useHybridComposition: true,
-        showControls: true,
-        showFullscreenButton: false ,
       ),
-    )..listen((event) {
-      if (event.isReady && !event.hasPlayed) {
-        _controller
-          ..hidePauseOverlay()
-          ..hideTopMenu();
-      }
-    });
+    );
   }
 
   @override
   void dispose() {
-    _controller.close();
+    _controller.dispose();
     super.dispose();
   }
 
@@ -557,15 +547,29 @@ class _YoutubePlayerState extends State<YoutubeVideoPlayer> {
     super.deactivate();
   }
 
-
-  @override
+   @override
   Widget build(BuildContext context) {
-
-    return YoutubePlayerControllerProvider( // Provides controller to all the widget below it.
+    return YoutubePlayer(
       controller: _controller,
-      child: const YoutubePlayerIFrame(
-        aspectRatio: 16 / 9,
-      ),
+      liveUIColor: kBlack,
+      topActions: <Widget>[
+        const Spacer(),
+        IconButton(
+          icon: const Icon(
+            Icons.video_collection,
+            color: Colors.white,
+            size: 25.0,
+          ),
+          onPressed: () {
+            print('Settings Tapped!');
+          },
+        ),
+      ],
+      bottomActions: [
+        CurrentPosition(controller: _controller,),
+        ProgressBar(isExpanded: true),
+        RemainingDuration(controller: _controller,),
+      ],
     );
   }
 }
