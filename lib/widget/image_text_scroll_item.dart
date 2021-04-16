@@ -85,7 +85,7 @@ class ImageTextScrollItem extends StatelessWidget {
                 Expanded(
                   flex: 2,
                   child: Container(
-                    alignment: Alignment.topLeft,
+                    alignment: Alignment.topCenter,
                     margin: const EdgeInsets.only(top: 10),
                     child: CustomText(
                       fontWeight: FontWeight.w700,

@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_all_genre_item.dart';
+import 'package:kuma_flutter_app/model/api/search_mal_api_character_picture_item.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_detail_item.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_genre_list_item.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_ranking_item.dart';
@@ -25,6 +26,9 @@ abstract class SearchApiClient {
 
   @GET("/mal/genreList")
   Future<SearchMalApiGenreListItem> getGenreCategoryList();
+
+  @GET("/mal/character/pictures/{characterId}")
+  Future<SearchMalApiCharacterPictureItem> getCharacterPictureList(@Path("characterId")String characterId);
 
   @GET("/mal/ranking/{type}/{page}/{rank_type}/{limit}")
   Future<SearchRankingApiResult> getRankingItemList(

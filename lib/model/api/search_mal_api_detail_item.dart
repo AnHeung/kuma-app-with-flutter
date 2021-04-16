@@ -44,6 +44,7 @@ class SearchMalDetailApiItemResult {
   List<SearchMalDetailRecommendationAnimeItem> recommendAnime;
   List<SearchMalDetailStudioItem> studios;
   List<SearchMalDetailVideoItem> videos;
+  List<SearchMalDetailCharacterItem> characters;
 
   SearchMalDetailApiItemResult(
       {this.id,
@@ -62,7 +63,7 @@ class SearchMalDetailApiItemResult {
         this.pictures,
         this.relatedAnime,
         this.recommendAnime,
-        this.studios , this.videos});
+        this.studios , this.videos ,this.characters});
 
   SearchMalDetailApiItemResult.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -108,6 +109,12 @@ class SearchMalDetailApiItemResult {
         videos.add(new SearchMalDetailVideoItem.fromJson(v));
       });
     }
+    if (json['characters'] != null) {
+      characters = new List<SearchMalDetailCharacterItem>();
+      json['characters'].forEach((v) {
+        characters.add(new SearchMalDetailCharacterItem.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -137,6 +144,9 @@ class SearchMalDetailApiItemResult {
     }
     if (this.videos != null) {
       data['videos'] = this.videos.map((v) => v.toJson()).toList();
+    }
+    if (this.characters != null) {
+      data['characters'] = this.characters.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -242,6 +252,35 @@ class SearchMalDetailVideoItem{
     data['title'] = this.title;
     data['image_url'] = this.image_url;
     data['video_url'] = this.video_url;
+    return data;
+  }
+}
+
+class SearchMalDetailCharacterItem{
+  String character_id;
+  String name;
+  String role;
+  String image_url;
+  String url;
+
+  SearchMalDetailCharacterItem({
+      this.character_id, this.name, this.role, this.image_url, this.url});
+
+  SearchMalDetailCharacterItem.fromJson(Map<String, dynamic> json) {
+    character_id = json['character_id'];
+    name = json['name'];
+    role = json['role'];
+    image_url = json['image_url'];
+    url = json['url'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['character_id'] = this.character_id;
+    data['name'] = this.name;
+    data['role'] = this.role;
+    data['image_url'] = this.image_url;
+    data['url'] = this.url;
     return data;
   }
 }

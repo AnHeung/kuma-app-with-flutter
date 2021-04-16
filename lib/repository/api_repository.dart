@@ -4,6 +4,7 @@ import 'package:kuma_flutter_app/bloc/login/login_bloc.dart';
 import 'package:kuma_flutter_app/enums/login_status.dart';
 import 'package:kuma_flutter_app/enums/register_status.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_all_genre_item.dart';
+import 'package:kuma_flutter_app/model/api/search_mal_api_character_picture_item.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_detail_item.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_genre_list_item.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_ranking_item.dart';
@@ -37,6 +38,8 @@ class ApiRepository {
       searchApiClient.getMalApiDetailItem(id);
 
   Future<SearchMalApiGenreListItem> getGenreCategoryList() => searchApiClient.getGenreCategoryList();
+
+  Future<SearchMalApiCharacterPictureItem> getCharacterPictureList(String characterId) => searchApiClient.getCharacterPictureList(characterId);
 
   Future<SearchMalAllGenreItem> getAllGenreItems({
           String type,

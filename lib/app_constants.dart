@@ -85,6 +85,7 @@ const double kAnimationImageContainerHeight = 150;
 const String kAnimationDetailRelateTitle = "관련애니 목록";
 const String kAnimationDetailRecommendTitle = "추천애니 목록";
 const String kAnimationDetailImageTitle = "이미지";
+const String kAnimationDetailCharacterTitle = "등장인물";
 const String kAnimationDetailSynopsisTitle = "개요";
 
 //계정페이지

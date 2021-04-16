@@ -103,14 +103,17 @@ class App extends StatelessWidget {
               child: HomeScreen(),
             );
           },
-          // BlocProvider.of<AnimationDetailBloc>(context).add(AnimationDetailLoad(id: item.id.toString(), type:"all"));
           Routes.IMAGE_DETAIL: (context) =>
+          MultiBlocProvider(
+            providers: [
               BlocProvider(
                 create: (_) =>
                     AnimationDetailBloc(
                         repository: context.read<ApiRepository>()),
-                child: AnimationDetailScreen(),
               ),
+            ],
+            child:  AnimationDetailScreen(),
+          ),
           Routes.SEARCH: (context) =>
               MultiBlocProvider(
                 providers: [
