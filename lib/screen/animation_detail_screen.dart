@@ -9,6 +9,7 @@ import 'package:kuma_flutter_app/enums/image_shape_type.dart';
 import 'package:kuma_flutter_app/enums/navigation_push_type.dart';
 import 'package:kuma_flutter_app/model/item/animation_deatil_page_item.dart';
 import 'package:kuma_flutter_app/model/item/animation_detail_item.dart';
+import 'package:kuma_flutter_app/util/vaildate_util.dart';
 import 'package:kuma_flutter_app/util/view_utils.dart';
 import 'package:kuma_flutter_app/widget/custom_text.dart';
 import 'package:kuma_flutter_app/widget/empty_container.dart';
@@ -17,7 +18,8 @@ import 'package:kuma_flutter_app/widget/image_text_scroll_item.dart';
 import 'package:kuma_flutter_app/widget/loading_indicator.dart';
 import 'package:kuma_flutter_app/widget/refresh_container.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:youtube_player_iframe/youtube_player_iframe.dart';
+
 import '../model/item/animation_deatil_page_item.dart';
 
 class AnimationDetailScreen extends StatelessWidget {
@@ -118,10 +120,7 @@ class AnimationDetailScreen extends StatelessWidget {
         key: playerKey,
         color: kBlack,
         height: topHeight,
-        child: YoutubeVideoPlayer(
-          showVideoProgressIndicator: true,
-          url: videoUrl,
-        ),
+        child: YoutubeVideoPlayer(url: videoUrl,),
       ),
     );
   }
@@ -512,13 +511,12 @@ class AnimationDetailScreen extends StatelessWidget {
 
 class YoutubeVideoPlayer extends StatefulWidget {
 
-  final bool showVideoProgressIndicator;
   final String url;
 
   @override
   _YoutubePlayerState createState() => _YoutubePlayerState();
 
-  YoutubeVideoPlayer({this.showVideoProgressIndicator,this.url});
+  YoutubeVideoPlayer({this.url});
 }
 
 class _YoutubePlayerState extends State<YoutubeVideoPlayer> {
@@ -529,23 +527,20 @@ class _YoutubePlayerState extends State<YoutubeVideoPlayer> {
   void initState() {
     super.initState();
     _controller = YoutubePlayerController(
-      initialVideoId: YoutubePlayer.convertUrlToId(widget.url),
-      flags: const YoutubePlayerFlags(
-        mute: false,
-        autoPlay: true,
-        disableDragSeek: false,
-        loop: false,
-        isLive: false,
-        forceHD: false,
-        enableCaption: true,
+      initialVideoId: getVideoId(widget.url),
+      params: const YoutubePlayerParams(
+        autoPlay: false,
+        mute: true,
+        useHybridComposition: true,
+        showControls: true,
+        showFullscreenButton: false ,
       ),
     );
   }
 
-
   @override
   void dispose() {
-    _controller.dispose();
+    _controller.close();
     super.dispose();
   }
 
@@ -559,52 +554,11 @@ class _YoutubePlayerState extends State<YoutubeVideoPlayer> {
   @override
   Widget build(BuildContext context) {
 
-    return YoutubePlayerBuilder(
-        player: YoutubePlayer(controller: _controller,
-          topActions: <Widget>[
-            const SizedBox(width: 8.0),
-            Expanded(
-              child: Text(
-                _controller.metadata.title,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 18.0,
-                ),
-                overflow: TextOverflow.ellipsis,
-                maxLines: 1,
-              ),
-            ),
-            IconButton(
-              icon: const Icon(
-                Icons.settings,
-                color: Colors.white,
-                size: 25.0,
-              ),
-              onPressed: () {
-              },
-            ),
-          ],
-          bottomActions: [
-            CurrentPosition(),
-            const SizedBox(width: 10.0),
-            ProgressBar(isExpanded: true),
-            const SizedBox(width: 10.0),
-            RemainingDuration(),
-            FullScreenButton(),
-          ],
-          liveUIColor: kBlack,
-          progressColors: const ProgressBarColors(
-            playedColor: Colors.amber,
-            handleColor: Colors.amberAccent,
-          ), showVideoProgressIndicator: widget.showVideoProgressIndicator,),
-        builder: (context, player) {
-          return Column(
-            children: [
-              // some widgets
-              player,
-              //some other widgets
-            ],
-          );
-        });
+    return YoutubePlayerControllerProvider( // Provides controller to all the widget below it.
+      controller: _controller,
+      child: const YoutubePlayerIFrame(
+        aspectRatio: 16 / 9,
+      ),
+    );
   }
 }
