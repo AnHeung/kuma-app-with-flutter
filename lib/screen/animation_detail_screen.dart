@@ -529,13 +529,20 @@ class _YoutubePlayerState extends State<YoutubeVideoPlayer> {
     _controller = YoutubePlayerController(
       initialVideoId: getVideoId(widget.url),
       params: const YoutubePlayerParams(
+        desktopMode: true,
         autoPlay: false,
         mute: true,
         useHybridComposition: true,
         showControls: true,
         showFullscreenButton: false ,
       ),
-    );
+    )..listen((event) {
+      if (event.isReady && !event.hasPlayed) {
+        _controller
+          ..hidePauseOverlay()
+          ..hideTopMenu();
+      }
+    });
   }
 
   @override
