@@ -18,6 +18,18 @@ class _YoutubePlayerState extends State<YoutubeVideoPlayer> {
   YoutubePlayerController _controller;
 
   @override
+  void didUpdateWidget(YoutubeVideoPlayer oldWidget) {
+    if (oldWidget.url != widget.url) {
+      this.updateChildWithParent(widget.url);
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
+  void updateChildWithParent(String url) {
+      _controller.load(getVideoId(url));
+  }
+
+  @override
   void initState() {
     super.initState();
     _controller = YoutubePlayerController(
@@ -70,7 +82,9 @@ class _YoutubePlayerState extends State<YoutubeVideoPlayer> {
             Container(padding: const EdgeInsets.only(right: 10), alignment: Alignment.center, child: PlaybackSpeedButton(controller: _controller,)),
           ],
         ),
-        builder: (context, player) =>player
-    );
+        builder: (context, player) => Container(
+            child: player,
+          ),
+    ) ;
   }
 }

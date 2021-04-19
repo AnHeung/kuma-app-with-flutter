@@ -12,7 +12,7 @@ class SearchMalApiCharacterPictureItem {
     err = json['err'];
     msg = json['msg'];
     if (json['result'] != null) {
-      result = new List<SearchMalApiCharacterPictureResult>();
+      result = [];
       json['result'].forEach((v) {
         result.add(new SearchMalApiCharacterPictureResult.fromJson(v));
       });

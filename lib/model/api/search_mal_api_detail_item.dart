@@ -86,31 +86,31 @@ class SearchMalDetailApiItemResult {
     startSeason = json['start_season'];
     pictures = json['pictures'].cast<String>();
     if (json['related_anime'] != null) {
-      relatedAnime = new List<SearchMalDetailRelatedAnimeItem>();
+      relatedAnime = [];
       json['related_anime'].forEach((v) {
         relatedAnime.add(new SearchMalDetailRelatedAnimeItem.fromJson(v));
       });
     }
     if (json['recommendations'] != null) {
-      recommendAnime = new List<SearchMalDetailRecommendationAnimeItem>();
+      recommendAnime = [];
       json['recommendations'].forEach((v) {
         recommendAnime.add(new SearchMalDetailRecommendationAnimeItem.fromJson(v));
       });
     }
     if (json['studios'] != null) {
-      studios = new List<SearchMalDetailStudioItem>();
+      studios = [];
       json['studios'].forEach((v) {
         studios.add(new SearchMalDetailStudioItem.fromJson(v));
       });
     }
     if (json['videos'] != null) {
-      videos = new List<SearchMalDetailVideoItem>();
+      videos = [];
       json['videos'].forEach((v) {
         videos.add(new SearchMalDetailVideoItem.fromJson(v));
       });
     }
     if (json['characters'] != null) {
-      characters = new List<SearchMalDetailCharacterItem>();
+      characters = [];
       json['characters'].forEach((v) {
         characters.add(new SearchMalDetailCharacterItem.fromJson(v));
       });

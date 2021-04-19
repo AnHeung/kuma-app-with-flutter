@@ -1,28 +1,29 @@
 class AnimationDetailItem {
 
-  String id;
-  String title;
-  String image;
-  String startDate;
-  String endDate;
-  String star;
-  String popularity;
-  String rank;
-  String percent;
-  String percentText;
-  String synopsis;
-  String status;
-  List<AnimationDetailGenreItem> genres;
-  String numEpisodes;
-  String startSeason;
-  List<String> pictures;
-  List<RelatedAnimeItem> relatedAnime;
-  List<RecommendationAnimeItem> recommendationAnimes;
-  List<StudioItem> studioItems;
-  List<VideoItem> videoItems;
-  List<CharacterItem> characterItems;
+  final String id;
+  final String title;
+  final String image;
+  final String startDate;
+  final String endDate;
+  final String star;
+  final String popularity;
+  final String rank;
+  final String percent;
+  final String percentText;
+  final String synopsis;
+  final String status;
+  final List<AnimationDetailGenreItem> genres;
+  final String numEpisodes;
+  final String startSeason;
+  final List<String> pictures;
+  final List<RelatedAnimeItem> relatedAnime;
+  final List<RecommendationAnimeItem> recommendationAnimes;
+  final List<StudioItem> studioItems;
+  final List<VideoItem> videoItems;
+  final List<CharacterItem> characterItems;
+  final String selectVideoUrl;
 
-  AnimationDetailItem(
+  const AnimationDetailItem(
       {this.id,
         this.title,
         this.image,
@@ -42,8 +43,40 @@ class AnimationDetailItem {
         this.relatedAnime,
         this.recommendationAnimes,
         this.studioItems,
-        videoItems, characterItems,
-      }): this.videoItems = videoItems ?? [], this.characterItems = characterItems ?? [];
+        this.videoItems, this.characterItems,
+        this.selectVideoUrl
+      });
+
+  static const empty = AnimationDetailItem(id: "", videoItems: [], status: "", characterItems: [], title: "", endDate: "", startDate: "", image:"" , studioItems: [], recommendationAnimes: [], genres: [],pictures: []
+      , percentText: "",percent: "0.0", relatedAnime: [], startSeason: "",numEpisodes: "", synopsis: "",rank: "",popularity: "",star: "" ,selectVideoUrl :"");
+
+  AnimationDetailItem copyWith({id,
+    title,
+    image,
+    startDate,
+    endDate,
+    star,
+    popularity,
+    rank,
+    percent,
+    percentText,
+    synopsis,
+    status,
+    genres,
+    numEpisodes,
+    startSeason,
+    pictures,
+    relatedAnime,
+    recommendationAnimes,
+    studioItems,
+    videoItems, characterItems,
+    selectVideoUrl}){
+    return AnimationDetailItem(id: id ?? this.id , star: star?? this.star , popularity: popularity ?? this.popularity , rank: rank?? this.rank, synopsis: synopsis ?? this.synopsis , numEpisodes: numEpisodes?? this.numEpisodes,
+    startSeason: startSeason ?? this.startSeason , relatedAnime: relatedAnime ?? this.relatedAnime , percent: percent ?? this.percent , percentText: percentText ?? this.percentText , pictures: pictures ?? this.pictures ,
+    genres:  genres ?? this.genres ,recommendationAnimes: recommendationAnimes ?? this.recommendationAnimes,studioItems: studioItems ?? this.studioItems, startDate: startDate ?? this.startDate , endDate: endDate ?? this.endDate ,
+    title: title?? this.title , characterItems: characterItems ?? this.characterItems , status: status ?? this.status , videoItems: videoItems ?? this.videoItems , image: image?? this.image , selectVideoUrl: selectVideoUrl ?? this.selectVideoUrl);
+  }
+
 }
 
 class RelatedAnimeItem {
@@ -77,11 +110,11 @@ class AnimationDetailGenreItem {
 
 class VideoItem{
 
-  String title;
-  String imageUrl;
-  String videoUrl;
+  final String title;
+  final String imageUrl;
+  final String videoUrl;
 
-  VideoItem({this.title, this.imageUrl, this.videoUrl});
+  const VideoItem({this.title, this.imageUrl, this.videoUrl});
 
 }
 

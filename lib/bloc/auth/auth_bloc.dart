@@ -5,7 +5,6 @@ import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:kuma_flutter_app/repository/api_repository.dart';
-import 'package:kuma_flutter_app/util/sharepref_util.dart';
 import 'package:meta/meta.dart';
 
 part 'auth_event.dart';

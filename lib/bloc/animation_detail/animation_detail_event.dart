@@ -19,6 +19,16 @@ class AnimationDetailLoad extends AnimationDetailEvent{
   List<Object> get props =>[id];
 }
 
+class AnimationDetailVideoLoad extends AnimationDetailEvent{
+
+  final AnimationDetailItem detailItem;
+
+  const AnimationDetailVideoLoad({this.detailItem});
+
+  @override
+  List<Object> get props =>[detailItem];
+}
+
 
 class AnimationDetailUpdate extends AnimationDetailEvent{
 

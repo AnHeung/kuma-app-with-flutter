@@ -14,26 +14,32 @@ class AnimationDetailBloc extends Bloc<AnimationDetailEvent, AnimationDetailStat
   ApiRepository repository;
 
   AnimationDetailBloc({this.repository})
-      : super(AnimationDetailLoadInProgress());
+      : super(const AnimationDetailState(status: AnimationDetailStatus.initial));
 
   @override
   Stream<AnimationDetailState> mapEventToState(
       AnimationDetailEvent event) async* {
     if (event is AnimationDetailLoad) {
       yield* _mapToAnimationDetailLoad(event);
+    }else if(event is AnimationDetailVideoLoad){
+      yield* _mapToAnimationDetailVideoLoad(event);
     }
+  }
+
+  Stream<AnimationDetailState> _mapToAnimationDetailVideoLoad(AnimationDetailVideoLoad event) async*{
+    yield AnimationDetailState(status: AnimationDetailStatus.success ,detailItem:  event.detailItem);
   }
 
 
   Stream<AnimationDetailState> _mapToAnimationDetailLoad(
       AnimationDetailLoad event) async* {
     try {
-      yield AnimationDetailLoadInProgress();
+      yield const AnimationDetailState(status:AnimationDetailStatus.loading);
       String id = event.id;
       SearchMalDetailApiItem malDetailApiItem = await repository
           .getDetailApiItem(id);
       if (malDetailApiItem.err) {
-        yield AnimationDetailLoadFailure(errMsg: malDetailApiItem.msg);
+        yield AnimationDetailState(status:AnimationDetailStatus.failure, msg: malDetailApiItem.msg);
       } else {
         SearchMalDetailApiItemResult result = malDetailApiItem.result;
         List<RelatedAnimeItem> relateItemList = result.relatedAnime.map((
@@ -49,8 +55,9 @@ class AnimationDetailBloc extends Bloc<AnimationDetailEvent, AnimationDetailStat
         List<AnimationDetailGenreItem> genreList = result.genres.map((item) => AnimationDetailGenreItem(id: item.id, name: item.name)).toList();
         List<VideoItem> videoList = result.videos!= null ? result.videos.map((item) => VideoItem(title:item.title, videoUrl: item.video_url , imageUrl: item.image_url)).toList() : [];
         List<CharacterItem> characterList = result.characters!= null ? result.characters.map((item) => CharacterItem(name: item.name, characterId: item.character_id,  imageUrl: item.image_url,  role: item.role , url: item.url)).toList() : [];
+        String selectVideoUrl = result.videos != null && result.videos.length > 0 ? result.videos[0].video_url : "";
 
-        yield AnimationDetailLoadSuccess(detailItem: AnimationDetailItem(
+        yield AnimationDetailState(status:AnimationDetailStatus.success ,detailItem: AnimationDetailItem(
             id: result.id,
             image: result.image,
             title: result.title,
@@ -70,11 +77,10 @@ class AnimationDetailBloc extends Bloc<AnimationDetailEvent, AnimationDetailStat
             pictures: result.pictures,
             relatedAnime: relateItemList,
             recommendationAnimes: recommendList,
-            studioItems: studioList , videoItems:videoList , characterItems: characterList));
+            studioItems: studioList , videoItems:videoList , characterItems: characterList , selectVideoUrl:selectVideoUrl));
       }
     } catch (e) {
-      yield AnimationDetailLoadFailure(
-          errMsg: "_mapToAnimationDetailLoad 에러 $e");
+      yield AnimationDetailState(status:AnimationDetailStatus.failure, msg:  "_mapToAnimationDetailLoad 에러 $e");
     }
   }
 }

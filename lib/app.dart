@@ -17,7 +17,6 @@ import 'package:kuma_flutter_app/bloc/search_history/search_history_bloc.dart';
 import 'package:kuma_flutter_app/bloc/setting/setting_bloc.dart';
 import 'package:kuma_flutter_app/bloc/splash/splash_bloc.dart';
 import 'package:kuma_flutter_app/bloc/tab/tab_cubit.dart';
-import 'package:kuma_flutter_app/model/genre_data.dart';
 import 'package:kuma_flutter_app/repository/api_repository.dart';
 import 'package:kuma_flutter_app/repository/firebase_client.dart';
 import 'package:kuma_flutter_app/repository/rest_client.dart';

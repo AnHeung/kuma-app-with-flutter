@@ -7,6 +7,7 @@ import 'package:kuma_flutter_app/model/api/search_mal_api_ranking_item.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_schedule_item.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_search_item.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_season_item.dart';
+import 'package:kuma_flutter_app/model/api/search_mal_character_detail_item.dart';
 import 'package:retrofit/http.dart';
 
 part 'search_api_client.g.dart';
@@ -29,6 +30,9 @@ abstract class SearchApiClient {
 
   @GET("/mal/character/pictures/{characterId}")
   Future<SearchMalApiCharacterPictureItem> getCharacterPictureList(@Path("characterId")String characterId);
+
+  @GET("/mal/character/{characterId}")
+  Future<SearchMalCharacterDetailItem> getCharacterInfo(@Path("characterId")String characterId);
 
   @GET("/mal/ranking/{type}/{page}/{rank_type}/{limit}")
   Future<SearchRankingApiResult> getRankingItemList(

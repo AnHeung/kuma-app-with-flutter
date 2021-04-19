@@ -1,32 +1,16 @@
 part of 'animation_detail_bloc.dart';
 
+enum AnimationDetailStatus{initial, loading , failure , success }
+
 @immutable
-abstract class AnimationDetailState extends Equatable{
-  @override
-  List<Object> get props =>[];
+class AnimationDetailState extends Equatable{
 
-  const AnimationDetailState();
-
-}
-
-class AnimationDetailLoadInProgress extends AnimationDetailState{}
-
-class AnimationDetailLoadFailure extends AnimationDetailState{
-
-  final String errMsg;
-
-  const AnimationDetailLoadFailure({this.errMsg});
-
-  @override
-  List<Object> get props =>[errMsg];
-}
-
-class AnimationDetailLoadSuccess extends AnimationDetailState{
-
+  final AnimationDetailStatus status;
   final AnimationDetailItem detailItem;
-
-  const AnimationDetailLoadSuccess({this.detailItem});
+  final String msg;
 
   @override
-  List<Object> get props =>[detailItem];
+  List<Object> get props =>[status, detailItem , msg];
+
+  const AnimationDetailState({this.status = AnimationDetailStatus.initial, this.detailItem, this.msg = "상세페이지 에러"});
 }

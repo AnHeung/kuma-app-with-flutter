@@ -108,6 +108,25 @@ class _SearchApiClient implements SearchApiClient {
   }
 
   @override
+  Future<SearchMalCharacterDetailItem> getCharacterInfo(characterId) async {
+    ArgumentError.checkNotNull(characterId, 'characterId');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/mal/character/$characterId',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = SearchMalCharacterDetailItem.fromJson(_result.data);
+    return value;
+  }
+
+  @override
   Future<SearchRankingApiResult> getRankingItemList(
       type, page, rankType, limit) async {
     ArgumentError.checkNotNull(type, 'type');

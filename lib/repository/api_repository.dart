@@ -11,6 +11,7 @@ import 'package:kuma_flutter_app/model/api/search_mal_api_ranking_item.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_schedule_item.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_search_item.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_season_item.dart';
+import 'package:kuma_flutter_app/model/api/search_mal_character_detail_item.dart';
 import 'package:kuma_flutter_app/model/api/social_user.dart';
 import 'package:kuma_flutter_app/repository/firebase_client.dart';
 import 'package:kuma_flutter_app/repository/rest_client.dart';
@@ -38,6 +39,8 @@ class ApiRepository {
       searchApiClient.getMalApiDetailItem(id);
 
   Future<SearchMalApiGenreListItem> getGenreCategoryList() => searchApiClient.getGenreCategoryList();
+
+  Future<SearchMalCharacterDetailItem> getCharacterInfo(String characterId) => searchApiClient.getCharacterInfo(characterId);
 
   Future<SearchMalApiCharacterPictureItem> getCharacterPictureList(String characterId) => searchApiClient.getCharacterPictureList(characterId);
 
