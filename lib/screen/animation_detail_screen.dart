@@ -23,6 +23,7 @@ import 'package:kuma_flutter_app/widget/youtube_player.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 import '../model/item/animation_deatil_page_item.dart';
+import '../repository/api_repository.dart';
 
 class AnimationDetailScreen extends StatelessWidget {
   final indicatorRate = 0.82;
@@ -382,7 +383,7 @@ class AnimationDetailScreen extends StatelessWidget {
                         isScrollControlled:true,
                         context: context,
                         builder: (_) {
-                          return BlocProvider(create: (_)=>CharacterBloc()..add(CharacterLoad(characterId:item.characterId)), child: BottomCharacterItemContainer(),);
+                          return BlocProvider(create: (_)=>CharacterBloc(repository: context.read<ApiRepository>())..add(CharacterLoad(characterId:item.characterId)), child: BottomCharacterItemContainer(),);
                         }),
                     child: Container(
                       padding: const EdgeInsets.only(left: 8, bottom: 8),

@@ -1,18 +1,18 @@
 import 'package:kuma_flutter_app/model/item/animation_detail_item.dart';
 
 class AnimationCharacterItem {
-  String characterId;
-  String name;
-  String nameKanji;
-  String nicknames;
-  String about;
-  String imageUrl;
-  String url;
-  List<RelatedAnimeItem> relateAnimation;
-  List<VoiceActorItem> voiceActors;
-  String favoritesRank;
+  final String characterId;
+  final String name;
+  final String nameKanji;
+  final String nicknames;
+  final String about;
+  final String imageUrl;
+  final String url;
+  final List<RelatedAnimeItem> relateAnimation;
+  final  List<VoiceActorItem> voiceActors;
+  final String favoritesRank;
 
-  AnimationCharacterItem({
+  const AnimationCharacterItem({
       this.characterId,
       this.name,
       this.nameKanji,
@@ -23,12 +23,15 @@ class AnimationCharacterItem {
       this.relateAnimation,
       this.voiceActors,
       this.favoritesRank});
+
+
+  static const empty = AnimationCharacterItem(characterId: "" , url: "", voiceActors: [],relateAnimation: [], nicknames: "",nameKanji: "",name: "",imageUrl: "", about: "",favoritesRank: "");
 }
 
 class VoiceActorItem {
   String id;
-  String title;
+  String name;
   String image;
 
-  VoiceActorItem({this.id, this.title, this.image});
+  VoiceActorItem({this.id, this.name, this.image});
 }

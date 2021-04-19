@@ -5,13 +5,13 @@ enum CharacterStatus { loading, initial ,failure,  success }
 class CharacterState extends Equatable{
 
   final CharacterStatus status;
-  final List<AnimationCharacterItem> characterItems;
+  final AnimationCharacterItem characterItem;
   final String msg;
 
-  CharacterState({this.status = CharacterStatus.initial, this.characterItems, this.msg});
+  CharacterState({this.status = CharacterStatus.initial, this.characterItem = AnimationCharacterItem.empty, this.msg});
 
   @override
-  List<Object> get props => [status, characterItems , msg];
+  List<Object> get props => [status, characterItem , msg];
 
 }
 
