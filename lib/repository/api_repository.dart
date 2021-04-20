@@ -42,6 +42,8 @@ class ApiRepository {
 
   Future<SearchMalCharacterDetailItem> getCharacterInfo(String characterId) => searchApiClient.getCharacterInfo(characterId);
 
+  Future<SearchMalCharacterDetailItem> getPersonInfo(String personId) => searchApiClient.getPersonInfo(personId);
+
   Future<SearchMalApiCharacterPictureItem> getCharacterPictureList(String characterId) => searchApiClient.getCharacterPictureList(characterId);
 
   Future<SearchMalAllGenreItem> getAllGenreItems({

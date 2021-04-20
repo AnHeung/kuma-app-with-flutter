@@ -1,6 +1,3 @@
-import 'package:json_annotation/json_annotation.dart';
-
-@JsonSerializable()
 class SearchMalApiCharacterPictureItem {
   bool err;
   String msg;

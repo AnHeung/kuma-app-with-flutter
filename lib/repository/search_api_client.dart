@@ -34,6 +34,9 @@ abstract class SearchApiClient {
   @GET("/mal/character/{characterId}")
   Future<SearchMalCharacterDetailItem> getCharacterInfo(@Path("characterId")String characterId);
 
+  @GET("/mal/person/{personId}")
+  Future<SearchMalCharacterDetailItem> getPersonInfo(@Path("personId")String personId);
+
   @GET("/mal/ranking/{type}/{page}/{rank_type}/{limit}")
   Future<SearchRankingApiResult> getRankingItemList(
       @Path("type") String type,
