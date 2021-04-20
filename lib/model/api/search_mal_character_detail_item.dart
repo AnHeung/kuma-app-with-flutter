@@ -36,6 +36,7 @@ class Result {
   List<RelateAnimation> relateAnimation;
   List<VoiceActors> voiceActors;
   String favoritesRank;
+  List<SearchMalCharacterPictureItem> pictures;
 
   Result(
       {this.characterId,
@@ -47,7 +48,8 @@ class Result {
         this.url,
         this.relateAnimation,
         this.voiceActors,
-        this.favoritesRank});
+        this.favoritesRank,
+        this.pictures});
 
   Result.fromJson(Map<String, dynamic> json) {
     characterId = json['character_id'];
@@ -70,6 +72,12 @@ class Result {
       });
     }
     favoritesRank = json['favorites_rank'];
+    if (json['pictures'] != null) {
+      pictures = [];
+      json['pictures'].forEach((v) {
+        pictures.add(new SearchMalCharacterPictureItem.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -89,6 +97,9 @@ class Result {
       data['voice_actors'] = this.voiceActors.map((v) => v.toJson()).toList();
     }
     data['favorites_rank'] = this.favoritesRank;
+    if (this.pictures != null) {
+      data['pictures'] = this.pictures.map((v) => v.toJson()).toList();
+    }
     return data;
   }
 }
@@ -139,6 +150,22 @@ class VoiceActors {
     data['image_url'] = this.imageUrl;
     data['country'] = this.country;
     data['url'] = this.url;
+    return data;
+  }
+}
+
+class SearchMalCharacterPictureItem{
+  String image;
+
+  SearchMalCharacterPictureItem({this.image});
+
+  SearchMalCharacterPictureItem.fromJson(Map<String, dynamic> json) {
+    image = json['image'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['image'] = this.image;
     return data;
   }
 }

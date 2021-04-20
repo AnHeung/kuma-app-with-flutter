@@ -33,6 +33,8 @@ imageAlert(
     BuildContext context, String title, List<String> imgList, int imgIdx) {
   PageController controller = PageController(initialPage: imgIdx);
 
+  final double height = MediaQuery.of(context).size.height * 0.75;
+
   showGeneralDialog(
     context: context,
     barrierColor: Colors.black12.withOpacity(0.6),
@@ -46,81 +48,91 @@ imageAlert(
     pageBuilder: (_, __, ___) {
       double btnHeight = MediaQuery.of(context).size.height * 0.1;
       // your widget implementation
-      return Stack(
-        children: [
-          PageView(
-            physics: const NeverScrollableScrollPhysics(),
-            controller: controller,
-            scrollDirection: Axis.horizontal,
-            children: imgList
-                .map(
-                  (img) => Column(
-                    children: <Widget>[
-                      Expanded(
-                        flex: 1,
-                        child: SizedBox.expand(
-                            child: ImageItem(
-                          type: ImageShapeType.FLAT,
-                          imgRes: img,
-                        )),
-                      ),
-                    ],
-                  ),
-                )
-                .toList(),
+      return Container(
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: const Radius.circular(25.0),
+            topRight: const Radius.circular(25.0),
           ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: TextButton(
-              style: TextButton.styleFrom(
-                primary: Colors.transparent,
-              ),
-              onPressed: () => Navigator.pop(context),
-              child: Container(
-                height: btnHeight,
-                child: CustomText(
-                  fontFamily: doHyunFont,
-                  fontWeight: FontWeight.w700,
-                  fontColor: Colors.black,
-                  text: "나가기",
-                  fontSize: dialogFontSize,
+        ),
+        height:height,
+        child: Stack(
+          children: [
+            PageView(
+              physics: const NeverScrollableScrollPhysics(),
+              controller: controller,
+              scrollDirection: Axis.horizontal,
+              children: imgList
+                  .map(
+                    (img) => Column(
+                      children: <Widget>[
+                        Expanded(
+                          flex: 1,
+                          child: SizedBox.expand(
+                              child: ImageItem(
+                            type: ImageShapeType.FLAT,
+                            imgRes: img,
+                          )),
+                        ),
+                      ],
+                    ),
+                  )
+                  .toList(),
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: TextButton(
+                style: TextButton.styleFrom(
+                  primary: Colors.transparent,
+                ),
+                onPressed: () => Navigator.pop(context),
+                child: Container(
+                  height: btnHeight,
+                  child: CustomText(
+                    fontFamily: doHyunFont,
+                    fontWeight: FontWeight.w700,
+                    fontColor: Colors.black,
+                    text: "나가기",
+                    fontSize: dialogFontSize,
+                  ),
                 ),
               ),
             ),
-          ),
-          Visibility(
-            visible: imgList.length > 1,
-            child: GestureDetector(
-              onTap: () => _controlPage(
-                  listSize: imgList.length,
-                  controller: controller,
-                  state: MoveState.RIGHT),
-              child: Container(
-                  alignment: Alignment.centerRight,
-                  child: const Icon(
-                    Icons.chevron_right,
-                    size: 100,
-                    color: Colors.white70,
-                  )),
+            Visibility(
+              visible: imgList.length > 1,
+              child: GestureDetector(
+                onTap: () => _controlPage(
+                    listSize: imgList.length,
+                    controller: controller,
+                    state: MoveState.RIGHT),
+                child: Container(
+                    alignment: Alignment.centerRight,
+                    child: const Icon(
+                      Icons.chevron_right,
+                      size: 100,
+                      color: Colors.white70,
+                    )),
+              ),
             ),
-          ),
-          Visibility(
-            visible: imgList.length > 1,
-            child: GestureDetector(
-              onTap: () => _controlPage(
-                  listSize: imgList.length,
-                  controller: controller,
-                  state: MoveState.LEFT),
-              child: Container(
-                  alignment: Alignment.centerLeft,
-                  child: const Icon(
-                    Icons.chevron_left,
-                    size: 100,
-                    color: Colors.white70,
-                  )),
-            ),
-          )
-        ],
+            Visibility(
+              visible: imgList.length > 1,
+              child: GestureDetector(
+                onTap: () => _controlPage(
+                    listSize: imgList.length,
+                    controller: controller,
+                    state: MoveState.LEFT),
+                child: Container(
+                    alignment: Alignment.centerLeft,
+                    child: const Icon(
+                      Icons.chevron_left,
+                      size: 100,
+                      color: Colors.white70,
+                    )),
+              ),
+            )
+          ],
+        ),
       );
     },
   );

@@ -10,6 +10,7 @@ class AnimationCharacterItem {
   final String url;
   final List<RelatedAnimeItem> relateAnimation;
   final  List<VoiceActorItem> voiceActors;
+  final  List<CharacterPictureItem> pictureItems;
   final String favoritesRank;
 
   const AnimationCharacterItem({
@@ -22,10 +23,11 @@ class AnimationCharacterItem {
       this.url,
       this.relateAnimation,
       this.voiceActors,
+    this.pictureItems,
       this.favoritesRank});
 
 
-  static const empty = AnimationCharacterItem(characterId: "" , url: "", voiceActors: [],relateAnimation: [], nicknames: "",nameKanji: "",name: "",imageUrl: "", about: "",favoritesRank: "");
+  static const empty = AnimationCharacterItem(characterId: "" , url: "", voiceActors: [],relateAnimation: [], nicknames: "",nameKanji: "",name: "",imageUrl: "", about: "",pictureItems:[],favoritesRank: "");
 }
 
 class VoiceActorItem {
@@ -34,4 +36,11 @@ class VoiceActorItem {
   String image;
 
   VoiceActorItem({this.id, this.name, this.image});
+}
+
+
+class CharacterPictureItem {
+  String image;
+
+  CharacterPictureItem({this.image});
 }

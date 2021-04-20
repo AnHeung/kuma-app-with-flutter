@@ -11,7 +11,7 @@ import 'package:kuma_flutter_app/widget/custom_text.dart';
 import 'package:kuma_flutter_app/widget/image_item.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
-class ImageTextScrollItem extends StatelessWidget {
+class ImageTextScrollItemContainer extends StatelessWidget {
 
   final String id;
   final String title;
@@ -22,7 +22,7 @@ class ImageTextScrollItem extends StatelessWidget {
   final BuildContext context;
   final NavigationPushType pushType;
 
-  ImageTextScrollItem({this.context , this.id, this.title, this.image, score , imageShapeType , imageDiveRate , pushType}): this.imageShapeType = imageShapeType ??  ImageShapeType.FLAT , this.imageDiveRate = imageDiveRate ?? 3 , this.pushType = pushType?? NavigationPushType.PUSH , this.score = score ?? "";
+  ImageTextScrollItemContainer({this.context , this.id, this.title, this.image, score , imageShapeType , imageDiveRate , pushType}): this.imageShapeType = imageShapeType ??  ImageShapeType.FLAT , this.imageDiveRate = imageDiveRate ?? 3 , this.pushType = pushType?? NavigationPushType.PUSH , this.score = score ?? "";
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +44,7 @@ class ImageTextScrollItem extends StatelessWidget {
         }
       },
       child: Container(
+            alignment: Alignment.centerLeft,
             padding: const EdgeInsets.only(left: 8, bottom: 8),
             width: width,
             child: Column(

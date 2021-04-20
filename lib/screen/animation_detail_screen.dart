@@ -11,14 +11,17 @@ import 'package:kuma_flutter_app/enums/navigation_push_type.dart';
 import 'package:kuma_flutter_app/model/item/animation_deatil_page_item.dart';
 import 'package:kuma_flutter_app/model/item/animation_detail_item.dart';
 import 'package:kuma_flutter_app/util/view_utils.dart';
-import 'package:kuma_flutter_app/widget/bottom_video_item_container.dart';
 import 'package:kuma_flutter_app/widget/bottom_character_item_container.dart';
+import 'package:kuma_flutter_app/widget/bottom_video_item_container.dart';
 import 'package:kuma_flutter_app/widget/custom_text.dart';
 import 'package:kuma_flutter_app/widget/empty_container.dart';
 import 'package:kuma_flutter_app/widget/image_item.dart';
+import 'package:kuma_flutter_app/widget/image_scroll_container.dart';
 import 'package:kuma_flutter_app/widget/image_text_scroll_item.dart';
 import 'package:kuma_flutter_app/widget/loading_indicator.dart';
+import 'package:kuma_flutter_app/widget/more_container.dart';
 import 'package:kuma_flutter_app/widget/refresh_container.dart';
+import 'package:kuma_flutter_app/widget/title_container.dart';
 import 'package:kuma_flutter_app/widget/youtube_player.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
@@ -95,15 +98,14 @@ class AnimationDetailScreen extends StatelessWidget {
                     context: context, detailItem: detailItem),
                 _buildCharacterTitleContainer(
                     context: context, characters: detailItem.characterItems),
-                _buildTopCharacterContainer(
-                    characters: detailItem.characterItems),
+                _buildTopCharacterContainer(characters: detailItem.characterItems),
                 _buildDetailTopSynopsisContainer(
                     context: context, detailItem: detailItem),
-                _buildTitleContainer(title: kAnimationDetailImageTitle),
-                _buildTopPictureContainer(pictures: detailItem.pictures),
-                _buildTitleContainer(title: kAnimationDetailRelateTitle),
+              const TitleContainer(title: kAnimationDetailImageTitle),
+                ImageScrollItemContainer(title :"관련 이미지", images: detailItem.pictures),
+              const TitleContainer(title: kAnimationDetailRelateTitle),
                 _buildRelateContainer(relatedItem: detailItem.relatedAnime),
-                _buildTitleContainer(title: kAnimationDetailRecommendTitle),
+              const TitleContainer(title: kAnimationDetailRecommendTitle),
                 _buildRecommendationContainer(
                     recommendationItems: detailItem.recommendationAnimes)
               ])
@@ -114,49 +116,15 @@ class AnimationDetailScreen extends StatelessWidget {
 
   Widget _buildCharacterTitleContainer(
       {BuildContext context, List<CharacterItem> characters}) {
-    final double height = MediaQuery.of(context).size.height / 2;
 
     return Container(
-      padding: const EdgeInsets.only(top: 20, left: 10, right: 10),
+      padding: const EdgeInsets.only(right: 10),
       child: Row(
         children: [
-          Container(
-            alignment: Alignment.centerLeft,
-            child: CustomText(
-              text: kAnimationDetailCharacterTitle,
-              fontColor: Colors.black,
-              fontSize: kAnimationDetailTitleFontSize,
-            ),
-          ),
+          const TitleContainer(title: kAnimationDetailCharacterTitle,),
           const Spacer(),
-          GestureDetector(
-            onTap: () => print('더보기'),
-            behavior: HitTestBehavior.translucent,
-            child: Container(
-              alignment: Alignment.center,
-              child: CustomText(
-                text: "더보기 > ",
-                fontFamily: doHyunFont,
-                fontWeight: FontWeight.w700,
-                fontSize: 13.0,
-                fontColor: Colors.grey,
-              ),
-            ),
-          ),
+          MoreContainer(onClick: ()=>print('test'),),
         ],
-      ),
-    );
-  }
-
-  Widget _buildTitleContainer(
-      {String title, Alignment alignment = Alignment.centerLeft}) {
-    return Container(
-      alignment: alignment,
-      margin: const EdgeInsets.only(top: 20, left: 10),
-      child: CustomText(
-        text: title,
-        fontColor: Colors.black,
-        fontSize: kAnimationDetailTitleFontSize,
       ),
     );
   }
@@ -299,7 +267,7 @@ class AnimationDetailScreen extends StatelessWidget {
       {BuildContext context, AnimationDetailItem detailItem}) {
     return Column(
       children: [
-        _buildTitleContainer(title: kAnimationDetailSynopsisTitle),
+        const TitleContainer(title: kAnimationDetailSynopsisTitle),
         Container(
           child: CustomText(
             fontSize: kAnimationDetailFontSize,
@@ -341,8 +309,7 @@ class AnimationDetailScreen extends StatelessWidget {
                 Expanded(
                   flex: 1,
                   child: GestureDetector(
-                    onTap: () => imageAlert(
-                        context, detailItem.title, [detailItem.image], 0),
+                    onTap: () => imageAlert(context, detailItem.title, [detailItem.image], 0),
                     child: Container(
                       height: topHeight,
                       child: Hero(
@@ -366,7 +333,7 @@ class AnimationDetailScreen extends StatelessWidget {
   Widget _buildTopCharacterContainer({List<CharacterItem> characters}) {
     return characters.isNotEmpty
         ? Container(
-            alignment: Alignment.center,
+            alignment: Alignment.centerLeft,
             padding: const EdgeInsets.only(
               top: 10,
             ),
@@ -430,29 +397,6 @@ class AnimationDetailScreen extends StatelessWidget {
           );
   }
 
-  Widget _buildTopPictureContainer({List<String> pictures}) {
-    return Padding(
-      padding: const EdgeInsets.all(10),
-      child: _getPictureList(
-          height: 150,
-          margin: 10,
-          length: pictures.length,
-          builderFunction: (BuildContext context, idx) {
-            final String imgRes = pictures[idx];
-            return AspectRatio(
-              aspectRatio: 0.8,
-              child: GestureDetector(
-                onTap: () => imageAlert(context, imgRes, pictures, idx),
-                child: ImageItem(
-                  imgRes: imgRes,
-                  type: ImageShapeType.FLAT,
-                ),
-              ),
-            );
-          }),
-    );
-  }
-
   Widget _buildRelateContainer({List<RelatedAnimeItem> relatedItem}) {
     return relatedItem.isNotEmpty
         ? Padding(
@@ -463,7 +407,7 @@ class AnimationDetailScreen extends StatelessWidget {
                 length: relatedItem.length,
                 builderFunction: (BuildContext context, idx) {
                   final RelatedAnimeItem item = relatedItem[idx];
-                  return ImageTextScrollItem(
+                  return ImageTextScrollItemContainer(
                     context: context,
                     id: item.id.toString(),
                     title: item.title,
@@ -491,7 +435,7 @@ class AnimationDetailScreen extends StatelessWidget {
                 length: recommendationItems.length,
                 builderFunction: (BuildContext context, idx) {
                   final RecommendationAnimeItem item = recommendationItems[idx];
-                  return ImageTextScrollItem(
+                  return ImageTextScrollItemContainer(
                     context: context,
                     title: item.title,
                     id: item.id.toString(),

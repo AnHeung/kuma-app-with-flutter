@@ -14,7 +14,9 @@ import 'package:kuma_flutter_app/widget/animation_main_appbar.dart';
 import 'package:kuma_flutter_app/widget/custom_text.dart';
 import 'package:kuma_flutter_app/widget/image_text_scroll_item.dart';
 import 'package:kuma_flutter_app/widget/loading_indicator.dart';
+import 'package:kuma_flutter_app/widget/more_container.dart';
 import 'package:kuma_flutter_app/widget/refresh_container.dart';
+import 'package:kuma_flutter_app/widget/title_container.dart';
 
 import '../bloc/animation_schedule/animation_schedule_bloc.dart';
 import '../util/string_util.dart';
@@ -128,18 +130,6 @@ class _AnimationScreenState extends State<AnimationScreen> {
     );
   }
 
-  Widget _buildTitleContainer({String title}){
-    return Container(
-      alignment: Alignment.centerLeft,
-      child: CustomText(
-        text: title,
-        fontFamily: doHyunFont,
-        fontWeight: FontWeight.w700,
-        fontSize: kAnimationItemTitleFontSize,
-      ),
-    );
-  }
-
   Widget _buildScheduleItems({BuildContext context}) {
 
     return Container(
@@ -148,22 +138,9 @@ class _AnimationScreenState extends State<AnimationScreen> {
         children: [
           Row(
             children: [
-              _buildTitleContainer(title: kAnimationScheduleTitle),
+              const TitleContainer(fontWeight: FontWeight.w700,title: kAnimationScheduleTitle),
               const  Spacer(),
-              GestureDetector(
-                onTap: ()=>navigateWithUpAnimation(context: context , navigateScreen: BlocProvider.value(value: BlocProvider.of<AnimationScheduleBloc>(context)..add(AnimationScheduleLoad(day: "1")), child: AnimationScheduleScreen(),)),
-                behavior: HitTestBehavior.translucent,
-                child: Container(
-                  alignment: Alignment.center,
-                  child: CustomText(
-                    text: "더보기 > ",
-                    fontFamily: doHyunFont,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 13.0,
-                    fontColor: Colors.grey,
-                  ),
-                ),
-              )
+              MoreContainer(onClick: ()=>navigateWithUpAnimation(context: context , navigateScreen: BlocProvider.value(value: BlocProvider.of<AnimationScheduleBloc>(context)..add(AnimationScheduleLoad(day: "1")), child: AnimationScheduleScreen(),)),)
             ],
           ),
           _buildScheduleContainer()
@@ -212,7 +189,7 @@ class _AnimationScreenState extends State<AnimationScreen> {
             scrollDirection: Axis.horizontal,
             children: scheduleItems
                 .map((schedule) =>
-                ImageTextScrollItem(context: context,
+                ImageTextScrollItemContainer(context: context,
                   image: schedule.image,
                   id: schedule.id.toString(),
                   title: schedule.title,
@@ -293,8 +270,8 @@ class _AnimationScreenState extends State<AnimationScreen> {
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 8, bottom: 10),
-            child: _buildTitleContainer(title: item.koreaType),
+            padding: const EdgeInsets.only( bottom: 10),
+            child: TitleContainer( fontWeight: FontWeight.w700,  title: item.koreaType),
           ),
           Expanded(
             child: ListView(
@@ -302,7 +279,7 @@ class _AnimationScreenState extends State<AnimationScreen> {
               padding: EdgeInsets.zero,
               scrollDirection: Axis.horizontal,
               children: item.list
-                  .map((rankItem) => ImageTextScrollItem(context: context ,title: rankItem.title , id: rankItem.id.toString(), image: rankItem.image, score : rankItem.score , imageShapeType: ImageShapeType.FLAT,imageDiveRate: 3, ))
+                  .map((rankItem) => ImageTextScrollItemContainer(context: context ,title: rankItem.title , id: rankItem.id.toString(), image: rankItem.image, score : rankItem.score , imageShapeType: ImageShapeType.FLAT,imageDiveRate: 3, ))
                   .toList(),
             ),
           ),

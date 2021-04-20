@@ -33,15 +33,21 @@ class CharacterBloc extends Bloc<CharacterEvent, CharacterState> {
   }
 
   Stream<CharacterState> _mapToCharacterLoad(CharacterLoad event)async*{
+    yield CharacterState(status: CharacterStatus.loading);
     String characterId = event.characterId;
     SearchMalCharacterDetailItem characterDetailItem = await repository.getCharacterInfo(characterId);
     if(characterDetailItem.err){
       yield CharacterState(status: CharacterStatus.failure , msg: characterDetailItem.msg);
     }else{
+
+      final List<RelatedAnimeItem> relateItems = characterDetailItem.result.relateAnimation!= null ? characterDetailItem.result.relateAnimation.map((item) => RelatedAnimeItem(id: item.id ,image: item.imageUrl , title: item.title)).toList() :[];
+      final List<VoiceActorItem> voiceItems =characterDetailItem.result.voiceActors!= null ? characterDetailItem.result.voiceActors.map((item) => VoiceActorItem(name: item.name ,image: item.imageUrl , id: item.id)).toList() : [];
+      final List<CharacterPictureItem> characterPictureItems = characterDetailItem.result.pictures!= null ? characterDetailItem.result.pictures.map((item) => CharacterPictureItem(image: item.image)).toList() : [];
+
       yield CharacterState(status: CharacterStatus.success , characterItem: AnimationCharacterItem(about:characterDetailItem.result.about , characterId: characterDetailItem.result.characterId,
         favoritesRank: characterDetailItem.result.favoritesRank ,imageUrl: characterDetailItem.result.imageUrl , name: characterDetailItem.result.name , nameKanji: "(${characterDetailItem.result.nameKanji})",
-      nicknames:characterDetailItem.result.nicknames , relateAnimation:characterDetailItem.result.relateAnimation.map((item) => RelatedAnimeItem(id: item.id ,image: item.imageUrl , title: item.title)).toList()
-          , url: characterDetailItem.result.url, voiceActors: characterDetailItem.result.voiceActors.map((item) => VoiceActorItem(name: item.name ,image: item.imageUrl , id: item.id)).toList()));
+      nicknames:characterDetailItem.result.nicknames , relateAnimation:relateItems
+          , url: characterDetailItem.result.url, voiceActors: voiceItems, pictureItems: characterPictureItems));
     }
   }
 }
