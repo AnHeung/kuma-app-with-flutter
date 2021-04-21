@@ -17,7 +17,7 @@ class GenreSearchBloc extends Bloc<GenreSearchEvent, GenreSearchState> {
   final ApiRepository repository;
   final GenreCategoryListBloc genreCategoryListBloc;
 
-  GenreSearchBloc({this.repository,this.genreCategoryListBloc}) : super(const GenreSearchState(status: GenreSearchStatus.initial , genreData: const GenreData())){
+  GenreSearchBloc({this.repository,this.genreCategoryListBloc}) : super(GenreSearchState(status: GenreSearchStatus.initial , genreData: GenreData())){
     genreCategoryListBloc.listen((state){
       if(state.status == GenreCategoryStatus.success){
           add(GenreLoad(data: state.genreData.copyWith(page: "1")));
@@ -47,6 +47,7 @@ class GenreSearchBloc extends Bloc<GenreSearchEvent, GenreSearchState> {
     String genre = event.data.genre;
     String genreExclude = event.data.genreExclude;
     String sort = event.data.sort;
+    String orderBy = event.data.orderBy;
 
     SearchMalAllGenreItem genreItem = await repository.getAllGenreItems(
         type:type,
@@ -59,7 +60,7 @@ class GenreSearchBloc extends Bloc<GenreSearchEvent, GenreSearchState> {
         endDate:endDate,
         genreExclude:genreExclude,
         limit:limit,
-        sort:sort);
+        sort:sort,orderBy: orderBy);
 
     if (genreItem.err) {
       print('state.genreData :${state.genreData.rated}');

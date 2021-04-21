@@ -266,7 +266,7 @@ class GenreGridView extends StatefulWidget {
 
   GenreGridView({genreSearchItems, genreData})
       : this.genreSearchItems = genreSearchItems ?? [],
-        this.genreData = genreData ?? const GenreData();
+        this.genreData = genreData ?? GenreData();
 
   @override
   _GenreGridViewState createState() => _GenreGridViewState();

@@ -127,7 +127,7 @@ class _SearchApiClient implements SearchApiClient {
   }
 
   @override
-  Future<SearchMalCharacterDetailItem> getPersonInfo(personId) async {
+  Future<SearchMalPersonItem> getPersonInfo(personId) async {
     ArgumentError.checkNotNull(personId, 'personId');
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -141,7 +141,7 @@ class _SearchApiClient implements SearchApiClient {
             extra: _extra,
             baseUrl: baseUrl),
         data: _data);
-    final value = SearchMalCharacterDetailItem.fromJson(_result.data);
+    final value = SearchMalPersonItem.fromJson(_result.data);
     return value;
   }
 
@@ -189,7 +189,7 @@ class _SearchApiClient implements SearchApiClient {
 
   @override
   Future<SearchMalAllGenreItem> getAllGenreItems(type, q, page, status, rated,
-      genre, startDate, endDate, genreExclude, limit, sort) async {
+      genre, startDate, endDate, genreExclude, limit, sort, orderBy) async {
     ArgumentError.checkNotNull(type, 'type');
     ArgumentError.checkNotNull(q, 'q');
     ArgumentError.checkNotNull(page, 'page');
@@ -201,6 +201,7 @@ class _SearchApiClient implements SearchApiClient {
     ArgumentError.checkNotNull(genreExclude, 'genreExclude');
     ArgumentError.checkNotNull(limit, 'limit');
     ArgumentError.checkNotNull(sort, 'sort');
+    ArgumentError.checkNotNull(orderBy, 'orderBy');
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'type': type,
@@ -213,7 +214,8 @@ class _SearchApiClient implements SearchApiClient {
       r'end_date': endDate,
       r'genre_exclude': genreExclude,
       r'limit': limit,
-      r'sort': sort
+      r'sort': sort,
+      r'order_by': orderBy
     };
     final _data = <String, dynamic>{};
     final _result = await _dio.request<Map<String, dynamic>>('/mal/all',

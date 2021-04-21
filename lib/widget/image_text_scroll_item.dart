@@ -1,15 +1,8 @@
-
-
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
-import 'package:kuma_flutter_app/enums/navigation_push_type.dart';
-import 'package:kuma_flutter_app/model/item/animation_deatil_page_item.dart';
-import 'package:kuma_flutter_app/routes/routes.dart';
 import 'package:kuma_flutter_app/widget/custom_text.dart';
 import 'package:kuma_flutter_app/widget/image_item.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class ImageTextScrollItemContainer extends StatelessWidget {
 
@@ -20,29 +13,18 @@ class ImageTextScrollItemContainer extends StatelessWidget {
   final ImageShapeType imageShapeType;
   final int imageDiveRate;
   final BuildContext context;
-  final NavigationPushType pushType;
+  final VoidCallback onTap;
 
-  ImageTextScrollItemContainer({this.context , this.id, this.title, this.image, score , imageShapeType , imageDiveRate , pushType}): this.imageShapeType = imageShapeType ??  ImageShapeType.FLAT , this.imageDiveRate = imageDiveRate ?? 3 , this.pushType = pushType?? NavigationPushType.PUSH , this.score = score ?? "";
+  ImageTextScrollItemContainer({this.context , this.id, this.title, this.image, score , imageShapeType , imageDiveRate ,this.onTap}): this.imageShapeType = imageShapeType ??  ImageShapeType.FLAT ,
+        this.imageDiveRate = imageDiveRate ?? 3 ,
+        this.score = score ?? "";
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width / imageDiveRate;
 
     return GestureDetector(
-      onTap: () {
-        switch(pushType){
-          case  NavigationPushType.PUSH:
-            Navigator.pushNamed(context, Routes.IMAGE_DETAIL,
-                arguments: AnimationDetailPageItem(
-                    id: id, title: title));
-            break;
-          case  NavigationPushType.REPLACE:
-            Navigator.pushReplacementNamed(context, Routes.IMAGE_DETAIL,
-                arguments: AnimationDetailPageItem(
-                    id: id, title: title));
-            break;
-        }
-      },
+      onTap:onTap,
       child: Container(
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.only(left: 8, bottom: 8),

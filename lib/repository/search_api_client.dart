@@ -8,6 +8,7 @@ import 'package:kuma_flutter_app/model/api/search_mal_api_schedule_item.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_search_item.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_season_item.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_character_detail_item.dart';
+import 'package:kuma_flutter_app/model/api/search_mal_person_item.dart';
 import 'package:retrofit/http.dart';
 
 part 'search_api_client.g.dart';
@@ -35,7 +36,7 @@ abstract class SearchApiClient {
   Future<SearchMalCharacterDetailItem> getCharacterInfo(@Path("characterId")String characterId);
 
   @GET("/mal/person/{personId}")
-  Future<SearchMalCharacterDetailItem> getPersonInfo(@Path("personId")String personId);
+  Future<SearchMalPersonItem> getPersonInfo(@Path("personId")String personId);
 
   @GET("/mal/ranking/{type}/{page}/{rank_type}/{limit}")
   Future<SearchRankingApiResult> getRankingItemList(
@@ -50,7 +51,7 @@ abstract class SearchApiClient {
   @GET("/mal/all")
   Future<SearchMalAllGenreItem> getAllGenreItems(@Query("type") String type, @Query("q") String q, @Query("page") String page, @Query("status") String status
       , @Query("rated") String rated, @Query("genre") String genre, @Query("start_date") String startDate,  @Query("end_date") String endDate, @Query("genre_exclude") String genreExclude,
-      @Query("limit") String limit,  @Query("sort") String sort);
+      @Query("limit") String limit,  @Query("sort") String sort , @Query("order_by")String orderBy);
 
   factory SearchApiClient(Dio dio, {String baseUrl}) = _SearchApiClient;
 }

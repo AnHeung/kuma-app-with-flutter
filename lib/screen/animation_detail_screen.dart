@@ -10,6 +10,7 @@ import 'package:kuma_flutter_app/enums/image_shape_type.dart';
 import 'package:kuma_flutter_app/enums/navigation_push_type.dart';
 import 'package:kuma_flutter_app/model/item/animation_deatil_page_item.dart';
 import 'package:kuma_flutter_app/model/item/animation_detail_item.dart';
+import 'package:kuma_flutter_app/routes/routes.dart';
 import 'package:kuma_flutter_app/util/view_utils.dart';
 import 'package:kuma_flutter_app/widget/bottom_character_item_container.dart';
 import 'package:kuma_flutter_app/widget/bottom_video_item_container.dart';
@@ -343,52 +344,13 @@ class AnimationDetailScreen extends StatelessWidget {
                 length: characters.length,
                 builderFunction: (BuildContext context, idx) {
                   final CharacterItem item = characters[idx];
-                  double width = MediaQuery.of(context).size.width / 3;
-                  return GestureDetector(
-                    onTap: ()=>showModalBottomSheet(
-                        backgroundColor: Colors.transparent,
-                        isScrollControlled:true,
-                        context: context,
-                        builder: (_) {
-                          return BlocProvider(create: (_)=>CharacterBloc(repository: context.read<ApiRepository>())..add(CharacterLoad(characterId:item.characterId)), child: BottomCharacterItemContainer(),);
-                        }),
-                    child: Container(
-                      padding: const EdgeInsets.only(left: 8, bottom: 8),
-                      width: width,
-                      child: Column(
-                        children: [
-                          Expanded(
-                            flex: 4,
-                            child: Stack(
-                              children: [
-                                Container(
-                                  child: ImageItem(
-                                    imgRes: item.imageUrl,
-                                    type: ImageShapeType.CIRCLE,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            flex: 2,
-                            child: Container(
-                              alignment: Alignment.topCenter,
-                              margin: const EdgeInsets.only(top: 10),
-                              child: CustomText(
-                                fontWeight: FontWeight.w700,
-                                fontColor: kBlack,
-                                text: item.name,
-                                maxLines: 2,
-                                isDynamic: true,
-                                isEllipsis: true,
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  );
+                  return ImageTextScrollItemContainer(onTap: ()=>showModalBottomSheet(
+                      backgroundColor: Colors.transparent,
+                      isScrollControlled:true,
+                      context: context,
+                      builder: (_) {
+                        return BlocProvider(create: (_)=>CharacterBloc(repository: context.read<ApiRepository>())..add(CharacterLoad(characterId:item.characterId)), child: BottomCharacterItemContainer(),);
+                      }) , title: item.name, imageShapeType: ImageShapeType.CIRCLE, context: context, image: item.imageUrl, imageDiveRate: 3, id: item.characterId, );
                 }),
           )
         : EmptyContainer(
@@ -414,7 +376,9 @@ class AnimationDetailScreen extends StatelessWidget {
                     image: item.image,
                     imageShapeType: ImageShapeType.CIRCLE,
                     imageDiveRate: 3,
-                    pushType: NavigationPushType.REPLACE,
+                    onTap: ()=> Navigator.pushReplacementNamed(context, Routes.IMAGE_DETAIL,
+                        arguments: AnimationDetailPageItem(
+                            id: item.id, title: item.title)),
                   );
                 }),
           )
@@ -442,7 +406,9 @@ class AnimationDetailScreen extends StatelessWidget {
                     imageDiveRate: 3,
                     imageShapeType: ImageShapeType.CIRCLE,
                     image: item.image,
-                    pushType: NavigationPushType.REPLACE,
+                    onTap: ()=>Navigator.pushReplacementNamed(context, Routes.IMAGE_DETAIL,
+                        arguments: AnimationDetailPageItem(
+                            id: item.id, title: item.title)),
                   );
                 }),
           )

@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kuma_flutter_app/bloc/character/character_bloc.dart';
+import 'package:kuma_flutter_app/bloc/person/person_bloc.dart';
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
 import 'package:kuma_flutter_app/enums/navigation_push_type.dart';
+import 'package:kuma_flutter_app/model/item/animation_deatil_page_item.dart';
+import 'package:kuma_flutter_app/repository/api_repository.dart';
+import 'package:kuma_flutter_app/routes/routes.dart';
 import 'package:kuma_flutter_app/util/view_utils.dart';
+import 'package:kuma_flutter_app/widget/bottom_voice_item_container.dart';
 import 'package:kuma_flutter_app/widget/image_scroll_container.dart';
+import 'package:kuma_flutter_app/widget/image_text_row_container.dart';
 import 'package:kuma_flutter_app/widget/image_text_scroll_item.dart';
 import 'package:kuma_flutter_app/widget/loading_indicator.dart';
 import 'package:kuma_flutter_app/widget/title_container.dart';
@@ -51,77 +58,22 @@ class BottomCharacterItemContainer extends StatelessWidget {
             children: [
               Column(
                 children: [
-                  Container(
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                            height: itemHeight,
-                            width: itemHeight,
-                            child: GestureDetector(
-                                onTap: () => imageAlert(
-                                    context,
-                                    characterItem.name,
-                                    [characterItem.imageUrl],
-                                    0),
-                                child: ImageItem(imgRes: characterItem.imageUrl,))),
-                        Expanded(
-                          child: Container(
-                            padding: const EdgeInsets.only(left: 10),
-                            alignment: Alignment.centerLeft,
-                            height: itemHeight,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Expanded(
-                                  flex:1,
-                                  child: Container(
-                                    child: CustomText(
-                                      fontFamily: doHyunFont,
-                                      fontSize: 20.0,
-                                      text: characterItem.name,
-                                      fontColor: kPurple,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  flex:1,
-                                  child: Container(
-                                    alignment: Alignment.centerLeft,
-                                    child: CustomText(
-                                      fontFamily: doHyunFont,
-                                      fontSize: 15.0,
-                                      text: characterItem.nameKanji,
-                                      fontColor: kBlack,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                ),
-                                Visibility(
-                                  visible: characterItem.nicknames.isNotEmpty,
-                                  child: Expanded(
-                                    flex:2,
-                                    child: Container(
-                                      alignment: Alignment.center,
-                                      child: CustomText(
-                                        fontFamily: doHyunFont,
-                                        fontSize: 15.0,
-                                        text: "닉네임 : ${characterItem.nicknames}",
-                                        fontColor: kBlack,
-                                        fontWeight: FontWeight.w700,
-                                        maxLines: 2,
-                                        isEllipsis: true,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                  ImageTextRowContainer(nickName:characterItem.nicknames , imageUrl: characterItem.imageUrl , title: characterItem.name , midName: characterItem.nameKanji , itemHeight: itemHeight ,),
+                  const TitleContainer(title: "사이트"),
+                  Visibility(
+                    visible: characterItem.url.isNotEmpty,
+                    child: GestureDetector(
+                      onTap: ()async =>{
+                      await canLaunch(characterItem.url) ? await launch(characterItem.url) : throw 'Could not launch ${characterItem.url}'
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.only(left: 10),
+                        alignment: Alignment.centerLeft,
+                        child: CustomText(
+                          fontColor: kBlue,
+                          text: characterItem.url,
                         ),
-                      ],
+                      ),
                     ),
                   ),
                   const TitleContainer(title: "소개"),
@@ -148,12 +100,12 @@ class BottomCharacterItemContainer extends StatelessWidget {
                         scrollDirection: Axis.horizontal,
                         children: characterItem.relateAnimation
                             .map((item) => ImageTextScrollItemContainer(
+                                  onTap: ()=> Navigator.pushNamed(context, Routes.IMAGE_DETAIL, arguments: AnimationDetailPageItem(id: item.id, title: item.title)),
                                   title: item.title,
                                   id: item.id,
                                   imageDiveRate: 4,
                                   image: item.image,
                                   context: context,
-                                  pushType: NavigationPushType.PUSH,
                                   imageShapeType: ImageShapeType.CIRCLE,
                                 ))
                             .toList()),
@@ -176,12 +128,18 @@ class BottomCharacterItemContainer extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           children: items
               .map((item) => ImageTextScrollItemContainer(
+            onTap: ()=> showModalBottomSheet(
+                backgroundColor: Colors.transparent,
+                isScrollControlled:true,
+                context: context,
+                builder: (_) {
+                  return BlocProvider(create: (_)=>PersonBloc(repository: context.read<ApiRepository>())..add(PersonLoad(personId:item.id)), child: BottomVoiceItemContainer(personId: item.id,),);
+                }),
             title: item.name,
             id: item.id,
             imageDiveRate: 4,
             image: item.image,
             context: context,
-            pushType: NavigationPushType.PUSH,
             imageShapeType: ImageShapeType.CIRCLE,
           ))
               .toList()),

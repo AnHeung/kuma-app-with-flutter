@@ -12,6 +12,7 @@ import 'package:kuma_flutter_app/model/api/search_mal_api_schedule_item.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_search_item.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_season_item.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_character_detail_item.dart';
+import 'package:kuma_flutter_app/model/api/search_mal_person_item.dart';
 import 'package:kuma_flutter_app/model/api/social_user.dart';
 import 'package:kuma_flutter_app/repository/firebase_client.dart';
 import 'package:kuma_flutter_app/repository/rest_client.dart';
@@ -42,7 +43,7 @@ class ApiRepository {
 
   Future<SearchMalCharacterDetailItem> getCharacterInfo(String characterId) => searchApiClient.getCharacterInfo(characterId);
 
-  Future<SearchMalCharacterDetailItem> getPersonInfo(String personId) => searchApiClient.getPersonInfo(personId);
+  Future<SearchMalPersonItem> getPersonInfo(String personId) => searchApiClient.getPersonInfo(personId);
 
   Future<SearchMalApiCharacterPictureItem> getCharacterPictureList(String characterId) => searchApiClient.getCharacterPictureList(characterId);
 
@@ -57,8 +58,8 @@ class ApiRepository {
           String endDate,
           String genreExclude,
           String limit,
-          String sort}) => searchApiClient.getAllGenreItems(type, q, page, status, rated, genre,
-          startDate, endDate, genreExclude, limit, sort);
+          String sort ,String orderBy}) => searchApiClient.getAllGenreItems(type, q, page, status, rated, genre,
+          startDate, endDate, genreExclude, limit, sort, orderBy);
 
   Future<SearchRankingApiResult> getRankingItemList(
       String type, String page, String rankType, String limit) =>

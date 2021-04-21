@@ -23,7 +23,7 @@ class AnimationPersonItem {
     this.voiceActingRoles,
     this.favoritesRank});
 
-  static const empty = AnimationPersonItem(personId: "" ,familyName :"" , givenName: "" ,birthday:"" , alternateNames:"", about:"",imageUrl:"" , url: "", voiceActingRoles: [],favoritesRank: "");
+  static const empty = AnimationPersonItem(personId: "" ,name: "",familyName :"" , givenName: "" ,birthday:"" , alternateNames:"", about:"",imageUrl:"" , url: "", voiceActingRoles: [],favoritesRank: "");
 }
 
 class RoleItem {
@@ -35,15 +35,19 @@ class RoleItem {
 }
 
 class PersonAnimationItem {
-  String malId;
-  String url;
-  String imageUrl;
-  String name;
+  final String malId;
+  final String url;
+  final String imageUrl;
+  final String name;
+
+  PersonAnimationItem({this.malId, this.url, this.imageUrl, this.name});
 }
 
 class PersonCharacterItem {
-  String characterId;
-  String url;
-  String imageUrl;
-  String name;
+  final String characterId;
+  final String url;
+  final String imageUrl;
+  final String name;
+
+  PersonCharacterItem({this.characterId, this.url, this.imageUrl, this.name});
 }

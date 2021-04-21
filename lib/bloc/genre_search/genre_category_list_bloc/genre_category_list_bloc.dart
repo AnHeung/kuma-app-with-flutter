@@ -70,12 +70,12 @@ class GenreCategoryListBloc extends Bloc<GenreCategoryListEvent, GenreCategoryLi
                   category: result.category,
                   categoryValue: result.categoryValue,
                   clickStatus: CategoryClickStatus.NONE,
-                  genreType:  enumFromString<GenreType>(resultItem.type, GenreType.values))).toList())).toList() , genreData: const GenreData(page: "1"));
+                  genreType:  enumFromString<GenreType>(resultItem.type, GenreType.values))).toList())).toList() , genreData: GenreData(page: "1"));
     }
   }
 
   Stream<GenreCategoryListState> _mapToGenreRemoveAll(GenreCategoryListState state)async*{
-    yield GenreCategoryListState(status: GenreCategoryStatus.success, genreListItems: state.genreListItems.map((item) => item.copyWith(navItems: item.navItems.map((navItem) => navItem.copyWith(clickStatus: CategoryClickStatus.NONE)).toList())).toList() , genreData:const GenreData());
+    yield GenreCategoryListState(status: GenreCategoryStatus.success, genreListItems: state.genreListItems.map((item) => item.copyWith(navItems: item.navItems.map((navItem) => navItem.copyWith(clickStatus: CategoryClickStatus.NONE)).toList())).toList() , genreData: GenreData());
   }
 
 
@@ -102,7 +102,7 @@ class GenreCategoryListBloc extends Bloc<GenreCategoryListEvent, GenreCategoryLi
       return acc;
     });
 
-    return clickNavItem.fold(const GenreData(), (acc, navItem) {
+    return clickNavItem.fold(GenreData(), (acc, navItem) {
 
       GenreData genreData = (acc as GenreData);
 
