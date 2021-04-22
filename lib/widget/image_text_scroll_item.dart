@@ -1,30 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
+import 'package:kuma_flutter_app/model/item/base_scroll_item.dart';
 import 'package:kuma_flutter_app/widget/custom_text.dart';
 import 'package:kuma_flutter_app/widget/image_item.dart';
 
 class ImageTextScrollItemContainer extends StatelessWidget {
 
-  final String id;
-  final String title;
-  final String image;
-  final String score;
+  final BaseScrollItem baseScrollItem;
+  final BuildContext context;
   final ImageShapeType imageShapeType;
   final int imageDiveRate;
-  final BuildContext context;
-  final VoidCallback onTap;
 
-  ImageTextScrollItemContainer({this.context , this.id, this.title, this.image, score , imageShapeType , imageDiveRate ,this.onTap}): this.imageShapeType = imageShapeType ??  ImageShapeType.FLAT ,
-        this.imageDiveRate = imageDiveRate ?? 3 ,
-        this.score = score ?? "";
+  ImageTextScrollItemContainer({this.context ,this.baseScrollItem, imageShapeType , imageDiveRate}) : this.imageShapeType = imageShapeType?? ImageShapeType.CIRCLE , this.imageDiveRate = imageDiveRate ?? 3;
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width / imageDiveRate;
 
     return GestureDetector(
-      onTap:onTap,
+      onTap:baseScrollItem.onTap,
       child: Container(
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.only(left: 8, bottom: 8),
@@ -37,11 +32,11 @@ class ImageTextScrollItemContainer extends StatelessWidget {
                     children: [
                       Container(
                         child: ImageItem(
-                          imgRes: image,
+                          imgRes: baseScrollItem.image,
                           type: imageShapeType,
                         ),
                       ),
-                      score.isNotEmpty ? Container(
+                      baseScrollItem.score.isNotEmpty ? Container(
                         padding: const EdgeInsets.only(left: 5, bottom: 5),
                           alignment: AlignmentDirectional.bottomStart,
                           child:  Container(
@@ -49,7 +44,7 @@ class ImageTextScrollItemContainer extends StatelessWidget {
                               height: 30,
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
-                                border:Border.all(width: 2, color: (_setIndicatorColor(score : (double.parse(score)) * 10))),
+                                border:Border.all(width: 2, color: (_setIndicatorColor(score : (double.parse(baseScrollItem.score)) * 10))),
                                 borderRadius: BorderRadius.circular(30),
                                 color: kBlack,
                               ),
@@ -57,7 +52,7 @@ class ImageTextScrollItemContainer extends StatelessWidget {
                                 fontFamily: doHyunFont,
                                 fontWeight: FontWeight.w700,
                                 fontColor: kWhite,
-                                text: "${((double.parse(score)) * 10).toStringAsFixed(0)}%",
+                                text: "${((double.parse(baseScrollItem.score)) * 10).toStringAsFixed(0)}%",
                                 fontSize: 10.0,
                               ),
                             ),
@@ -71,9 +66,10 @@ class ImageTextScrollItemContainer extends StatelessWidget {
                     alignment: Alignment.topCenter,
                     margin: const EdgeInsets.only(top: 10),
                     child: CustomText(
+                      textAlign: TextAlign.center,
                       fontWeight: FontWeight.w700,
                       fontColor: kBlack,
-                      text: title,
+                      text: baseScrollItem.title,
                       maxLines: 2,
                       isDynamic: true,
                       isEllipsis: true,

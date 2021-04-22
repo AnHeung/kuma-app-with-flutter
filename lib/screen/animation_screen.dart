@@ -8,6 +8,7 @@ import 'package:kuma_flutter_app/enums/image_shape_type.dart';
 import 'package:kuma_flutter_app/model/item/animation_deatil_page_item.dart';
 import 'package:kuma_flutter_app/model/item/animation_main_item.dart';
 import 'package:kuma_flutter_app/model/item/animation_schedule_item.dart';
+import 'package:kuma_flutter_app/model/item/base_scroll_item.dart';
 import 'package:kuma_flutter_app/routes/routes.dart';
 import 'package:kuma_flutter_app/screen/animation_schedule_screen.dart';
 import 'package:kuma_flutter_app/util/navigator_util.dart';
@@ -19,6 +20,7 @@ import 'package:kuma_flutter_app/widget/loading_indicator.dart';
 import 'package:kuma_flutter_app/widget/more_container.dart';
 import 'package:kuma_flutter_app/widget/refresh_container.dart';
 import 'package:kuma_flutter_app/widget/title_container.dart';
+import 'package:kuma_flutter_app/widget/title_image_more_container.dart';
 
 import '../bloc/animation_schedule/animation_schedule_bloc.dart';
 import '../util/string_util.dart';
@@ -135,7 +137,7 @@ class _AnimationScreenState extends State<AnimationScreen> {
   Widget _buildScheduleItems({BuildContext context}) {
 
     return Container(
-      padding: const EdgeInsets.only(top: 20, left: 18, right: 20),
+      padding: const EdgeInsets.only(top: 20, left: 10, right: 10),
       child: Column(
         children: [
           Row(
@@ -152,7 +154,7 @@ class _AnimationScreenState extends State<AnimationScreen> {
   }
 
   _buildScheduleIndicator(String currentDay) {
-    final double itemWidth = MediaQuery.of(context).size.width / 7 - 6;
+    final double itemWidth = MediaQuery.of(context).size.width / 7 - 4;
     return Container(
             height: 80,
             child: Row(
@@ -192,11 +194,13 @@ class _AnimationScreenState extends State<AnimationScreen> {
             children: scheduleItems
                 .map((schedule) =>
                 ImageTextScrollItemContainer(context: context,
-                  onTap:  ()=> Navigator.pushNamed(context, Routes.IMAGE_DETAIL, arguments: AnimationDetailPageItem(id: schedule.id, title: schedule.title)),
-                  image: schedule.image,
-                  id: schedule.id.toString(),
-                  title: schedule.title,
-                  imageDiveRate: 4,))
+                    imageShapeType: ImageShapeType.FLAT,
+                    imageDiveRate: 4,
+                  baseScrollItem: BaseScrollItem(onTap:  ()=> Navigator.pushNamed(context, Routes.IMAGE_DETAIL, arguments: AnimationDetailPageItem(id: schedule.id, title: schedule.title)),
+                    image: schedule.image,
+                    id: schedule.id.toString(),
+                    title: schedule.title,
+                    )),)
                 .toList()),
       );
   }
@@ -282,7 +286,7 @@ class _AnimationScreenState extends State<AnimationScreen> {
               padding: EdgeInsets.zero,
               scrollDirection: Axis.horizontal,
               children: item.list
-                  .map((rankItem) => ImageTextScrollItemContainer(context: context ,title: rankItem.title , id: rankItem.id.toString(), image: rankItem.image, score : rankItem.score , imageShapeType: ImageShapeType.FLAT,imageDiveRate: 3, onTap: ()=> Navigator.pushNamed(context, Routes.IMAGE_DETAIL, arguments: AnimationDetailPageItem(id: rankItem.id, title: rankItem.title)),))
+                  .map((rankItem) => ImageTextScrollItemContainer( imageShapeType: ImageShapeType.FLAT,imageDiveRate: 3,context: context ,baseScrollItem: BaseScrollItem(title: rankItem.title , id: rankItem.id.toString(), image: rankItem.image, score : rankItem.score , onTap: ()=> Navigator.pushNamed(context, Routes.IMAGE_DETAIL, arguments: AnimationDetailPageItem(id: rankItem.id, title: rankItem.title)),)),)
                   .toList(),
             ),
           ),

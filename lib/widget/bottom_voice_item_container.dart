@@ -5,6 +5,7 @@ import 'package:kuma_flutter_app/bloc/person/person_bloc.dart';
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
 import 'package:kuma_flutter_app/model/item/animation_deatil_page_item.dart';
 import 'package:kuma_flutter_app/model/item/animation_person_item.dart';
+import 'package:kuma_flutter_app/model/item/base_scroll_item.dart';
 import 'package:kuma_flutter_app/routes/routes.dart';
 import 'package:kuma_flutter_app/util/view_utils.dart';
 import 'package:kuma_flutter_app/widget/image_scroll_container.dart';
@@ -12,6 +13,7 @@ import 'package:kuma_flutter_app/widget/image_text_row_container.dart';
 import 'package:kuma_flutter_app/widget/image_text_scroll_item.dart';
 import 'package:kuma_flutter_app/widget/loading_indicator.dart';
 import 'package:kuma_flutter_app/widget/title_container.dart';
+import 'package:kuma_flutter_app/widget/title_image_more_container.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../app_constants.dart';
@@ -54,13 +56,21 @@ class BottomVoiceItemContainer extends StatelessWidget {
             child: ListView(scrollDirection: Axis.vertical, children: [
               Column(
                 children: [
-                  ImageTextRowContainer(title: personItem.name, imageUrl: personItem.imageUrl, itemHeight: itemHeight, midName: "${personItem.familyName} ${personItem.givenName}",nickName: personItem.alternateNames,),
+                  ImageTextRowContainer(
+                    title: personItem.name,
+                    imageUrl: personItem.imageUrl,
+                    itemHeight: itemHeight,
+                    midName: "${personItem.familyName} ${personItem.givenName}",
+                    nickName: personItem.alternateNames,
+                  ),
                   const TitleContainer(title: "사이트"),
                   Visibility(
                     visible: personItem.url.isNotEmpty,
                     child: GestureDetector(
-                      onTap: ()async =>{
-                        await canLaunch(personItem.url) ? await launch(personItem.url) : throw 'Could not launch ${personItem.url}'
+                      onTap: () async => {
+                        await canLaunch(personItem.url)
+                            ? await launch(personItem.url)
+                            : throw 'Could not launch ${personItem.url}'
                       },
                       child: Container(
                         padding: const EdgeInsets.only(left: 10),
@@ -80,40 +90,36 @@ class BottomVoiceItemContainer extends StatelessWidget {
                       text: personItem.about,
                     ),
                   ),
-                  const TitleContainer(title: "관련 애니"),
-                  Container(
+                  TitleImageMoreContainer(
+                    categoryTitle: kAnimationDetailRelateTitle,
                     height: scrollItemHeight,
-                    child: ListView(
-                        padding: EdgeInsets.zero,
-                        scrollDirection: Axis.horizontal,
-                        children: personItem.voiceActingRoles
-                            .map((item) => ImageTextScrollItemContainer(
-                          onTap: ()=> Navigator.pushNamed(context, Routes.IMAGE_DETAIL, arguments: AnimationDetailPageItem(id: item.animationItem.malId, title: item.animationItem.name)),
-                          title: item.animationItem.name,
-                          id: item.animationItem.malId,
-                          imageDiveRate: 4,
-                          image: item.animationItem.imageUrl,
-                          context: context,
-                          imageShapeType: ImageShapeType.CIRCLE,
-                        ))
-                            .toList()),
+                    imageDiveRate: 4,
+                    imageShapeType: ImageShapeType.CIRCLE,
+                    baseItemList: personItem.voiceActingRoles
+                        .map((data) => BaseScrollItem(
+                              id: data.animationItem.malId,
+                              title: data.animationItem.name,
+                              image: data.animationItem.imageUrl,
+                              onTap: () => Navigator.pushReplacementNamed(
+                                  context, Routes.IMAGE_DETAIL,
+                                  arguments: AnimationDetailPageItem(
+                                      id: data.animationItem.malId,
+                                      title: data.animationItem.name)),
+                            ))
+                        .toList(),
                   ),
-                  const TitleContainer(title: "캐릭터"),
-                  Container(
+                  TitleImageMoreContainer(
+                    categoryTitle: "맡은 캐릭터",
                     height: scrollItemHeight,
-                    child: ListView(
-                        padding: EdgeInsets.zero,
-                        scrollDirection: Axis.horizontal,
-                        children: personItem.voiceActingRoles
-                            .map((item) => ImageTextScrollItemContainer(
-                          title: item.characterItem.name,
-                          id: item.characterItem.characterId,
-                          imageDiveRate: 4,
-                          image: item.characterItem.imageUrl,
-                          context: context,
-                          imageShapeType: ImageShapeType.CIRCLE,
-                        ))
-                            .toList()),
+                      imageDiveRate: 4,
+                      imageShapeType: ImageShapeType.CIRCLE,
+                    baseItemList: personItem.voiceActingRoles
+                        .map((data) => BaseScrollItem(
+                            id: data.characterItem.characterId,
+                            title: data.characterItem.name,
+                            image: data.characterItem.imageUrl,
+                            ))
+                        .toList(),
                   ),
                 ],
               ),

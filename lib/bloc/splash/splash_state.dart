@@ -1,26 +1,16 @@
 part of 'splash_bloc.dart';
 
+enum SplashStatus {initial , loading , failure , success}
+
 @immutable
-abstract class SplashState extends Equatable{
-  @override
-  List<Object> get props =>[];
+class SplashState extends Equatable{
 
- const SplashState();
-
-}
-
-class SplashInit extends SplashState {}
-
-class SplashLoadInProgress extends SplashState {}
-
-
-class SplashLoadSuccess extends SplashState {
-
+  final SplashStatus status;
   final bool isAppFirstLaunch;
 
-  const SplashLoadSuccess({this.isAppFirstLaunch});
+  @override
+  List<Object> get props =>[status];
+
+ const SplashState({this.status = SplashStatus.initial , this.isAppFirstLaunch = false});
+
 }
-
-class SplashLoadFailure extends SplashState {}
-
-class Splash extends SplashState {}

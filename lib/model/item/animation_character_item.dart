@@ -1,6 +1,7 @@
 import 'package:kuma_flutter_app/model/item/animation_detail_item.dart';
 
 class AnimationCharacterItem {
+
   final String characterId;
   final String name;
   final String nameKanji;

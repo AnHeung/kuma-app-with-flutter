@@ -3,10 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/search/search_bloc.dart';
 import 'package:kuma_flutter_app/bloc/search_history/search_history_bloc.dart';
+import 'package:kuma_flutter_app/enums/image_shape_type.dart';
 import 'package:kuma_flutter_app/model/item/animation_search_item.dart';
+import 'package:kuma_flutter_app/model/item/base_scroll_item.dart';
 import 'package:kuma_flutter_app/routes/routes.dart';
 import 'package:kuma_flutter_app/util/view_utils.dart';
 import 'package:kuma_flutter_app/widget/custom_text.dart';
+import 'package:kuma_flutter_app/widget/inner_text_grid_container.dart';
 import 'package:kuma_flutter_app/widget/loading_indicator.dart';
 import 'package:kuma_flutter_app/widget/search_history_item.dart';
 import 'package:kuma_flutter_app/widget/search_image_item.dart';
@@ -144,12 +147,29 @@ class _SearchScreenState extends State<SearchScreen> {
     return BlocBuilder<SearchHistoryBloc, SearchHistoryState>(
       buildWhen: (prev, cur) => cur is SearchHistoryLoadSuccess,
       builder: (context, state) {
-        searchHistoryList =
-            (state is SearchHistoryLoadSuccess) ? state.list : [];
+        searchHistoryList = (state is SearchHistoryLoadSuccess) ? state.list : [];
         return Container(
           margin: const EdgeInsets.only(top: 30),
-          child: SearchHistoryItem(
-            list: searchHistoryList,
+          child: InnerTextGridContainer(
+            imageShapeType: ImageShapeType.CIRCLE,
+            gridCount: 3,
+            list: searchHistoryList
+                .map((item) => BaseScrollItem(
+                    id: item.id,
+                    title: item.title,
+                    image: item.image,
+                    onTap: () {
+                      BlocProvider.of<SearchHistoryBloc>(context).add(
+                          SearchHistoryWrite(
+                              searchItem: AnimationSearchItem(
+                                  id: item.id,
+                                  image: item.image,
+                                  title: item.title)));
+                      Navigator.pushNamed(context, Routes.IMAGE_DETAIL,
+                          arguments: AnimationDetailPageItem(
+                              id: item.id.toString(), title: item.title));
+                    }))
+                .toList(),
           ),
         );
       },

@@ -18,18 +18,18 @@ import 'package:kuma_flutter_app/screen/onboarding/widgets/onboarding_page_indic
 import 'package:kuma_flutter_app/screen/onboarding/widgets/ripple.dart';
 
 
-class Onboarding extends StatefulWidget {
+class OnBoarding extends StatefulWidget {
   final double screenHeight;
 
-  const Onboarding({
+  const  OnBoarding({
     @required this.screenHeight,
   }) : assert(screenHeight != null);
 
   @override
-  _OnboardingState createState() => _OnboardingState();
+  _OnBoardingState createState() => _OnBoardingState();
 }
 
-class _OnboardingState extends State<Onboarding> with TickerProviderStateMixin {
+class _OnBoardingState extends State<OnBoarding> with TickerProviderStateMixin {
   AnimationController _cardsAnimationController;
   AnimationController _pageIndicatorAnimationController;
   AnimationController _rippleAnimationController;

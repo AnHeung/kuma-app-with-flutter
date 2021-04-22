@@ -347,7 +347,7 @@ class _GenreGridViewState extends State<GenreGridView> {
               ),
             ),
           )
-        : Expanded(
+        : const Expanded(
             child: EmptyContainer(
               title: "검색 목록 없음",
             ),

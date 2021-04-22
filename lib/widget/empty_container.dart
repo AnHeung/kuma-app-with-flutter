@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 
 class EmptyContainer extends StatelessWidget {
 
-  String title;
-  double size;
+  final String title;
+  final double size;
 
-  EmptyContainer({this.title, this.size});
+  const EmptyContainer({this.title, this.size});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: size,
+      width: double.infinity,
       height: size,
       child: Center(
         child: Text(title , style: const TextStyle(fontSize: 20.0 ,color: Colors.grey ,fontWeight: FontWeight.bold),),

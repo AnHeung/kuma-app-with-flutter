@@ -198,7 +198,7 @@ class SettingScreen extends StatelessWidget {
                     ],
                   );
                 }
-                return EmptyContainer(
+                return const EmptyContainer(
                   title: "설정값 불러오기 실패",
                 );
               },

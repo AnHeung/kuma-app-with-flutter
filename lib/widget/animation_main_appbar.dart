@@ -112,7 +112,7 @@ class AnimationMainAppbar extends StatelessWidget {
         }else if(seasonState is AnimationSeasonLoadFailure){
           return RefreshContainer(callback: ()=>BlocProvider.of<AnimationSeasonBloc>(context).add(AnimationSeasonLoad(limit: "7")),);
         } else{
-          return EmptyContainer(title: '자료없음');
+          return const EmptyContainer(title: '자료없음');
 
         }
       },

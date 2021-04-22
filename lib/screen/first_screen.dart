@@ -10,7 +10,7 @@ class _FirstScreenState extends State<FirstScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Onboarding(screenHeight: MediaQuery.of(context).size.height,),
+      body: OnBoarding(screenHeight: MediaQuery.of(context).size.height,),
     );
   }
 }

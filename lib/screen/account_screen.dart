@@ -205,7 +205,7 @@ class AccountScreen extends StatelessWidget {
               Navigator.pushNamedAndRemoveUntil(
                   context, Routes.HOME, (route) => false);
             }
-            return EmptyContainer(
+            return const EmptyContainer(
               title: "로딩 안됨.",
             );
           },

@@ -15,7 +15,7 @@ import '../model/item/animation_deatil_page_item.dart';
 class SearchHistoryItem extends StatelessWidget {
   final List<AnimationSearchItem> list;
 
-  SearchHistoryItem({this.list});
+  const SearchHistoryItem({this.list});
 
   @override
   Widget build(BuildContext context) {

@@ -6,8 +6,9 @@ class MoreContainer extends StatelessWidget {
 
   final VoidCallback onClick;
   final double fontSize;
+  final double margin;
 
-  MoreContainer({this.onClick, fontSize}) : this.fontSize = fontSize;
+  MoreContainer({this.onClick, fontSize , margin}) : this.fontSize = fontSize , this.margin = margin ?? 10;
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +16,7 @@ class MoreContainer extends StatelessWidget {
       onTap: onClick,
       behavior: HitTestBehavior.translucent,
       child: Container(
+        margin: const EdgeInsets.only(right: 10),
         child: CustomText(
           text: "더보기 > ",
           fontFamily: doHyunFont,

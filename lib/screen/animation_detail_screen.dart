@@ -7,9 +7,9 @@ import 'package:kuma_flutter_app/bloc/animation_detail/animation_detail_bloc.dar
 import 'package:kuma_flutter_app/bloc/character/character_bloc.dart';
 import 'package:kuma_flutter_app/enums/detail_animation_actions.dart';
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
-import 'package:kuma_flutter_app/enums/navigation_push_type.dart';
 import 'package:kuma_flutter_app/model/item/animation_deatil_page_item.dart';
 import 'package:kuma_flutter_app/model/item/animation_detail_item.dart';
+import 'package:kuma_flutter_app/model/item/base_scroll_item.dart';
 import 'package:kuma_flutter_app/routes/routes.dart';
 import 'package:kuma_flutter_app/util/view_utils.dart';
 import 'package:kuma_flutter_app/widget/bottom_character_item_container.dart';
@@ -18,11 +18,10 @@ import 'package:kuma_flutter_app/widget/custom_text.dart';
 import 'package:kuma_flutter_app/widget/empty_container.dart';
 import 'package:kuma_flutter_app/widget/image_item.dart';
 import 'package:kuma_flutter_app/widget/image_scroll_container.dart';
-import 'package:kuma_flutter_app/widget/image_text_scroll_item.dart';
 import 'package:kuma_flutter_app/widget/loading_indicator.dart';
-import 'package:kuma_flutter_app/widget/more_container.dart';
 import 'package:kuma_flutter_app/widget/refresh_container.dart';
 import 'package:kuma_flutter_app/widget/title_container.dart';
+import 'package:kuma_flutter_app/widget/title_image_more_container.dart';
 import 'package:kuma_flutter_app/widget/youtube_player.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
@@ -37,8 +36,6 @@ class AnimationDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-
     final AnimationDetailPageItem infoItem =
         ModalRoute.of(context).settings.arguments;
     final String id = infoItem.id;
@@ -94,45 +91,84 @@ class AnimationDetailScreen extends StatelessWidget {
                 _buildDetailTopImageContainer(
                     context: context, detailItem: detailItem),
                 _buildDetailTopYoutubeContainer(
-                    context: context, selectVideoUrl: detailItem.selectVideoUrl),
+                    context: context,
+                    selectVideoUrl: detailItem.selectVideoUrl),
                 _buildDetailTopContainer(
                     context: context, detailItem: detailItem),
-                _buildCharacterTitleContainer(
-                    context: context, characters: detailItem.characterItems),
-                _buildTopCharacterContainer(characters: detailItem.characterItems),
+                TitleImageMoreContainer(
+                  imageShapeType: ImageShapeType.CIRCLE,
+                  imageDiveRate: 3,
+                  categoryTitle: kAnimationDetailCharacterTitle,
+                  height: kAnimationImageContainerHeight,
+                  baseItemList: detailItem.characterItems
+                      .map((data) => BaseScrollItem(
+                            id: data.characterId,
+                            title: data.name,
+                            image: data.imageUrl,
+                            onTap: () => showModalBottomSheet(
+                                backgroundColor: Colors.transparent,
+                                isScrollControlled: true,
+                                context: context,
+                                builder: (_) {
+                                  return BlocProvider(
+                                    create: (_) => CharacterBloc(
+                                        repository:
+                                            context.read<ApiRepository>())
+                                      ..add(CharacterLoad(
+                                          characterId: data.characterId)),
+                                    child: BottomCharacterItemContainer(),
+                                  );
+                                }),
+                          ))
+                      .toList(),
+                ),
                 _buildDetailTopSynopsisContainer(
                     context: context, detailItem: detailItem),
-              const TitleContainer(title: kAnimationDetailImageTitle),
-                ImageScrollItemContainer(title :"관련 이미지", images: detailItem.pictures),
-              const TitleContainer(title: kAnimationDetailRelateTitle),
-                _buildRelateContainer(relatedItem: detailItem.relatedAnime),
-              const TitleContainer(title: kAnimationDetailRecommendTitle),
-                _buildRecommendationContainer(
-                    recommendationItems: detailItem.recommendationAnimes)
+                const TitleContainer(title: kAnimationDetailImageTitle),
+                ImageScrollItemContainer(
+                    title: "관련 이미지", images: detailItem.pictures),
+                TitleImageMoreContainer(
+                  categoryTitle: kAnimationDetailRelateTitle,
+                  height: kAnimationImageContainerHeight,
+                  imageDiveRate: 3,
+                  imageShapeType: ImageShapeType.CIRCLE,
+                  baseItemList: detailItem.relatedAnime
+                      .map((data) => BaseScrollItem(
+                            id: data.id,
+                            title: data.title,
+                            image: data.image,
+                            onTap: () => Navigator.pushReplacementNamed(
+                                context, Routes.IMAGE_DETAIL,
+                                arguments: AnimationDetailPageItem(
+                                    id: data.id, title: data.title)),
+                          ))
+                      .toList(),
+                ),
+                TitleImageMoreContainer(
+                  categoryTitle: kAnimationDetailRecommendTitle,
+                  height: kAnimationImageContainerHeight,
+                  imageDiveRate: 3,
+                  imageShapeType: ImageShapeType.CIRCLE,
+                  baseItemList: detailItem.recommendationAnimes
+                      .map((data) => BaseScrollItem(
+                          id: data.id,
+                          title: data.title,
+                          image: data.image,
+                          onTap: () => Navigator.pushReplacementNamed(
+                              context, Routes.IMAGE_DETAIL,
+                              arguments: AnimationDetailPageItem(
+                                  id: data.id, title: data.title)),
+                          ))
+                      .toList(),
+                ),
               ])
-        : EmptyContainer(
-            title: "상세 페이지 내용 없음",
+        : const EmptyContainer(
+            title: "",
           );
-  }
-
-  Widget _buildCharacterTitleContainer(
-      {BuildContext context, List<CharacterItem> characters}) {
-
-    return Container(
-      padding: const EdgeInsets.only(right: 10),
-      child: Row(
-        children: [
-          const TitleContainer(title: kAnimationDetailCharacterTitle,),
-          const Spacer(),
-          MoreContainer(onClick: ()=>print('test'),),
-        ],
-      ),
-    );
   }
 
   Widget _buildDetailTopYoutubeContainer(
       {BuildContext context, String selectVideoUrl}) {
-
     final GlobalKey playerKey = GlobalKey();
 
     return Visibility(
@@ -310,7 +346,8 @@ class AnimationDetailScreen extends StatelessWidget {
                 Expanded(
                   flex: 1,
                   child: GestureDetector(
-                    onTap: () => imageAlert(context, detailItem.title, [detailItem.image], 0),
+                    onTap: () => imageAlert(
+                        context, detailItem.title, [detailItem.image], 0),
                     child: Container(
                       height: topHeight,
                       child: Hero(
@@ -329,93 +366,6 @@ class AnimationDetailScreen extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  Widget _buildTopCharacterContainer({List<CharacterItem> characters}) {
-    return characters.isNotEmpty
-        ? Container(
-            alignment: Alignment.centerLeft,
-            padding: const EdgeInsets.only(
-              top: 10,
-            ),
-            child: _getPictureList(
-                height: 200,
-                margin: 10,
-                length: characters.length,
-                builderFunction: (BuildContext context, idx) {
-                  final CharacterItem item = characters[idx];
-                  return ImageTextScrollItemContainer(onTap: ()=>showModalBottomSheet(
-                      backgroundColor: Colors.transparent,
-                      isScrollControlled:true,
-                      context: context,
-                      builder: (_) {
-                        return BlocProvider(create: (_)=>CharacterBloc(repository: context.read<ApiRepository>())..add(CharacterLoad(characterId:item.characterId)), child: BottomCharacterItemContainer(),);
-                      }) , title: item.name, imageShapeType: ImageShapeType.CIRCLE, context: context, image: item.imageUrl, imageDiveRate: 3, id: item.characterId, );
-                }),
-          )
-        : EmptyContainer(
-            title: "등장인물 정보 없음",
-            size: 100,
-          );
-  }
-
-  Widget _buildRelateContainer({List<RelatedAnimeItem> relatedItem}) {
-    return relatedItem.isNotEmpty
-        ? Padding(
-            padding: const EdgeInsets.only(top: 10),
-            child: _getPictureList(
-                height: 200,
-                margin: 10,
-                length: relatedItem.length,
-                builderFunction: (BuildContext context, idx) {
-                  final RelatedAnimeItem item = relatedItem[idx];
-                  return ImageTextScrollItemContainer(
-                    context: context,
-                    id: item.id.toString(),
-                    title: item.title,
-                    image: item.image,
-                    imageShapeType: ImageShapeType.CIRCLE,
-                    imageDiveRate: 3,
-                    onTap: ()=> Navigator.pushReplacementNamed(context, Routes.IMAGE_DETAIL,
-                        arguments: AnimationDetailPageItem(
-                            id: item.id, title: item.title)),
-                  );
-                }),
-          )
-        : EmptyContainer(
-            title: "관련 애니 없음",
-            size: 100,
-          );
-  }
-
-  Widget _buildRecommendationContainer(
-      {List<RecommendationAnimeItem> recommendationItems}) {
-    return recommendationItems.isNotEmpty
-        ? Padding(
-            padding: const EdgeInsets.only(top: 10, bottom: 10),
-            child: _getPictureList(
-                height: 200,
-                margin: 10,
-                length: recommendationItems.length,
-                builderFunction: (BuildContext context, idx) {
-                  final RecommendationAnimeItem item = recommendationItems[idx];
-                  return ImageTextScrollItemContainer(
-                    context: context,
-                    title: item.title,
-                    id: item.id.toString(),
-                    imageDiveRate: 3,
-                    imageShapeType: ImageShapeType.CIRCLE,
-                    image: item.image,
-                    onTap: ()=>Navigator.pushReplacementNamed(context, Routes.IMAGE_DETAIL,
-                        arguments: AnimationDetailPageItem(
-                            id: item.id, title: item.title)),
-                  );
-                }),
-          )
-        : EmptyContainer(
-            title: "추천 애니 없음",
-            size: 100,
-          );
   }
 
   Widget _buildLikeIndicator(
@@ -518,25 +468,6 @@ class AnimationDetailScreen extends StatelessWidget {
             isEllipsis: true,
             isDynamic: true,
           )),
-    );
-  }
-
-  Widget _getPictureList(
-      {double height, double margin, int length, Function builderFunction}) {
-    return Container(
-      height: height,
-      child: ListView.separated(
-          padding: EdgeInsets.zero,
-          separatorBuilder: (BuildContext context, int index) {
-            return SizedBox(
-              width: margin,
-            );
-          },
-          physics: const BouncingScrollPhysics(),
-          scrollDirection: Axis.horizontal,
-          itemCount: length,
-          shrinkWrap: true,
-          itemBuilder: builderFunction),
     );
   }
 }
