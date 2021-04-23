@@ -73,7 +73,7 @@ class _LoginDialogState extends State<LoginDialog> {
                   onPressed: () {
                     if (_formKey.currentState.validate()) {
                       String id = idController.text.trim();
-                      String pw = idController.text.trim();
+                      String pw = pwController.text.trim();
                       widget.bloc.add(DirectLogin(
                           userData: LoginUserData(
                               userName: id,

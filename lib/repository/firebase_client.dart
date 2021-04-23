@@ -1,10 +1,13 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/login/login_bloc.dart';
 import 'package:kuma_flutter_app/enums/login_status.dart';
 import 'package:kuma_flutter_app/enums/register_status.dart';
+import 'package:kuma_flutter_app/model/api/firebase_user_item.dart';
 import 'package:kuma_flutter_app/model/api/social_user.dart';
 import 'package:kuma_flutter_app/repository/email_client.dart';
 import 'package:kuma_flutter_app/repository/google_client.dart';
@@ -14,58 +17,57 @@ import 'package:kuma_flutter_app/util/sharepref_util.dart';
 
 class FirebaseClient {
   LoginClient loginClient;
-  FirebaseAuth _firebaseAuth;
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final FirebaseFirestore firebaseFireStore = FirebaseFirestore.instance;
 
-  FirebaseClient({FirebaseAuth firebaseAuth})
-      : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance;
+  get user => FirebaseAuth.instance.currentUser;
 
-  get user {
-    return FirebaseAuth.instance.currentUser;
-  }
-
-  Stream<User> get userStream {
-    return FirebaseAuth.instance.authStateChanges();
-  }
+  Stream<User> get userStream => FirebaseAuth.instance.authStateChanges();
 
   Future<Map<LoginStatus, LoginUserData>> login(
       {LoginType type, BuildContext context}) async {
     LoginUserData userData = LoginUserData.empty;
 
-      switch (type) {
-        case LoginType.KAKAO:
-          loginClient = KakaoClient();
-          break;
-        case LoginType.GOOGLE:
-          loginClient = GoogleClient();
-          break;
-        case LoginType.EMAIL:
-          loginClient = EmailClient();
-          break;
-        default:
-          return {LoginStatus.Failure: userData};
-      }
-      userData = await loginClient.login();
-      if (userData == null) return {LoginStatus.Failure: userData};
-      if (userData != null && userData.uniqueId == null && userData.loginType == LoginType.EMAIL) return {LoginStatus.NeedLoginScreen: userData};
+    switch (type) {
+      case LoginType.KAKAO:
+        loginClient = KakaoClient();
+        break;
+      case LoginType.GOOGLE:
+        loginClient = GoogleClient();
+        break;
+      case LoginType.EMAIL:
+        loginClient = EmailClient();
+        break;
+      default:
+        return {LoginStatus.Failure: userData};
+    }
+    userData = await loginClient.login();
+    if (userData == null) return {LoginStatus.Failure: userData};
+    if (userData != null &&
+        userData.uniqueId == null &&
+        userData.loginType == LoginType.EMAIL)
+      return {LoginStatus.NeedLoginScreen: userData};
 
-      return await firebaseSignIn(userData: userData);
+    return await firebaseSignIn(userData: userData);
   }
 
-  Future<Map<LoginStatus, LoginUserData>> firebaseSignIn({LoginUserData userData}) async {
+  Future<Map<LoginStatus, LoginUserData>> firebaseSignIn(
+      {LoginUserData userData}) async {
     try {
-      await _firebaseAuth
+      return await _firebaseAuth
           .signInWithEmailAndPassword(
               email: userData.email, password: userData.uniqueId)
-          .then((result) =>
-              result.user.updateProfile(displayName: userData.userName))
-          .then((result) async => await saveUserData(userData: userData))
+          .then((result) => result.user.updateProfile(displayName: userData.userName))
+          .then((result) async{
+            await saveUserData(userData: userData);
+            return {LoginStatus.LoginSuccess: userData};
+          })
           .catchError((e) {
         var errorCode = e.code;
         var errMsg = e.message;
         print('errorCode :$errorCode errMsg : $errMsg');
         throw FirebaseAuthException(message: errMsg, code: errorCode);
       });
-      return {LoginStatus.LoginSuccess: userData};
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         print('해당 유저가 존재하지 않습니다. 회원가입하세요');
@@ -154,14 +156,23 @@ class FirebaseClient {
 
   Future<RegisterStatus> register({LoginUserData userData}) async {
     try {
-      await _firebaseAuth
+      return await _firebaseAuth
           .createUserWithEmailAndPassword(
               email: userData.email, password: userData.uniqueId)
           .then((result) {
         result.user.updateProfile(displayName: userData.userName);
+      }).then((_) async {
+        await saveUserItem(
+            userId: userData.email,
+            userItem: const FirebaseUserItem(
+                isAutoScroll: false,
+                rankType: kBaseRankItem,
+                homeItemCount: KBaseHomeItemCount));
+       return RegisterStatus.RegisterComplete;
+      }).catchError((e) {
+        print(e);
+        return RegisterStatus.RegisterFailure;
       });
-
-      return RegisterStatus.RegisterComplete;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         print('비밀번호가 너무 짧습니다.');
@@ -176,6 +187,35 @@ class FirebaseClient {
     } catch (e) {
       print("register Exception $e");
       return RegisterStatus.RegisterFailure;
+    }
+  }
+
+  Future<FirebaseUserItem> getUserItem(String userId) async {
+    DocumentSnapshot userData = await firebaseFireStore.collection("users").doc(userId).get();
+    userData.data();
+  }
+
+  Future<bool> deleteUserData({String userId})async {
+    try {
+      await firebaseFireStore.collection("users").doc(userId).delete();
+      return true;
+    } catch (e) {
+      print("deleteUserData error ${e}");
+      return false;
+    }
+  }
+
+  Future<bool> saveUserItem({String userId, FirebaseUserItem userItem}) async {
+    try {
+      await firebaseFireStore.collection("users").doc(userId).set({
+        "isAutoScroll": userItem.isAutoScroll,
+        "homeItemCount": userItem.homeItemCount,
+        "rankType": userItem.rankType
+      });
+      return true;
+    } catch (e) {
+      print("saveUserItem error : $e");
+      return false;
     }
   }
 }

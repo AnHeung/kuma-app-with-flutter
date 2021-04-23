@@ -1,3 +1,4 @@
+import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/login/login_bloc.dart';
 import 'package:kuma_flutter_app/model/api/social_user.dart';
 import 'package:kuma_flutter_app/model/setting_config.dart';
@@ -33,7 +34,7 @@ changeAniLoadItemCount({String aniLoadItemCount = "30"}) async {
   prefs.setString("aniLoadItemCount", aniLoadItemCount);
 }
 
-changeRankingType({String rankingType ="airing,upcoming,movie"}) async {
+changeRankingType({String rankingType = kBaseRankItem}) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs.setString("rankingType", rankingType);
 }

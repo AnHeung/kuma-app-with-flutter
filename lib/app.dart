@@ -19,6 +19,7 @@ import 'package:kuma_flutter_app/bloc/splash/splash_bloc.dart';
 import 'package:kuma_flutter_app/bloc/tab/tab_cubit.dart';
 import 'package:kuma_flutter_app/repository/api_repository.dart';
 import 'package:kuma_flutter_app/repository/firebase_client.dart';
+import 'package:kuma_flutter_app/repository/firebase_store_client.dart';
 import 'package:kuma_flutter_app/repository/rest_client.dart';
 import 'package:kuma_flutter_app/repository/search_api_client.dart';
 import 'package:kuma_flutter_app/routes/routes.dart';
@@ -60,7 +61,7 @@ class App extends StatelessWidget {
         return ApiRepository(
             restClient: restClient,
             searchApiClient: searchApiClient,
-            firebaseClient: firebaseClient);
+            firebaseClient: firebaseClient );
       },
       child: MultiBlocProvider(
         providers: [

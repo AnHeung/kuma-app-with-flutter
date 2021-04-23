@@ -58,6 +58,8 @@ const String nanumGothicFont = 'NanumGothic';
 
 //Setting
 const double kSettingFontSize = 13;
+const String kBaseRankItem = "airing,upcoming,movie";
+const String KBaseHomeItemCount = "30";
 
 //더보기
 const double kMoreFontSize = 15;
