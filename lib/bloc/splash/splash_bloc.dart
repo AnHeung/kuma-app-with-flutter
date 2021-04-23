@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/repository/api_repository.dart';
 import 'package:kuma_flutter_app/util/sharepref_util.dart';
 import 'package:meta/meta.dart';
@@ -26,10 +27,11 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
   }
 
   Stream<SplashState> _mapToSplashInit() async* {
+    await Future.delayed(const Duration(seconds: kSplashTime));
     yield const SplashState(status: SplashStatus.loading);
-    await Future.delayed(const Duration(seconds: 2));
     await printUserData();
     bool isAppFirstLaunch = await appFirstLaunch();
+    await Future.delayed(const Duration(seconds: 1));
     yield SplashState(
         isAppFirstLaunch: isAppFirstLaunch, status: SplashStatus.success);
   }
