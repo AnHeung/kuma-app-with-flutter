@@ -21,23 +21,6 @@ class GenreCategoryListBloc extends Bloc<GenreCategoryListEvent, GenreCategoryLi
 
   GenreCategoryListBloc({this.repository}) : super(const GenreCategoryListState(status: GenreCategoryStatus.initial));
 
-  @override
-  Stream<Transition<GenreCategoryListEvent, GenreCategoryListState>> transformEvents(
-      Stream<GenreCategoryListEvent> events,
-      TransitionFunction<GenreCategoryListEvent, GenreCategoryListState> transitionFn) {
-
-    const durationTime = 300;
-    final nonDebounceStream = events.where((event){
-      return event is! GenreItemClick && event is! GenreItemRemove;
-    });
-
-    final debounceStream = events
-        .where((event)=>event is GenreItemClick || event is GenreItemRemove)
-        .debounceTime(const Duration(milliseconds: durationTime));
-
-    return MergeStream([nonDebounceStream,debounceStream])
-        .switchMap(transitionFn);
-  }
 
   @override
   Stream<GenreCategoryListState> mapEventToState(
@@ -79,7 +62,7 @@ class GenreCategoryListBloc extends Bloc<GenreCategoryListEvent, GenreCategoryLi
   }
 
 
-  Stream<GenreCategoryListState> _mapToGenreItemClick(GenreItemClick event , GenreCategoryListState state)async*{
+  Stream<GenreCategoryListState> _mapToGenreItemClick(GenreItemClick event , GenreCategoryListState state) async*{
     GenreNavItem clickItem = event.navItem.copyWith(clickStatus: _changeCategoryStatus(event.navItem.clickStatus, event.navItem.genreType));
     List<GenreListItem> genreListItems = _getUpdateItem(state.genreListItems , clickItem);
     GenreData genreData = _getGenreData(genreListItems:genreListItems);

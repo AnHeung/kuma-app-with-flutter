@@ -8,6 +8,7 @@ import 'package:kuma_flutter_app/model/genre_data.dart';
 import 'package:kuma_flutter_app/model/item/animation_genre_search_item.dart';
 import 'package:kuma_flutter_app/repository/api_repository.dart';
 import 'package:meta/meta.dart';
+import 'package:rxdart/rxdart.dart';
 
 part 'genre_search_event.dart';
 part 'genre_search_state.dart';
@@ -23,6 +24,25 @@ class GenreSearchBloc extends Bloc<GenreSearchEvent, GenreSearchState> {
           add(GenreLoad(data: state.genreData.copyWith(page: "1")));
       }
     });
+  }
+
+
+  @override
+  Stream<Transition<GenreSearchEvent, GenreSearchState>> transformEvents(
+      Stream<GenreSearchEvent> events,
+      TransitionFunction<GenreSearchEvent, GenreSearchState> transitionFn) {
+
+    const durationTime = 300;
+    final nonDebounceStream = events.where((event){
+      return event is! GenreLoad;
+    });
+
+    final debounceStream = events
+        .where((event)=>event is GenreLoad)
+        .debounceTime(const Duration(milliseconds: durationTime));
+
+    return MergeStream([nonDebounceStream,debounceStream])
+        .switchMap(transitionFn);
   }
 
   @override

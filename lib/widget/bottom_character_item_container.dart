@@ -10,7 +10,6 @@ import 'package:kuma_flutter_app/routes/routes.dart';
 import 'package:kuma_flutter_app/widget/bottom_voice_item_container.dart';
 import 'package:kuma_flutter_app/widget/image_scroll_container.dart';
 import 'package:kuma_flutter_app/widget/image_text_row_container.dart';
-import 'package:kuma_flutter_app/widget/image_text_scroll_item.dart';
 import 'package:kuma_flutter_app/widget/loading_indicator.dart';
 import 'package:kuma_flutter_app/widget/title_container.dart';
 import 'package:kuma_flutter_app/widget/title_image_more_container.dart';
