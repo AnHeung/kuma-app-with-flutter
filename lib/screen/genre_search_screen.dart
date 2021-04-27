@@ -42,26 +42,29 @@ class GenreSearchScreen extends StatelessWidget {
         if(state.status == GenreSearchStatus.failure) showToast(msg:state.msg);
       },
       builder: (context, state) {
-        return Stack(
-          children: [
-            Scaffold(
-              key: _scaffoldKey,
-              endDrawerEnableOpenDragGesture: false,
-              endDrawer: _buildNavigationView(height: appBarHeight),
-              appBar: appBar,
-              body: Column(
-                children: [
-                  _buildTopContainer(scaffoldKey: _scaffoldKey),
-                  _buildFilterContainer(),
-                  _buildTotalCountContainer(),
-                  _buildGridView(context: context)
-                ],
+        return RefreshIndicator(
+          onRefresh: ()async=> BlocProvider.of<GenreSearchBloc>(context).add(GenreLoad(data: state.genreData)),
+          child: Stack(
+            children: [
+              Scaffold(
+                key: _scaffoldKey,
+                endDrawerEnableOpenDragGesture: false,
+                endDrawer: _buildNavigationView(height: appBarHeight),
+                appBar: appBar,
+                body: Column(
+                  children: [
+                    _buildTopContainer(scaffoldKey: _scaffoldKey),
+                    _buildFilterContainer(),
+                    _buildTotalCountContainer(),
+                    _buildGridView(context: context)
+                  ],
+                ),
               ),
-            ),
-            LoadingIndicator(
-              isVisible: state.status == GenreSearchStatus.loading,
-            )
-          ],
+              LoadingIndicator(
+                isVisible: state.status == GenreSearchStatus.loading,
+              )
+            ],
+          ),
         );
       },
     );

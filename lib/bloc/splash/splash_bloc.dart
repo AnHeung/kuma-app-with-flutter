@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
+import 'package:kuma_flutter_app/model/api/social_user.dart';
 import 'package:kuma_flutter_app/repository/api_repository.dart';
 import 'package:kuma_flutter_app/util/sharepref_util.dart';
 import 'package:meta/meta.dart';
@@ -29,6 +30,9 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
   Stream<SplashState> _mapToSplashInit() async* {
     await Future.delayed(const Duration(seconds: kSplashTime));
     yield const SplashState(status: SplashStatus.loading);
+    String userId = await getUserId();
+    LoginUserData userData = await repository.getUserItemFromFireStore(userId:userId);
+    if(userData != null) saveUserData(userData: userData); else removeUserData();
     await printUserData();
     bool isAppFirstLaunch = await appFirstLaunch();
     await Future.delayed(const Duration(seconds: 1));

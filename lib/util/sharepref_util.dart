@@ -39,12 +39,6 @@ changeRankingType({String rankingType = kBaseRankItem}) async {
   prefs.setString("rankingType", rankingType);
 }
 
-getAutoScroll({bool isAutoScroll}) async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  bool isAutoScroll = prefs.getBool("autoScroll") ?? true;
-  return isAutoScroll;
-}
-
 Future<SettingConfig> getSettingConfig() async{
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool isAutoScroll = prefs.getBool("autoScroll") ?? true;
@@ -53,7 +47,7 @@ Future<SettingConfig> getSettingConfig() async{
   return SettingConfig(isAutoScroll: isAutoScroll , aniLoadItemCount: aniLoadCount, rankingType:rankingType);
 }
 
-changeSettingConfig({SettingConfig config}) async{
+changeSettingConfig({SettingConfig config}) async {
   if(config!= null) {
     await changeAutoConfig(isAutoScroll: config.isAutoScroll);
     await changeAniLoadItemCount(aniLoadItemCount: config.aniLoadItemCount);
@@ -73,6 +67,11 @@ removeUserData() async {
 removeAllData() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs.clear();
+}
+
+getUserId() async{
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  return prefs.getString("id");
 }
 
 getUserData()async {

@@ -162,7 +162,7 @@ class FirebaseClient {
           .then((result) {
         result.user.updateProfile(displayName: userData.userName);
       }).then((_) async {
-        await saveUserItem(
+        await saveUserItemToFireStore(
             userId: userData.email,
             userItem: const FirebaseUserItem(
                 isAutoScroll: false,
@@ -190,7 +190,7 @@ class FirebaseClient {
     }
   }
 
-  Future<FirebaseUserItem> getUserItem(String userId) async {
+  Future<FirebaseUserItem> getUserItemFromFireStore({String userId}) async {
     DocumentSnapshot userData = await firebaseFireStore.collection("users").doc(userId).get();
     userData.data();
   }
@@ -205,7 +205,7 @@ class FirebaseClient {
     }
   }
 
-  Future<bool> saveUserItem({String userId, FirebaseUserItem userItem}) async {
+  Future<bool> saveUserItemToFireStore({String userId, FirebaseUserItem userItem}) async {
     try {
       await firebaseFireStore.collection("users").doc(userId).set({
         "isAutoScroll": userItem.isAutoScroll,
