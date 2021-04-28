@@ -1,34 +1,20 @@
 part of 'setting_bloc.dart';
 
+enum SettingStatus {initial , loading , failure , success , complete}
+
 @immutable
-abstract class SettingState extends Equatable{
+class SettingState extends Equatable{
 
-  @override
-  List<Object> get props =>[];
-
-  const SettingState();
-}
-
-class SettingLoadingInProgress extends SettingState {}
-
-
-class SettingLoadFailure extends SettingState {
-  final String errMsg;
-
-  const SettingLoadFailure({this.errMsg});
-}
-
-class SettingLoadSuccess extends SettingState {
-
+  final SettingStatus status;
+  final String msg;
   final SettingConfig config;
 
-  const SettingLoadSuccess({this.config});
-
   @override
-  List<Object> get props =>[config];
+  List<Object> get props =>[status , msg, config];
+
+  const SettingState({this.status,this.msg, this.config});
 }
 
-class SettingChangeComplete extends SettingState {}
 
 
 

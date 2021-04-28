@@ -1,16 +1,23 @@
-import 'package:equatable/equatable.dart';
+import 'package:kuma_flutter_app/app_constants.dart';
 
 class SettingConfig{
 
   final bool isAutoScroll;
-  final String aniLoadItemCount;
-  final String rankingType;
+  final String homeItemCount;
+  final String rankType;
 
-  SettingConfig({this.isAutoScroll, this.aniLoadItemCount,this.rankingType});
+  SettingConfig({isAutoScroll, homeItemCount,rankType}): this.isAutoScroll = isAutoScroll ?? true, this.homeItemCount = homeItemCount?? kBaseHomeItemCount ,this.rankType = rankType ?? kBaseRankItem;
 
-  static final SettingConfig empty = SettingConfig(isAutoScroll: true, aniLoadItemCount: "30" ,rankingType :"airing,upcoming,movie");
+  SettingConfig copyWith({bool isAutoScroll ,String homeItemCount ,String rankType}){
+    return SettingConfig(isAutoScroll:isAutoScroll ?? this.isAutoScroll , homeItemCount: homeItemCount ?? this.homeItemCount , rankType: rankType?? this.rankType );
+  }
 
-  SettingConfig copyWith({bool isAutoScroll ,String aniLoadItemCount ,String rankingType}){
-    return SettingConfig(isAutoScroll:isAutoScroll ?? this.isAutoScroll , aniLoadItemCount: aniLoadItemCount ?? this.aniLoadItemCount , rankingType: rankingType?? this.rankingType );
+  Map<String, dynamic> toMap() {
+    // ignore: unnecessary_cast
+    return {
+      'isAutoScroll': this.isAutoScroll,
+      'homeItemCount': this.homeItemCount,
+      'rankType': this.rankType,
+    } as Map<String, dynamic>;
   }
 }

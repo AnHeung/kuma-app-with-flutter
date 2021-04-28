@@ -53,7 +53,7 @@ class KakaoClient extends LoginClient{
         return null;
       }else{
         print('email : ${user.kakaoAccount.email} unique Id :${user.id} userNick : ${user.kakaoAccount.profile.nickname}');
-        return LoginUserData(uniqueId: user.id.toString(), email: user.kakaoAccount.email ,userName: user.kakaoAccount.profile.nickname, loginType: LoginType.KAKAO);
+        return LoginUserData(uniqueId: user.id.toString(), userId: user.kakaoAccount.email ,userName: user.kakaoAccount.profile.nickname, loginType: LoginType.KAKAO);
       }
     }
     return null;

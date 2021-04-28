@@ -7,7 +7,6 @@ import 'package:kuma_flutter_app/bloc/setting/setting_bloc.dart';
 import 'package:kuma_flutter_app/model/setting_config.dart';
 import 'package:kuma_flutter_app/widget/custom_text.dart';
 import 'package:kuma_flutter_app/widget/drop_down_button.dart';
-import 'package:kuma_flutter_app/widget/empty_container.dart';
 import 'package:kuma_flutter_app/widget/loading_indicator.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
@@ -15,8 +14,6 @@ class SettingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     BlocProvider.of<SettingBloc>(context).add(SettingLoad());
-
-    SettingConfig config = SettingConfig.empty;
 
     return WillPopScope(
       onWillPop: () async {
@@ -30,14 +27,11 @@ class SettingScreen extends StatelessWidget {
         body: Padding(
             padding: const EdgeInsets.only(left: 15, right: 15),
             child: BlocBuilder<SettingBloc, SettingState>(
-              builder: (context, state) {
-                if (state is SettingLoadingInProgress) {
-                  LoadingIndicator(
-                    isVisible: state is SettingLoadingInProgress,
-                  );
-                } else if (state is SettingLoadSuccess) {
-                  config = state.config;
-                  return Column(
+                builder: (context, state) {
+              SettingConfig config = state.config;
+              return Stack(
+                children: [
+                  Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Container(
@@ -51,23 +45,27 @@ class SettingScreen extends StatelessWidget {
                             ),
                             const Spacer(),
                             CustomDropDown(
-                              value: config.aniLoadItemCount,
+                              value: config.homeItemCount,
                               items: itemCountList
-                                  .map((item) => DropdownMenuItem(
-                                  child: CustomText(
-                                    fontColor: kBlack,
-                                    fontSize: 10.0,
-                                    text: item.toString(),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  value: item,
-                                ),
-                              )
+                                  .map(
+                                    (item) => DropdownMenuItem(
+                                      child: CustomText(
+                                        fontColor: kBlack,
+                                        fontSize: 10.0,
+                                        text: item.toString(),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      value: item,
+                                    ),
+                                  )
                                   .toList(),
                               onChanged: (item) => {
-                                BlocProvider.of<SettingBloc>(context).add(ChangeSetting(config: config.copyWith(aniLoadItemCount: item)))
+                                BlocProvider.of<SettingBloc>(context).add(
+                                    ChangeSetting(
+                                        config: config.copyWith(
+                                            homeItemCount: item)))
                               },
-                              hint: config.aniLoadItemCount,
+                              hint: config.homeItemCount,
                             ),
                           ],
                         ),
@@ -82,13 +80,17 @@ class SettingScreen extends StatelessWidget {
                               fontSize: kSettingFontSize,
                               fontColor: Colors.black,
                             ),
-                            const SizedBox(width: 50,),
+                            const SizedBox(
+                              width: 50,
+                            ),
                             Expanded(
                               flex: 1,
                               child: LayoutBuilder(
                                 builder: (context, constraints) {
                                   print(categoryList.length);
-                                  double width = constraints.maxWidth / categoryList.length - 8;
+                                  double width = constraints.maxWidth /
+                                          categoryList.length -
+                                      8;
                                   return Container(
                                     padding: EdgeInsets.zero,
                                     margin: const EdgeInsets.only(left: 20),
@@ -96,52 +98,70 @@ class SettingScreen extends StatelessWidget {
                                     child: ListView.separated(
                                       physics: const ClampingScrollPhysics(),
                                       separatorBuilder: (context, index) =>
-                                      const SizedBox(
-                                            width: 3,
-                                          ),
+                                          const SizedBox(
+                                        width: 3,
+                                      ),
                                       itemBuilder: (context, idx) {
                                         List<String> categoryKeyList =
-                                        categoryList.keys.toList();
+                                            categoryList.keys.toList();
                                         String categoryKey =
-                                        categoryKeyList[idx];
+                                            categoryKeyList[idx];
                                         String category =
-                                        categoryList.values.toList()[idx];
+                                            categoryList.values.toList()[idx];
 
                                         return Container(
                                           width: width,
                                           decoration: BoxDecoration(
-                                              borderRadius: const BorderRadius.all(
-                                                  Radius.circular(30)),
-                                              color: _isCheck(
-                                                  config.rankingType,
-                                                  categoryKey)
+                                              borderRadius:
+                                                  const BorderRadius.all(
+                                                      Radius.circular(30)),
+                                              color: _isCheck(config.rankType,
+                                                      categoryKey)
                                                   ? kPurple
                                                   : kDisabled),
                                           child: GestureDetector(
                                               onTap: () {
-                                                String rankType = categoryKeyList.reduce((acc, rankCategory) {
-                                                  if (rankCategory == "upcoming") {
-                                                    acc += ",$rankCategory";
-                                                  } else if (!_isCheck(config.rankingType, rankCategory) && rankCategory == categoryKey) {
-                                                    acc += ",$rankCategory";
-                                                  } else if (_isCheck(config.rankingType, rankCategory) && rankCategory != categoryKey) {
-                                                    acc += ",$rankCategory";
-                                                  }
-                                                  return acc;
-                                                }) ?? "airing,upcoming";
+                                                String rankType =
+                                                    categoryKeyList.reduce((acc,
+                                                            rankCategory) {
+                                                          if (rankCategory ==
+                                                              "upcoming") {
+                                                            acc +=
+                                                                ",$rankCategory";
+                                                          } else if (!_isCheck(
+                                                                  config
+                                                                      .rankType,
+                                                                  rankCategory) &&
+                                                              rankCategory ==
+                                                                  categoryKey) {
+                                                            acc +=
+                                                                ",$rankCategory";
+                                                          } else if (_isCheck(
+                                                                  config
+                                                                      .rankType,
+                                                                  rankCategory) &&
+                                                              rankCategory !=
+                                                                  categoryKey) {
+                                                            acc +=
+                                                                ",$rankCategory";
+                                                          }
+                                                          return acc;
+                                                        }) ??
+                                                        "airing,upcoming";
                                                 BlocProvider.of<SettingBloc>(
-                                                    context)
+                                                        context)
                                                     .add(ChangeSetting(
-                                                    config: config.copyWith(
-                                                        rankingType:
-                                                        rankType)));
+                                                        config: config.copyWith(
+                                                            rankType:
+                                                                rankType)));
                                               },
-                                              behavior: HitTestBehavior.translucent,
+                                              behavior:
+                                                  HitTestBehavior.translucent,
                                               child: Container(
                                                   alignment: Alignment.center,
                                                   child: CustomText(
-                                                    fontFamily: doHyunFont,
-                                                    fontColor: kWhite,
+                                                      fontFamily: doHyunFont,
+                                                      fontColor: kWhite,
                                                       text: category,
                                                       fontSize: 8.0,
                                                       maxLines: 1,
@@ -196,14 +216,15 @@ class SettingScreen extends StatelessWidget {
                         ),
                       ),
                     ],
-                  );
-                }
-                return const EmptyContainer(
-                  title: "설정값 불러오기 실패",
-                );
-              },
-            )),
-      ),);
+                  ),
+                  LoadingIndicator(
+                    isVisible: state.status == SettingStatus.loading,
+                  )
+                ],
+              );
+            })),
+      ),
+    );
   }
 
   _isCheck(String rankType, String key) => rankType.split(",").contains(key);

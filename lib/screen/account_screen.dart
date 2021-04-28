@@ -98,7 +98,7 @@ class AccountScreen extends StatelessWidget {
                       height: kAccountItemHeight,
                       child: CustomText(
                         fontFamily: doHyunFont,
-                        text: accountData.email,
+                        text: accountData.userId,
                         fontColor: Colors.black,
                         fontSize: kAccountFontSize,
                       )),
@@ -175,7 +175,7 @@ class AccountScreen extends StatelessWidget {
                   GestureDetector(
                     onTap: ()=>{
                       showBaseDialog(context: context, confirmFunction: (){
-                        BlocProvider.of<AccountBloc>(context).add(AccountWithdraw());
+                        BlocProvider.of<AccountBloc>(context).add(AccountWithdraw(userId: accountData.userId));
                         Navigator.pop(context);
                       } ,title: "회원탈퇴",content: "회원탈퇴를 하시겠습니까?")
                     },

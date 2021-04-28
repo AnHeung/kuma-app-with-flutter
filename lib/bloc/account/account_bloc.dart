@@ -24,18 +24,17 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     if (event is AccountLoad) {
       yield* _mapToAccountLoad();
     } else if (event is AccountWithdraw) {
-      yield* _mapToWithdraw();
+      yield* _mapToWithdraw(event);
     }
   }
 
-  Stream<AccountState> _mapToWithdraw() async* {
+  Stream<AccountState> _mapToWithdraw(AccountWithdraw event) async* {
     try {
       yield AccountLoadInProgress();
-      bool withdrawResult = await repository.withdraw();
-      if (withdrawResult)
-        yield const AccountWithdrawSuccess(successMsg: "회원탈퇴 성공");
-      else
-        yield const AccountWithdrawFailure(errMsg: "회원탈퇴 실패 다시 시도해주세요");
+      String userId  = event.userId;
+      bool withdrawResult = await repository.withdraw(userId);
+      if (withdrawResult) yield const AccountWithdrawSuccess(successMsg: "회원탈퇴 성공");
+      else yield const AccountWithdrawFailure(errMsg: "회원탈퇴 실패 다시 시도해주세요");
     }catch(e){
       yield AccountWithdrawFailure(errMsg: "회원탈퇴 오류 : $e");
     }
@@ -43,13 +42,12 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
 
   Stream<AccountState> _mapToAccountLoad() async* {
     yield AccountLoadInProgress();
-    User user = repository.user;
-    LoginUserData data = await getUserData();
+    LoginUserData userData = await getUserData();
 
     yield AccountLoadSuccess(
         accountData: UserAccount(
-            email: user.email,
-            userName: user.displayName.isEmpty ? user.email : user.displayName,
-            loginType: data.loginType));
+            userId: userData.userId,
+            userName: userData.userName.isEmpty ? userData.userId : userData.userName,
+            loginType: userData.loginType));
   }
 }

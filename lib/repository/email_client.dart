@@ -13,7 +13,7 @@ class EmailClient extends LoginClient{
 
   Future<LoginUserData> login({String id ,String pw}) async{
       LoginUserData data = await getUserData();
-      String id = data.email;
+      String id = data.userId;
       String pw = data.uniqueId;
       if(id == null || pw == null) return const LoginUserData(loginType: LoginType.EMAIL);
       return data;

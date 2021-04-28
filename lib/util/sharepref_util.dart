@@ -7,10 +7,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 saveUserData({LoginUserData userData}) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  prefs.setString("id", userData.email);
-  prefs.setString("pw", userData.uniqueId);
+  prefs.setString("id", userData.userId);
   prefs.setString("userName", userData.userName);
   prefs.setString("loginType", enumToString(userData.loginType));
+  prefs.setString("rankType", userData.rankType);
+  prefs.setBool("autoScroll", userData.isAutoScroll);
+  prefs.setString("homeItemCount",userData.homeItemCount);
+}
+
+saveUserId({String userId}) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setString("id",userId);
 }
 
 appFirstLaunch() async{
@@ -24,44 +31,37 @@ saveAppFirstLaunch({bool isAppFirst = false}) async{
 }
 
 
-changeAutoConfig({bool isAutoScroll = true}) async {
+saveAutoScroll({bool isAutoScroll = true}) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs.setBool("autoScroll", isAutoScroll);
 }
 
-changeAniLoadItemCount({String aniLoadItemCount = "30"}) async {
+saveHomeItemCount({String homeItemCount = "30"}) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  prefs.setString("aniLoadItemCount", aniLoadItemCount);
+  prefs.setString("homeItemCount", homeItemCount);
 }
 
-changeRankingType({String rankingType = kBaseRankItem}) async {
+saveRankingType({String rankType = kBaseRankItem}) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  prefs.setString("rankingType", rankingType);
+  prefs.setString("rankType", rankType);
 }
 
-Future<SettingConfig> getSettingConfig() async{
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  bool isAutoScroll = prefs.getBool("autoScroll") ?? true;
-  String aniLoadCount = prefs.getString("aniLoadItemCount") ?? "30";
-  String rankingType = prefs.getString("rankingType") ?? "airing,upcoming,movie";
-  return SettingConfig(isAutoScroll: isAutoScroll , aniLoadItemCount: aniLoadCount, rankingType:rankingType);
-}
-
-changeSettingConfig({SettingConfig config}) async {
-  if(config!= null) {
-    await changeAutoConfig(isAutoScroll: config.isAutoScroll);
-    await changeAniLoadItemCount(aniLoadItemCount: config.aniLoadItemCount);
-    await changeRankingType(rankingType: config.rankingType);
-  }
+saveSettingConfig({SettingConfig settingConfig})async{
+  await saveRankingType(rankType:settingConfig.rankType);
+  await saveHomeItemCount(homeItemCount: settingConfig.homeItemCount);
+  await saveAutoScroll(isAutoScroll: settingConfig.isAutoScroll);
 }
 
 
-removeUserData() async {
+Future<bool> removeUserData() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs.remove("id");
-  prefs.remove("pw");
   prefs.remove("userName");
   prefs.remove("loginType");
+  prefs.remove("autoScroll");
+  prefs.remove("homeItemCount");
+  prefs.remove("rankingType");
+  return true;
 }
 
 removeAllData() async {
@@ -76,10 +76,11 @@ getUserId() async{
 
 getUserData()async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  return LoginUserData(uniqueId:prefs.getString("pw"),email:prefs.getString("id") , loginType: enumFromString(prefs.getString("loginType"), LoginType.values));
+  return LoginUserData(userId:  prefs.getString("id") , homeItemCount:  prefs.getString("homeItemCount") ,  isAutoScroll: prefs.getBool("autoScroll"),rankType: prefs.getString("rankType"),
+      loginType: enumFromString<LoginType>(prefs.getString("loginType"), LoginType.values), userName:  prefs.getString("userName"));
 }
 
 printUserData() async{
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  print('userId : ${prefs.getString("id")}, userPw :${prefs.getString("pw")}, loginType: ${prefs.getString("loginType")} userName:${prefs.getString("userName")} isAutoScroll : ${prefs.getBool("autoScroll")}');
+  print('userId : ${prefs.getString("id")} , loginType: ${prefs.getString("loginType")} userName:${prefs.getString("userName")} isAutoScroll : ${prefs.getBool("autoScroll")}');
 }

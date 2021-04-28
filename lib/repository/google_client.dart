@@ -19,7 +19,7 @@ class GoogleClient extends LoginClient{
   Future<LoginUserData> login() async{
       await logout();
       GoogleSignInAccount account =   await signIn.signIn();
-      if(account != null) return LoginUserData(email: account.email,  uniqueId: account.id , loginType: LoginType.GOOGLE, userName: account.displayName);
+      if(account != null) return LoginUserData(userId: account.email,  uniqueId: account.id , loginType: LoginType.GOOGLE, userName: account.displayName);
       return null;
   }
 

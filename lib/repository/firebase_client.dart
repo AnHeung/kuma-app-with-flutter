@@ -14,6 +14,7 @@ import 'package:kuma_flutter_app/repository/google_client.dart';
 import 'package:kuma_flutter_app/repository/kakao_client.dart';
 import 'package:kuma_flutter_app/repository/social_client.dart';
 import 'package:kuma_flutter_app/util/sharepref_util.dart';
+import 'package:kuma_flutter_app/util/string_util.dart';
 
 class FirebaseClient {
   LoginClient loginClient;
@@ -56,13 +57,13 @@ class FirebaseClient {
     try {
       return await _firebaseAuth
           .signInWithEmailAndPassword(
-              email: userData.email, password: userData.uniqueId)
-          .then((result) => result.user.updateProfile(displayName: userData.userName))
-          .then((result) async{
-            await saveUserData(userData: userData);
-            return {LoginStatus.LoginSuccess: userData};
-          })
-          .catchError((e) {
+              email: userData.userId, password: userData.uniqueId)
+          .then((result) async =>
+              await getUserItemFromFireStore(userId: userData.userId))
+          .then((fireStoreUserData) async {
+        await saveUserData(userData: fireStoreUserData);
+        return {LoginStatus.LoginSuccess: fireStoreUserData};
+      }).catchError((e) {
         var errorCode = e.code;
         var errMsg = e.message;
         print('errorCode :$errorCode errMsg : $errMsg');
@@ -108,7 +109,6 @@ class FirebaseClient {
       return await _firebaseAuth
           .signOut()
           .then((res) async => await removeUserData())
-          .then((res) => true)
           .catchError((e) async {
         print("logout  User Exception $e");
         await _reAuthenticateUser().then((res) async {
@@ -125,32 +125,35 @@ class FirebaseClient {
     }
   }
 
-  Future<bool> withdraw() async {
+  Future<bool> withdraw(String userId) async {
     try {
       return await _firebaseAuth.currentUser.delete().then((res) async {
-        await removeAllData();
-        print('계정 삭제 성공');
-        return true;
+        return await removeUserDataToFireStore(userId: userId);
+      }).then((result) async {
+        return await removeUserData();
       }).catchError((err) async {
         print("withdraw  User Exception $err");
         await _reAuthenticateUser().then((res) async {
-          await withdraw();
+          await withdraw(userId);
+          return false;
         }).catchError((e) {
           var errorCode = e.code;
           var errMsg = e.message;
-          throw Exception("회원탈퇴 오류 발생 :$errMsg 코드:$errorCode}");
+          print("회원탈퇴 오류 발생 :$errMsg 코드:$errorCode}");
+          return false;
         });
       });
     } catch (e) {
-      print(e);
+      print("withdraw 실패 ${e}");
       return false;
     }
   }
 
   _reAuthenticateUser() async {
-    LoginUserData userData = await getUserData();
+    String userId = await getUserId();
+    LoginUserData userData = await getUserItemFromFireStore(userId: userId);
     var credential = EmailAuthProvider.credential(
-        email: userData.email, password: userData.uniqueId);
+        email: userData.userId, password: userData.uniqueId);
     return _firebaseAuth.currentUser.reauthenticateWithCredential(credential);
   }
 
@@ -158,19 +161,19 @@ class FirebaseClient {
     try {
       return await _firebaseAuth
           .createUserWithEmailAndPassword(
-              email: userData.email, password: userData.uniqueId)
-          .then((result) {
-        result.user.updateProfile(displayName: userData.userName);
-      }).then((_) async {
-        await saveUserItemToFireStore(
-            userId: userData.email,
-            userItem: const FirebaseUserItem(
-                isAutoScroll: false,
-                rankType: kBaseRankItem,
-                homeItemCount: KBaseHomeItemCount));
-       return RegisterStatus.RegisterComplete;
-      }).catchError((e) {
-        print(e);
+              email: userData.userId, password: userData.uniqueId)
+          .then((result) {})
+          .then((_) async {
+        LoginUserData loginUserData = userData.copyWith(
+            rankType: kBaseRankItem,
+            isAutoScroll: true,
+            homeItemCount: kBaseHomeItemCount);
+        await saveUserAllItemToFireStore(userData: loginUserData);
+        await saveUserData(userData: loginUserData);
+        return RegisterStatus.RegisterComplete;
+      }).catchError((e) async {
+        print("register catchError : $e");
+        await withdraw(userData.userId);
         return RegisterStatus.RegisterFailure;
       });
     } on FirebaseAuthException catch (e) {
@@ -190,32 +193,51 @@ class FirebaseClient {
     }
   }
 
-  Future<FirebaseUserItem> getUserItemFromFireStore({String userId}) async {
-    DocumentSnapshot userData = await firebaseFireStore.collection("users").doc(userId).get();
-    userData.data();
+  Future<LoginUserData> getUserItemFromFireStore({String userId}) async {
+    try {
+      DocumentSnapshot users =
+          await firebaseFireStore.collection("users").doc(userId).get();
+      if (users.data() != null) {
+        LoginUserData userItem = LoginUserData.fromMap(users.data());
+        return userItem;
+      }
+      return null;
+    } catch (e) {
+      print("getUserItemFromFireStore ${e}");
+      return null;
+    }
   }
 
-  Future<bool> deleteUserData({String userId})async {
+  Future<bool> removeUserDataToFireStore({String userId}) async {
     try {
       await firebaseFireStore.collection("users").doc(userId).delete();
       return true;
     } catch (e) {
-      print("deleteUserData error ${e}");
+      print("removeUserDataToFireStore error ${e}");
       return false;
     }
   }
 
-  Future<bool> saveUserItemToFireStore({String userId, FirebaseUserItem userItem}) async {
-    try {
-      await firebaseFireStore.collection("users").doc(userId).set({
-        "isAutoScroll": userItem.isAutoScroll,
-        "homeItemCount": userItem.homeItemCount,
-        "rankType": userItem.rankType
-      });
-      return true;
-    } catch (e) {
-      print("saveUserItem error : $e");
-      return false;
-    }
+  updateUserItemToFireStore(
+      {String userId, Map<String, dynamic> userItem}) async {
+    await firebaseFireStore
+        .collection("users")
+        .doc(userId)
+        .update(userItem)
+        .onError((error, stackTrace) {
+      print(error);
+    });
+  }
+
+  saveUserAllItemToFireStore({LoginUserData userData}) async {
+    await firebaseFireStore.collection("users").doc(userData.userId).set({
+      "userId": userData.userId,
+      "uniqueId": userData.uniqueId,
+      "userName": userData.userName,
+      "loginType": enumToString(userData.loginType),
+      "isAutoScroll": userData.isAutoScroll,
+      "homeItemCount": userData.homeItemCount,
+      "rankType": userData.rankType
+    });
   }
 }

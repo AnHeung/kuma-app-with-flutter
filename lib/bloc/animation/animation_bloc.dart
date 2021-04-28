@@ -2,8 +2,10 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/setting/setting_bloc.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_ranking_item.dart';
+import 'package:kuma_flutter_app/model/api/social_user.dart';
 import 'package:kuma_flutter_app/model/item/animation_main_item.dart';
 import 'package:kuma_flutter_app/model/setting_config.dart';
 import 'package:kuma_flutter_app/repository/api_repository.dart';
@@ -21,7 +23,7 @@ class AnimationBloc extends Bloc<AnimationEvent, AnimationState> {
 
   AnimationBloc({this.repository, this.settingBloc}) : super(AnimationLoadInit()){
     settingBloc.listen((state) {
-      if(state is SettingChangeComplete){
+      if(state.status == SettingStatus.complete){
         add(AnimationLoad());
       }
     });
@@ -42,11 +44,11 @@ class AnimationBloc extends Bloc<AnimationEvent, AnimationState> {
     try {
       yield AnimationLoadInProgress();
 
-      SettingConfig config = await getSettingConfig();
+      LoginUserData userData = await getUserData();
       String type = "anime";
       String page = "1";
-      String rankType = config.rankingType;
-      String limit = config.aniLoadItemCount;
+      String rankType = userData.rankType ?? kBaseRankItem;
+      String limit = userData.homeItemCount ?? kBaseHomeItemCount;
       SearchRankingApiResult searchRankingApiResult = await repository.getRankingItemList(type,page,rankType, limit);
       bool isErr = searchRankingApiResult.err;
       if (isErr)

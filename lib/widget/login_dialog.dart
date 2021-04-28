@@ -77,7 +77,7 @@ class _LoginDialogState extends State<LoginDialog> {
                       widget.bloc.add(DirectLogin(
                           userData: LoginUserData(
                               userName: id,
-                              email: id,
+                              userId: id,
                               uniqueId: pw,
                               loginType: LoginType.EMAIL)));
                       Navigator.pop(context);

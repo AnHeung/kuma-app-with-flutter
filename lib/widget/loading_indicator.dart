@@ -13,9 +13,12 @@ class LoadingIndicator extends StatelessWidget {
     return SizedBox.expand(
       child: Visibility(
         visible: isVisible,
-        child: Container(
-          alignment: Alignment.center,
-          child: const CupertinoActivityIndicator(radius: 20,),
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          body: Container(
+            alignment: Alignment.center,
+            child: const CupertinoActivityIndicator(radius: 20,),
+          ),
         ),
       ),
     );

@@ -83,9 +83,11 @@ class ApiRepository {
 
   User get user => firebaseClient.user;
 
-  withdraw() => firebaseClient.withdraw();
+  withdraw(String userId) => firebaseClient.withdraw(userId);
 
-  saveUserItemToFireStore(String userId , FirebaseUserItem item)=>firebaseClient.saveUserItemToFireStore(userId: userId, userItem:item);
+  updateUserItemToFireStore(String userId , Map<String,dynamic> userItem)=>firebaseClient.updateUserItemToFireStore(userId: userId, userItem: userItem);
+
+  saveUserAllItemToFireStore(String userId , LoginUserData userData)=>firebaseClient.saveUserAllItemToFireStore(userData:userData);
 
   getUserItemFromFireStore({String userId})=>firebaseClient.getUserItemFromFireStore(userId: userId);
 }

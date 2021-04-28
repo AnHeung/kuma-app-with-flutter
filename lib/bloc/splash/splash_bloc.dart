@@ -32,7 +32,8 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
     yield const SplashState(status: SplashStatus.loading);
     String userId = await getUserId();
     LoginUserData userData = await repository.getUserItemFromFireStore(userId:userId);
-    if(userData != null) saveUserData(userData: userData); else removeUserData();
+    if(userData != null) saveUserData(userData: userData);
+    else removeUserData();
     await printUserData();
     bool isAppFirstLaunch = await appFirstLaunch();
     await Future.delayed(const Duration(seconds: 1));
