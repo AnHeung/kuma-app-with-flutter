@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,7 +8,7 @@ import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/login/login_bloc.dart';
 import 'package:kuma_flutter_app/enums/login_status.dart';
 import 'package:kuma_flutter_app/enums/register_status.dart';
-import 'package:kuma_flutter_app/model/api/firebase_user_item.dart';
+import 'package:crypto/crypto.dart';
 import 'package:kuma_flutter_app/model/api/social_user.dart';
 import 'package:kuma_flutter_app/repository/email_client.dart';
 import 'package:kuma_flutter_app/repository/google_client.dart';
@@ -55,6 +56,9 @@ class FirebaseClient {
   Future<Map<LoginStatus, LoginUserData>> firebaseSignIn(
       {LoginUserData userData}) async {
     try {
+      var bytes = utf8.encode(userData.uniqueId);
+      var enCryptId =  sha256.convert(bytes);
+
       return await _firebaseAuth
           .signInWithEmailAndPassword(
               email: userData.userId, password: userData.uniqueId)

@@ -66,80 +66,86 @@ class App extends StatelessWidget {
       child: MultiBlocProvider(
         providers: [
           BlocProvider(create: (context) => TabCubit(),),
-        BlocProvider(create: (context) =>AuthBloc(repository: context.read<ApiRepository>())),
+        BlocProvider(create: (context) {
+          return AuthBloc(repository: context.read<ApiRepository>());
+        }),
           BlocProvider(create: (context) =>SettingBloc(repository: context.read<ApiRepository>())),
           BlocProvider(create: (context) => GenreCategoryListBloc(repository: context.read<ApiRepository>())..add(GenreCategoryListLoad()))
         ],
-        child: MaterialApp(
-        title: "쿠마앱",
-        theme: ThemeData(
-          fontFamily: doHyunFont,
-          primarySwatch: createMaterialColor(kBlack),
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-        ),
-        initialRoute: Routes.SPLASH,
-        routes: {
-          Routes.SPLASH: (context) =>
-              BlocProvider(
-                create: (_) =>
-                SplashBloc(repository: context.read<ApiRepository>())
-                  ..add(SplashLoad()),
-                child: SplashScreen(),
-              ),
-          Routes.FIRST_LAUNCH: (context) =>
-              BlocProvider(
-                create: (_) =>
-                SplashBloc(repository: context.read<ApiRepository>()),
-                child: FirstScreen(),
-              ),
-          Routes.HOME: (context) {
-            return MultiBlocProvider(
-              providers: [
-                BlocProvider(create: (_) => AnimationBloc(repository: context.read<ApiRepository>(),settingBloc: BlocProvider.of<SettingBloc>(context))..add(AnimationLoad())),
-                BlocProvider(create: (_) => AnimationSeasonBloc(repository: context.read<ApiRepository>(),settingBloc: BlocProvider.of<SettingBloc>(context))..add(AnimationSeasonLoad(limit: "7"))),
-                BlocProvider(create: (_) => AnimationScheduleBloc(repository: context.read<ApiRepository>(),settingBloc: BlocProvider.of<SettingBloc>(context))..add(AnimationScheduleInitLoad())),
-                BlocProvider(create: (_) => GenreSearchBloc(repository: context.read<ApiRepository>(), genreCategoryListBloc: BlocProvider.of<GenreCategoryListBloc>(context))),
-              ],
-              child: HomeScreen(),
-            );
-          },
-          Routes.IMAGE_DETAIL: (context) =>
-          MultiBlocProvider(
-            providers: [
-              BlocProvider(
-                create: (_) =>
-                    AnimationDetailBloc(
-                        repository: context.read<ApiRepository>()),
-              ),
-            ],
-            child:  AnimationDetailScreen(),
+        child: BlocListener<AuthBloc, AuthState>(
+          child:  MaterialApp(
+            title: "쿠마앱",
+            theme: ThemeData(
+              fontFamily: doHyunFont,
+              primarySwatch: createMaterialColor(kBlack),
+              visualDensity: VisualDensity.adaptivePlatformDensity,
+            ),
+            initialRoute: Routes.SPLASH,
+            routes: {
+              Routes.SPLASH: (context) =>
+                  BlocProvider(
+                    create: (_) =>
+                    SplashBloc(repository: context.read<ApiRepository>() , authBloc: BlocProvider.of<AuthBloc>(context))..add(SplashLoad()),
+                    child: SplashScreen(),
+                  ),
+              Routes.FIRST_LAUNCH: (context) =>
+                  BlocProvider(
+                    create: (_) =>
+                        SplashBloc(repository: context.read<ApiRepository>()),
+                    child: FirstScreen(),
+                  ),
+              Routes.HOME: (context) {
+                return MultiBlocProvider(
+                  providers: [
+                    BlocProvider(create: (_) => AnimationBloc(repository: context.read<ApiRepository>(),settingBloc: BlocProvider.of<SettingBloc>(context))..add(AnimationLoad())),
+                    BlocProvider(create: (_) => AnimationSeasonBloc(repository: context.read<ApiRepository>(),settingBloc: BlocProvider.of<SettingBloc>(context))..add(AnimationSeasonLoad(limit: "7"))),
+                    BlocProvider(create: (_) => AnimationScheduleBloc(repository: context.read<ApiRepository>(),settingBloc: BlocProvider.of<SettingBloc>(context))..add(AnimationScheduleInitLoad())),
+                    BlocProvider(create: (_) => GenreSearchBloc(repository: context.read<ApiRepository>(), genreCategoryListBloc: BlocProvider.of<GenreCategoryListBloc>(context))),
+                  ],
+                  child: HomeScreen(),
+                );
+              },
+              Routes.IMAGE_DETAIL: (context) =>
+                  MultiBlocProvider(
+                    providers: [
+                      BlocProvider(
+                        create: (_) =>
+                            AnimationDetailBloc(
+                                repository: context.read<ApiRepository>()),
+                      ),
+                    ],
+                    child:  AnimationDetailScreen(),
+                  ),
+              Routes.SEARCH: (context) =>
+                  MultiBlocProvider(
+                    providers: [
+                      BlocProvider(
+                          create: (_) =>
+                              SearchBloc(
+                                  repository: context.read<ApiRepository>())),
+                      BlocProvider(
+                          create: (_) =>
+                              SearchHistoryBloc(
+                                  repository: context.read<ApiRepository>()))
+                    ],
+                    child: SearchScreen(),
+                  ),
+              Routes.LOGIN: (context) =>
+                  BlocProvider(
+                    create: (context) => LoginBloc(repository: context.read<ApiRepository>()),
+                    child: LoginScreen(),
+                  ),
+              Routes.REGISTER : (_)=> BlocProvider(create:(context)=>RegisterBloc(repository: context.read<ApiRepository>()) , child: RegisterScreen(),),
+              Routes.Account : (context)=> BlocProvider(create:(_)=>AccountBloc(repository: context.read<ApiRepository>())..add(AccountLoad()) , child: AccountScreen(),),
+              Routes.Notification : (context)=> BlocProvider(create:(_)=>RegisterBloc(repository: context.read<ApiRepository>()) , child: NotificationScreen(),),
+              Routes.Setting : (context)=>SettingScreen(),
+              Routes.SCHEDULE : (_)=>BlocProvider(create:(context)=>AnimationScheduleBloc(repository: context.read<ApiRepository>())..add(AnimationScheduleLoad(day: "1")) , child: AnimationScheduleScreen(),),
+            },
           ),
-          Routes.SEARCH: (context) =>
-              MultiBlocProvider(
-                providers: [
-                  BlocProvider(
-                      create: (_) =>
-                          SearchBloc(
-                              repository: context.read<ApiRepository>())),
-                  BlocProvider(
-                      create: (_) =>
-                          SearchHistoryBloc(
-                              repository: context.read<ApiRepository>()))
-                ],
-                child: SearchScreen(),
-              ),
-          Routes.LOGIN: (context) =>
-              BlocProvider(
-                create: (context) => LoginBloc(repository: context.read<ApiRepository>()),
-                child: LoginScreen(),
-              ),
-          Routes.REGISTER : (_)=> BlocProvider(create:(context)=>RegisterBloc(repository: context.read<ApiRepository>()) , child: RegisterScreen(),),
-          Routes.Account : (context)=> BlocProvider(create:(_)=>AccountBloc(repository: context.read<ApiRepository>())..add(AccountLoad()) , child: AccountScreen(),),
-          Routes.Notification : (context)=> BlocProvider(create:(_)=>RegisterBloc(repository: context.read<ApiRepository>()) , child: NotificationScreen(),),
-          Routes.Setting : (context)=>SettingScreen(),
-          Routes.SCHEDULE : (_)=>BlocProvider(create:(context)=>AnimationScheduleBloc(repository: context.read<ApiRepository>())..add(AnimationScheduleLoad(day: "1")) , child: AnimationScheduleScreen(),),
-        },
-      ),
+          listener: (context,state){
+            print(state);
+          },
+        )
     ) ,);
   }
 }

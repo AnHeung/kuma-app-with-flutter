@@ -13,7 +13,7 @@ import 'package:package_info/package_info.dart';
 class MoreScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MoreBloc, MoreState>(
+    return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
         final status = context.select((AuthBloc bloc) => bloc.state.status);
         if (status == AuthStatus.Auth) {

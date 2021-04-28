@@ -82,5 +82,6 @@ getUserData()async {
 
 printUserData() async{
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  print('userId : ${prefs.getString("id")} , loginType: ${prefs.getString("loginType")} userName:${prefs.getString("userName")} isAutoScroll : ${prefs.getBool("autoScroll")}');
+  print('userId : ${prefs.getString("id")} , loginType: ${prefs.getString("loginType")} userName:${prefs.getString("userName")} '
+      'isAutoScroll : ${prefs.getBool("autoScroll")} homeItemCount :${prefs.getString("homeItemCount")} rankType :${prefs.getString("rankType")}');
 }

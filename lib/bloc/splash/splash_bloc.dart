@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
+import 'package:kuma_flutter_app/bloc/auth/auth_bloc.dart';
 import 'package:kuma_flutter_app/model/api/social_user.dart';
 import 'package:kuma_flutter_app/repository/api_repository.dart';
 import 'package:kuma_flutter_app/util/sharepref_util.dart';
@@ -14,8 +15,9 @@ part 'splash_state.dart';
 
 class SplashBloc extends Bloc<SplashEvent, SplashState> {
   final ApiRepository repository;
+  final AuthBloc authBloc;
 
-  SplashBloc({this.repository})
+  SplashBloc({this.repository ,this.authBloc})
       : super(const SplashState(status: SplashStatus.initial));
 
   @override
@@ -32,8 +34,12 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
     yield const SplashState(status: SplashStatus.loading);
     String userId = await getUserId();
     LoginUserData userData = await repository.getUserItemFromFireStore(userId:userId);
-    if(userData != null) saveUserData(userData: userData);
-    else removeUserData();
+    if(userData != null){
+      saveUserData(userData: userData);
+    }else{
+      removeUserData();
+      authBloc.add(const ChangeAuth(status: AuthStatus.UnAuth));
+    }
     await printUserData();
     bool isAppFirstLaunch = await appFirstLaunch();
     await Future.delayed(const Duration(seconds: 1));
