@@ -5,11 +5,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/animation_detail/animation_detail_bloc.dart';
 import 'package:kuma_flutter_app/bloc/character/character_bloc.dart';
+import 'package:kuma_flutter_app/bloc/genre_search/genre_category_list_bloc/genre_category_list_bloc.dart';
+import 'package:kuma_flutter_app/bloc/tab/tab_cubit.dart';
+import 'package:kuma_flutter_app/enums/app_tab.dart';
+import 'package:kuma_flutter_app/enums/category_click_status.dart';
 import 'package:kuma_flutter_app/enums/detail_animation_actions.dart';
+import 'package:kuma_flutter_app/enums/genre_title.dart';
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
 import 'package:kuma_flutter_app/model/item/animation_deatil_page_item.dart';
 import 'package:kuma_flutter_app/model/item/animation_detail_item.dart';
 import 'package:kuma_flutter_app/model/item/base_scroll_item.dart';
+import 'package:kuma_flutter_app/model/item/genre_nav_item.dart';
 import 'package:kuma_flutter_app/routes/routes.dart';
 import 'package:kuma_flutter_app/util/view_utils.dart';
 import 'package:kuma_flutter_app/widget/bottom_character_item_container.dart';
@@ -266,9 +272,9 @@ class AnimationDetailScreen extends StatelessWidget {
                   children: genreList
                       .map((genre) => GestureDetector(
                             onTap: () {
-                              // Navigator.pop(context, (router)=>true );
-                              // BlocProvider.of<TabCubit>(context).tabUpdate(AppTab.GENRE);
-                              // BlocProvider.of<GenreCategoryListBloc>(context).add(GenreItemClick(navItem: GenreNavItem()));
+                              Navigator.pop(context, (router)=>true );
+                              BlocProvider.of<TabCubit>(context).tabUpdate(AppTab.GENRE);
+                              BlocProvider.of<GenreCategoryListBloc>(context).add(GenreClickFromDetailScreen(navItem: GenreNavItem().copyWith(category:genre.name,categoryValue: genre.id, clickStatus: CategoryClickStatus.NONE , genreType: GenreType.GENRE )));
                             },
                             behavior: HitTestBehavior.translucent,
                             child: Padding(

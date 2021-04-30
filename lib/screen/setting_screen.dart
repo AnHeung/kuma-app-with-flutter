@@ -13,7 +13,6 @@ import 'package:toggle_switch/toggle_switch.dart';
 class SettingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<SettingBloc>(context).add(SettingLoad());
 
     return WillPopScope(
       onWillPop: () async {

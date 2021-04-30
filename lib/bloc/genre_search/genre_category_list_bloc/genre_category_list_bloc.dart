@@ -10,7 +10,6 @@ import 'package:kuma_flutter_app/model/item/genre_nav_item.dart';
 import 'package:kuma_flutter_app/repository/api_repository.dart';
 import 'package:kuma_flutter_app/util/string_util.dart';
 import 'package:meta/meta.dart';
-import 'package:rxdart/rxdart.dart';
 
 part 'genre_category_list_event.dart';
 part 'genre_category_list_state.dart';
@@ -34,6 +33,8 @@ class GenreCategoryListBloc extends Bloc<GenreCategoryListEvent, GenreCategoryLi
     yield* _mapToGenreItemRemove(event,state);
     }else if(event is GenreItemRemoveAll){
      yield* _mapToGenreRemoveAll(state); 
+   }else if(event is GenreClickFromDetailScreen){
+     yield* _mapToGenreClickFromDetailScreen(event,state);
    }
   }
 
@@ -64,31 +65,31 @@ class GenreCategoryListBloc extends Bloc<GenreCategoryListEvent, GenreCategoryLi
 
   Stream<GenreCategoryListState> _mapToGenreItemClick(GenreItemClick event , GenreCategoryListState state) async*{
     GenreNavItem clickItem = event.navItem.copyWith(clickStatus: _changeCategoryStatus(event.navItem.clickStatus, event.navItem.genreType));
-    List<GenreListItem> genreListItems = _getUpdateItem(state.genreListItems , clickItem);
-    GenreData genreData = _getGenreData(genreListItems:genreListItems);
-    yield GenreCategoryListState(status: GenreCategoryStatus.success, genreListItems:genreListItems ,genreData: genreData.copyWith(page: "1"));
+    yield* _genreCategorySuccessState(clickItem:clickItem , genreItemList: state.genreListItems);
+  }
+
+  Stream<GenreCategoryListState> _mapToGenreClickFromDetailScreen(GenreClickFromDetailScreen event , GenreCategoryListState state) async*{
+    GenreNavItem clickItem = event.navItem.copyWith(clickStatus: _changeCategoryStatus(event.navItem.clickStatus, event.navItem.genreType));
+    List<GenreListItem> genreListItems = _getClearItemList(state.genreListItems);
+    yield* _genreCategorySuccessState(clickItem:clickItem , genreItemList: genreListItems);
   }
 
   Stream<GenreCategoryListState> _mapToGenreItemRemove(GenreItemRemove event , GenreCategoryListState state)async*{
     GenreNavItem clickItem = event.navItem.copyWith(clickStatus: CategoryClickStatus.NONE);
-    List<GenreListItem> genreListItems= _getUpdateItem(state.genreListItems , clickItem);
-    GenreData genreData = _getGenreData(genreListItems:genreListItems);
-    yield GenreCategoryListState(status: GenreCategoryStatus.success, genreListItems:genreListItems , genreData:genreData.copyWith(page: "1"));
+    yield* _genreCategorySuccessState(clickItem:clickItem , genreItemList: state.genreListItems);
+  }
+
+  Stream<GenreCategoryListState> _genreCategorySuccessState({GenreNavItem clickItem , List<GenreListItem> genreItemList}) async*{
+    List<GenreListItem> updateGenreList= _getUpdateItemList(genreItemList , clickItem);
+    GenreData genreData = _getGenreData(genreListItems:updateGenreList);
+    yield GenreCategoryListState(status: GenreCategoryStatus.success, genreListItems:updateGenreList , genreData:genreData.copyWith(page: "1"));
   }
 
   _getGenreData({List<GenreListItem> genreListItems}) {
-
-    List<GenreNavItem> clickNavItem = genreListItems.fold([], (acc, genreItem) {
-      genreItem.navItems
-          .where((navItem) => navItem.clickStatus != CategoryClickStatus.NONE)
-          .forEach((item) => acc.add(item));
-      return acc;
-    });
+    List<GenreNavItem> clickNavItem = _setClickItemList(genreListItems: genreListItems);
 
     return clickNavItem.fold(GenreData(), (acc, navItem) {
-
       GenreData genreData = (acc as GenreData);
-
       switch(navItem.genreType){
         case GenreType.GENRE:
           if (navItem.clickStatus == CategoryClickStatus.EXCLUDE) {
@@ -114,15 +115,32 @@ class GenreCategoryListBloc extends Bloc<GenreCategoryListEvent, GenreCategoryLi
     });
   }
 
-  _getUpdateItem(List<GenreListItem> genreListItems , GenreNavItem updateItem){
+  List<GenreNavItem> _setClickItemList({List<GenreListItem> genreListItems}){
+    return genreListItems.fold([], (acc, genreItem) {
+      genreItem.navItems
+          .where((navItem) => navItem.clickStatus != CategoryClickStatus.NONE)
+          .forEach((item) => acc.add(item));
+      return acc;
+    });
+  }
+
+  _getUpdateItemList(List<GenreListItem> genreListItems , GenreNavItem updateItem){
     return genreListItems.map((genreItem){
       return GenreListItem(type: genreItem.type , koreaType: genreItem.koreaType, navItems: genreItem.navItems.map((navItem){
         if(navItem.genreType != GenreType.GENRE && navItem.genreType != GenreType.RATED && navItem.genreType == updateItem.genreType){
-            if(navItem.category == updateItem.category) return navItem.copyWith(clickStatus: updateItem.clickStatus);
+            if(navItem.categoryValue == updateItem.categoryValue) return navItem.copyWith(clickStatus: updateItem.clickStatus);
             else return navItem.copyWith(clickStatus: CategoryClickStatus.NONE);
         }
-        if(navItem.category == updateItem.category) return navItem.copyWith(clickStatus: updateItem.clickStatus);
+        if(navItem.categoryValue == updateItem.categoryValue) return navItem.copyWith(clickStatus: updateItem.clickStatus);
         return navItem;
+      }).toList());
+    }).toList();
+  }
+
+  _getClearItemList(List<GenreListItem> genreListItems){
+    return genreListItems.map((genreItem){
+      return genreItem.copyWith(navItems: genreItem.navItems.map((navItem){
+        return  navItem.copyWith(clickStatus: CategoryClickStatus.NONE);
       }).toList());
     }).toList();
   }
@@ -133,10 +151,6 @@ class GenreCategoryListBloc extends Bloc<GenreCategoryListEvent, GenreCategoryLi
     else
       baseString += ",$appendString";
     return baseString;
-  }
-  
-  _removeItem({String baseString , String removeItem}){
-    return baseString.split(",").remove(removeItem);
   }
 
   _changeCategoryStatus(CategoryClickStatus status , GenreType genreType) {

@@ -67,8 +67,8 @@ class App extends StatelessWidget {
         providers: [
           BlocProvider(create: (context) => TabCubit(),),
         BlocProvider(create: (context)=>AuthBloc(repository: context.read<ApiRepository>())),
-          BlocProvider(create: (context) =>SettingBloc(repository: context.read<ApiRepository>())),
-          BlocProvider(create: (context) => GenreCategoryListBloc(repository: context.read<ApiRepository>())..add(GenreCategoryListLoad())),
+          BlocProvider(create: (context) =>SettingBloc(repository: context.read<ApiRepository>())..add(SettingLoad())),
+          BlocProvider(create: (context) => GenreCategoryListBloc(repository: context.read<ApiRepository>())),
           BlocProvider(create: (context)=>LoginBloc(repository: context.read<ApiRepository>()))
         ],
         child: BlocListener<AuthBloc, AuthState>(
@@ -98,7 +98,7 @@ class App extends StatelessWidget {
                     BlocProvider(create: (_) => AnimationBloc(repository: context.read<ApiRepository>(),settingBloc: BlocProvider.of<SettingBloc>(context), loginBloc: BlocProvider.of<LoginBloc>(context))..add(AnimationLoad())),
                     BlocProvider(create: (_) => AnimationSeasonBloc(repository: context.read<ApiRepository>(),settingBloc: BlocProvider.of<SettingBloc>(context))..add(AnimationSeasonLoad(limit: "7"))),
                     BlocProvider(create: (_) => AnimationScheduleBloc(repository: context.read<ApiRepository>(),settingBloc: BlocProvider.of<SettingBloc>(context))..add(AnimationScheduleInitLoad())),
-                    BlocProvider(create: (_) => GenreSearchBloc(repository: context.read<ApiRepository>(), genreCategoryListBloc: BlocProvider.of<GenreCategoryListBloc>(context))),
+                    BlocProvider(create: (_) => GenreSearchBloc(repository: context.read<ApiRepository>(), genreCategoryListBloc: BlocProvider.of<GenreCategoryListBloc>(context)..add(GenreCategoryListLoad()))),
                   ],
                   child: HomeScreen(),
                 );

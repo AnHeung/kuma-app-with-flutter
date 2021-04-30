@@ -33,3 +33,12 @@ class GenreItemRemove extends GenreCategoryListEvent{
 }
 
 class GenreItemRemoveAll extends GenreCategoryListEvent{}
+
+class GenreClickFromDetailScreen extends GenreCategoryListEvent{
+  final GenreNavItem navItem;
+
+  GenreClickFromDetailScreen({this.navItem});
+
+  @override
+  List<Object> get props =>[navItem];
+}
