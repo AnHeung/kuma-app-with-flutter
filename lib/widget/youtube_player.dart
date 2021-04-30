@@ -19,27 +19,30 @@ class _YoutubePlayerState extends State<YoutubeVideoPlayer> {
 
   @override
   void didUpdateWidget(YoutubeVideoPlayer oldWidget) {
-    if (oldWidget.url != widget.url) {
-      this.updateChildWithParent(widget.url);
-    }
+    if (oldWidget.url != widget.url) this.updateChildWithParent(widget.url);
     super.didUpdateWidget(oldWidget);
   }
 
   void updateChildWithParent(String url) {
-      _controller.load(getVideoId(url));
+    setState(() {
+      _controller = _buildYoutubeController(url: widget.url);
+    });
+  }
+
+  _buildYoutubeController({String url}){
+    return YoutubePlayerController(
+      initialVideoId: getVideoId(url),
+      flags: const YoutubePlayerFlags(
+        forceHD: true,
+        autoPlay: false,
+      ),
+    );
   }
 
   @override
   void initState() {
     super.initState();
-    _controller = YoutubePlayerController(
-      initialVideoId: getVideoId(widget.url),
-      flags: const YoutubePlayerFlags(
-        forceHD: true,
-        autoPlay: false,
-        mute: true,
-      ),
-    );
+    _controller = _buildYoutubeController(url: widget.url);
   }
 
   @override

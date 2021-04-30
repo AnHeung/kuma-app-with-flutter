@@ -27,28 +27,38 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   Stream<LoginState> _mapToDirectLogin(DirectLogin event) async* {
-    yield const LoginState(status: LoginStatus.Loading);
-    Map<LoginStatus, LoginUserData> loginData = await repository.firebaseSignIn(
-        userData: event.userData);
-    yield getLoginStatus(loginData);
+    try {
+      yield const LoginState(status: LoginStatus.Loading);
+      Map<LoginStatus, LoginUserData> loginData = await repository.firebaseSignIn(
+              userData: event.userData);
+      yield* getLoginStatus(loginData);
+    } catch (e) {
+      print("_mapToDirectLogin Error : $e");
+      yield LoginState(status: LoginStatus.Failure, msg: "로그인 에러 $e");
+    }
   }
 
   Stream<LoginState> _mapToLogin(Login event) async* {
-    yield const LoginState(status: LoginStatus.Loading);
-    Map<LoginStatus, LoginUserData> loginData = await repository.login(
-        context: event.context, type: event.type);
-    yield getLoginStatus(loginData);
+    try {
+      yield const LoginState(status: LoginStatus.Loading);
+      Map<LoginStatus, LoginUserData> loginData = await repository.login(
+              context: event.context, type: event.type);
+      yield* getLoginStatus(loginData);
+    } catch (e) {
+      print("_mapToLogin Error : $e");
+      yield LoginState(status: LoginStatus.Failure, msg: "로그인 에러 $e");
+    }
   }
 
-  LoginState getLoginStatus(Map<LoginStatus, LoginUserData> loginData)  {
+  Stream<LoginState> getLoginStatus(Map<LoginStatus, LoginUserData> loginData)  async*{
     try {
       final LoginStatus status = loginData.keys.first;
       final LoginUserData data = loginData.values.first;
 
-      return LoginState(status:status,userData: data);
+      yield LoginState(status:status,userData: data);
     } on Exception catch (e) {
-      print('_mapToLogin Error:$e');
-      return LoginState(status: LoginStatus.Failure, msg:'_mapToLogin Error:$e');
+      print('getLoginStatus Error:$e');
+      yield LoginState(status: LoginStatus.Failure, msg:'getLoginStatus 에러:$e');
     }
   }
 }

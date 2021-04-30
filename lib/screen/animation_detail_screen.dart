@@ -50,10 +50,7 @@ class AnimationDetailScreen extends StatelessWidget {
         bool isLoading = state.status == AnimationDetailStatus.loading;
 
         if (AnimationDetailStatus.failure == state.status) {
-          String errMsg = state.status == AnimationDetailStatus.failure
-              ? state.msg
-              : "상세페이지 에러";
-          showToast(msg: errMsg);
+          showToast(msg: state.msg);
           return RefreshContainer(
               callback: () => BlocProvider.of<AnimationDetailBloc>(context)
                   .add(AnimationDetailLoad(id: id)));
@@ -90,9 +87,7 @@ class AnimationDetailScreen extends StatelessWidget {
             children: [
                 _buildDetailTopImageContainer(
                     context: context, detailItem: detailItem),
-                _buildDetailTopYoutubeContainer(
-                    context: context,
-                    selectVideoUrl: detailItem.selectVideoUrl),
+                _buildDetailTopYoutubeContainer(context: context, selectVideoUrl: detailItem.selectVideoUrl),
                 _buildDetailTopContainer(
                     context: context, detailItem: detailItem),
                 TitleImageMoreContainer(

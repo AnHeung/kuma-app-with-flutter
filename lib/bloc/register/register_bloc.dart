@@ -26,12 +26,17 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   }
 
   Stream<RegisterState> _mapToUserRegister(UserRegister event) async*{
-    yield RegisterState(status: RegisterStatus.Loading);
-    LoginUserData userData = event.userData;
-    if(userData!= null && userData.uniqueId.isNotEmpty && userData.userId.isNotEmpty){
-      RegisterStatus status = await repository.register(userData: userData);
-      await Future.delayed(const Duration(seconds: 1));
-      yield RegisterState(status: status);
+    try {
+      yield RegisterState(status: RegisterStatus.Loading);
+      LoginUserData userData = event.userData;
+      if(userData!= null && userData.uniqueId.isNotEmpty && userData.userId.isNotEmpty){
+            RegisterStatus status = await repository.register(userData: userData);
+            await Future.delayed(const Duration(seconds: 1));
+            yield RegisterState(status: status);
+          }
+    } catch (e) {
+      print("_mapToUserRegister $e");
+      yield RegisterState(status: RegisterStatus.RegisterFailure);
     }
   }
 }

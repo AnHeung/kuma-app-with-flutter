@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
+import 'package:kuma_flutter_app/bloc/animation/animation_bloc.dart';
 import 'package:kuma_flutter_app/bloc/login/login_bloc.dart';
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
 import 'package:kuma_flutter_app/enums/login_status.dart';

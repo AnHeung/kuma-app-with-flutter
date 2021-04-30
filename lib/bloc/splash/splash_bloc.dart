@@ -35,9 +35,9 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
     String userId = await getUserId();
     LoginUserData userData = await repository.getUserItemFromFireStore(userId:userId);
     if(userData != null){
-      saveUserData(userData: userData);
+      await saveUserData(userData: userData);
     }else{
-      removeUserData();
+      await removeUserData();
       authBloc.add(const ChangeAuth(status: AuthStatus.UnAuth));
     }
     await printUserData();

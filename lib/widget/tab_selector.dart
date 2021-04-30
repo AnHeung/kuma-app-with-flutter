@@ -7,7 +7,7 @@ class TabSelector extends StatelessWidget {
   final AppTab tab;
   final Function(AppTab) onTabSelected;
 
-  TabSelector({this.tab, this.onTabSelected});
+  const TabSelector({this.tab, this.onTabSelected});
 
   @override
   Widget build(BuildContext context) {

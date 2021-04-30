@@ -1,47 +1,18 @@
 part of 'account_bloc.dart';
 
+enum AccountStatus {initial , loading, failure , success , withdraw}
+
 @immutable
-abstract class AccountState extends Equatable{
+class AccountState extends Equatable{
 
-
-  @override
-  List<Object> get props =>[];
-
-  const AccountState();
-
-}
-
-class AccountLoadInProgress extends AccountState {
-}
-class AccountLoadFailure extends AccountState {
-  final String errMsg;
-
-  const AccountLoadFailure({this.errMsg});
-
-  @override
-  List<Object> get props =>[errMsg];
-}
-
-class AccountLoadSuccess extends AccountState {
+  final String msg;
+  final AccountStatus status;
   final UserAccount accountData;
-  const AccountLoadSuccess({this.accountData});
-}
 
-class AccountWithdrawSuccess extends AccountState {
-  final String successMsg;
-
-  const AccountWithdrawSuccess({this.successMsg});
+  const AccountState({this.msg, this.status = AccountStatus.initial, this.accountData = const UserAccount()});
 
   @override
-  List<Object> get props =>[successMsg];
-}
+  List<Object> get props =>[msg, status ,accountData];
 
-class AccountWithdrawFailure extends AccountState {
-  final String errMsg;
-
-  const AccountWithdrawFailure({this.errMsg});
-
-  @override
-  List<Object> get props =>[errMsg];
 }
 

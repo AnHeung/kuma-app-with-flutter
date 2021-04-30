@@ -15,7 +15,7 @@ part 'account_state.dart';
 class AccountBloc extends Bloc<AccountEvent, AccountState> {
   final ApiRepository repository;
 
-  AccountBloc({this.repository}) : super(AccountLoadInProgress());
+  AccountBloc({this.repository}) : super(const AccountState(status: AccountStatus.initial));
 
   @override
   Stream<AccountState> mapEventToState(
@@ -30,21 +30,22 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
 
   Stream<AccountState> _mapToWithdraw(AccountWithdraw event) async* {
     try {
-      yield AccountLoadInProgress();
+      yield const AccountState(status: AccountStatus.loading);
       String userId  = event.userId;
       bool withdrawResult = await repository.withdraw(userId);
-      if (withdrawResult) yield const AccountWithdrawSuccess(successMsg: "회원탈퇴 성공");
-      else yield const AccountWithdrawFailure(errMsg: "회원탈퇴 실패 다시 시도해주세요");
+      if (withdrawResult) yield const AccountState(status: AccountStatus.withdraw, msg: "회원탈퇴 성공");
+      else yield const AccountState(status :AccountStatus.failure, msg: "회원탈퇴 실패 다시 시도해주세요");
     }catch(e){
-      yield AccountWithdrawFailure(errMsg: "회원탈퇴 오류 : $e");
+      yield AccountState(status :AccountStatus.failure, msg: "회원탈퇴 오류 : $e");
     }
   }
 
   Stream<AccountState> _mapToAccountLoad() async* {
-    yield AccountLoadInProgress();
+    yield const AccountState(status: AccountStatus.loading);
     LoginUserData userData = await getUserData();
 
-    yield AccountLoadSuccess(
+    yield AccountState(
+        status: AccountStatus.success,
         accountData: UserAccount(
             userId: userData.userId,
             userName: userData.userName.isEmpty ? userData.userId : userData.userName,

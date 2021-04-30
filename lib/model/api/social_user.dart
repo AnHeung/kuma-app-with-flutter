@@ -16,7 +16,7 @@ class LoginUserData{
 
  static const empty = LoginUserData(uniqueId: '',userId: '', userName: '',  loginType:LoginType.UNKNOWN ,isAutoScroll:true, homeItemCount:kBaseHomeItemCount , rankType: kBaseRankItem);
 
- LoginUserData copyWith({String userId, bool isAutoScroll, String homeItemCount, String rankType ,String userName, String loginType}){
+ LoginUserData copyWith({String userId, bool isAutoScroll, String uniqueId , String homeItemCount, String rankType ,String userName, String loginType}){
   return LoginUserData(loginType: loginType?? this.loginType , userId: userId ?? this.userId, homeItemCount: homeItemCount ?? this.homeItemCount,
       rankType: rankType ?? this.rankType , isAutoScroll: isAutoScroll ?? this.isAutoScroll ,userName: userName?? this.userName, uniqueId: uniqueId ?? this.uniqueId);
  }

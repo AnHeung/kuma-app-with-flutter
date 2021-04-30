@@ -6,7 +6,6 @@ class UserAccount {
   final String userName;
   final LoginType loginType;
 
-  UserAccount({this.userId, this.userName, this.loginType});
-
+  const UserAccount({userId, userName, loginType}):this.userId = userId ?? "" , this.userName = userName ?? "" , this.loginType = loginType ?? LoginType.UNKNOWN;
 
 }

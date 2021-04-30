@@ -1,6 +1,6 @@
 part of 'animation_detail_bloc.dart';
 
-enum AnimationDetailStatus{initial, loading , failure , success }
+enum AnimationDetailStatus{ initial, loading , failure , success }
 
 @immutable
 class AnimationDetailState extends Equatable{

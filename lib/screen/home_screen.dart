@@ -16,13 +16,13 @@ import 'package:kuma_flutter_app/widget/tab_selector.dart';
 
 class HomeScreen extends StatelessWidget {
 
-  final AnimationScreen animationScreen = AnimationScreen();
+  final List<Widget> homeScreenList = [AnimationScreen() , GenreSearchScreen(), ImageScreen(), BlocProvider(create: (_)=>MoreBloc(), child: MoreScreen(),)];
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<TabCubit, AppTab>(builder: (context, currentTab) {
       return Scaffold(
-        body: _selectScreen(tab: currentTab, context: context),
+        body:  IndexedStack(children: homeScreenList ,index: currentTab.index,),
         floatingActionButton: Visibility(
           visible: currentTab != AppTab.MORE,
           child: FloatingActionButton(
@@ -32,31 +32,9 @@ class HomeScreen extends StatelessWidget {
         ),
         bottomNavigationBar: TabSelector(
           tab: currentTab,
-          onTabSelected: (currentTab) =>
-              BlocProvider.of<TabCubit>(context).tabUpdate(currentTab),
+          onTabSelected: (currentTab)=> BlocProvider.of<TabCubit>(context).tabUpdate(currentTab),
         ),
       );
     });
-  }
-
-  Widget _selectScreen({AppTab tab, BuildContext context}) {
-
-    Widget widget = AnimationScreen();
-
-    switch (tab) {
-      case AppTab.ANIMATION:
-        widget = AnimationScreen();
-        break;
-      case AppTab.GENRE:
-        widget = GenreSearchScreen();
-        break;
-      case AppTab.IMAGE:
-        widget = ImageScreen();
-        break;
-      case AppTab.MORE:
-        widget = BlocProvider(create: (_)=>MoreBloc(), child: MoreScreen(),);
-        break;
-    }
-    return widget;
   }
 }

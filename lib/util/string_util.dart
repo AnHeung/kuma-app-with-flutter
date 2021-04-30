@@ -1,4 +1,8 @@
 // Helper functions
+import 'dart:convert';
+
+import 'package:crypto/crypto.dart';
+
 String enumToString(Object o) => o.toString().split('.').last;
 
 T enumFromString<T>(String key, List<T> values) => values.firstWhere((v) => key == enumToString(v), orElse: () => null);
@@ -43,4 +47,11 @@ String getDayToNum(String dayText){
     default :
       return "1";
   }
+}
+
+
+String getEncryptString({String uniqueId}){
+  var bytes = utf8.encode(uniqueId);
+  String encryptId = sha256.convert(bytes).toString() ?? uniqueId;
+  return encryptId;
 }
