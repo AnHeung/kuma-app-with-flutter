@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/auth/auth_bloc.dart';
-import 'package:kuma_flutter_app/bloc/more/more_bloc.dart';
 import 'package:kuma_flutter_app/enums/more_type.dart';
 import 'package:kuma_flutter_app/routes/routes.dart';
 import 'package:kuma_flutter_app/util/view_utils.dart';
@@ -19,7 +18,7 @@ class MoreScreen extends StatelessWidget {
         if (status == AuthStatus.Auth) {
           return _moreContainer(context);
         }else if(status == AuthStatus.UnKnown) {
-          return LoadingIndicator(isVisible: true,);
+          return const LoadingIndicator(isVisible: true,);
         }else {
           return _needLoginContainer(context);
         }

@@ -20,7 +20,6 @@ import 'package:kuma_flutter_app/widget/loading_indicator.dart';
 import 'package:kuma_flutter_app/widget/more_container.dart';
 import 'package:kuma_flutter_app/widget/refresh_container.dart';
 import 'package:kuma_flutter_app/widget/title_container.dart';
-import 'package:kuma_flutter_app/widget/title_image_more_container.dart';
 
 import '../bloc/animation_schedule/animation_schedule_bloc.dart';
 import '../util/string_util.dart';
@@ -126,6 +125,7 @@ class _AnimationScreenState extends State<AnimationScreen> {
             return Container(
               height: 300,
               child: LoadingIndicator(
+                type: LoadingIndicatorType.IPHONE,
                 isVisible: loadState is AnimationLoadInProgress,
               ),
             );
@@ -226,7 +226,7 @@ class _AnimationScreenState extends State<AnimationScreen> {
                 ],
               ),
             ),
-            Container(height : kAnimationScheduleContainerHeight ,child: LoadingIndicator(isVisible: state is AnimationScheduleLoadInProgress,))
+            Container(height : kAnimationScheduleContainerHeight ,child: LoadingIndicator(type: LoadingIndicatorType.IPHONE,isVisible: state is AnimationScheduleLoadInProgress,))
           ],
         );
       },

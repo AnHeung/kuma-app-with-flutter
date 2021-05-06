@@ -99,6 +99,7 @@ class _SplashAnimationState extends State<SplashAnimationScreen>
           Align(alignment:Alignment.bottomCenter, child: Container(
             height: 100,
             child: LoadingIndicator(
+              type: LoadingIndicatorType.IPHONE,
               isVisible: widget.isLoading,
             ),
           ))

@@ -14,6 +14,8 @@ class SettingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    BlocProvider.of<SettingBloc>(context).add(SettingLoad());
+    
     return WillPopScope(
       onWillPop: () async {
         BlocProvider.of<SettingBloc>(context).add(SettingScreenExit());
@@ -86,10 +88,7 @@ class SettingScreen extends StatelessWidget {
                               flex: 1,
                               child: LayoutBuilder(
                                 builder: (context, constraints) {
-                                  print(categoryList.length);
-                                  double width = constraints.maxWidth /
-                                          categoryList.length -
-                                      8;
+                                  double width = constraints.maxWidth / categoryList.length - 8;
                                   return Container(
                                     padding: EdgeInsets.zero,
                                     margin: const EdgeInsets.only(left: 20),
@@ -151,8 +150,7 @@ class SettingScreen extends StatelessWidget {
                                                         context)
                                                     .add(ChangeSetting(
                                                         config: config.copyWith(
-                                                            rankType:
-                                                                rankType)));
+                                                            rankType: rankType)));
                                               },
                                               behavior:
                                                   HitTestBehavior.translucent,
@@ -203,7 +201,6 @@ class SettingScreen extends StatelessWidget {
                                   FontAwesomeIcons.times
                                 ],
                                 onToggle: (index) {
-                                  print("index $index");
                                   BlocProvider.of<SettingBloc>(context).add(
                                       ChangeSetting(
                                           config: config.copyWith(

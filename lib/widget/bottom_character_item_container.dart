@@ -35,7 +35,7 @@ class BottomCharacterItemContainer extends StatelessWidget {
         AnimationCharacterItem characterItem = state.characterItem;
 
         if (state.status == CharacterStatus.loading) {
-          return LoadingIndicator(
+          return const LoadingIndicator(
             isVisible: true,
           );
         }

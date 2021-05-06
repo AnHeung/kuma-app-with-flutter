@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kuma_flutter_app/bloc/character/character_bloc.dart';
 import 'package:kuma_flutter_app/bloc/person/person_bloc.dart';
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
 import 'package:kuma_flutter_app/model/item/animation_deatil_page_item.dart';
 import 'package:kuma_flutter_app/model/item/animation_person_item.dart';
 import 'package:kuma_flutter_app/model/item/base_scroll_item.dart';
 import 'package:kuma_flutter_app/routes/routes.dart';
-import 'package:kuma_flutter_app/util/view_utils.dart';
-import 'package:kuma_flutter_app/widget/image_scroll_container.dart';
 import 'package:kuma_flutter_app/widget/image_text_row_container.dart';
-import 'package:kuma_flutter_app/widget/image_text_scroll_item.dart';
 import 'package:kuma_flutter_app/widget/loading_indicator.dart';
 import 'package:kuma_flutter_app/widget/title_container.dart';
 import 'package:kuma_flutter_app/widget/title_image_more_container.dart';
@@ -18,7 +14,6 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../app_constants.dart';
 import 'custom_text.dart';
-import 'image_item.dart';
 
 class BottomVoiceItemContainer extends StatelessWidget {
   final String personId;
@@ -34,10 +29,8 @@ class BottomVoiceItemContainer extends StatelessWidget {
     return BlocBuilder<PersonBloc, PersonState>(
       builder: (context, state) {
         AnimationPersonItem personItem = state.personItem;
-        print(personItem);
-
         if (state.status == PersonStateStatus.loading) {
-          return LoadingIndicator(
+          return const LoadingIndicator(
             isVisible: true,
           );
         }

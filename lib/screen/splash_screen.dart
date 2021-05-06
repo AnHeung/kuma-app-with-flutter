@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
-import 'package:kuma_flutter_app/bloc/auth/auth_bloc.dart';
 import 'package:kuma_flutter_app/bloc/splash/splash_bloc.dart';
 import 'package:kuma_flutter_app/routes/routes.dart';
 import 'package:kuma_flutter_app/screen/splash_animation_screen.dart';
@@ -25,7 +24,6 @@ class SplashScreen extends StatelessWidget {
               WidgetsBinding.instance.addPostFrameCallback((_) async{
                 if (state.isAppFirstLaunch) {
                   await saveAppFirstLaunch(isAppFirst: false);
-
                   Navigator.pushNamedAndRemoveUntil(context, Routes.FIRST_LAUNCH, (route) => false);
                 } else {
                   Navigator.pop(context);

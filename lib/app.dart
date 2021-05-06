@@ -67,7 +67,7 @@ class App extends StatelessWidget {
         providers: [
           BlocProvider(create: (context) => TabCubit(),),
         BlocProvider(create: (context)=>AuthBloc(repository: context.read<ApiRepository>())),
-          BlocProvider(create: (context) =>SettingBloc(repository: context.read<ApiRepository>())..add(SettingLoad())),
+          BlocProvider(create: (context) =>SettingBloc(repository: context.read<ApiRepository>())),
           BlocProvider(create: (context) => GenreCategoryListBloc(repository: context.read<ApiRepository>())),
           BlocProvider(create: (context)=>LoginBloc(repository: context.read<ApiRepository>()))
         ],
@@ -137,7 +137,7 @@ class App extends StatelessWidget {
             },
           ),
           listener: (context,state){
-            print(state);
+            print("app State :$state");
           },
         )
     ) ,);

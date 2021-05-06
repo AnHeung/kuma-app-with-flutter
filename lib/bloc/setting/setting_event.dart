@@ -9,9 +9,7 @@ abstract class SettingEvent extends Equatable{
   const SettingEvent();
 }
 
-class SettingLoad extends SettingEvent{
-
-}
+class SettingLoad extends SettingEvent{}
 
 class ChangeSetting extends SettingEvent {
 

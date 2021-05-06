@@ -1,12 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:kuma_flutter_app/app_constants.dart';
+
+enum LoadingIndicatorType { IPHONE ,  CIRCLE}
 
 class LoadingIndicator extends StatelessWidget {
 
   final bool isVisible;
   final Color color;
+  final LoadingIndicatorType type;
 
-  LoadingIndicator({bool isVisible , Color color}): this.color = color ?? Colors.white , this.isVisible = isVisible ?? false;
+  const LoadingIndicator({bool isVisible , Color color, LoadingIndicatorType type}): this.color = color ?? kWhite, this.isVisible = isVisible ?? false , this.type = type ?? LoadingIndicatorType.CIRCLE;
 
   @override
   Widget build(BuildContext context) {
@@ -17,10 +21,19 @@ class LoadingIndicator extends StatelessWidget {
           backgroundColor: Colors.transparent,
           body: Container(
             alignment: Alignment.center,
-            child: const CupertinoActivityIndicator(radius: 20,),
+            child: _configIndicator(color: color , type: type),
           ),
         ),
       ),
     );
+  }
+
+  _configIndicator ({LoadingIndicatorType type , Color color}){
+    switch(type){
+      case LoadingIndicatorType.IPHONE :
+         return const CupertinoActivityIndicator(radius: 20,);
+      case LoadingIndicatorType.CIRCLE :
+        return CircularProgressIndicator(backgroundColor: color, valueColor: const AlwaysStoppedAnimation<Color>(kDisabled),);
+    }
   }
 }

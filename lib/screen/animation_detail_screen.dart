@@ -74,6 +74,7 @@ class AnimationDetailScreen extends StatelessWidget {
               _buildAniDetailContainer(
                   context: context, detailItem: detailItem),
               LoadingIndicator(
+                color: kPurple,
                 isVisible: isLoading,
               )
             ],
@@ -138,10 +139,7 @@ class AnimationDetailScreen extends StatelessWidget {
                             id: data.id,
                             title: data.title,
                             image: data.image,
-                            onTap: () => Navigator.pushReplacementNamed(
-                                context, Routes.IMAGE_DETAIL,
-                                arguments: AnimationDetailPageItem(
-                                    id: data.id, title: data.title)),
+                            onTap: _pushAndReplaceDetailScreen(context: context , arguments:  AnimationDetailPageItem(id: data.id, title: data.title)),
                           ))
                       .toList(),
                 ),
@@ -155,10 +153,7 @@ class AnimationDetailScreen extends StatelessWidget {
                           id: data.id,
                           title: data.title,
                           image: data.image,
-                          onTap: () => Navigator.pushReplacementNamed(
-                              context, Routes.IMAGE_DETAIL,
-                              arguments: AnimationDetailPageItem(
-                                  id: data.id, title: data.title)),
+                          onTap:_pushAndReplaceDetailScreen(context: context , arguments:  AnimationDetailPageItem(id: data.id, title: data.title)),
                           ))
                       .toList(),
                 ),
@@ -271,11 +266,7 @@ class AnimationDetailScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: genreList
                       .map((genre) => GestureDetector(
-                            onTap: () {
-                              Navigator.pop(context, (router)=>true );
-                              BlocProvider.of<TabCubit>(context).tabUpdate(AppTab.GENRE);
-                              BlocProvider.of<GenreCategoryListBloc>(context).add(GenreClickFromDetailScreen(navItem: GenreNavItem().copyWith(category:genre.name,categoryValue: genre.id, clickStatus: CategoryClickStatus.NONE , genreType: GenreType.GENRE )));
-                            },
+                            onTap: _pushGenreSearchScreen(context: context, event: GenreClickFromDetailScreen(navItem: GenreNavItem().copyWith(category:genre.name,categoryValue: genre.id, clickStatus: CategoryClickStatus.NONE , genreType: GenreType.GENRE))),
                             behavior: HitTestBehavior.translucent,
                             child: Padding(
                               padding: const EdgeInsets.only(left: 10),
@@ -470,5 +461,19 @@ class AnimationDetailScreen extends StatelessWidget {
             isDynamic: true,
           )),
     );
+  }
+
+  VoidCallback _pushAndReplaceDetailScreen({BuildContext context, AnimationDetailPageItem arguments }){
+    return ()=>Navigator.pushReplacementNamed(
+        context, Routes.IMAGE_DETAIL,
+        arguments: arguments);
+  }
+
+  VoidCallback _pushGenreSearchScreen({BuildContext context, GenreClickFromDetailScreen event}){
+    return (){
+      Navigator.popUntil(context, ModalRoute.withName(Routes.HOME));
+      BlocProvider.of<TabCubit>(context).tabUpdate(AppTab.GENRE);
+      BlocProvider.of<GenreCategoryListBloc>(context).add(event);
+    };
   }
 }

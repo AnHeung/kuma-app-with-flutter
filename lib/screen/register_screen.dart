@@ -52,7 +52,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             builder: (context,state){
               RegisterStatus status = state.status;
               if(status == RegisterStatus.Loading){
-                return LoadingIndicator(isVisible: true);
+                return const LoadingIndicator(isVisible: true);
               }else if(status == RegisterStatus.RegisterComplete){
                 showToast(msg: "등록성공");
               }

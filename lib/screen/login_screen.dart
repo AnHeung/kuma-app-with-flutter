@@ -51,7 +51,7 @@ class LoginScreen extends StatelessWidget {
           },
           builder: (context, state) {
             if (state.status == LoginStatus.Loading) {
-              return LoadingIndicator(
+              return const LoadingIndicator(
                 isVisible: true,
               );
             } else {

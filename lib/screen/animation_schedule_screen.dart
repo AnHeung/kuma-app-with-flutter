@@ -73,7 +73,7 @@ class AnimationScheduleScreen extends StatelessWidget {
               },
             ),
           )
-        : LoadingIndicator(
+        : const LoadingIndicator(
             isVisible: true,
           );
   }
