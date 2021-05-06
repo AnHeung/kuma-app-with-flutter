@@ -162,19 +162,19 @@ class _AnimationScreenState extends State<AnimationScreen> {
                   .map((day) => GestureDetector(
                         onTap: () =>
                             BlocProvider.of<AnimationScheduleBloc>(context).add(
-                                AnimationScheduleLoad(day: getDayToNum(day))),
+                                AnimationScheduleLoad(day: day.getDayToNum())),
                         child: Container(
                           width: itemWidth,
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
-                            color: currentDay == getDayToNum(day) ? kLightBlue : kDisabled,
+                            color: currentDay == day.getDayToNum() ? kLightBlue : kDisabled,
                             shape: BoxShape.circle,
                           ),
                           height: 40,
                           child: CustomText(
                             isDynamic: true,
                             text: day,
-                            fontColor: currentDay == getDayToNum(day) ? kWhite : kBlack,
+                            fontColor: currentDay == day.getDayToNum() ? kWhite : kBlack,
                             fontWeight: FontWeight.w700,
                           ),
                         ),

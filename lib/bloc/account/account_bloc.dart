@@ -7,6 +7,7 @@ import 'package:kuma_flutter_app/model/api/social_user.dart';
 import 'package:kuma_flutter_app/model/user_account.dart';
 import 'package:kuma_flutter_app/repository/api_repository.dart';
 import 'package:kuma_flutter_app/util/sharepref_util.dart';
+import 'package:kuma_flutter_app/util/string_util.dart';
 import 'package:meta/meta.dart';
 
 part 'account_event.dart';
@@ -45,10 +46,10 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
     LoginUserData userData = await getUserData();
 
     yield AccountState(
-        status: AccountStatus.success,
+      status: AccountStatus.success,
         accountData: UserAccount(
             userId: userData.userId,
-            userName: userData.userName.isEmpty ? userData.userId : userData.userName,
+            userName: userData.userName.isNullEmptyOrWhitespace ? userData.userId : userData.userName,
             loginType: userData.loginType));
   }
 }

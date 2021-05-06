@@ -157,21 +157,21 @@ class AnimationScheduleScreen extends StatelessWidget {
           .map((day) => GestureDetector(
                 onTap: () {
                   BlocProvider.of<AnimationScheduleBloc>(context)
-                      .add(AnimationScheduleLoad(day: getDayToNum(day)));
+                      .add(AnimationScheduleLoad(day: day.getDayToNum()));
                 },
                 child: Container(
                   width: 50,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     color:
-                        currentDay == getDayToNum(day) ? kLightBlue : kWhite,
+                        currentDay == day.getDayToNum() ? kLightBlue : kWhite,
                     shape: BoxShape.circle,
                   ),
                   height: itemHeight,
                   child: CustomText(
                     isDynamic: true,
                     text: day,
-                    fontColor: currentDay == getDayToNum(day) ? kWhite : kBlack,
+                    fontColor: currentDay == day.getDayToNum() ? kWhite : kBlack,
                     fontWeight: FontWeight.w700,
                   ),
                 ),

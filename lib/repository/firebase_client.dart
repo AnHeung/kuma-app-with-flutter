@@ -63,7 +63,7 @@ class FirebaseClient {
     try {
       return await _firebaseAuth
           .signInWithEmailAndPassword(
-              email: userData.userId, password:getEncryptString(uniqueId :userData.uniqueId))
+              email: userData.userId, password:userData.uniqueId.getEncryptString())
           .then((result) => getUserItemFromFireStore(userId: userData.userId))
           .then((fireStoreUserData) async {
         await saveUserData(userData: fireStoreUserData);
@@ -164,7 +164,7 @@ class FirebaseClient {
 
   Future<RegisterStatus> register({LoginUserData userData}) async {
     try {
-      String encryptId = getEncryptString(uniqueId :userData.uniqueId);
+      String encryptId = userData.uniqueId.getEncryptString();
 
       LoginUserData registerData = userData.copyWith(
           uniqueId: encryptId,

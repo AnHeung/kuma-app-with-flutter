@@ -74,7 +74,6 @@ class AnimationDetailScreen extends StatelessWidget {
               _buildAniDetailContainer(
                   context: context, detailItem: detailItem),
               LoadingIndicator(
-                color: kPurple,
                 isVisible: isLoading,
               )
             ],

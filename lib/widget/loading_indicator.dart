@@ -10,7 +10,7 @@ class LoadingIndicator extends StatelessWidget {
   final Color color;
   final LoadingIndicatorType type;
 
-  const LoadingIndicator({bool isVisible , Color color, LoadingIndicatorType type}): this.color = color ?? kWhite, this.isVisible = isVisible ?? false , this.type = type ?? LoadingIndicatorType.CIRCLE;
+  const LoadingIndicator({bool isVisible , Color color, LoadingIndicatorType type}): this.color = color ?? kPurple, this.isVisible = isVisible ?? false , this.type = type ?? LoadingIndicatorType.CIRCLE;
 
   @override
   Widget build(BuildContext context) {

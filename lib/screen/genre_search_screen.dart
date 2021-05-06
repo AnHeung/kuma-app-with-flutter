@@ -61,7 +61,6 @@ class GenreSearchScreen extends StatelessWidget {
                 ),
               ),
               LoadingIndicator(
-                color: kBlue,
                 isVisible: state.status == GenreSearchStatus.loading,
               )
             ],

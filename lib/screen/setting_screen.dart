@@ -214,6 +214,7 @@ class SettingScreen extends StatelessWidget {
                     ],
                   ),
                   LoadingIndicator(
+                    type: LoadingIndicatorType.IPHONE,
                     isVisible: state.status == SettingStatus.loading,
                   )
                 ],
