@@ -19,21 +19,23 @@ class BottomVideoItemContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const double itemHeight = 50;
-    final double maxHeight = MediaQuery.of(context).size.height / 2.5;
-    final height = videoItems.length * itemHeight > maxHeight ? maxHeight :  videoItems.length *itemHeight  + itemHeight *2;
+    const double titleHeight = 60;
+    final double maxHeight = MediaQuery.of(context).size.height / 2;
+    final height = videoItems.length * itemHeight > maxHeight ? maxHeight :  videoItems.length *itemHeight  + itemHeight *2 + titleHeight;
 
     return Container(
+      color: kBlack,
       constraints: BoxConstraints(
           minHeight: itemHeight,
           minWidth: double.infinity,
           maxHeight:height),
       child: Column(
           children: [
+            Container(padding: const EdgeInsets.only(top: 20, bottom: 10), height: titleHeight, child: CustomText(text: "비디오 목록", fontColor: kWhite,fontFamily: doHyunFont, fontSize: 18.0, fontWeight: FontWeight.w700, ),),
             Container(
-              height:height-itemHeight,
+              height:height-itemHeight-titleHeight,
               padding:
                   const EdgeInsets.only(left: 10, top: 10, right: 20, bottom: 10),
-              color: kBlack,
               child: ListView.separated(
                   separatorBuilder: (BuildContext context, int index) {
                     return const SizedBox(
@@ -82,6 +84,7 @@ class BottomVideoItemContainer extends StatelessWidget {
               behavior: HitTestBehavior.translucent,
               onTap: () => Navigator.pop(context),
               child: Container(
+                color: kWhite,
                 height: itemHeight,
                 alignment: Alignment.center,
                 child: CustomText(

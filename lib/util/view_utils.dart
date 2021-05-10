@@ -1,10 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
+import 'package:kuma_flutter_app/bloc/character_detail/character_detail_bloc.dart';
+import 'package:kuma_flutter_app/bloc/person/person_bloc.dart';
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
 import 'package:kuma_flutter_app/enums/image_type.dart';
 import 'package:kuma_flutter_app/enums/move_state.dart';
+import 'package:kuma_flutter_app/repository/api_repository.dart';
+import 'package:kuma_flutter_app/widget/bottom_character_item_container.dart';
+import 'package:kuma_flutter_app/widget/bottom_voice_item_container.dart';
 import 'package:kuma_flutter_app/widget/custom_text.dart';
 import 'package:kuma_flutter_app/widget/image_item.dart';
 
@@ -263,6 +269,39 @@ showCheckListDialog(
       );
     },
   );
+}
+
+showCharacterBottomSheet({BuildContext context , String id}){
+  showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      context: context,
+      builder: (_) {
+        return BlocProvider(
+          create: (_) => CharacterDetailBloc(
+              repository:
+              context.read<ApiRepository>())
+            ..add(CharacterDetailLoad(
+                characterId: id)),
+          child: const BottomCharacterItemContainer(),
+        );
+      });
+}
+
+showVoiceBottomSheet({BuildContext context , String id}){
+  showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      context: context,
+      builder: (_) {
+        return BlocProvider(
+          create: (_) => PersonBloc(
+              repository:
+              context.read<ApiRepository>())
+            ..add(PersonLoad(personId: id)),
+          child: const BottomVoiceItemContainer(),
+        );
+      });
 }
 
 checkImageType(String res) {

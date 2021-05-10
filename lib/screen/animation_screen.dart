@@ -37,7 +37,7 @@ class _AnimationScreenState extends State<AnimationScreen> {
   Color appIconColors = kWhite;
   VoidCallback _scrollListener;
 
-  _AnimationScreenState() {
+  _AnimationScreenState() { 
     _scrollListener = () {
       if (_scrollController.hasClients) {
         _changeAppbar(_scrollController.offset);

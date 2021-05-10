@@ -88,11 +88,24 @@ const double kAnimationDetailFontSize = 15;
 const double kAnimationDetailIndicatorFontSize = 10;
 const double kAnimationDetailTitleFontSize = 25;
 const double kAnimationImageContainerHeight = 200;
-const String kAnimationDetailRelateTitle = "관련애니 목록";
-const String kAnimationDetailRecommendTitle = "추천애니 목록";
+const String kAnimationDetailRelateTitle = "관련애니";
+const String kAnimationDetailRecommendTitle = "추천애니";
 const String kAnimationDetailImageTitle = "이미지";
 const String kAnimationDetailCharacterTitle = "등장인물";
 const String kAnimationDetailSynopsisTitle = "개요";
+
+//성우상세
+const String kVoiceDetailTitle = "성우";
+const String kVoiceDetailCharacterTitle = "맡은캐릭터";
+const String kVoiceDetailIntroduceTitle = "소개";
+const String kVoiceDetailSiteTitle = "소개";
+
+//캐릭터 상세
+const String kCharacterDetailTitle = "성우";
+const String kCharacterDetailImageTitle = "맡은캐릭터";
+const String kCharacterDetailIntroduceTitle = "소개";
+const String kCharacterDetailSiteTitle = "소개";
+
 
 //계정페이지
 const double kAccountFontSize = 12;

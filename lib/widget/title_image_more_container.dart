@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
 import 'package:kuma_flutter_app/model/item/base_scroll_item.dart';
@@ -9,18 +10,21 @@ import 'package:kuma_flutter_app/widget/title_container.dart';
 class TitleImageMoreContainer extends StatelessWidget {
   final List<BaseScrollItem> baseItemList;
   final ImageShapeType imageShapeType;
+  final VoidCallback onClick;
   final int imageDiveRate;
   final String categoryTitle;
-  final VoidCallback moreOnClick;
   final double height;
 
   const TitleImageMoreContainer(
       {List<BaseScrollItem> baseItemList,
-        imageShapeType, imageDiveRate,
+      imageShapeType,
+      imageDiveRate,
+      this.onClick,
       this.categoryTitle,
-      this.moreOnClick,
       this.height})
-      : this.baseItemList = baseItemList ?? const <BaseScrollItem>[] , this.imageShapeType = imageShapeType?? ImageShapeType.CIRCLE , this.imageDiveRate = imageDiveRate ?? 3;
+      : this.baseItemList = baseItemList ?? const <BaseScrollItem>[],
+        this.imageShapeType = imageShapeType ?? ImageShapeType.CIRCLE,
+        this.imageDiveRate = imageDiveRate ?? 3;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +41,7 @@ class TitleImageMoreContainer extends StatelessWidget {
               Visibility(
                   visible: _isSizeEnough,
                   child: MoreContainer(
-                    onClick: moreOnClick,
+                    onClick: onClick,
                   ))
             ],
           ),
@@ -71,7 +75,7 @@ class TitleImageMoreContainer extends StatelessWidget {
     );
   }
 
-  bool get _isSizeEnough =>baseItemList!= null && baseItemList.length !=0;
+  bool get _isSizeEnough => baseItemList != null && baseItemList.length != 0;
 
   int get limitCount => baseItemList.length < 10 ? baseItemList.length : 10;
 

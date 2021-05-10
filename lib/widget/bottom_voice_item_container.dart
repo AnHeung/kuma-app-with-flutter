@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kuma_flutter_app/bloc/person/person_bloc.dart';
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
-import 'package:kuma_flutter_app/model/item/animation_deatil_page_item.dart';
 import 'package:kuma_flutter_app/model/item/animation_person_item.dart';
 import 'package:kuma_flutter_app/model/item/base_scroll_item.dart';
+import 'package:kuma_flutter_app/model/item/bottom_more_item.dart';
 import 'package:kuma_flutter_app/routes/routes.dart';
+import 'package:kuma_flutter_app/util/navigator_util.dart';
+import 'package:kuma_flutter_app/util/view_utils.dart';
+import 'package:kuma_flutter_app/widget/bottom_more_item_container.dart';
 import 'package:kuma_flutter_app/widget/image_text_row_container.dart';
 import 'package:kuma_flutter_app/widget/loading_indicator.dart';
 import 'package:kuma_flutter_app/widget/title_container.dart';
@@ -16,11 +19,10 @@ import '../app_constants.dart';
 import 'custom_text.dart';
 
 class BottomVoiceItemContainer extends StatelessWidget {
-  final String personId;
   final double itemHeight = 100;
   final double scrollItemHeight = 150;
 
-  const BottomVoiceItemContainer({this.personId});
+  const BottomVoiceItemContainer();
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +36,6 @@ class BottomVoiceItemContainer extends StatelessWidget {
             isVisible: true,
           );
         }
-
         return Container(
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
@@ -56,7 +57,7 @@ class BottomVoiceItemContainer extends StatelessWidget {
                     midName: "${personItem.familyName} ${personItem.givenName}",
                     nickName: personItem.alternateNames,
                   ),
-                  const TitleContainer(title: "사이트"),
+                  const TitleContainer(title: kVoiceDetailSiteTitle),
                   Visibility(
                     visible: personItem.url.isNotEmpty,
                     child: GestureDetector(
@@ -75,7 +76,7 @@ class BottomVoiceItemContainer extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const TitleContainer(title: "소개"),
+                  const TitleContainer(title: kVoiceDetailIntroduceTitle),
                   Container(
                     padding: const EdgeInsets.only(left: 10),
                     alignment: Alignment.center,
@@ -84,6 +85,17 @@ class BottomVoiceItemContainer extends StatelessWidget {
                     ),
                   ),
                   TitleImageMoreContainer(
+                    onClick: () => moveToBottomMoreItemContainer(
+                        title: kVoiceDetailTitle,
+                        type: BottomMoreItemType.Animation,
+                        context: context,
+                        items: personItem.voiceActingRoles
+                            .map((relateAnimationItem) => BottomMoreItem(
+                                id: relateAnimationItem.animationItem.malId,
+                                title: relateAnimationItem.animationItem.name,
+                                imgUrl:
+                                    relateAnimationItem.animationItem.imageUrl))
+                            .toList()),
                     categoryTitle: kAnimationDetailRelateTitle,
                     height: scrollItemHeight,
                     imageDiveRate: 4,
@@ -93,24 +105,39 @@ class BottomVoiceItemContainer extends StatelessWidget {
                               id: data.animationItem.malId,
                               title: data.animationItem.name,
                               image: data.animationItem.imageUrl,
-                              onTap: () => Navigator.pushReplacementNamed(
-                                  context, Routes.IMAGE_DETAIL,
-                                  arguments: AnimationDetailPageItem(
-                                      id: data.animationItem.malId,
-                                      title: data.animationItem.name)),
+                              onTap: () => moveToAnimationDetailScreen(
+                                  context: context,
+                                  id: data.animationItem.malId,
+                                  title: data.animationItem.name),
                             ))
                         .toList(),
                   ),
                   TitleImageMoreContainer(
-                    categoryTitle: "맡은 캐릭터",
+                    onClick: () => moveToBottomMoreItemContainer(
+                        title: kVoiceDetailCharacterTitle,
+                        type: BottomMoreItemType.Character,
+                        context: context,
+                        items: personItem.voiceActingRoles
+                            .map((characterItem) => BottomMoreItem(
+                                id: characterItem.characterItem.characterId,
+                                title: characterItem.characterItem.name,
+                                imgUrl: characterItem.characterItem.imageUrl))
+                            .toList()),
+                    categoryTitle: kVoiceDetailCharacterTitle,
                     height: scrollItemHeight,
-                      imageDiveRate: 4,
-                      imageShapeType: ImageShapeType.CIRCLE,
+                    imageDiveRate: 4,
+                    imageShapeType: ImageShapeType.CIRCLE,
                     baseItemList: personItem.voiceActingRoles
                         .map((data) => BaseScrollItem(
-                            id: data.characterItem.characterId,
-                            title: data.characterItem.name,
-                            image: data.characterItem.imageUrl,
+                              id: data.characterItem.characterId,
+                              title: data.characterItem.name,
+                              image: data.characterItem.imageUrl,
+                              onTap: () {
+                                Navigator.popUntil(context, ModalRoute.withName(Routes.IMAGE_DETAIL));
+                                showCharacterBottomSheet(
+                                    id: data.characterItem.characterId,
+                                    context: context);
+                              }
                             ))
                         .toList(),
                   ),

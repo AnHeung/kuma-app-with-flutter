@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kuma_flutter_app/bloc/character/character_bloc.dart';
-import 'package:kuma_flutter_app/bloc/person/person_bloc.dart';
+import 'package:kuma_flutter_app/bloc/character_detail/character_detail_bloc.dart';
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
-import 'package:kuma_flutter_app/model/item/animation_deatil_page_item.dart';
 import 'package:kuma_flutter_app/model/item/base_scroll_item.dart';
-import 'package:kuma_flutter_app/repository/api_repository.dart';
-import 'package:kuma_flutter_app/routes/routes.dart';
-import 'package:kuma_flutter_app/widget/bottom_voice_item_container.dart';
+import 'package:kuma_flutter_app/model/item/bottom_more_item.dart';
+import 'package:kuma_flutter_app/util/navigator_util.dart';
+import 'package:kuma_flutter_app/util/view_utils.dart';
+import 'package:kuma_flutter_app/widget/bottom_more_item_container.dart';
 import 'package:kuma_flutter_app/widget/image_scroll_container.dart';
 import 'package:kuma_flutter_app/widget/image_text_row_container.dart';
 import 'package:kuma_flutter_app/widget/loading_indicator.dart';
@@ -16,30 +15,28 @@ import 'package:kuma_flutter_app/widget/title_image_more_container.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../app_constants.dart';
-import '../model/item/animation_character_item.dart';
+import '../model/item/animation_character_detail_item.dart';
 import 'custom_text.dart';
 
 class BottomCharacterItemContainer extends StatelessWidget {
-  final String characterId;
   final double itemHeight = 100;
   final double scrollItemHeight = 150;
 
-  BottomCharacterItemContainer({this.characterId});
+  const BottomCharacterItemContainer();
 
   @override
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height * 0.75;
 
-    return BlocBuilder<CharacterBloc, CharacterState>(
+    return BlocBuilder<CharacterDetailBloc, CharacterState>(
       builder: (context, state) {
-        AnimationCharacterItem characterItem = state.characterItem;
+        AnimationCharacterDetailItem characterItem = state.characterItem;
 
-        if (state.status == CharacterStatus.loading) {
+        if (state.status == CharacterDetailStatus.loading) {
           return const LoadingIndicator(
             isVisible: true,
           );
         }
-
         return Container(
           alignment: Alignment.centerLeft,
           padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
@@ -82,7 +79,7 @@ class BottomCharacterItemContainer extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const TitleContainer(title: "소개"),
+                  const TitleContainer(title: kCharacterDetailIntroduceTitle),
                   Container(
                     padding: const EdgeInsets.only(left: 10),
                     alignment: Alignment.center,
@@ -90,7 +87,7 @@ class BottomCharacterItemContainer extends StatelessWidget {
                       text: characterItem.about,
                     ),
                   ),
-                  const TitleContainer(title: "이미지"),
+                  const TitleContainer(title: kCharacterDetailImageTitle),
                   ImageScrollItemContainer(
                     height: 100.0,
                     title: "관련 이미지",
@@ -99,6 +96,16 @@ class BottomCharacterItemContainer extends StatelessWidget {
                         .toList(),
                   ),
                   TitleImageMoreContainer(
+                    onClick: ()=>
+                      moveToBottomMoreItemContainer(
+                          title: kAnimationDetailRelateTitle,
+                          type: BottomMoreItemType.Animation,
+                          context: context, items: characterItem.relateAnimation
+                          .map((relateAnimationItem) => BottomMoreItem(
+                          id: relateAnimationItem.id,
+                          title: relateAnimationItem.title,
+                          imgUrl: relateAnimationItem.image))
+                          .toList()),
                     categoryTitle: kAnimationDetailRelateTitle,
                     height: scrollItemHeight,
                     imageDiveRate: 4,
@@ -108,38 +115,32 @@ class BottomCharacterItemContainer extends StatelessWidget {
                               id: data.id,
                               title: data.title,
                               image: data.image,
-                              onTap: () => Navigator.popAndPushNamed(
-                                  context, Routes.IMAGE_DETAIL,
-                                  arguments: AnimationDetailPageItem(
-                                      id: data.id, title: data.title)),
+                              onTap: () => moveToAnimationDetailScreen(context: context, id: data.id, title: data.title),
                             ))
                         .toList(),
                   ),
                   TitleImageMoreContainer(
-                    categoryTitle: "성우",
+                    onClick: ()=>{
+                      moveToBottomMoreItemContainer(
+                        title: kVoiceDetailTitle,
+                          type: BottomMoreItemType.Voice,
+                          context: context, items: characterItem.voiceActors
+                          .map((voiceItem) => BottomMoreItem(
+                          id: voiceItem.id,
+                          title: voiceItem.name,
+                          imgUrl: voiceItem.image))
+                          .toList())
+                    },
+                    categoryTitle: kVoiceDetailTitle,
                     height: scrollItemHeight,
                     imageDiveRate: 4,
                     imageShapeType: ImageShapeType.CIRCLE,
                     baseItemList: characterItem.voiceActors
-                        .map((data) => BaseScrollItem(
-                              id: data.id,
-                              title: data.name,
-                              image: data.image,
-                              onTap: () => showModalBottomSheet(
-                                  backgroundColor: Colors.transparent,
-                                  isScrollControlled: true,
-                                  context: context,
-                                  builder: (_) {
-                                    return BlocProvider(
-                                      create: (_) => PersonBloc(
-                                          repository:
-                                              context.read<ApiRepository>())
-                                        ..add(PersonLoad(personId: data.id)),
-                                      child: BottomVoiceItemContainer(
-                                        personId: data.id,
-                                      ),
-                                    );
-                                  }),
+                        .map((item) => BaseScrollItem(
+                              id: item.id,
+                              title: item.name,
+                              image: item.image,
+                              onTap: () => showVoiceBottomSheet(context: context, id:item.id),
                             ))
                         .toList(),
                   ),

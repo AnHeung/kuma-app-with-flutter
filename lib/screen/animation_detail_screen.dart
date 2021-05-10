@@ -4,7 +4,7 @@ import 'package:flutter/painting.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/animation_detail/animation_detail_bloc.dart';
-import 'package:kuma_flutter_app/bloc/character/character_bloc.dart';
+import 'package:kuma_flutter_app/bloc/character_detail/character_detail_bloc.dart';
 import 'package:kuma_flutter_app/bloc/genre_search/genre_category_list_bloc/genre_category_list_bloc.dart';
 import 'package:kuma_flutter_app/bloc/tab/tab_cubit.dart';
 import 'package:kuma_flutter_app/enums/app_tab.dart';
@@ -15,10 +15,13 @@ import 'package:kuma_flutter_app/enums/image_shape_type.dart';
 import 'package:kuma_flutter_app/model/item/animation_deatil_page_item.dart';
 import 'package:kuma_flutter_app/model/item/animation_detail_item.dart';
 import 'package:kuma_flutter_app/model/item/base_scroll_item.dart';
+import 'package:kuma_flutter_app/model/item/bottom_more_item.dart';
 import 'package:kuma_flutter_app/model/item/genre_nav_item.dart';
 import 'package:kuma_flutter_app/routes/routes.dart';
+import 'package:kuma_flutter_app/util/navigator_util.dart';
 import 'package:kuma_flutter_app/util/view_utils.dart';
 import 'package:kuma_flutter_app/widget/bottom_character_item_container.dart';
+import 'package:kuma_flutter_app/widget/bottom_more_item_container.dart';
 import 'package:kuma_flutter_app/widget/bottom_video_item_container.dart';
 import 'package:kuma_flutter_app/widget/custom_text.dart';
 import 'package:kuma_flutter_app/widget/empty_container.dart';
@@ -93,10 +96,22 @@ class AnimationDetailScreen extends StatelessWidget {
             children: [
                 _buildDetailTopImageContainer(
                     context: context, detailItem: detailItem),
-                _buildDetailTopYoutubeContainer(context: context, selectVideoUrl: detailItem.selectVideoUrl),
+                _buildDetailTopYoutubeContainer(
+                    context: context,
+                    selectVideoUrl: detailItem.selectVideoUrl),
                 _buildDetailTopContainer(
                     context: context, detailItem: detailItem),
                 TitleImageMoreContainer(
+                  onClick: () =>
+                    moveToBottomMoreItemContainer(
+                        title: kAnimationDetailCharacterTitle,
+                        type: BottomMoreItemType.Character,
+                        context: context, items: detailItem.characterItems
+                        .map((characterItem) => BottomMoreItem(
+                        id: characterItem.characterId,
+                        title: characterItem.name,
+                        imgUrl: characterItem.imageUrl))
+                        .toList()),
                   imageShapeType: ImageShapeType.CIRCLE,
                   imageDiveRate: 3,
                   categoryTitle: kAnimationDetailCharacterTitle,
@@ -112,12 +127,12 @@ class AnimationDetailScreen extends StatelessWidget {
                                 context: context,
                                 builder: (_) {
                                   return BlocProvider(
-                                    create: (_) => CharacterBloc(
+                                    create: (_) => CharacterDetailBloc(
                                         repository:
                                             context.read<ApiRepository>())
-                                      ..add(CharacterLoad(
+                                      ..add(CharacterDetailLoad(
                                           characterId: data.characterId)),
-                                    child: BottomCharacterItemContainer(),
+                                    child: const BottomCharacterItemContainer(),
                                   );
                                 }),
                           ))
@@ -129,6 +144,16 @@ class AnimationDetailScreen extends StatelessWidget {
                 ImageScrollItemContainer(
                     title: "관련 이미지", images: detailItem.pictures),
                 TitleImageMoreContainer(
+                  onClick: () =>
+                      moveToBottomMoreItemContainer(
+                        title: kAnimationDetailRelateTitle,
+                          type: BottomMoreItemType.Animation,
+                          context: context, items: detailItem.relatedAnime
+                          .map((characterItem) => BottomMoreItem(
+                          id: characterItem.id,
+                          title: characterItem.title,
+                          imgUrl: characterItem.image))
+                          .toList()),
                   categoryTitle: kAnimationDetailRelateTitle,
                   height: kAnimationImageContainerHeight,
                   imageDiveRate: 3,
@@ -138,21 +163,30 @@ class AnimationDetailScreen extends StatelessWidget {
                             id: data.id,
                             title: data.title,
                             image: data.image,
-                            onTap: _pushAndReplaceDetailScreen(context: context , arguments:  AnimationDetailPageItem(id: data.id, title: data.title)),
+                            onTap: ()=>moveToAnimationDetailScreen(context: context, id: data.id, title: data.title),
                           ))
                       .toList(),
                 ),
                 TitleImageMoreContainer(
+                  onClick: () =>
+                      moveToBottomMoreItemContainer(
+                          type: BottomMoreItemType.Animation,
+                          context: context, items: detailItem.recommendationAnimes
+                          .map((characterItem) => BottomMoreItem(
+                          id: characterItem.id,
+                          title: characterItem.title,
+                          imgUrl: characterItem.image))
+                          .toList()),
                   categoryTitle: kAnimationDetailRecommendTitle,
                   height: kAnimationImageContainerHeight,
                   imageDiveRate: 3,
                   imageShapeType: ImageShapeType.CIRCLE,
                   baseItemList: detailItem.recommendationAnimes
                       .map((data) => BaseScrollItem(
-                          id: data.id,
-                          title: data.title,
-                          image: data.image,
-                          onTap:_pushAndReplaceDetailScreen(context: context , arguments:  AnimationDetailPageItem(id: data.id, title: data.title)),
+                            id: data.id,
+                            title: data.title,
+                            image: data.image,
+                            onTap: ()=>moveToAnimationDetailScreen(context: context, id: data.id, title: data.title),
                           ))
                       .toList(),
                 ),
@@ -265,7 +299,14 @@ class AnimationDetailScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: genreList
                       .map((genre) => GestureDetector(
-                            onTap: _pushGenreSearchScreen(context: context, event: GenreClickFromDetailScreen(navItem: GenreNavItem().copyWith(category:genre.name,categoryValue: genre.id, clickStatus: CategoryClickStatus.NONE , genreType: GenreType.GENRE))),
+                            onTap: _pushGenreSearchScreen(
+                                context: context,
+                                event: GenreClickFromDetailScreen(
+                                    navItem: GenreNavItem().copyWith(
+                                        category: genre.name,
+                                        categoryValue: genre.id,
+                                        clickStatus: CategoryClickStatus.NONE,
+                                        genreType: GenreType.GENRE))),
                             behavior: HitTestBehavior.translucent,
                             child: Padding(
                               padding: const EdgeInsets.only(left: 10),
@@ -462,15 +503,10 @@ class AnimationDetailScreen extends StatelessWidget {
     );
   }
 
-  VoidCallback _pushAndReplaceDetailScreen({BuildContext context, AnimationDetailPageItem arguments }){
-    return ()=>Navigator.pushReplacementNamed(
-        context, Routes.IMAGE_DETAIL,
-        arguments: arguments);
-  }
-
-  VoidCallback _pushGenreSearchScreen({BuildContext context, GenreClickFromDetailScreen event}){
-    return (){
-      Navigator.popUntil(context, ModalRoute.withName(Routes.HOME));
+  VoidCallback _pushGenreSearchScreen(
+      {BuildContext context, GenreClickFromDetailScreen event}) {
+    return () {
+      moveToHomeScreen(context: context);
       BlocProvider.of<TabCubit>(context).tabUpdate(AppTab.GENRE);
       BlocProvider.of<GenreCategoryListBloc>(context).add(event);
     };

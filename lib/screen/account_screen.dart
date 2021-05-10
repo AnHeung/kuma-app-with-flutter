@@ -6,6 +6,7 @@ import 'package:kuma_flutter_app/bloc/login/login_bloc.dart';
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
 import 'package:kuma_flutter_app/model/user_account.dart';
 import 'package:kuma_flutter_app/routes/routes.dart';
+import 'package:kuma_flutter_app/util/navigator_util.dart';
 import 'package:kuma_flutter_app/util/string_util.dart';
 import 'package:kuma_flutter_app/util/view_utils.dart';
 import 'package:kuma_flutter_app/widget/custom_text.dart';
@@ -27,7 +28,7 @@ class AccountScreen extends StatelessWidget {
               showToast(msg: state.msg);
             } else if (state.status == AccountStatus.withdraw) {
               showToast(msg: state.msg);
-              Navigator.pushNamedAndRemoveUntil(context, Routes.HOME, (route) => false);
+              moveToHomeScreen(context:context);
             }
           },
           builder: (context, state) {
