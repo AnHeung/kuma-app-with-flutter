@@ -94,17 +94,13 @@ const String kAnimationDetailImageTitle = "이미지";
 const String kAnimationDetailCharacterTitle = "등장인물";
 const String kAnimationDetailSynopsisTitle = "개요";
 
-//성우상세
-const String kVoiceDetailTitle = "성우";
-const String kVoiceDetailCharacterTitle = "맡은캐릭터";
-const String kVoiceDetailIntroduceTitle = "소개";
-const String kVoiceDetailSiteTitle = "소개";
+//BottomContainer
+const String kBottomContainerVoiceTitle = "성우";
+const String kBottomContainerCharacterTitle = "맡은캐릭터";
+const String kBottomContainerIntroduceTitle = "소개";
+const String kBottomContainerSiteTitle = "사이트";
+const String kBottomContainerImageTitle = "이미지";
 
-//캐릭터 상세
-const String kCharacterDetailTitle = "성우";
-const String kCharacterDetailImageTitle = "맡은캐릭터";
-const String kCharacterDetailIntroduceTitle = "소개";
-const String kCharacterDetailSiteTitle = "소개";
 
 
 //계정페이지

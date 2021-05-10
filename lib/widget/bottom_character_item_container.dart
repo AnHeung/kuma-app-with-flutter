@@ -60,7 +60,7 @@ class BottomCharacterItemContainer extends StatelessWidget {
                     midName: characterItem.nameKanji,
                     itemHeight: itemHeight,
                   ),
-                  const TitleContainer(title: "사이트"),
+                  const TitleContainer(title: kBottomContainerSiteTitle),
                   Visibility(
                     visible: characterItem.url.isNotEmpty,
                     child: GestureDetector(
@@ -79,7 +79,7 @@ class BottomCharacterItemContainer extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const TitleContainer(title: kCharacterDetailIntroduceTitle),
+                  const TitleContainer(title: kBottomContainerIntroduceTitle),
                   Container(
                     padding: const EdgeInsets.only(left: 10),
                     alignment: Alignment.center,
@@ -87,10 +87,10 @@ class BottomCharacterItemContainer extends StatelessWidget {
                       text: characterItem.about,
                     ),
                   ),
-                  const TitleContainer(title: kCharacterDetailImageTitle),
+                  const TitleContainer(title:kBottomContainerImageTitle),
                   ImageScrollItemContainer(
                     height: 100.0,
-                    title: "관련 이미지",
+                    title: kAnimationDetailImageTitle,
                     images: characterItem.pictureItems
                         .map((imageItem) => imageItem.image)
                         .toList(),
@@ -122,7 +122,7 @@ class BottomCharacterItemContainer extends StatelessWidget {
                   TitleImageMoreContainer(
                     onClick: ()=>{
                       moveToBottomMoreItemContainer(
-                        title: kVoiceDetailTitle,
+                        title: kBottomContainerVoiceTitle,
                           type: BottomMoreItemType.Voice,
                           context: context, items: characterItem.voiceActors
                           .map((voiceItem) => BottomMoreItem(
@@ -131,7 +131,7 @@ class BottomCharacterItemContainer extends StatelessWidget {
                           imgUrl: voiceItem.image))
                           .toList())
                     },
-                    categoryTitle: kVoiceDetailTitle,
+                    categoryTitle: kBottomContainerVoiceTitle,
                     height: scrollItemHeight,
                     imageDiveRate: 4,
                     imageShapeType: ImageShapeType.CIRCLE,

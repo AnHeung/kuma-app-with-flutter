@@ -50,8 +50,7 @@ class AnimationDetailScreen extends StatelessWidget {
     final String id = infoItem.id;
     const String type = "all";
 
-    BlocProvider.of<AnimationDetailBloc>(context)
-        .add(AnimationDetailLoad(id: id));
+    BlocProvider.of<AnimationDetailBloc>(context).add(AnimationDetailLoad(id: id));
 
     return BlocBuilder<AnimationDetailBloc, AnimationDetailState>(
       builder: (context, state) {

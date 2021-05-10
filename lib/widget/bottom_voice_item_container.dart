@@ -57,7 +57,7 @@ class BottomVoiceItemContainer extends StatelessWidget {
                     midName: "${personItem.familyName} ${personItem.givenName}",
                     nickName: personItem.alternateNames,
                   ),
-                  const TitleContainer(title: kVoiceDetailSiteTitle),
+                  const TitleContainer(title: kBottomContainerSiteTitle),
                   Visibility(
                     visible: personItem.url.isNotEmpty,
                     child: GestureDetector(
@@ -76,7 +76,7 @@ class BottomVoiceItemContainer extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const TitleContainer(title: kVoiceDetailIntroduceTitle),
+                  const TitleContainer(title: kBottomContainerIntroduceTitle),
                   Container(
                     padding: const EdgeInsets.only(left: 10),
                     alignment: Alignment.center,
@@ -86,7 +86,7 @@ class BottomVoiceItemContainer extends StatelessWidget {
                   ),
                   TitleImageMoreContainer(
                     onClick: () => moveToBottomMoreItemContainer(
-                        title: kVoiceDetailTitle,
+                        title: kAnimationDetailRelateTitle,
                         type: BottomMoreItemType.Animation,
                         context: context,
                         items: personItem.voiceActingRoles
@@ -114,7 +114,7 @@ class BottomVoiceItemContainer extends StatelessWidget {
                   ),
                   TitleImageMoreContainer(
                     onClick: () => moveToBottomMoreItemContainer(
-                        title: kVoiceDetailCharacterTitle,
+                        title: kBottomContainerCharacterTitle,
                         type: BottomMoreItemType.Character,
                         context: context,
                         items: personItem.voiceActingRoles
@@ -123,7 +123,7 @@ class BottomVoiceItemContainer extends StatelessWidget {
                                 title: characterItem.characterItem.name,
                                 imgUrl: characterItem.characterItem.imageUrl))
                             .toList()),
-                    categoryTitle: kVoiceDetailCharacterTitle,
+                    categoryTitle: kBottomContainerCharacterTitle,
                     height: scrollItemHeight,
                     imageDiveRate: 4,
                     imageShapeType: ImageShapeType.CIRCLE,
