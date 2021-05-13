@@ -11,6 +11,7 @@ import 'package:kuma_flutter_app/bloc/auth/auth_bloc.dart';
 import 'package:kuma_flutter_app/bloc/genre_search/genre_category_list_bloc/genre_category_list_bloc.dart';
 import 'package:kuma_flutter_app/bloc/genre_search/genre_search_bloc.dart';
 import 'package:kuma_flutter_app/bloc/login/login_bloc.dart';
+import 'package:kuma_flutter_app/bloc/notification/notification_bloc.dart';
 import 'package:kuma_flutter_app/bloc/register/register_bloc.dart';
 import 'package:kuma_flutter_app/bloc/search/search_bloc.dart';
 import 'package:kuma_flutter_app/bloc/search_history/search_history_bloc.dart';
@@ -69,7 +70,7 @@ class App extends StatelessWidget {
         BlocProvider(create: (context)=>AuthBloc(repository: context.read<ApiRepository>())),
           BlocProvider(create: (context) =>SettingBloc(repository: context.read<ApiRepository>())),
           BlocProvider(create: (context) => GenreCategoryListBloc(repository: context.read<ApiRepository>())),
-          BlocProvider(create: (context)=>LoginBloc(repository: context.read<ApiRepository>()))
+          BlocProvider(create: (context)=>LoginBloc(repository: context.read<ApiRepository>())),
         ],
         child: BlocListener<AuthBloc, AuthState>(
           child:  MaterialApp(
@@ -111,6 +112,7 @@ class App extends StatelessWidget {
                             AnimationDetailBloc(
                                 repository: context.read<ApiRepository>()),
                       ),
+                      BlocProvider(create: (context)=>NotificationBloc(repository: context.read<ApiRepository>()))
                     ],
                     child:  AnimationDetailScreen(),
                   ),

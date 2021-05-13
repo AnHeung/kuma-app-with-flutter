@@ -6,6 +6,7 @@ import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/animation_detail/animation_detail_bloc.dart';
 import 'package:kuma_flutter_app/bloc/character_detail/character_detail_bloc.dart';
 import 'package:kuma_flutter_app/bloc/genre_search/genre_category_list_bloc/genre_category_list_bloc.dart';
+import 'package:kuma_flutter_app/bloc/notification/notification_bloc.dart';
 import 'package:kuma_flutter_app/bloc/tab/tab_cubit.dart';
 import 'package:kuma_flutter_app/enums/app_tab.dart';
 import 'package:kuma_flutter_app/enums/category_click_status.dart';
@@ -17,7 +18,6 @@ import 'package:kuma_flutter_app/model/item/animation_detail_item.dart';
 import 'package:kuma_flutter_app/model/item/base_scroll_item.dart';
 import 'package:kuma_flutter_app/model/item/bottom_more_item.dart';
 import 'package:kuma_flutter_app/model/item/genre_nav_item.dart';
-import 'package:kuma_flutter_app/routes/routes.dart';
 import 'package:kuma_flutter_app/util/navigator_util.dart';
 import 'package:kuma_flutter_app/util/view_utils.dart';
 import 'package:kuma_flutter_app/widget/bottom_character_item_container.dart';
@@ -33,6 +33,8 @@ import 'package:kuma_flutter_app/widget/title_container.dart';
 import 'package:kuma_flutter_app/widget/title_image_more_container.dart';
 import 'package:kuma_flutter_app/widget/youtube_player.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:kuma_flutter_app/util/object_util.dart';
+
 
 import '../model/item/animation_deatil_page_item.dart';
 import '../repository/api_repository.dart';
@@ -45,12 +47,12 @@ class AnimationDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AnimationDetailPageItem infoItem =
-        ModalRoute.of(context).settings.arguments;
+    final AnimationDetailPageItem infoItem = ModalRoute.of(context).settings.arguments;
     final String id = infoItem.id;
     const String type = "all";
 
     BlocProvider.of<AnimationDetailBloc>(context).add(AnimationDetailLoad(id: id));
+    BlocProvider.of<NotificationBloc>(context).add(NotificationLoad(animationId: id));
 
     return BlocBuilder<AnimationDetailBloc, AnimationDetailState>(
       builder: (context, state) {
@@ -89,6 +91,7 @@ class AnimationDetailScreen extends StatelessWidget {
       {BuildContext context, AnimationDetailItem detailItem}) {
     return detailItem != null
         ? ListView(
+            addAutomaticKeepAlives: true,
             shrinkWrap: true,
             padding: EdgeInsets.zero,
             physics: const ClampingScrollPhysics(),
@@ -101,16 +104,16 @@ class AnimationDetailScreen extends StatelessWidget {
                 _buildDetailTopContainer(
                     context: context, detailItem: detailItem),
                 TitleImageMoreContainer(
-                  onClick: () =>
-                    moveToBottomMoreItemContainer(
-                        title: kAnimationDetailCharacterTitle,
-                        type: BottomMoreItemType.Character,
-                        context: context, items: detailItem.characterItems
-                        .map((characterItem) => BottomMoreItem(
-                        id: characterItem.characterId,
-                        title: characterItem.name,
-                        imgUrl: characterItem.imageUrl))
-                        .toList()),
+                  onClick: () => moveToBottomMoreItemContainer(
+                      title: kAnimationDetailCharacterTitle,
+                      type: BottomMoreItemType.Character,
+                      context: context,
+                      items: detailItem.characterItems
+                          .map((characterItem) => BottomMoreItem(
+                              id: characterItem.characterId,
+                              title: characterItem.name,
+                              imgUrl: characterItem.imageUrl))
+                          .toList()),
                   imageShapeType: ImageShapeType.CIRCLE,
                   imageDiveRate: 3,
                   categoryTitle: kAnimationDetailCharacterTitle,
@@ -143,15 +146,15 @@ class AnimationDetailScreen extends StatelessWidget {
                 ImageScrollItemContainer(
                     title: "관련 이미지", images: detailItem.pictures),
                 TitleImageMoreContainer(
-                  onClick: () =>
-                      moveToBottomMoreItemContainer(
-                        title: kAnimationDetailRelateTitle,
-                          type: BottomMoreItemType.Animation,
-                          context: context, items: detailItem.relatedAnime
+                  onClick: () => moveToBottomMoreItemContainer(
+                      title: kAnimationDetailRelateTitle,
+                      type: BottomMoreItemType.Animation,
+                      context: context,
+                      items: detailItem.relatedAnime
                           .map((characterItem) => BottomMoreItem(
-                          id: characterItem.id,
-                          title: characterItem.title,
-                          imgUrl: characterItem.image))
+                              id: characterItem.id,
+                              title: characterItem.title,
+                              imgUrl: characterItem.image))
                           .toList()),
                   categoryTitle: kAnimationDetailRelateTitle,
                   height: kAnimationImageContainerHeight,
@@ -162,19 +165,22 @@ class AnimationDetailScreen extends StatelessWidget {
                             id: data.id,
                             title: data.title,
                             image: data.image,
-                            onTap: ()=>moveToAnimationDetailScreen(context: context, id: data.id, title: data.title),
+                            onTap: () => moveToAnimationDetailScreen(
+                                context: context,
+                                id: data.id,
+                                title: data.title),
                           ))
                       .toList(),
                 ),
                 TitleImageMoreContainer(
-                  onClick: () =>
-                      moveToBottomMoreItemContainer(
-                          type: BottomMoreItemType.Animation,
-                          context: context, items: detailItem.recommendationAnimes
+                  onClick: () => moveToBottomMoreItemContainer(
+                      type: BottomMoreItemType.Animation,
+                      context: context,
+                      items: detailItem.recommendationAnimes
                           .map((characterItem) => BottomMoreItem(
-                          id: characterItem.id,
-                          title: characterItem.title,
-                          imgUrl: characterItem.image))
+                              id: characterItem.id,
+                              title: characterItem.title,
+                              imgUrl: characterItem.image))
                           .toList()),
                   categoryTitle: kAnimationDetailRecommendTitle,
                   height: kAnimationImageContainerHeight,
@@ -185,7 +191,10 @@ class AnimationDetailScreen extends StatelessWidget {
                             id: data.id,
                             title: data.title,
                             image: data.image,
-                            onTap: ()=>moveToAnimationDetailScreen(context: context, id: data.id, title: data.title),
+                            onTap: () => moveToAnimationDetailScreen(
+                                context: context,
+                                id: data.id,
+                                title: data.title),
                           ))
                       .toList(),
                 ),
@@ -289,7 +298,7 @@ class AnimationDetailScreen extends StatelessWidget {
     final width = MediaQuery.of(context).size.width / 8 - 10;
     final List<AnimationDetailGenreItem> genreList =
         genres.length > 7 ? genres.sublist(0, 7) : genres;
-    return genreList.length > 0 && genres.isNotEmpty
+    return !genreList.isNullOrEmpty && !genres.isNullOrEmpty
         ? Flexible(
             flex: 2,
             child: Padding(
@@ -436,9 +445,7 @@ class AnimationDetailScreen extends StatelessWidget {
         ),
         actions: <Widget>[
           Visibility(
-            visible: detailItem != null &&
-                detailItem.videoItems != null &&
-                detailItem.videoItems.length > 0,
+            visible: detailItem.isNotNull && !detailItem.videoItems.isNullOrEmpty,
             child: IconButton(
               icon: const Icon(Icons.video_collection),
               tooltip: "영상리스트",

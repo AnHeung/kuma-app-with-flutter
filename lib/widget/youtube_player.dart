@@ -13,9 +13,12 @@ class YoutubeVideoPlayer extends StatefulWidget {
   YoutubeVideoPlayer({this.url , this.scaffoldKey});
 }
 
-class _YoutubePlayerState extends State<YoutubeVideoPlayer> {
+class _YoutubePlayerState extends State<YoutubeVideoPlayer> with AutomaticKeepAliveClientMixin{
 
   YoutubePlayerController _controller;
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void didUpdateWidget(YoutubeVideoPlayer oldWidget) {
@@ -67,16 +70,6 @@ class _YoutubePlayerState extends State<YoutubeVideoPlayer> {
           progressIndicatorColor: Colors.blueAccent,
           topActions: <Widget>[
             const Spacer(),
-            IconButton(
-              icon: const Icon(
-                Icons.video_collection_outlined,
-                color: Colors.white,
-                size: 25.0,
-              ),
-              onPressed: () {
-                print('Settings Tapped!');
-              },
-            ),
           ],
           bottomActions: [
             CurrentPosition(controller: _controller,),

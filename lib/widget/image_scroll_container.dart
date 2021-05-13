@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
 import 'package:kuma_flutter_app/util/view_utils.dart';
 import 'package:kuma_flutter_app/widget/empty_container.dart';
 import 'package:kuma_flutter_app/widget/image_item.dart';
+import 'package:kuma_flutter_app/util/object_util.dart';
 
 class ImageScrollItemContainer extends StatelessWidget {
   final List<String> images;
@@ -14,7 +14,7 @@ class ImageScrollItemContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return images!= null && images.length > 0 ? Container(
+    return !images.isNullOrEmpty ? Container(
       alignment: Alignment.centerLeft,
       padding: const EdgeInsets.all(10),
       child: _getImagesContainer(

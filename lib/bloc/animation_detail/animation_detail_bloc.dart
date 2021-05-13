@@ -6,6 +6,7 @@ import 'package:kuma_flutter_app/model/api/search_mal_api_detail_item.dart';
 import 'package:kuma_flutter_app/model/item/animation_detail_item.dart';
 import 'package:kuma_flutter_app/repository/api_repository.dart';
 import 'package:meta/meta.dart';
+import 'package:kuma_flutter_app/util/object_util.dart';
 part 'animation_detail_event.dart';
 part 'animation_detail_state.dart';
 
@@ -55,7 +56,7 @@ class AnimationDetailBloc extends Bloc<AnimationDetailEvent, AnimationDetailStat
         List<AnimationDetailGenreItem> genreList = result.genres.map((item) => AnimationDetailGenreItem(id: item.id, name: item.name)).toList();
         List<VideoItem> videoList = result.videos!= null ? result.videos.map((item) => VideoItem(title:item.title, videoUrl: item.video_url , imageUrl: item.image_url)).toList() : [];
         List<CharacterItem> characterList = result.characters!= null ? result.characters.map((item) => CharacterItem(name: item.name, characterId: item.character_id,  imageUrl: item.image_url,  role: item.role , url: item.url)).toList() : [];
-        String selectVideoUrl = result.videos != null && result.videos.length > 0 ? result.videos[0].video_url : "";
+        String selectVideoUrl = !result.videos.isNullOrEmpty ? result.videos[0].video_url : "";
 
         yield AnimationDetailState(status:AnimationDetailStatus.success ,detailItem: AnimationDetailItem(
             id: result.id,
