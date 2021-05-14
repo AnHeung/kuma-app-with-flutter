@@ -22,7 +22,7 @@ class LoginUserData{
  }
 
  factory LoginUserData.fromMap(Map<String, dynamic> map) {
-    return LoginUserData(
+    return new LoginUserData(
       userId: map['userId'] as String,
       uniqueId: map['uniqueId'] as String,
       userName: map['userName'] as String,
@@ -31,5 +31,17 @@ class LoginUserData{
       homeItemCount: map['homeItemCount'] as String,
       rankType: map['rankType'] as String,
     );
+  }
+
+ Map<String, dynamic> toMap() {
+    return {
+      'userId': this.userId,
+      'uniqueId': this.uniqueId,
+      'userName': this.userName,
+      'loginType': enumToString(this.loginType),
+      'isAutoScroll': this.isAutoScroll,
+      'homeItemCount': this.homeItemCount,
+      'rankType': this.rankType,
+    };
   }
 }

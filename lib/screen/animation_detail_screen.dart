@@ -6,7 +6,7 @@ import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/animation_detail/animation_detail_bloc.dart';
 import 'package:kuma_flutter_app/bloc/character_detail/character_detail_bloc.dart';
 import 'package:kuma_flutter_app/bloc/genre_search/genre_category_list_bloc/genre_category_list_bloc.dart';
-import 'package:kuma_flutter_app/bloc/notification/notification_bloc.dart';
+import 'package:kuma_flutter_app/bloc/subscribe/subscribe_bloc.dart';
 import 'package:kuma_flutter_app/bloc/tab/tab_cubit.dart';
 import 'package:kuma_flutter_app/enums/app_tab.dart';
 import 'package:kuma_flutter_app/enums/category_click_status.dart';
@@ -52,7 +52,7 @@ class AnimationDetailScreen extends StatelessWidget {
     const String type = "all";
 
     BlocProvider.of<AnimationDetailBloc>(context).add(AnimationDetailLoad(id: id));
-    BlocProvider.of<NotificationBloc>(context).add(NotificationLoad(animationId: id));
+    BlocProvider.of<SubscribeBloc>(context).add(CheckSubscribe(animationId: id));
 
     return BlocBuilder<AnimationDetailBloc, AnimationDetailState>(
       builder: (context, state) {
@@ -444,10 +444,27 @@ class AnimationDetailScreen extends StatelessWidget {
           text: infoItem.title,
         ),
         actions: <Widget>[
+          BlocBuilder<SubscribeBloc,SubscribeState>(
+            builder: (context,state){
+              bool isLogin = state.isLogin;
+              bool isSubscribe = state.isSubscribe;
+              return Visibility(
+                visible: isLogin,
+                child: IconButton(
+                  color: isSubscribe? Colors.red : kWhite,
+                  icon: isSubscribe ?  const Icon(Icons.notifications_on): const Icon(Icons.notifications_on_outlined),
+                  tooltip: "알림",
+                  onPressed: () => {
+
+                  },
+                ),
+              );
+            },
+          ),
           Visibility(
             visible: detailItem.isNotNull && !detailItem.videoItems.isNullOrEmpty,
             child: IconButton(
-              icon: const Icon(Icons.video_collection),
+              icon: const Icon(Icons.play_circle_outline),
               tooltip: "영상리스트",
               onPressed: () => {
                 showModalBottomSheet(

@@ -14,7 +14,7 @@ import 'package:kuma_flutter_app/model/api/search_mal_api_search_item.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_season_item.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_character_detail_item.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_person_item.dart';
-import 'package:kuma_flutter_app/model/api/social_user.dart';
+import 'package:kuma_flutter_app/model/api/login_user.dart';
 import 'package:kuma_flutter_app/repository/firebase_client.dart';
 import 'package:kuma_flutter_app/repository/rest_client.dart';
 import 'package:kuma_flutter_app/repository/search_api_client.dart';
@@ -87,7 +87,11 @@ class ApiRepository {
 
   updateUserItemToFireStore(String userId , Map<String,dynamic> userItem)=>firebaseClient.updateUserItemToFireStore(userId: userId, userItem: userItem);
 
-  saveUserAllItemToFireStore(String userId , LoginUserData userData)=>firebaseClient.saveUserAllItemToFireStore(userData:userData);
+  saveAllUserItemToFireStore(String userId , LoginUserData userData)=>firebaseClient.saveAllUserItemToFireStore(userData:userData);
 
   getUserItemFromFireStore({String userId})=>firebaseClient.getUserItemFromFireStore(userId: userId);
+
+  isSubscribe({String userId , String animationId})=>firebaseClient.isSubscribe(userId: userId, animationId: animationId);
+
+  subscribeAnimation({String userId , String animationId})=>firebaseClient.subscribeAnimation(userId: userId, animationId: animationId);
 }

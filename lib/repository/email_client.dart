@@ -1,5 +1,5 @@
 import 'package:kuma_flutter_app/bloc/login/login_bloc.dart';
-import 'package:kuma_flutter_app/model/api/social_user.dart';
+import 'package:kuma_flutter_app/model/api/login_user.dart';
 import 'package:kuma_flutter_app/repository/social_client.dart';
 import 'package:kuma_flutter_app/util/sharepref_util.dart';
 

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:kuma_flutter_app/model/api/social_user.dart';
+import 'package:kuma_flutter_app/model/api/login_user.dart';
 import 'package:kuma_flutter_app/model/user_account.dart';
 import 'package:kuma_flutter_app/repository/api_repository.dart';
 import 'package:kuma_flutter_app/util/sharepref_util.dart';

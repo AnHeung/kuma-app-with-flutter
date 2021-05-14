@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/login/login_bloc.dart';
-import 'package:kuma_flutter_app/model/api/social_user.dart';
+import 'package:kuma_flutter_app/model/api/login_user.dart';
 import 'package:kuma_flutter_app/util/vaildate_util.dart';
 import 'package:kuma_flutter_app/widget/custom_text.dart';
 import 'package:kuma_flutter_app/widget/default_text_field.dart';

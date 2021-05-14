@@ -4,7 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:kuma_flutter_app/bloc/setting/setting_bloc.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_season_item.dart';
-import 'package:kuma_flutter_app/model/api/social_user.dart';
+import 'package:kuma_flutter_app/model/api/login_user.dart';
 import 'package:kuma_flutter_app/model/item/animation_search_season_item.dart';
 import 'package:kuma_flutter_app/repository/api_repository.dart';
 import 'package:kuma_flutter_app/util/sharepref_util.dart';

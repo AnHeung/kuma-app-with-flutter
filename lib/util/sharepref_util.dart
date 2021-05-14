@@ -1,6 +1,6 @@
 import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/login/login_bloc.dart';
-import 'package:kuma_flutter_app/model/api/social_user.dart';
+import 'package:kuma_flutter_app/model/api/login_user.dart';
 import 'package:kuma_flutter_app/model/setting_config.dart';
 import 'package:kuma_flutter_app/util/string_util.dart';
 import 'package:shared_preferences/shared_preferences.dart';

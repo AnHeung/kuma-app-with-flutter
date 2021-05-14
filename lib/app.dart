@@ -11,16 +11,15 @@ import 'package:kuma_flutter_app/bloc/auth/auth_bloc.dart';
 import 'package:kuma_flutter_app/bloc/genre_search/genre_category_list_bloc/genre_category_list_bloc.dart';
 import 'package:kuma_flutter_app/bloc/genre_search/genre_search_bloc.dart';
 import 'package:kuma_flutter_app/bloc/login/login_bloc.dart';
-import 'package:kuma_flutter_app/bloc/notification/notification_bloc.dart';
 import 'package:kuma_flutter_app/bloc/register/register_bloc.dart';
 import 'package:kuma_flutter_app/bloc/search/search_bloc.dart';
 import 'package:kuma_flutter_app/bloc/search_history/search_history_bloc.dart';
 import 'package:kuma_flutter_app/bloc/setting/setting_bloc.dart';
 import 'package:kuma_flutter_app/bloc/splash/splash_bloc.dart';
+import 'package:kuma_flutter_app/bloc/subscribe/subscribe_bloc.dart';
 import 'package:kuma_flutter_app/bloc/tab/tab_cubit.dart';
 import 'package:kuma_flutter_app/repository/api_repository.dart';
 import 'package:kuma_flutter_app/repository/firebase_client.dart';
-import 'package:kuma_flutter_app/repository/firebase_store_client.dart';
 import 'package:kuma_flutter_app/repository/rest_client.dart';
 import 'package:kuma_flutter_app/repository/search_api_client.dart';
 import 'package:kuma_flutter_app/routes/routes.dart';
@@ -112,7 +111,7 @@ class App extends StatelessWidget {
                             AnimationDetailBloc(
                                 repository: context.read<ApiRepository>()),
                       ),
-                      BlocProvider(create: (context)=>NotificationBloc(repository: context.read<ApiRepository>()))
+                      BlocProvider(create: (context)=>SubscribeBloc(repository: context.read<ApiRepository>()))
                     ],
                     child:  AnimationDetailScreen(),
                   ),

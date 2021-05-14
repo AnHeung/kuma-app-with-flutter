@@ -148,9 +148,7 @@ class SettingScreen extends StatelessWidget {
                                                         "airing,upcoming";
                                                 BlocProvider.of<SettingBloc>(
                                                         context)
-                                                    .add(ChangeSetting(
-                                                        config: config.copyWith(
-                                                            rankType: rankType)));
+                                                    .add(ChangeSetting(config: config.copyWith(rankType: rankType)));
                                               },
                                               behavior:
                                                   HitTestBehavior.translucent,

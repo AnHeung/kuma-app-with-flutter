@@ -70,7 +70,7 @@ class BottomVideoItemContainer extends StatelessWidget {
                             ),
                             const Spacer(),
                             const Icon(
-                              Icons.play_circle_fill,
+                              Icons.play_circle_outline,
                               color: kWhite,
                               size: 30,
                             ),

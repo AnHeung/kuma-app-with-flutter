@@ -7,7 +7,7 @@ import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/login/login_bloc.dart';
 import 'package:kuma_flutter_app/enums/login_status.dart';
 import 'package:kuma_flutter_app/enums/register_status.dart';
-import 'package:kuma_flutter_app/model/api/social_user.dart';
+import 'package:kuma_flutter_app/model/api/login_user.dart';
 import 'package:kuma_flutter_app/repository/email_client.dart';
 import 'package:kuma_flutter_app/repository/google_client.dart';
 import 'package:kuma_flutter_app/repository/kakao_client.dart';
@@ -26,11 +26,8 @@ class FirebaseClient {
 
   Future<Map<LoginStatus, LoginUserData>> login(
       {LoginType type, BuildContext context}) async {
-
     LoginUserData userData = LoginUserData.empty;
-
     try {
-
       switch (type) {
             case LoginType.KAKAO:
               loginClient = KakaoClient();
@@ -46,10 +43,7 @@ class FirebaseClient {
           }
       userData = await loginClient.login();
       if (userData == null) return {LoginStatus.Failure: userData};
-      if (userData != null &&
-              userData.uniqueId == null &&
-              userData.loginType == LoginType.EMAIL)
-            return {LoginStatus.NeedLoginScreen: userData};
+      if (userData.uniqueId == null && userData.loginType == LoginType.EMAIL) return {LoginStatus.NeedLoginScreen: userData};
 
       return firebaseSignIn(userData: userData);
     } catch (e) {
@@ -176,7 +170,7 @@ class FirebaseClient {
           .createUserWithEmailAndPassword(
               email: userData.userId, password: encryptId)
           .then((_) async {
-        await saveUserAllItemToFireStore(userData: registerData);
+        await saveAllUserItemToFireStore(userData: registerData);
         await saveUserData(userData: registerData);
         return RegisterStatus.RegisterComplete;
       }).catchError((e) async {
@@ -203,7 +197,7 @@ class FirebaseClient {
 
   Future<LoginUserData> getUserItemFromFireStore({String userId}) async {
     try {
-      DocumentSnapshot users = await firebaseFireStore.collection("users").doc(userId).get();
+      DocumentSnapshot users = await firebaseFireStore.collection("users").doc(userId).collection("userInfo").doc("userData").get();
       if (users.data() != null) {
         LoginUserData userItem = LoginUserData.fromMap(users.data());
         return userItem;
@@ -212,6 +206,50 @@ class FirebaseClient {
     } catch (e) {
       print("getUserItemFromFireStore ${e}");
       return null;
+    }
+  }
+
+
+  Future<bool> isSubscribe({String userId, String animationId}) async {
+    try {
+      DocumentSnapshot users = await firebaseFireStore.collection("users").doc(userId).collection("userInfo").doc("subscribe").get();
+      if (users.data() != null) {
+        var subscribeIds = users.data()["ids"];
+        if(subscribeIds!= null){
+          return subscribeIds.any((id) => id == animationId);
+        }
+      }
+      return false;
+    } catch (e) {
+      print("isSubscribe ${e}");
+      return false;
+    }
+  }
+
+
+  subscribeAnimation({String userId, String animationId}) async {
+
+    try {
+      DocumentSnapshot users = await firebaseFireStore.collection("users").doc(userId).collection("userInfo").doc("subscribe").get();
+      if (users.data() != null) {
+            var subscribeIds = users.data()["ids"];
+            if(subscribeIds!= null){
+
+            }
+          }
+
+      return firebaseFireStore
+              .collection("users")
+              .doc(userId)
+              .collection("userInfo")
+              .doc("subscribe")
+              .update({"":""})
+              .onError((error, stackTrace) {
+            print(error);
+          });
+    } catch (e) {
+      print("subscribeAnimation ${e}");
+      return false;
     }
   }
 
@@ -229,14 +267,18 @@ class FirebaseClient {
      return firebaseFireStore
         .collection("users")
         .doc(userId)
+        .collection("userInfo")
+        .doc("userData")
         .update(userItem)
         .onError((error, stackTrace) {
       print(error);
     });
   }
 
-  saveUserAllItemToFireStore({LoginUserData userData}) async {
-    return firebaseFireStore.collection("users").doc(userData.userId).set({
+  saveAllUserItemToFireStore({LoginUserData userData}) async =>firebaseFireStore.collection("users").doc(userData.userId).collection("userInfo").doc("userData").set(userData.toMap());
+
+  saveNotificationItemToFireStore({LoginUserData userData}) async =>
+      firebaseFireStore.collection("users").doc(userData.userId).collection("userInfo").doc("notification").set({
       "userId": userData.userId,
       "uniqueId": userData.uniqueId,
       "userName": userData.userName,
@@ -245,5 +287,4 @@ class FirebaseClient {
       "homeItemCount": userData.homeItemCount,
       "rankType": userData.rankType
     });
-  }
 }
