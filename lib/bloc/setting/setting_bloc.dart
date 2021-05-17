@@ -34,7 +34,7 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
   Stream<SettingState> _mapToSettingLoad() async*{
     yield SettingState(status: SettingStatus.loading,config: SettingConfig());
     LoginUserData userData = await getUserData();
-    yield SettingState(status: SettingStatus.success, config: SettingConfig().copyWith(isAutoScroll: userData.isAutoScroll, rankType: userData.rankType, homeItemCount: userData.homeItemCount));
+    yield SettingState(status: SettingStatus.success, config: SettingConfig(isAutoScroll: userData.isAutoScroll, receiveNotify: userData.receiveNotify,rankType: userData.rankType, homeItemCount: userData.homeItemCount));
   }
 
   Stream<SettingState> _mapToSettingChange(ChangeSetting event) async*{

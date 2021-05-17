@@ -67,7 +67,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Stream<AuthState> _mapToSignOut() async*{
     yield const AuthState.unKnown();
     bool logoutSuccess = await repository.logout();
-    print('logoutSuccess ${logoutSuccess}');
     if(logoutSuccess) yield const AuthState.unAuth();
     else yield const AuthState.auth();
   }

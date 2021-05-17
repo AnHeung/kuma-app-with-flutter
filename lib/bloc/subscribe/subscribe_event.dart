@@ -12,8 +12,9 @@ abstract class SubscribeEvent extends Equatable{
 class SubscribeUpdate extends SubscribeEvent{
 
   final String animationId;
+  final bool isSubScribe;
 
-  const SubscribeUpdate({this.animationId});
+  const SubscribeUpdate({this.animationId , this.isSubScribe = false});
 
   @override
   List<Object> get props =>[animationId];

@@ -29,21 +29,22 @@ class FirebaseClient {
     LoginUserData userData = LoginUserData.empty;
     try {
       switch (type) {
-            case LoginType.KAKAO:
-              loginClient = KakaoClient();
-              break;
-            case LoginType.GOOGLE:
-              loginClient = GoogleClient();
-              break;
-            case LoginType.EMAIL:
-              loginClient = EmailClient();
-              break;
-            default:
-              return {LoginStatus.Failure: userData};
-          }
+        case LoginType.KAKAO:
+          loginClient = KakaoClient();
+          break;
+        case LoginType.GOOGLE:
+          loginClient = GoogleClient();
+          break;
+        case LoginType.EMAIL:
+          loginClient = EmailClient();
+          break;
+        default:
+          return {LoginStatus.Failure: userData};
+      }
       userData = await loginClient.login();
       if (userData == null) return {LoginStatus.Failure: userData};
-      if (userData.uniqueId == null && userData.loginType == LoginType.EMAIL) return {LoginStatus.NeedLoginScreen: userData};
+      if (userData.uniqueId == null && userData.loginType == LoginType.EMAIL)
+        return {LoginStatus.NeedLoginScreen: userData};
 
       return firebaseSignIn(userData: userData);
     } catch (e) {
@@ -57,7 +58,8 @@ class FirebaseClient {
     try {
       return await _firebaseAuth
           .signInWithEmailAndPassword(
-              email: userData.userId, password:userData.uniqueId.getEncryptString())
+              email: userData.userId,
+              password: userData.uniqueId.getEncryptString())
           .then((result) => getUserItemFromFireStore(userId: userData.userId))
           .then((fireStoreUserData) async {
         await saveUserData(userData: fireStoreUserData);
@@ -108,15 +110,9 @@ class FirebaseClient {
       return _firebaseAuth
           .signOut()
           .then((_) => removeUserData())
-          .catchError((e) async {
+          .catchError((e) {
         print("logout  User Exception $e");
-        await _reAuthenticateUser()
-            .then((res) =>logout())
-            .catchError((e) {
-          var errorCode = e.code;
-          var errMsg = e.message;
-          throw Exception("logout 오류 발생 :$errMsg 코드:$errorCode}");
-        });
+        return false;
       });
     } on Exception catch (e) {
       print('로그아웃 실패 :$e');
@@ -125,35 +121,34 @@ class FirebaseClient {
   }
 
   Future<bool> withdraw(String userId) async {
-    try {
+    bool reAuthResult = await _reAuthenticateUser(userId);
+
+    if (reAuthResult) {
       return _firebaseAuth.currentUser
           .delete()
-          .then((_)=>removeUserDataToFireStore(userId: userId))
-          .then((_)=>removeUserData())
-          .catchError((err) async {
-            print("withdraw  User Exception $err");
-            await _reAuthenticateUser().then((res) async {
-              await withdraw(userId);
-              return false;
-            }).catchError((e) {
-              var errorCode = e.code;
-              var errMsg = e.message;
-              print("회원탈퇴 오류 발생 :$errMsg 코드:$errorCode}");
-              return false;
-            });
-          });
-    } catch (e) {
-      print("withdraw 실패 ${e}");
-      return false;
+          .then((_) => removeAllDataToFireStore(userId: userId))
+          .then((_) => removeUserData())
+          .catchError((e) {
+        var errorCode = e.code;
+        var errMsg = e.message;
+        print("회원탈퇴 오류 발생 :$errMsg 코드:$errorCode}");
+        return false;
+      });
     }
+    return false;
   }
 
-  _reAuthenticateUser() async {
-    String userId = await getUserId();
-    LoginUserData userData = await getUserItemFromFireStore(userId: userId);
-    var credential = EmailAuthProvider.credential(
-        email: userData.userId, password: userData.uniqueId);
-    return _firebaseAuth.currentUser.reauthenticateWithCredential(credential);
+  _reAuthenticateUser(String userId) async {
+    try {
+      LoginUserData userData = await getUserItemFromFireStore(userId: userId);
+      var credential = EmailAuthProvider.credential(
+          email: userData.userId, password: userData.uniqueId);
+      await _firebaseAuth.currentUser.reauthenticateWithCredential(credential);
+      return true;
+    } catch (e) {
+      print("_reAuthenticateUser error :$e");
+      return false;
+    }
   }
 
   Future<RegisterStatus> register({LoginUserData userData}) async {
@@ -166,18 +161,11 @@ class FirebaseClient {
           isAutoScroll: true,
           homeItemCount: kBaseHomeItemCount);
 
-      return _firebaseAuth
-          .createUserWithEmailAndPassword(
-              email: userData.userId, password: encryptId)
-          .then((_) async {
-        await saveAllUserItemToFireStore(userData: registerData);
-        await saveUserData(userData: registerData);
-        return RegisterStatus.RegisterComplete;
-      }).catchError((e) async {
-        print("register catchError : $e");
-        await withdraw(userData.userId);
-        return RegisterStatus.RegisterFailure;
-      });
+      await _firebaseAuth.createUserWithEmailAndPassword(
+          email: userData.userId, password: encryptId);
+      await saveAllUserItemToFireStore(userData: registerData);
+      await saveUserData(userData: registerData);
+      return RegisterStatus.RegisterComplete;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         print('비밀번호가 너무 짧습니다.');
@@ -187,17 +175,20 @@ class FirebaseClient {
         return RegisterStatus.AlreadyInUse;
       } else {
         print("register FirebaseAuthException $e");
+        await withdraw(userData.userId);
         return RegisterStatus.RegisterFailure;
       }
     } catch (e) {
       print("register Exception $e");
+      await withdraw(userData.userId);
       return RegisterStatus.RegisterFailure;
     }
   }
 
   Future<LoginUserData> getUserItemFromFireStore({String userId}) async {
     try {
-      DocumentSnapshot users = await firebaseFireStore.collection("users").doc(userId).collection("userInfo").doc("userData").get();
+      DocumentSnapshot users =
+          await firebaseFireStore.collection("users").doc(userId).get();
       if (users.data() != null) {
         LoginUserData userItem = LoginUserData.fromMap(users.data());
         return userItem;
@@ -209,13 +200,13 @@ class FirebaseClient {
     }
   }
 
-
   Future<bool> isSubscribe({String userId, String animationId}) async {
     try {
-      DocumentSnapshot users = await firebaseFireStore.collection("users").doc(userId).collection("userInfo").doc("subscribe").get();
+      DocumentSnapshot users =
+          await firebaseFireStore.collection("subscribe").doc(userId).get();
       if (users.data() != null) {
-        var subscribeIds = users.data()["ids"];
-        if(subscribeIds!= null){
+        var subscribeIds = users.data()["animationIds"];
+        if (subscribeIds != null) {
           return subscribeIds.any((id) => id == animationId);
         }
       }
@@ -226,27 +217,30 @@ class FirebaseClient {
     }
   }
 
-
-  subscribeAnimation({String userId, String animationId}) async {
-
+  Future<bool> updateSubscribeAnimation(
+      {String userId, String animationId, bool isSubscribe}) async {
     try {
-      DocumentSnapshot users = await firebaseFireStore.collection("users").doc(userId).collection("userInfo").doc("subscribe").get();
+      DocumentSnapshot users =
+          await firebaseFireStore.collection("subscribe").doc(userId).get();
       if (users.data() != null) {
-            var subscribeIds = users.data()["ids"];
-            if(subscribeIds!= null){
-
-            }
+        List<String> subscribeIds =
+            List.from(users.data()["animationIds"]) ?? [];
+        if (!isSubscribe) {
+          subscribeIds = subscribeIds..remove(animationId);
+        } else {
+          if (!subscribeIds.contains(animationId)) {
+            subscribeIds = subscribeIds..add(animationId);
           }
+        }
+        await firebaseFireStore
+            .collection("subscribe")
+            .doc(userId)
+            .update({"animationIds": subscribeIds});
 
-      return firebaseFireStore
-              .collection("users")
-              .doc(userId)
-              .collection("userInfo")
-              .doc("subscribe")
-              .update({"":""})
-              .onError((error, stackTrace) {
-            print(error);
-          });
+      } else {
+         await saveSubscribeItemToFireStore(animationId: animationId, userId: userId);
+      }
+      return isSubscribe;
     } catch (e) {
       print("subscribeAnimation ${e}");
       return false;
@@ -254,37 +248,71 @@ class FirebaseClient {
   }
 
   Future<bool> removeUserDataToFireStore({String userId}) async {
-    try {
-      await firebaseFireStore.collection("users").doc(userId).delete();
-      return true;
-    } catch (e) {
+    return firebaseFireStore
+        .collection("users")
+        .doc(userId)
+        .delete()
+        .then((value) => true)
+        .catchError((e) {
       print("removeUserDataToFireStore error ${e}");
+      return false;
+    });
+  }
+
+  Future<bool> removeSubscribeDataToFireStore({String userId}) async {
+    return firebaseFireStore
+        .collection("subscribe")
+        .doc(userId)
+        .delete()
+        .then((value) => true)
+        .catchError((e) {
+      print("removeSubscribeDataToFireStore error ${e}");
+      return false;
+    });
+  }
+
+  Future<bool> removeAllDataToFireStore({String userId}) async {
+    try {
+      bool removeSubscribeData = await removeSubscribeDataToFireStore(userId: userId);
+      bool removeUserData = await removeUserDataToFireStore(userId: userId);
+      return removeSubscribeData && removeUserData;
+    } catch (e) {
+      print("removeAllDataToFireStore error ${e}");
       return false;
     }
   }
 
-  updateUserItemToFireStore({String userId, Map<String, dynamic> userItem}) async{
-     return firebaseFireStore
+  Future<bool> updateUserItemToFireStore({String userId, Map<String, dynamic> userItem}) async {
+    return firebaseFireStore
         .collection("users")
         .doc(userId)
-        .collection("userInfo")
-        .doc("userData")
         .update(userItem)
+        .then((_) => true)
         .onError((error, stackTrace) {
       print(error);
+      return false;
     });
   }
 
-  saveAllUserItemToFireStore({LoginUserData userData}) async =>firebaseFireStore.collection("users").doc(userData.userId).collection("userInfo").doc("userData").set(userData.toMap());
+  Future<bool> saveAllUserItemToFireStore({LoginUserData userData}) async =>
+      firebaseFireStore
+          .collection("users")
+          .doc(userData.userId)
+          .set(userData.toMap())
+          .then((_) => true)
+          .catchError((e) {
+        print("saveAllUserItemToFireStore error :$e");
+        return false;
+      });
 
-  saveNotificationItemToFireStore({LoginUserData userData}) async =>
-      firebaseFireStore.collection("users").doc(userData.userId).collection("userInfo").doc("notification").set({
-      "userId": userData.userId,
-      "uniqueId": userData.uniqueId,
-      "userName": userData.userName,
-      "loginType": enumToString(userData.loginType),
-      "isAutoScroll": userData.isAutoScroll,
-      "homeItemCount": userData.homeItemCount,
-      "rankType": userData.rankType
-    });
+  saveSubscribeItemToFireStore({String userId, String animationId}) async =>
+      firebaseFireStore
+          .collection("subscribe")
+          .doc(userId)
+          .set({"animationIds": [animationId]})
+          .then((value) => true)
+          .catchError((e) {
+            print("saveSubscribeItemToFireStore error :$e");
+            return false;
+          });
 }

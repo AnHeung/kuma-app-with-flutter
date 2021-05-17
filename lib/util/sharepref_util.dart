@@ -36,6 +36,11 @@ saveAutoScroll({bool isAutoScroll = true}) async {
   prefs.setBool("autoScroll", isAutoScroll);
 }
 
+saveReceiveNotify({bool receiveNotify = true}) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setBool("receiveNotify", receiveNotify);
+}
+
 saveHomeItemCount({String homeItemCount = "30"}) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs.setString("homeItemCount", homeItemCount);
@@ -50,6 +55,7 @@ saveSettingConfig({SettingConfig settingConfig})async{
   await saveRankingType(rankType:settingConfig.rankType);
   await saveHomeItemCount(homeItemCount: settingConfig.homeItemCount);
   await saveAutoScroll(isAutoScroll: settingConfig.isAutoScroll);
+  await saveReceiveNotify(receiveNotify: settingConfig.receiveNotify);
 }
 
 
@@ -59,6 +65,7 @@ Future<bool> removeUserData() async {
   prefs.remove("userName");
   prefs.remove("loginType");
   prefs.remove("autoScroll");
+  prefs.remove("receiveNotify");
   prefs.remove("homeItemCount");
   prefs.remove("rankingType");
   return true;
@@ -76,12 +83,12 @@ getUserId() async{
 
 getUserData()async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  return LoginUserData(userId:  prefs.getString("id") , homeItemCount:  prefs.getString("homeItemCount") ,  isAutoScroll: prefs.getBool("autoScroll"),rankType: prefs.getString("rankType"),
+  return LoginUserData(userId:  prefs.getString("id") , homeItemCount:  prefs.getString("homeItemCount") ,  isAutoScroll: prefs.getBool("autoScroll") , receiveNotify: prefs.getBool("receiveNotify"),rankType: prefs.getString("rankType"),
       loginType: enumFromString<LoginType>(prefs.getString("loginType"), LoginType.values), userName:  prefs.getString("userName"));
 }
 
 printUserData() async{
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  print('userId : ${prefs.getString("id")} , loginType: ${prefs.getString("loginType")} userName:${prefs.getString("userName")} '
-      'isAutoScroll : ${prefs.getBool("autoScroll")} homeItemCount :${prefs.getString("homeItemCount")} rankType :${prefs.getString("rankType")}');
+  print('userId : ${prefs.getString("id")} , loginType: ${prefs.getString("loginType")} ,userName:${prefs.getString("userName")} '
+      'isAutoScroll : ${prefs.getBool("autoScroll")} ,receiveNotify : ${prefs.getBool("receiveNotify")} , homeItemCount :${prefs.getString("homeItemCount")} ,rankType :${prefs.getString("rankType")}');
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum MoreType {Account , Notification , Setting, VersionInfo, Logout}
+enum MoreType {Account  , Setting, VersionInfo, Logout}
 
 extension  MoreTypeExtension on MoreType{
 
@@ -9,8 +9,6 @@ extension  MoreTypeExtension on MoreType{
     switch(this){
       case MoreType.Account :
         return Icons.account_circle;
-      case MoreType.Notification :
-        return Icons.notifications_none;
       case MoreType.VersionInfo :
         return Icons.info_outline;
       case MoreType.Setting :
@@ -25,8 +23,6 @@ extension  MoreTypeExtension on MoreType{
     switch(this){
       case MoreType.Account :
         return "계정 설정 ";
-      case MoreType.Notification :
-        return "알림 설정";
       case MoreType.Logout :
         return "로그아웃";
       case MoreType.VersionInfo :

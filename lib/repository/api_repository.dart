@@ -93,5 +93,6 @@ class ApiRepository {
 
   isSubscribe({String userId , String animationId})=>firebaseClient.isSubscribe(userId: userId, animationId: animationId);
 
-  subscribeAnimation({String userId , String animationId})=>firebaseClient.subscribeAnimation(userId: userId, animationId: animationId);
+  updateSubscribeAnimation({String userId , String animationId, bool isSubscribe})=>firebaseClient.updateSubscribeAnimation(userId: userId, animationId: animationId, isSubscribe:isSubscribe);
+
 }

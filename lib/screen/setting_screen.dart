@@ -15,7 +15,7 @@ class SettingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
     BlocProvider.of<SettingBloc>(context).add(SettingLoad());
-    
+
     return WillPopScope(
       onWillPop: () async {
         BlocProvider.of<SettingBloc>(context).add(SettingScreenExit());
@@ -35,42 +35,6 @@ class SettingScreen extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Container(
-                        height: 70,
-                        child: Row(
-                          children: [
-                            CustomText(
-                              text: "홈화면에 보여줄 아이템 갯수",
-                              fontSize: kSettingFontSize,
-                              fontColor: Colors.black,
-                            ),
-                            const Spacer(),
-                            CustomDropDown(
-                              value: config.homeItemCount,
-                              items: itemCountList
-                                  .map(
-                                    (item) => DropdownMenuItem(
-                                      child: CustomText(
-                                        fontColor: kBlack,
-                                        fontSize: 10.0,
-                                        text: item.toString(),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                      value: item,
-                                    ),
-                                  )
-                                  .toList(),
-                              onChanged: (item) => {
-                                BlocProvider.of<SettingBloc>(context).add(
-                                    ChangeSetting(
-                                        config: config.copyWith(
-                                            homeItemCount: item)))
-                              },
-                              hint: config.homeItemCount,
-                            ),
-                          ],
-                        ),
-                      ),
                       Container(
                         width: double.infinity,
                         height: 70,
@@ -96,62 +60,42 @@ class SettingScreen extends StatelessWidget {
                                     child: ListView.separated(
                                       physics: const ClampingScrollPhysics(),
                                       separatorBuilder: (context, index) =>
-                                          const SizedBox(
+                                      const SizedBox(
                                         width: 3,
                                       ),
                                       itemBuilder: (context, idx) {
                                         List<String> categoryKeyList =
-                                            categoryList.keys.toList();
+                                        categoryList.keys.toList();
                                         String categoryKey =
-                                            categoryKeyList[idx];
+                                        categoryKeyList[idx];
                                         String category =
-                                            categoryList.values.toList()[idx];
+                                        categoryList.values.toList()[idx];
 
                                         return Container(
                                           width: width,
                                           decoration: BoxDecoration(
                                               borderRadius:
-                                                  const BorderRadius.all(
-                                                      Radius.circular(30)),
+                                              const BorderRadius.all(
+                                                  Radius.circular(30)),
                                               color: _isCheck(config.rankType,
-                                                      categoryKey)
+                                                  categoryKey)
                                                   ? kPurple
                                                   : kDisabled),
                                           child: GestureDetector(
                                               onTap: () {
-                                                String rankType =
-                                                    categoryKeyList.reduce((acc,
-                                                            rankCategory) {
-                                                          if (rankCategory ==
-                                                              "upcoming") {
-                                                            acc +=
-                                                                ",$rankCategory";
-                                                          } else if (!_isCheck(
-                                                                  config
-                                                                      .rankType,
-                                                                  rankCategory) &&
-                                                              rankCategory ==
-                                                                  categoryKey) {
-                                                            acc +=
-                                                                ",$rankCategory";
-                                                          } else if (_isCheck(
-                                                                  config
-                                                                      .rankType,
-                                                                  rankCategory) &&
-                                                              rankCategory !=
-                                                                  categoryKey) {
-                                                            acc +=
-                                                                ",$rankCategory";
-                                                          }
-                                                          return acc;
-                                                        }) ??
-                                                        "airing,upcoming";
-                                                BlocProvider.of<SettingBloc>(
-                                                        context)
-                                                    .add(ChangeSetting(config: config.copyWith(rankType: rankType)));
+                                                String rankType = categoryKeyList.reduce((acc, rankCategory) {
+                                                  if (rankCategory == "upcoming") {
+                                                    acc += ",$rankCategory";
+                                                  } else if (!_isCheck(config.rankType, rankCategory) && rankCategory == categoryKey) {
+                                                    acc += ",$rankCategory";
+                                                  } else if (_isCheck(config.rankType, rankCategory) && rankCategory != categoryKey) {
+                                                    acc += ",$rankCategory";
+                                                  }
+                                                  return acc;
+                                                }) ?? "airing,upcoming";
+                                                BlocProvider.of<SettingBloc>(context).add(ChangeSetting(config: config.copyWith(rankType: rankType)));
                                               },
-                                              behavior:
-                                                  HitTestBehavior.translucent,
+                                              behavior: HitTestBehavior.translucent,
                                               child: Container(
                                                   alignment: Alignment.center,
                                                   child: CustomText(
@@ -178,37 +122,34 @@ class SettingScreen extends StatelessWidget {
                         child: Row(
                           children: [
                             CustomText(
-                              text: "홈화면 자동 스크롤",
+                              text: "홈화면에 보여줄 아이템 갯수",
                               fontSize: kSettingFontSize,
                               fontColor: Colors.black,
                             ),
                             const Spacer(),
-                            Container(
-                              height: 30,
-                              child: ToggleSwitch(
-                                initialLabelIndex: config.isAutoScroll ? 0 : 1,
-                                minWidth: 45.0,
-                                cornerRadius: 10.0,
-                                activeBgColor: kPurple,
-                                activeFgColor: Colors.white,
-                                inactiveBgColor: kDisabled,
-                                inactiveFgColor: Colors.white,
-                                labels: ['', ''],
-                                icons: [
-                                  FontAwesomeIcons.check,
-                                  FontAwesomeIcons.times
-                                ],
-                                onToggle: (index) {
-                                  BlocProvider.of<SettingBloc>(context).add(
-                                      ChangeSetting(
-                                          config: config.copyWith(
-                                              isAutoScroll: index == 0)));
-                                },
-                              ),
+                            CustomDropDown(value: config.homeItemCount,
+                              items: itemCountList
+                                  .map((item) => DropdownMenuItem(
+                                      child: CustomText(
+                                        fontColor: kBlack,
+                                        fontSize: 10.0,
+                                        text: item.toString(),
+                                        textAlign: TextAlign.center,
+                                      ), value: item,),)
+                                  .toList(),
+                              onChanged: (item) => {
+                                BlocProvider.of<SettingBloc>(context).add(
+                                    ChangeSetting(
+                                        config: config.copyWith(
+                                            homeItemCount: item)))
+                              },
+                              hint: config.homeItemCount,
                             ),
                           ],
                         ),
                       ),
+                      _buildCheckBoxContainer(title: "홈화면 자동 스크롤", context: context ,initialValue:config.isAutoScroll , onToggle: (index)=> BlocProvider.of<SettingBloc>(context).add(ChangeSetting(config: config.copyWith(isAutoScroll: index == 0)))),
+                      _buildCheckBoxContainer(title: "알림설정", context: context,initialValue:config.receiveNotify , onToggle: (index)=> BlocProvider.of<SettingBloc>(context).add(ChangeSetting(config: config.copyWith(receiveNotify: index == 0)))),
                     ],
                   ),
                   LoadingIndicator(
@@ -218,6 +159,40 @@ class SettingScreen extends StatelessWidget {
                 ],
               );
             })),
+      ),
+    );
+  }
+  
+  Widget _buildCheckBoxContainer({String title  , bool initialValue,  OnToggle onToggle ,  BuildContext context}){
+    return Container(
+      height: 70,
+      child: Row(
+        children: [
+          CustomText(
+            text: title,
+            fontSize: kSettingFontSize,
+            fontColor: Colors.black,
+          ),
+          const Spacer(),
+          Container(
+            height: 30,
+            child: ToggleSwitch(
+              initialLabelIndex: initialValue ? 0 : 1,
+              minWidth: 45.0,
+              cornerRadius: 10.0,
+              activeBgColor: kPurple,
+              activeFgColor: Colors.white,
+              inactiveBgColor: kDisabled,
+              inactiveFgColor: Colors.white,
+              labels: ['', ''],
+              icons: [
+                FontAwesomeIcons.check,
+                FontAwesomeIcons.times
+              ],
+              onToggle:  onToggle,
+            ),
+          ),
+        ],
       ),
     );
   }

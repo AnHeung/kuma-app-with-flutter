@@ -26,6 +26,7 @@ class AccountScreen extends StatelessWidget {
           listener: (context, state) {
             if (state.status == AccountStatus.failure) {
               showToast(msg: state.msg);
+              Navigator.pop(context);
             } else if (state.status == AccountStatus.withdraw) {
               showToast(msg: state.msg);
               moveToHomeScreen(context:context);

@@ -71,9 +71,6 @@ class MoreScreen extends StatelessWidget {
               case MoreType.Account:
                 Navigator.pushNamed(context, Routes.Account);
                 break;
-              case MoreType.Notification:
-                Navigator.pushNamed(context, Routes.Notification);
-                break;
               case MoreType.Logout:
                 showBaseDialog(
                     context: context,

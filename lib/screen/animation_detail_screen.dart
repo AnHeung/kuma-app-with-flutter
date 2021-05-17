@@ -444,7 +444,11 @@ class AnimationDetailScreen extends StatelessWidget {
           text: infoItem.title,
         ),
         actions: <Widget>[
-          BlocBuilder<SubscribeBloc,SubscribeState>(
+          BlocConsumer<SubscribeBloc,SubscribeState>(
+            listener: (context,state){
+              if(state.status == SubscribeStatus.Failure)
+                print(state.msg);
+            },
             builder: (context,state){
               bool isLogin = state.isLogin;
               bool isSubscribe = state.isSubscribe;
@@ -455,8 +459,10 @@ class AnimationDetailScreen extends StatelessWidget {
                   icon: isSubscribe ?  const Icon(Icons.notifications_on): const Icon(Icons.notifications_on_outlined),
                   tooltip: "알림",
                   onPressed: () => {
-
-                  },
+                    showBaseDialog(context: context, title: "구독알림", content: isSubscribe? "구독해지 하시겠습니까?" : "구독하시겠습니까? 구독하면 해당 애니메이션 관련 알림이 날라옵니다.", confirmFunction:(){
+                      BlocProvider.of<SubscribeBloc>(context).add(SubscribeUpdate(animationId: id , isSubScribe: !isSubscribe));
+                      Navigator.pop(context);
+                    })},
                 ),
               );
             },
