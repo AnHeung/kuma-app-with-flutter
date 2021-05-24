@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:kuma_flutter_app/bloc/login/login_bloc.dart';
 import 'package:kuma_flutter_app/enums/login_status.dart';
 import 'package:kuma_flutter_app/enums/register_status.dart';
+import 'package:kuma_flutter_app/model/api/api_anime_news_item.dart';
 import 'package:kuma_flutter_app/model/api/firebase_user_item.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_all_genre_item.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_character_picture_item.dart';
@@ -16,17 +17,17 @@ import 'package:kuma_flutter_app/model/api/search_mal_character_detail_item.dart
 import 'package:kuma_flutter_app/model/api/search_mal_person_item.dart';
 import 'package:kuma_flutter_app/model/api/login_user.dart';
 import 'package:kuma_flutter_app/repository/firebase_client.dart';
-import 'package:kuma_flutter_app/repository/rest_client.dart';
+import 'package:kuma_flutter_app/repository/api_client.dart';
 import 'package:kuma_flutter_app/repository/search_api_client.dart';
 
 class ApiRepository {
-  final RestClient restClient;
+  final ApiClient apiClient;
 
   final SearchApiClient searchApiClient;
 
   final FirebaseClient firebaseClient;
 
-  ApiRepository({this.restClient, this.searchApiClient, this.firebaseClient});
+  ApiRepository({this.apiClient, this.searchApiClient, this.firebaseClient});
 
   Future<SearchMalApiScheduleItem> getScheduleItems(String day) =>
       searchApiClient.getScheduleItems(day);
@@ -47,6 +48,8 @@ class ApiRepository {
   Future<SearchMalPersonItem> getPersonInfo(String personId) => searchApiClient.getPersonInfo(personId);
 
   Future<SearchMalApiCharacterPictureItem> getCharacterPictureList(String characterId) => searchApiClient.getCharacterPictureList(characterId);
+
+  Future<ApiAnimeNewsItem> getAnimationNewsItem(String page, String viewCount) => apiClient.getAnimeNewsItems(page , viewCount);
 
   Future<SearchMalAllGenreItem> getAllGenreItems({
           String type,

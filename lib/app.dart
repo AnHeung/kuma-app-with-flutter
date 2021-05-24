@@ -22,7 +22,7 @@ import 'package:kuma_flutter_app/bloc/subscribe/subscribe_bloc.dart';
 import 'package:kuma_flutter_app/bloc/tab/tab_cubit.dart';
 import 'package:kuma_flutter_app/repository/api_repository.dart';
 import 'package:kuma_flutter_app/repository/firebase_client.dart';
-import 'package:kuma_flutter_app/repository/rest_client.dart';
+import 'package:kuma_flutter_app/repository/api_client.dart';
 import 'package:kuma_flutter_app/repository/search_api_client.dart';
 import 'package:kuma_flutter_app/routes/routes.dart';
 import 'package:kuma_flutter_app/screen/account_screen.dart';
@@ -117,12 +117,12 @@ class _AppState extends State<App> {
               compact: true,
               maxWidth: 90));
 
-        final RestClient restClient = RestClient(dio);
+        final ApiClient apiClient = ApiClient(dio);
         final SearchApiClient searchApiClient = SearchApiClient(dio);
         final FirebaseClient firebaseClient = FirebaseClient();
 
         return ApiRepository(
-            restClient: restClient,
+            apiClient: apiClient,
             searchApiClient: searchApiClient,
             firebaseClient: firebaseClient );
       },
