@@ -38,12 +38,6 @@ class WebViewContainerState extends State<WebViewContainer> {
           onWebViewCreated: (WebViewController webViewController) {
             _controller.complete(webViewController);
           },
-          javascriptChannels: <JavascriptChannel>[
-            // _toasterJavascriptChannel(context),
-          ].toSet(),
-          navigationDelegate: (NavigationRequest request) {
-            return NavigationDecision.prevent;
-          },
           onPageStarted: (String url) {
             setState(() {
               isLoading = true;

@@ -15,7 +15,28 @@ class NewsItemContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final newsThumbnail = new Container(
+
+    return GestureDetector(
+        onTap: ()=>Navigator.of(context).push(
+           PageRouteBuilder(pageBuilder: (_, __, ___) => AnimationNewsDetailScreen(newsItem),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) => FadeTransition(opacity: animation, child: child),) ,
+        ),
+        child: Container(
+          margin: const EdgeInsets.symmetric(
+            vertical: 16.0,
+            horizontal: 24.0,
+          ),
+          child: Stack(
+            children: <Widget>[
+              _buildContentContainer(),
+              _buildThumbnailContainer(),
+            ],
+          ),
+        ));
+  }
+
+  Widget _buildThumbnailContainer(){
+    return Container(
       margin: const EdgeInsets.only(right: 40, top: 10),
       alignment: FractionalOffset.centerLeft,
       child: Hero(
@@ -30,58 +51,11 @@ class NewsItemContainer extends StatelessWidget {
         ),
       ),
     );
+  }
 
-    final newsContent = Container(
-      margin: const EdgeInsets.fromLTRB(76.0 , 16.0 , 16.0, 16.0),
-      constraints: const BoxConstraints.expand(),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Container(height: 4.0),
-          CustomText(
-            text: newsItem.title,
-            fontColor: kWhite,
-            fontSize: 15.0,
-            maxLines: 2,
-            isEllipsis: true,
-          ),
-          Separator(),
-           Container(
-              margin: const EdgeInsets.only(top: 10),
-              child: CustomText(
-                isDynamic: true,
-                text: newsItem.summary,
-                fontSize: 13.0,
-                fontColor: kWhite,
-                maxLines: 4,
-                isEllipsis: true,
-              ),
-            ),
-          Container(
-              margin: const EdgeInsets.only(top: 10, right: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(padding : const EdgeInsets.only(right: 10), child: const Icon(Icons.timer, size: 20 , color: kWhite,)),
-                  Container(
-                    alignment: Alignment.centerRight,
-                    child: CustomText(
-                      isDynamic: true,
-                      text: newsItem.date,
-                      fontSize: 8.0,
-                      fontColor: kWhite,
-                      maxLines: 1,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-        ],
-      ),
-    );
-
-    final contentContainer = Container(
-      child: newsContent,
+  Widget _buildContentContainer(){
+    return Container(
+      child: _buildNewsContainer(),
       height:  200.0,
       margin: const EdgeInsets.only(left: 46.0),
       decoration: BoxDecoration(
@@ -97,23 +71,57 @@ class NewsItemContainer extends StatelessWidget {
         ],
       ),
     );
+  }
 
-    return GestureDetector(
-        onTap: ()=>Navigator.of(context).push(
-           PageRouteBuilder(pageBuilder: (_, __, ___) => AnimationNewsDetailScreen(newsItem),
-            transitionsBuilder: (context, animation, secondaryAnimation, child) => FadeTransition(opacity: animation, child: child),) ,
-        ),
-        child: Container(
-          margin: const EdgeInsets.symmetric(
-            vertical: 16.0,
-            horizontal: 24.0,
+  Widget _buildNewsContainer(){
+
+    return Container(
+      margin: const EdgeInsets.fromLTRB(76.0 , 16.0 , 16.0, 16.0),
+      constraints: const BoxConstraints.expand(),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Container(height: 4.0),
+          CustomText(
+            text: newsItem.title,
+            fontColor: kWhite,
+            fontSize: 15.0,
+            maxLines: 2,
+            isEllipsis: true,
           ),
-          child: Stack(
-            children: <Widget>[
-              contentContainer,
-              newsThumbnail,
-            ],
+          Separator(),
+          Container(
+            margin: const EdgeInsets.only(top: 10),
+            child: CustomText(
+              isDynamic: true,
+              text: newsItem.summary,
+              fontSize: 13.0,
+              fontColor: kWhite,
+              maxLines: 4,
+              isEllipsis: true,
+            ),
           ),
-        ));
+          Container(
+            margin: const EdgeInsets.only(top: 10, right: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Container(padding : const EdgeInsets.only(right: 10), child: const Icon(Icons.timer, size: 20 , color: kWhite,)),
+                Container(
+                  alignment: Alignment.centerRight,
+                  child: CustomText(
+                    isDynamic: true,
+                    text: newsItem.date,
+                    fontSize: 8.0,
+                    fontColor: kWhite,
+                    maxLines: 1,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
