@@ -31,6 +31,7 @@ const Color kWhite = Color(0xFFFFFFFF);
 const Color kGrey = Color(0xFF828282);
 const Color kBlack = Color(0xFF2D3243);
 const Color kPurple = Color(0xFF6464FF);
+const Color kSoftPurple = Color(0xFF736AB7);
 const Color kDisabled = Color(0xFFdcdcdc);
 const Color kGreen = Color(0xFF18CCA8);
 

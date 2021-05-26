@@ -23,7 +23,7 @@ class HomeScreen extends StatelessWidget {
       return Scaffold(
         body:  IndexedStack(children: homeScreenList ,index: currentTab.index,),
         floatingActionButton: Visibility(
-          visible: currentTab != AppTab.MORE,
+          visible: currentTab != AppTab.MORE && currentTab != AppTab.NEWS,
           child: FloatingActionButton(
             onPressed: () => Navigator.pushNamed(context, Routes.SEARCH),
             child: const Icon(Icons.search),

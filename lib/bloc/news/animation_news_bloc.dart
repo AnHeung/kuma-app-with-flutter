@@ -36,7 +36,7 @@ class AnimationNewsBloc extends Bloc<AnimationNewsEvent, AnimationNewsState> {
     if(result.err){
       yield AnimationNewsState(status: AnimationNewsStatus.Failure , msg: result.msg);
     }else{
-      List<AnimationNewsItem> newsItems = result.data.map((newsItem) => AnimationNewsItem(title: newsItem.title, url: newsItem.title, imageUrl: newsItem.image ,date: newsItem.date, summary: newsItem.summary)).toList() ?? [];
+      List<AnimationNewsItem> newsItems = result.data.map((newsItem) => AnimationNewsItem(title: newsItem.title, url: newsItem.url, imageUrl: newsItem.image ,date: newsItem.date, summary: newsItem.summary)).toList() ?? [];
       yield AnimationNewsState(status: AnimationNewsStatus.Success , newsItems: newsItems);
     }
   }
