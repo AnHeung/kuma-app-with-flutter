@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
 import 'package:kuma_flutter_app/model/item/animation_news_item.dart';
+import 'package:kuma_flutter_app/screen/animation_news_detail_screen.dart';
 import 'package:kuma_flutter_app/widget/custom_text.dart';
-import 'file:///C:/Users/Dev/Documents/source/kuma_app_with_flutter/lib/screen/animation_news_detail_screen.dart';
 import 'package:kuma_flutter_app/widget/image_item.dart';
 import 'package:kuma_flutter_app/widget/seperator.dart';
 
@@ -100,7 +100,7 @@ class NewsItemContainer extends StatelessWidget {
 
     return GestureDetector(
         onTap: ()=>Navigator.of(context).push(
-           PageRouteBuilder(pageBuilder: (_, __, ___) => new AnimationNewsDetailScreen(newsItem),
+           PageRouteBuilder(pageBuilder: (_, __, ___) => AnimationNewsDetailScreen(newsItem),
             transitionsBuilder: (context, animation, secondaryAnimation, child) => FadeTransition(opacity: animation, child: child),) ,
         ),
         child: Container(
