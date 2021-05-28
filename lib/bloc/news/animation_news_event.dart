@@ -18,3 +18,5 @@ class AnimationNewsLoad extends AnimationNewsEvent{
   @override
   List<Object> get props => [page];
 }
+
+class AnimationNewsScrollToTop extends AnimationNewsEvent{}

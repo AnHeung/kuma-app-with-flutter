@@ -24,20 +24,31 @@ class AnimationNewsBloc extends Bloc<AnimationNewsEvent, AnimationNewsState> {
     AnimationNewsEvent event,
   ) async* {
     if (event is AnimationNewsLoad) {
-      yield* _mapToAnimationNewsLoad(event);
+      yield* _mapToAnimationNewsLoad(event, state);
+    }else if(event is AnimationNewsScrollToTop){
+      yield* _mapToAnimationNewsScrollToTop();
     }
   }
 
-  Stream<AnimationNewsState> _mapToAnimationNewsLoad(AnimationNewsLoad event) async*{
+  Stream<AnimationNewsState> _mapToAnimationNewsScrollToTop() async*{
+    yield AnimationNewsState(status: AnimationNewsStatus.Loading , newsItems: state.newsItems);
+    yield AnimationNewsState(status: AnimationNewsStatus.Scroll , currentPage: state.currentPage, newsItems: state.newsItems);
+  }
+
+  Stream<AnimationNewsState> _mapToAnimationNewsLoad(AnimationNewsLoad event, AnimationNewsState state) async*{
+    yield AnimationNewsState(status: AnimationNewsStatus.Loading , newsItems: state.newsItems);
+    await Future.delayed(const Duration(milliseconds: 500));
     String page = event.page ?? "1";
     const String viewCount = "30";
     ApiAnimeNewsItem result = await repository.getAnimationNewsItem(page, viewCount);
-    print("_mapToAnimationNewsLoad ${result}");
     if(result.err){
       yield AnimationNewsState(status: AnimationNewsStatus.Failure , msg: result.msg);
     }else{
       List<AnimationNewsItem> newsItems = result.data.map((newsItem) => AnimationNewsItem(title: newsItem.title, url: newsItem.url, imageUrl: newsItem.image ,date: newsItem.date, summary: newsItem.summary)).toList() ?? [];
-      yield AnimationNewsState(status: AnimationNewsStatus.Success , newsItems: newsItems);
+      if(page != "1"){
+        newsItems = state.newsItems..addAll(newsItems);
+      }
+      yield AnimationNewsState(status: AnimationNewsStatus.Success , newsItems: newsItems, currentPage: int.parse(page));
     }
   }
 }

@@ -20,6 +20,7 @@ import 'package:kuma_flutter_app/widget/loading_indicator.dart';
 class GenreSearchScreen extends StatelessWidget {
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final String initialPage = "1";
 
   @override
   Widget build(BuildContext context) {
@@ -229,6 +230,10 @@ class GenreSearchScreen extends StatelessWidget {
             state.genreSearchItems;
         GenreData genreData = state.genreData;
         return GenreGridView(
+          currentPage: state.currentPage,
+          onLoadMore: (page)=>{
+            BlocProvider.of<GenreSearchBloc>(context).add(GenreLoad(data: genreData ,page: page.toString()))
+          },
           genreSearchItems: genreSearchItems,
           genreData: genreData,
         );
@@ -264,12 +269,16 @@ class GenreSearchScreen extends StatelessWidget {
 }
 
 class GenreGridView extends StatefulWidget {
+  final Function(int) onLoadMore;
   final List<AnimationGenreSearchItem> genreSearchItems;
   final GenreData genreData;
+  final int currentPage;
 
-  GenreGridView({genreSearchItems, genreData})
+  GenreGridView({genreSearchItems, genreData ,this.onLoadMore ,currentPage})
       : this.genreSearchItems = genreSearchItems ?? [],
-        this.genreData = genreData ?? GenreData();
+        this.genreData = genreData ?? GenreData(),
+        this.currentPage = currentPage ?? 1;
+
 
   @override
   _GenreGridViewState createState() => _GenreGridViewState();
@@ -361,8 +370,7 @@ class _GenreGridViewState extends State<GenreGridView> {
     if (_scrollController.offset >=
             _scrollController.position.maxScrollExtent &&
         !_scrollController.position.outOfRange) {
-      String nextPage = ((int.parse(widget.genreData.page) + 1).toString());
-      BlocProvider.of<GenreSearchBloc>(context).add(GenreLoad(data: widget.genreData.copyWith(page: nextPage)));
+      widget.onLoadMore(widget.currentPage+1);
     }
   }
 }

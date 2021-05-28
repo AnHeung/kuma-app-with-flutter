@@ -8,10 +8,11 @@ class GenreSearchState extends Equatable{
   final GenreSearchStatus status;
   final List<AnimationGenreSearchItem> genreSearchItems;
   final GenreData genreData;
+  final int currentPage;
   final String msg;
 
-  const GenreSearchState({this.status = GenreSearchStatus.initial , this.genreSearchItems = const <AnimationGenreSearchItem>[], this.genreData, this.msg});
+  const GenreSearchState({this.status = GenreSearchStatus.initial , this.genreSearchItems = const <AnimationGenreSearchItem>[], this.genreData, this.msg, this.currentPage});
 
   @override
-  List<Object> get props =>[status,genreSearchItems, genreData, msg];
+  List<Object> get props =>[status,genreSearchItems, genreData, msg, currentPage];
 }

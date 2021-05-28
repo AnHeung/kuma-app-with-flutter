@@ -13,11 +13,12 @@ abstract class GenreSearchEvent extends Equatable{
 class GenreLoad extends GenreSearchEvent{
 
   final GenreData data;
+  final String page;
 
-  const GenreLoad({this.data});
+  const GenreLoad({this.data,page}) : this.page = page ?? "1";
 
   @override
-  List<Object> get props =>[data];
+  List<Object> get props =>[data,page];
 }
 
 

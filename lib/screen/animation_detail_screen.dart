@@ -386,12 +386,11 @@ class AnimationDetailScreen extends StatelessWidget {
                 Expanded(
                   flex: 1,
                   child: GestureDetector(
-                    onTap: () => imageAlert(
-                        context, detailItem.title, [detailItem.image], 0),
+                    onTap: () => imageAlert(context, detailItem.title, [detailItem.image], 0),
                     child: Container(
                       height: topHeight,
                       child: Hero(
-                        tag: 'detail img popup tag',
+                        tag: "animation-detail-hero${detailItem.id}",
                         child: ImageItem(
                           type: ImageShapeType.FLAT,
                           imgRes: detailItem.image,

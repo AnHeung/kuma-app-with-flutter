@@ -344,7 +344,7 @@ class _AnimationScreenState extends State<AnimationScreen> {
                           onTap: () => Navigator.pushNamed(
                               context, Routes.IMAGE_DETAIL,
                               arguments: AnimationDetailPageItem(
-                                  id: rankItem.id, title: rankItem.title)),
+                                  id: rankItem.id, title: rankItem.title), ),
                         )),
                   )
                   .toList(),

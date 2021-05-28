@@ -39,16 +39,13 @@ class NewsItemContainer extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(right: 40, top: 10),
       alignment: FractionalOffset.centerLeft,
-      child: Hero(
-        tag: "news-item-hero${newsItem.title}",
-        child: Container(
+      child: Container(
           width: 100,
           height: 100,
           child: ImageItem(
             type: ImageShapeType.CIRCLE,
             imgRes: newsItem.imageUrl,
           ),
-        ),
       ),
     );
   }
@@ -76,7 +73,7 @@ class NewsItemContainer extends StatelessWidget {
   Widget _buildNewsContainer(){
 
     return Container(
-      margin: const EdgeInsets.fromLTRB(76.0 , 16.0 , 16.0, 16.0),
+      margin: const EdgeInsets.fromLTRB(76.0 , 10.0 , 10.0, 10.0),
       constraints: const BoxConstraints.expand(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

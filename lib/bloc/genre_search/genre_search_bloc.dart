@@ -21,7 +21,7 @@ class GenreSearchBloc extends Bloc<GenreSearchEvent, GenreSearchState> {
   GenreSearchBloc({this.repository,this.genreCategoryListBloc}) : super(GenreSearchState(status: GenreSearchStatus.initial , genreData: GenreData())){
     genreCategoryListBloc.listen((state){
       if(state.status == GenreCategoryStatus.success){
-          add(GenreLoad(data: state.genreData.copyWith(page: "1")));
+          add(GenreLoad(data: state.genreData));
       }
     });
   }
@@ -57,7 +57,7 @@ class GenreSearchBloc extends Bloc<GenreSearchEvent, GenreSearchState> {
   Stream<GenreSearchState> _mapToGenreLoad(GenreLoad event , GenreSearchState state) async* {
     yield GenreSearchState(status: GenreSearchStatus.loading ,genreData: event.data ,genreSearchItems: state.genreSearchItems);
     String q = event.data.q;
-    String page = event.data.page;
+    String page = event.page;
     String type = event.data.type;
     String startDate = event.data.startDate;
     String endDate = event.data.endDate;
@@ -86,8 +86,7 @@ class GenreSearchBloc extends Bloc<GenreSearchEvent, GenreSearchState> {
       print('state.genreData :${state.genreData.rated}');
       yield GenreSearchState(status: GenreSearchStatus.failure, msg: genreItem.msg , genreSearchItems: state.genreSearchItems , genreData: event.data);
     } else {
-      List<AnimationGenreSearchItem> genreList = [];
-      List<AnimationGenreSearchItem> newGenreList =  genreItem.result
+      List<AnimationGenreSearchItem> genreList =  genreItem.result
           .map((item) => AnimationGenreSearchItem(
           id: item.id,
           title: item.title,
@@ -103,13 +102,12 @@ class GenreSearchBloc extends Bloc<GenreSearchEvent, GenreSearchState> {
       print("status ${state.status} , currentPage :$page");
 
       if(page != "1"){
-        genreList =  state.genreSearchItems..addAll(newGenreList);
-      }else{
-        genreList = newGenreList;
+        genreList =  state.genreSearchItems..addAll(genreList);
       }
 
       print("genreList length :${genreList.length}");
       yield GenreSearchState(
+          currentPage: int.parse(page),
           status: GenreSearchStatus.success,
           genreSearchItems: genreList,
           genreData: event.data);
