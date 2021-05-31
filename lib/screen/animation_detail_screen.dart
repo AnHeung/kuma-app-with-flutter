@@ -386,7 +386,7 @@ class AnimationDetailScreen extends StatelessWidget {
                 Expanded(
                   flex: 1,
                   child: GestureDetector(
-                    onTap: () => imageAlert(context, detailItem.title, [detailItem.image], 0),
+                    onTap: () => showImageDialog(context, detailItem.title, [detailItem.image], 0),
                     child: Container(
                       height: topHeight,
                       child: Hero(

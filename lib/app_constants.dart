@@ -23,6 +23,9 @@ const Map<String,String> ratedList = {"모두":"g","어린이용":"pg","13세이
 
 const String kStartDate = "2000-01-01";
 
+
+const String kTimeFormat = 'yyyy-MM-dd';
+
 // Colors
 const Color kBlue = Color(0xFF306EFF);
 const Color kLightBlue = Color(0xFF4985FD);

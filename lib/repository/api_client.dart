@@ -9,7 +9,7 @@ part 'api_client.g.dart';
 abstract class ApiClient {
 
   @GET("/animationNews")
-  Future<ApiAnimeNewsItem> getAnimeNewsItems(@Query("page") String viewCount, @Query("viewCount")String page);
+  Future<ApiAnimeNewsItem> getAnimeNewsItems(@Query("page") String viewCount, @Query("viewCount")String page ,  @Query("startDate")String startDate,  @Query("endDate")String endDate);
 
   factory ApiClient(Dio dio , {String baseUrl}) = _ApiClient;
 

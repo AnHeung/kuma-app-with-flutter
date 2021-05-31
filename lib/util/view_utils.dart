@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/character_detail/character_detail_bloc.dart';
@@ -9,6 +10,7 @@ import 'package:kuma_flutter_app/enums/image_shape_type.dart';
 import 'package:kuma_flutter_app/enums/image_type.dart';
 import 'package:kuma_flutter_app/enums/move_state.dart';
 import 'package:kuma_flutter_app/repository/api_repository.dart';
+import 'package:kuma_flutter_app/util/date_util.dart';
 import 'package:kuma_flutter_app/widget/bottom_character_item_container.dart';
 import 'package:kuma_flutter_app/widget/bottom_voice_item_container.dart';
 import 'package:kuma_flutter_app/widget/custom_text.dart';
@@ -35,7 +37,7 @@ MaterialColor createMaterialColor(Color color) {
   return MaterialColor(color.value, swatch);
 }
 
-imageAlert(
+showImageDialog(
     BuildContext context, String title, List<String> imgList, int imgIdx) {
   PageController controller = PageController(initialPage: imgIdx);
 
@@ -144,6 +146,7 @@ imageAlert(
   );
 }
 
+
 _controlPage({int listSize, PageController controller, MoveState state}) {
   int currentPage = controller.page.ceil();
   Duration duration = const Duration(milliseconds: 300);
@@ -184,6 +187,17 @@ showToast({String msg}) {
         backgroundColor: Colors.red,
         textColor: Colors.white,
         fontSize: toastFontSize);
+}
+
+showDateTimePicker({BuildContext context, String currentDay , Function(String) onConfirm}){
+  final DateTime today = new DateTime.now();
+  final DateTime current = DateTime.parse(currentDay);
+
+  DatePicker.showDatePicker(context,
+      showTitleActions: true,
+      maxTime: DateTime(today.year, today.month, today.day), onConfirm: (date) {
+        if(date!= null)onConfirm(dateTimeToFormat(date));
+      }, currentTime: current, locale: LocaleType.ko );
 }
 
 showBaseDialog(

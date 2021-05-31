@@ -17,13 +17,18 @@ class _ApiClient implements ApiClient {
   String baseUrl;
 
   @override
-  Future<ApiAnimeNewsItem> getAnimeNewsItems(viewCount, page) async {
+  Future<ApiAnimeNewsItem> getAnimeNewsItems(
+      viewCount, page, startDate, endDate) async {
     ArgumentError.checkNotNull(viewCount, 'viewCount');
     ArgumentError.checkNotNull(page, 'page');
+    ArgumentError.checkNotNull(startDate, 'startDate');
+    ArgumentError.checkNotNull(endDate, 'endDate');
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'page': viewCount,
-      r'viewCount': page
+      r'viewCount': page,
+      r'startDate': startDate,
+      r'endDate': endDate
     };
     final _data = <String, dynamic>{};
     final _result = await _dio.request<Map<String, dynamic>>('/animationNews',

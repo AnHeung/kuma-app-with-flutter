@@ -15,7 +15,7 @@ import 'package:kuma_flutter_app/widget/tab_selector.dart';
 
 class HomeScreen extends StatelessWidget {
 
-  final List<Widget> homeScreenList = [AnimationScreen() , GenreSearchScreen(), BlocProvider(create: (context)=>AnimationNewsBloc(repository:context.read<ApiRepository>() )..add(const AnimationNewsLoad(page: "1")), child: NewsScreen(),), BlocProvider(create: (_)=>MoreBloc(), child: MoreScreen(),)];
+  final List<Widget> homeScreenList = [AnimationScreen() , GenreSearchScreen(), BlocProvider(create: (context)=>AnimationNewsBloc(repository:context.read<ApiRepository>() )..add(AnimationNewsLoad(page: "1")), child: NewsScreen(),), BlocProvider(create: (_)=>MoreBloc(), child: MoreScreen(),)];
 
   @override
   Widget build(BuildContext context) {

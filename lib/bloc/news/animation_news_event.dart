@@ -12,11 +12,23 @@ abstract class AnimationNewsEvent extends Equatable{
 class AnimationNewsLoad extends AnimationNewsEvent{
 
   final String page;
+  final String startDate;
+  final String endDate;
 
-  const AnimationNewsLoad({this.page = "1"});
+  AnimationNewsLoad({this.page = "1" ,startDate , endDate}): this.startDate =  startDate ??  getToday() ,this.endDate = endDate ?? getToday();
 
   @override
-  List<Object> get props => [page];
+  List<Object> get props => [page,startDate ,endDate];
 }
 
 class AnimationNewsScrollToTop extends AnimationNewsEvent{}
+
+class AnimationNewsChangeDate extends AnimationNewsEvent{
+  final String startDate;
+  final String endDate;
+
+  const AnimationNewsChangeDate({this.startDate,this.endDate});
+
+  @override
+  List<Object> get props => [startDate,endDate];
+}

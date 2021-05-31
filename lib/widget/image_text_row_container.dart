@@ -26,7 +26,7 @@ class ImageTextRowContainer extends StatelessWidget {
               height: itemHeight,
               width: itemHeight,
               child: GestureDetector(
-                  onTap: () => imageAlert(
+                  onTap: () => showImageDialog(
                       context,
                       title,
                       [imageUrl],

@@ -1,5 +1,6 @@
 
 import 'package:intl/intl.dart';
+import 'package:kuma_flutter_app/app_constants.dart';
 
 getFourYearMapData(){
   DateTime now = DateTime.now();
@@ -19,6 +20,23 @@ getFourYearMapData(){
 
 getToday(){
   DateTime now = DateTime.now();
-  DateFormat dateFormat = DateFormat('yyyy-MM-dd');
+  DateFormat dateFormat = DateFormat(kTimeFormat);
   return dateFormat.format(now);
+}
+
+dateTimeToFormat(DateTime time){
+  DateFormat dateFormat = DateFormat(kTimeFormat);
+  return dateFormat.format(time);
+}
+
+bool compareTime(String time1 ,String time2){
+  int time =  DateTime.parse(time1).compareTo(DateTime.parse(time2));
+  switch(time){
+    case 0 :
+    case -1:
+    return false;
+    case 1:
+      return true;
+  }
+  return false;
 }

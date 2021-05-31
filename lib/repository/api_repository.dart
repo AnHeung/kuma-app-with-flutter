@@ -49,7 +49,7 @@ class ApiRepository {
 
   Future<SearchMalApiCharacterPictureItem> getCharacterPictureList(String characterId) => searchApiClient.getCharacterPictureList(characterId);
 
-  Future<ApiAnimeNewsItem> getAnimationNewsItem(String page, String viewCount) => apiClient.getAnimeNewsItems(page , viewCount);
+  Future<ApiAnimeNewsItem> getAnimationNewsItem(String page, String viewCount, String startDate, String endDate) => apiClient.getAnimeNewsItems(page , viewCount, startDate ,endDate);
 
   Future<SearchMalAllGenreItem> getAllGenreItems({
           String type,

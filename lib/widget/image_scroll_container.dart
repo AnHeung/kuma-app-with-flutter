@@ -26,7 +26,7 @@ class ImageScrollItemContainer extends StatelessWidget {
             return AspectRatio(
               aspectRatio: 0.8,
               child: GestureDetector(
-                onTap: () => imageAlert(context, imgRes, images, idx),
+                onTap: () => showImageDialog(context, imgRes, images, idx),
                 child: ImageItem(
                   imgRes: imgRes,
                   type: ImageShapeType.FLAT,
