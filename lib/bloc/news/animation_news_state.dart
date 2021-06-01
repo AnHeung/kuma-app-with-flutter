@@ -6,14 +6,13 @@ class AnimationNewsState extends Equatable{
 
   final AnimationNewsStatus status;
   final List<AnimationNewsItem> newsItems;
+  final List<AnimationNewsItem> newsQueryItems;
   final int currentPage;
-  final String startDate;
-  final String endDate;
   final String msg;
 
-  AnimationNewsState({this.status, this.newsItems, this.msg, this.currentPage = 1 ,String startDate, String endDate}): this.startDate =  startDate ??  getToday() ,this.endDate = endDate ?? getToday();
+  const AnimationNewsState({this.status, this.newsItems, this.newsQueryItems,this.msg, this.currentPage = 1  });
 
   @override
-  List<Object> get props => [status, newsItems , msg,currentPage,startDate, endDate];
+  List<Object> get props => [status, newsItems , msg,currentPage, newsQueryItems];
 }
 

@@ -13,19 +13,14 @@ import 'package:kuma_flutter_app/widget/refresh_container.dart';
 
 class NewsScreen extends StatelessWidget {
   final String initialPage = "1";
+  String currentQuery = "";
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: CustomText(
-          text: "뉴스",
-          fontSize: 20.0,
-          fontColor: kWhite,
-          fontFamily: doHyunFont,
-          textAlign: TextAlign.center,
-        ),
-      ),
+      appBar:NewsSearchAppbar(queryCallback: (query){
+        currentQuery = query;
+      },),
       floatingActionButton: FloatingActionButton(
         heroTag: null,
         onPressed: () => BlocProvider.of<AnimationNewsBloc>(context)
@@ -33,124 +28,110 @@ class NewsScreen extends StatelessWidget {
         child: const Icon(Icons.arrow_circle_up_outlined),
       ),
       backgroundColor: kWhite,
-      body: BlocBuilder<AnimationNewsBloc, AnimationNewsState>(
-        builder: (context, state) {
-          return RefreshIndicator(
-            onRefresh: () async => {
-              BlocProvider.of<AnimationNewsBloc>(context)
-                  .add(AnimationNewsLoad())
-            },
-            child: state != AnimationNewsStatus.Failure
-                ? Column(
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: NewsTimeContainer(
-                          startDate: state.startDate,
-                          endDate: state.endDate,
-                        ),
-                      ),
-                      Expanded(
-                        flex: 10,
-                        child: NewsScrollContainer(
-                          onLoadMore: (page) {
-                            BlocProvider.of<AnimationNewsBloc>(context)
-                                .add(AnimationNewsLoad(page: page.toString(),startDate: state.startDate ,endDate: state.endDate));
-                          },
-                          state: state,
-                        ),
-                      )
-                    ],
+      body: RefreshIndicator(
+          onRefresh: () async => {
+                BlocProvider.of<AnimationNewsBloc>(context)
+                    .add(const AnimationNewsLoad())
+              },
+          child: BlocConsumer<AnimationNewsBloc, AnimationNewsState>(
+              listener: (context, state) {
+            if (state.status == AnimationNewsStatus.Failure)
+              showToast(msg: state.msg);
+          }, builder: (context, state) {
+            return state != AnimationNewsStatus.Failure
+                ? NewsScrollContainer(
+                    onLoadMore: (page) {
+                      BlocProvider.of<AnimationNewsBloc>(context).add(AnimationNewsLoad(page: page.toString() , query: currentQuery));
+                    },
+                    state: state,
                   )
                 : RefreshContainer(
                     callback: () => BlocProvider.of<AnimationNewsBloc>(context)
                         .add(AnimationNewsLoad(page: initialPage)),
-                  ),
-          );
-        },
-      ),
+                  );
+          })),
     );
   }
 }
 
-class NewsTimeContainer extends StatelessWidget {
+class NewsSearchAppbar extends StatefulWidget implements PreferredSizeWidget {
+  NewsSearchAppbar({Key key ,this.queryCallback})
+      : preferredSize = const Size.fromHeight(kToolbarHeight),
+        super(key: key);
 
-  final String startDate;
-  final String endDate;
+  final Function(String) queryCallback;
 
-  const NewsTimeContainer({this.startDate, this.endDate});
+  @override
+  _NewsSearchAppbarState createState() => _NewsSearchAppbarState();
+
+  @override
+  final Size preferredSize;
+}
+
+class _NewsSearchAppbarState extends State<NewsSearchAppbar> {
+  TextEditingController _controller;
+  bool isClick = false;
+  final Widget TitleText = CustomText(
+    text: "뉴스",
+    fontSize: 20.0,
+    fontColor: kWhite,
+    fontFamily: doHyunFont,
+    textAlign: TextAlign.center,
+  );
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _controller?.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          GestureDetector(
-            onTap: () => showDateTimePicker(currentDay: startDate ,context: context , onConfirm: (startDate){
-              if(startDate!= null){
-                BlocProvider.of<AnimationNewsBloc>(context).add(AnimationNewsChangeDate(startDate:startDate , endDate: endDate));
-              }
-            }),
-            child: Row(
-              children: [
-                Container(
-                  margin: const EdgeInsets.only(right: 5),
-                  child: const Icon(
-                    Icons.calendar_today_outlined,
-                    color: kGrey,
-                    size: 20,
-                  ),
-                ),
-                Text(startDate),
-              ],
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.only(left: 10, right: 10),
-            child: CustomText(text:'-', fontSize: 20.0,),
-          ),
-          GestureDetector(
-            onTap: ()=>showDateTimePicker(currentDay: endDate ,context: context ,onConfirm: (endDate){
-              if(endDate!= null){
-                BlocProvider.of<AnimationNewsBloc>(context).add(AnimationNewsChangeDate(startDate:startDate , endDate: endDate));
-              }
-            }),
-            child: Row(
-              children: [
-                Container(
-                  margin: const EdgeInsets.only( right: 5),
-                  child: const Icon(
-                    Icons.calendar_today_outlined,
-                    color: kGrey,
-                    size: 20,
-                  ),
-                ),
-                Container(padding: const EdgeInsets.only(right: 10), child: Text(endDate)),
-              ],
-            ),
-          ),
-          GestureDetector(
-            onTap: ()=>BlocProvider.of<AnimationNewsBloc>(context).add(AnimationNewsLoad(startDate: startDate, endDate: endDate)),
-            child: Container(
-              margin: const EdgeInsets.only(right: 20),
-              alignment: Alignment.center,
-              width: 60,
-              height: 35,
-              decoration:const  BoxDecoration(
-                color: kSoftPurple,
-                borderRadius: const BorderRadius.all(Radius.circular(5)),
-              ),
-              child: CustomText(text:'조회' , fontFamily: doHyunFont, fontSize: 12.0,),
-            ),
-          )
-        ],
+    final Widget titleTextField = Container(
+      child: TextField(
+        decoration: const InputDecoration(
+          contentPadding: EdgeInsets.only(left: 20),
+          hintText: '검색어를 입력해주세요...',
+          hintStyle: const TextStyle(color: kWhite),
+        ),
+        onChanged: (text) {
+          widget.queryCallback(text);
+          BlocProvider.of<AnimationNewsBloc>(context).add(AnimationNewsSearch(query: text));
+        },
+        style: const TextStyle(color: kWhite),
+        cursorColor: kWhite,
+        autofocus: true,
+        controller: _controller,
       ),
     );
+
+    return AppBar(
+      centerTitle: true,
+      actions: [
+        Container(
+            margin: const EdgeInsets.only(right: 20),
+            child: IconButton(
+                onPressed: () {
+                  setState(() {
+                    isClick = !isClick;
+                  });
+                  if (isClick) _controller?.clear();
+                  else BlocProvider.of<AnimationNewsBloc>(context).add(AnimationNewsClear());
+                },
+                icon: Icon(!isClick ? Icons.search : Icons.clear)))
+      ],
+      title: !isClick
+          ? TitleText
+          : titleTextField,
+    );
   }
-
 }
-
 
 class NewsScrollContainer extends StatefulWidget {
   final Function(int) onLoadMore;
@@ -176,7 +157,8 @@ class _NewsScrollContainerState extends State<NewsScrollContainer> {
   _scrollListener() {
     if (_scrollController.offset >=
             _scrollController.position.maxScrollExtent &&
-        !_scrollController.position.outOfRange) {
+        !_scrollController.position.outOfRange &&
+        _scrollController.hasClients) {
       widget.onLoadMore(widget.state.currentPage + 1);
     }
   }
@@ -188,8 +170,10 @@ class _NewsScrollContainerState extends State<NewsScrollContainer> {
   }
 
   scrollToTop() {
-    _scrollController?.animateTo(0.0,
-        curve: Curves.easeOut, duration: const Duration(milliseconds: 500));
+    if (_scrollController.hasClients) {
+      _scrollController?.animateTo(0.0,
+          curve: Curves.easeOut, duration: const Duration(milliseconds: 500));
+    }
   }
 
   @override
@@ -197,21 +181,23 @@ class _NewsScrollContainerState extends State<NewsScrollContainer> {
     if (widget.state.status == AnimationNewsStatus.Scroll) scrollToTop();
     return Stack(
       children: [
-        widget.state.newsItems.length !=0
+        widget.state.newsQueryItems.length != 0
             ? ListView.builder(
-          controller: _scrollController,
-          scrollDirection: Axis.vertical,
-          itemCount: widget.state.newsItems.length,
-          itemBuilder: (context, idx) {
-            final AnimationNewsItem newsItem = widget.state.newsItems[idx];
-            if (currentDate != newsItem.date) {
-              currentDate = newsItem.date;
-            }
-            return NewsItemContainer(newsItem);
-          },
-        ) : const EmptyContainer(
-          title: "목록이 존재하지 않습니다.",
-        ),
+                controller: _scrollController,
+                scrollDirection: Axis.vertical,
+                itemCount: widget.state.newsQueryItems.length,
+                itemBuilder: (context, idx) {
+                  final AnimationNewsItem newsItem =
+                      widget.state.newsQueryItems[idx];
+                  if (currentDate != newsItem.date) {
+                    currentDate = newsItem.date;
+                  }
+                  return NewsItemContainer(newsItem);
+                },
+              )
+            : const EmptyContainer(
+                title: "목록이 존재하지 않습니다.",
+              ),
         LoadingIndicator(
           isVisible: widget.state.status == AnimationNewsStatus.Loading,
         )

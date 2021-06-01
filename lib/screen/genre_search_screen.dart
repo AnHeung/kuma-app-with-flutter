@@ -26,6 +26,7 @@ class GenreSearchScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final AppBar appBar = AppBar(
+      centerTitle: true,
       actions: [ Container(padding: const EdgeInsets.only(right: 10),child: IconButton(
         onPressed: ()=>showBaseDialog(title: "필터 삭제" , context: context , content: "필터를 전부 삭제하시겠습니까?" , confirmFunction: (){
           BlocProvider.of<GenreCategoryListBloc>(context).add(GenreItemRemoveAll());
