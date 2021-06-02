@@ -53,7 +53,7 @@ class TabSelector extends StatelessWidget {
         icon = Icons.album;
         break;
       case AppTab.GENRE:
-        icon = Icons.phone_android;
+        icon = Icons.phone_android_sharp;
         break;
       case AppTab.NEWS:
         icon = Icons.update_sharp;

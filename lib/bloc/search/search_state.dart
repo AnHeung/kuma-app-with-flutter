@@ -1,6 +1,6 @@
 part of 'search_bloc.dart';
 
-enum SearchStatus { loading , initial , clear ,set, failure ,success}
+enum SearchStatus { Loading , Initial , Clear ,Set, Failure ,Success}
 
 @immutable
 class SearchState extends Equatable{
@@ -9,7 +9,7 @@ class SearchState extends Equatable{
   final List<AnimationSearchItem> list;
   final String msg;
 
-  SearchState({this.status, this.list, this.msg});
+  SearchState({this.status, List<AnimationSearchItem> list, this.msg}) : this.list =  list ?? [];
 
   @override
   List<Object> get props =>[status,list, msg];

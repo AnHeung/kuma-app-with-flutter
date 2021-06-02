@@ -19,17 +19,24 @@ import 'package:kuma_flutter_app/widget/refresh_container.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 
-class AnimationMainAppbar extends StatelessWidget {
+class AnimationMainAppbar extends StatefulWidget {
 
+  @override
+  _AnimationMainAppbarState createState() => _AnimationMainAppbarState();
+}
+
+class _AnimationMainAppbarState extends State<AnimationMainAppbar> {
   Timer timer;
   int currentPage = 0;
+  VoidCallback pageControlListener ;
   PageController controller = PageController(initialPage: 0, keepPage: false);
   int totalPageCount = 0;
   int scrollTime = 3;
-  VoidCallback pageControlListener ;
 
 
-  AnimationMainAppbar(){
+  @override
+  void initState() {
+    super.initState();
     pageControlListener = () {
       if(controller?.hasClients ?? false)currentPage = controller.page.ceil();
     };
@@ -45,7 +52,7 @@ class AnimationMainAppbar extends StatelessWidget {
   _resumeJob(){
     controller?.addListener(pageControlListener);
     timer = timer ?? Timer.periodic(Duration(seconds: scrollTime), (timer) {
-      print("controller.hasClient ${controller.hasClients} currentPage : $currentPage totalPageCount: $totalPageCount ");
+      print("controller.hasClient ${controller.hasClients} currentPage : ${currentPage} totalPageCount: $totalPageCount ");
       if(controller.hasClients) {
         if (currentPage == totalPageCount) {
           controller?.animateToPage(0, duration: const Duration(milliseconds: 300), curve: Curves.easeIn);
@@ -56,7 +63,6 @@ class AnimationMainAppbar extends StatelessWidget {
       }
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -118,6 +124,7 @@ class AnimationMainAppbar extends StatelessWidget {
       },
     );
   }
+
   Widget _pageViewContainer(AnimationSeasonItem item){
 
     return  Container(

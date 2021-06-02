@@ -63,15 +63,8 @@ class AnimationNewsBloc extends Bloc<AnimationNewsEvent, AnimationNewsState> {
   }
 
   Stream<AnimationNewsState> _mapToAnimationNewsScrollToTop() async* {
-    yield AnimationNewsState(
-        status: AnimationNewsStatus.Loading,
-        newsItems: state.newsItems,
-        newsQueryItems: state.newsQueryItems);
-    yield AnimationNewsState(
-        status: AnimationNewsStatus.Scroll,
-        currentPage: state.currentPage,
-        newsItems: state.newsItems,
-        newsQueryItems: state.newsQueryItems);
+    yield AnimationNewsState(status: AnimationNewsStatus.Loading, newsItems: state.newsItems, newsQueryItems: state.newsQueryItems);
+    yield AnimationNewsState(status: AnimationNewsStatus.Scroll, currentPage: state.currentPage, newsItems: state.newsItems, newsQueryItems: state.newsQueryItems);
   }
 
   Stream<AnimationNewsState> _mapToAnimationNewsLoad(
@@ -88,33 +81,18 @@ class AnimationNewsBloc extends Bloc<AnimationNewsEvent, AnimationNewsState> {
     ApiAnimeNewsItem result = await repository.getAnimationNewsItem(page, viewCount);
 
     if (result.err) {
-      yield AnimationNewsState(
-          status: AnimationNewsStatus.Failure,
-          msg: result.msg,
-          newsItems: state.newsItems,
-          newsQueryItems: state.newsQueryItems,
-          );
+      yield AnimationNewsState(status: AnimationNewsStatus.Failure, msg: result.msg, newsItems: state.newsItems, newsQueryItems: state.newsQueryItems,);
     } else {
       List<AnimationNewsItem> newsItems = result.data
-              .map((newsItem) => AnimationNewsItem(
-                  title: newsItem.title,
-                  url: newsItem.url,
-                  imageUrl: newsItem.image,
-                  date: newsItem.date,
-                  summary: newsItem.summary))
-              .toList() ??
-          [];
+          .map((newsItem) => AnimationNewsItem(title: newsItem.title, url: newsItem.url, imageUrl: newsItem.image, date: newsItem.date, summary: newsItem.summary)).toList()
+          ?? [];
       if (page != "1") {
         newsItems = state.newsItems..addAll(newsItems);
       } else {
         page = "1";
       }
-      yield AnimationNewsState(
-        status: AnimationNewsStatus.Success,
-        newsItems: newsItems,
-        newsQueryItems: newsItems,
-        currentPage: int.parse(page),
-      );
+      yield AnimationNewsState(status: AnimationNewsStatus.Success, newsItems: newsItems, newsQueryItems: newsItems, currentPage: int.parse(page),);
+      print('currentQuery: ${query}');
       if(!query.isNullEmptyOrWhitespace) {
         add(AnimationNewsSearch(query: query));
       }

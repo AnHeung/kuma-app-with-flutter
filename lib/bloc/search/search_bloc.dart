@@ -16,7 +16,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   final ApiRepository repository;
 
   SearchBloc({this.repository})
-      : super(SearchState(status: SearchStatus.initial));
+      : super(SearchState(status: SearchStatus.Initial));
 
   @override
   Stream<Transition<SearchEvent, SearchState>> transformEvents(
@@ -54,9 +54,9 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   Stream<SearchState> _mapToSearchBtnClick(SearchBtnClick event) async* {
     bool isClick = event.isClick;
     if (isClick)
-      yield SearchState(status: SearchStatus.set);
+      yield SearchState(status: SearchStatus.Set);
     else
-      yield SearchState(status: SearchStatus.initial);
+      yield SearchState(status: SearchStatus.Initial);
   }
 
   Stream<SearchState> _mapToSearchUpdate(SearchQueryUpdate event,
@@ -65,15 +65,15 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       String query = event.searchQuery;
 
       if (query.isEmpty) {
-        yield SearchState(status: SearchStatus.initial);
+        yield SearchState(status: SearchStatus.Clear);
       } else {
-        yield SearchState(status: SearchStatus.loading, list: state.list);
+        yield SearchState(status: SearchStatus.Loading, list: state.list);
         SearchMalApiSearchItem searchItems = await repository.getSearchItems(query);
         if (searchItems.err) {
-          yield SearchState(status: SearchStatus.failure, msg: searchItems.msg);
+          yield SearchState(status: SearchStatus.Failure, msg: searchItems.msg ?? "검색 에러");
         } else {
           yield SearchState(
-              status: SearchStatus.success,
+              status: SearchStatus.Success,
               list: searchItems.result
                   .map((result) =>
                   AnimationSearchItem(
@@ -82,24 +82,24 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
         }
       }
     } catch (e) {
-      yield SearchState(status: SearchStatus.failure, msg: "검색 에러 $e");
+      yield SearchState(status: SearchStatus.Failure, msg: "검색 에러 $e");
     }
   }
 
   Stream<SearchState> _mapToSearchClear() async* {
-    yield SearchState(status: SearchStatus.initial);
+    yield SearchState(status: SearchStatus.Initial);
   }
 
   Stream<SearchState> _mapToSearchLoad(SearchLoad event) async* {
     try {
-      yield SearchState(status: SearchStatus.loading);
+      yield SearchState(status: SearchStatus.Loading);
       String query = event.searchQuery;
       SearchMalApiSearchItem searchItems = await repository.getSearchItems(query);
       if (searchItems.err) {
-        yield SearchState(status: SearchStatus.failure, msg: searchItems.msg);
+        yield SearchState(status: SearchStatus.Failure, msg: searchItems.msg);
       } else {
         yield SearchState(
-            status: SearchStatus.success,
+            status: SearchStatus.Success,
             list: searchItems.result
                 .map((result) =>
                 AnimationSearchItem(
@@ -107,7 +107,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
                 .toList());
       }
     } catch (e) {
-      yield SearchState(status: SearchStatus.failure, msg: "검색결과 불러오기 실패 :$e");
+      yield SearchState(status: SearchStatus.Failure, msg: "검색결과 불러오기 실패 :$e");
     }
   }
 

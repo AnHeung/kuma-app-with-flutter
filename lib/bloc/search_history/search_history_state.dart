@@ -1,20 +1,16 @@
 part of 'search_history_bloc.dart';
 
+enum SearchHistoryStatus { Initial  , Loading ,  Failure, Success}
+
 @immutable
-abstract class SearchHistoryState extends Equatable {
-  @override
-  List<Object> get props => [];
+class SearchHistoryState extends Equatable {
 
-  const SearchHistoryState();
-}
-
-class SearchHistoryInitial extends SearchHistoryState {}
-
-class SearchHistoryLoadSuccess extends SearchHistoryState {
   final List<AnimationSearchItem> list;
-
-  const SearchHistoryLoadSuccess({this.list});
+  final SearchHistoryStatus status;
+  final String msg;
 
   @override
-  List<Object> get props => [list];
+  List<Object> get props => [list,status, msg];
+
+  const SearchHistoryState({this.list,this.status, this.msg});
 }

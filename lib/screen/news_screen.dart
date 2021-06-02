@@ -13,14 +13,17 @@ import 'package:kuma_flutter_app/widget/refresh_container.dart';
 
 class NewsScreen extends StatelessWidget {
   final String initialPage = "1";
-  String currentQuery = "";
 
   @override
   Widget build(BuildContext context) {
+    String currentQuery = "";
+
     return Scaffold(
-      appBar:NewsSearchAppbar(queryCallback: (query){
-        currentQuery = query;
-      },),
+      appBar: NewsSearchAppbar(
+        queryCallback: (query) {
+          currentQuery = query;
+        },
+      ),
       floatingActionButton: FloatingActionButton(
         heroTag: null,
         onPressed: () => BlocProvider.of<AnimationNewsBloc>(context)
@@ -31,7 +34,7 @@ class NewsScreen extends StatelessWidget {
       body: RefreshIndicator(
           onRefresh: () async => {
                 BlocProvider.of<AnimationNewsBloc>(context)
-                    .add(const AnimationNewsLoad())
+                    .add(AnimationNewsLoad(query: currentQuery , page: initialPage))
               },
           child: BlocConsumer<AnimationNewsBloc, AnimationNewsState>(
               listener: (context, state) {
@@ -41,7 +44,9 @@ class NewsScreen extends StatelessWidget {
             return state != AnimationNewsStatus.Failure
                 ? NewsScrollContainer(
                     onLoadMore: (page) {
-                      BlocProvider.of<AnimationNewsBloc>(context).add(AnimationNewsLoad(page: page.toString() , query: currentQuery));
+                      BlocProvider.of<AnimationNewsBloc>(context).add(
+                          AnimationNewsLoad(
+                              page: page.toString(), query: currentQuery));
                     },
                     state: state,
                   )
@@ -55,7 +60,7 @@ class NewsScreen extends StatelessWidget {
 }
 
 class NewsSearchAppbar extends StatefulWidget implements PreferredSizeWidget {
-  NewsSearchAppbar({Key key ,this.queryCallback})
+  NewsSearchAppbar({Key key, this.queryCallback})
       : preferredSize = const Size.fromHeight(kToolbarHeight),
         super(key: key);
 
@@ -102,7 +107,8 @@ class _NewsSearchAppbarState extends State<NewsSearchAppbar> {
         ),
         onChanged: (text) {
           widget.queryCallback(text);
-          BlocProvider.of<AnimationNewsBloc>(context).add(AnimationNewsSearch(query: text));
+          BlocProvider.of<AnimationNewsBloc>(context)
+              .add(AnimationNewsSearch(query: text));
         },
         style: const TextStyle(color: kWhite),
         cursorColor: kWhite,
@@ -115,20 +121,22 @@ class _NewsSearchAppbarState extends State<NewsSearchAppbar> {
       centerTitle: true,
       actions: [
         Container(
-            margin: const EdgeInsets.only(right: 20),
+            margin: const EdgeInsets.only(right: 10),
             child: IconButton(
                 onPressed: () {
                   setState(() {
                     isClick = !isClick;
                   });
-                  if (isClick) _controller?.clear();
-                  else BlocProvider.of<AnimationNewsBloc>(context).add(AnimationNewsClear());
+                  if (isClick) {
+                    _controller?.clear();
+                  } else {
+                    BlocProvider.of<AnimationNewsBloc>(context).add(AnimationNewsClear());
+                    widget.queryCallback("");
+                  }
                 },
                 icon: Icon(!isClick ? Icons.search : Icons.clear)))
       ],
-      title: !isClick
-          ? TitleText
-          : titleTextField,
+      title: !isClick ? TitleText : titleTextField,
     );
   }
 }

@@ -26,86 +26,51 @@ import '../bloc/animation_schedule/animation_schedule_bloc.dart';
 import '../util/string_util.dart';
 import '../widget/loading_indicator.dart';
 
-class AnimationScreen extends StatefulWidget {
-  @override
-  _AnimationScreenState createState() => _AnimationScreenState();
-}
-
-class _AnimationScreenState extends State<AnimationScreen> {
-  final AnimationMainAppbar animationMainAppbar = AnimationMainAppbar();
-  final ScrollController _scrollController = ScrollController();
-  double appbarOpacity = 0;
-  Color appIconColors = kWhite;
-  VoidCallback _scrollListener;
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollListener = () {
-      if (_scrollController.hasClients) {
-        _changeAppbar(_scrollController.offset);
-      }
-    };
-    _scrollController.addListener(_scrollListener);
-  }
-
-  _changeAppbar(double scrollPosition) {
-    if (scrollPosition == 0) {
-      setState(() {
-        appbarOpacity = 0;
-        appIconColors = kWhite;
-      });
-    } else if (scrollPosition > 50 && scrollPosition < 100 && appbarOpacity != 0.5) {
-        setState(() {
-          appbarOpacity = 0.5;
-          appIconColors = Colors.black45;
-      });
-    } else if (scrollPosition > 200 && scrollPosition < 250 && appbarOpacity != 0.7) {
-        setState(() {
-          appbarOpacity = 0.7;
-          appIconColors = Colors.black87;
-        });
-    } else if (scrollPosition > 400 && scrollPosition < 500 && appbarOpacity != 1) {
-      setState(() {
-          appbarOpacity = 1;
-          appIconColors = kBlack;
-      });
-    }
-  }
-
-  @override
-  void dispose() {
-    _scrollController?.removeListener(_scrollListener);
-    _scrollController?.dispose();
-    super.dispose();
-  }
-
+class AnimationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      body: NestedScrollView(
-        controller: _scrollController,
-        headerSliverBuilder: (context, isScrolled) {
-          return [_buildSilverAppbar(animationMainAppbar)];
-        },
-        body: ListView(
-            shrinkWrap: true,
-            padding: EdgeInsets.zero,
-            physics: const ClampingScrollPhysics(),
-            children: [
-              _buildScheduleItems(context: context),
-              _buildRankingItems(),
-            ]),
-      ),
+      body: AnimationScrollView(),
+    );
+  }
+}
+
+class AnimationScrollView extends StatefulWidget {
+  @override
+  _AnimationScrollViewState createState() => _AnimationScrollViewState();
+}
+
+class _AnimationScrollViewState extends State<AnimationScrollView> {
+  final AnimationMainAppbar animationMainAppbar = AnimationMainAppbar();
+  final ScrollController _scrollController = ScrollController();
+
+  double appbarOpacity = 0;
+  Color appIconColors = kWhite;
+
+  @override
+  Widget build(BuildContext context) {
+    return NestedScrollView(
+      controller: _scrollController,
+      headerSliverBuilder: (context, isScrolled) {
+        return [_buildSilverAppbar(animationMainAppbar)];
+      },
+      body: ListView(
+          shrinkWrap: true,
+          padding: EdgeInsets.zero,
+          physics: const ClampingScrollPhysics(),
+          children: [
+            _buildScheduleItems(context: context),
+            _buildRankingItems(),
+          ]),
     );
   }
 
   Widget _buildRankingItems() {
     return Container(
-      child: BlocBuilder<AnimationBloc, AnimationState>(
-          builder: (context, loadState) {
-        switch (loadState.runtimeType) {
+      child:
+          BlocBuilder<AnimationBloc, AnimationState>(builder: (context, state) {
+        switch (state.runtimeType) {
           case AnimationLoadFailure:
             return Container(
               height: 300,
@@ -116,9 +81,7 @@ class _AnimationScreenState extends State<AnimationScreen> {
             );
           case AnimationLoadSuccess:
             final List<AnimationMainItem> mainItemList =
-                (loadState is AnimationLoadSuccess)
-                    ? loadState.rankingList
-                    : [];
+                (state is AnimationLoadSuccess) ? state.rankingList : [];
             return ListView(
               padding: EdgeInsets.zero,
               shrinkWrap: true,
@@ -127,13 +90,12 @@ class _AnimationScreenState extends State<AnimationScreen> {
                   .map((item) => _buildRankingItem(context, item))
                   .toList(),
             );
-            break;
           default:
             return Container(
               height: 300,
               child: LoadingIndicator(
                 type: LoadingIndicatorType.IPHONE,
-                isVisible: loadState is AnimationLoadInProgress,
+                isVisible: state is AnimationLoadInProgress,
               ),
             );
         }
@@ -342,9 +304,11 @@ class _AnimationScreenState extends State<AnimationScreen> {
                           image: rankItem.image,
                           score: rankItem.score,
                           onTap: () => Navigator.pushNamed(
-                              context, Routes.IMAGE_DETAIL,
-                              arguments: AnimationDetailPageItem(
-                                  id: rankItem.id, title: rankItem.title), ),
+                            context,
+                            Routes.IMAGE_DETAIL,
+                            arguments: AnimationDetailPageItem(
+                                id: rankItem.id, title: rankItem.title),
+                          ),
                         )),
                   )
                   .toList(),
@@ -353,5 +317,54 @@ class _AnimationScreenState extends State<AnimationScreen> {
         ],
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_scrollListener);
+  }
+
+  _scrollListener() {
+    if (_scrollController.hasClients) {
+      _changeAppbar(_scrollController.offset);
+    }
+  }
+
+  _changeAppbar(double scrollPosition) {
+    if (scrollPosition == 0) {
+      setState(() {
+        appbarOpacity = 0;
+        appIconColors = kWhite;
+      });
+    } else if (scrollPosition > 50 &&
+        scrollPosition < 100 &&
+        appbarOpacity != 0.5) {
+      setState(() {
+        appbarOpacity = 0.5;
+        appIconColors = Colors.black45;
+      });
+    } else if (scrollPosition > 200 &&
+        scrollPosition < 250 &&
+        appbarOpacity != 0.7) {
+      setState(() {
+        appbarOpacity = 0.7;
+        appIconColors = Colors.black87;
+      });
+    } else if (scrollPosition > 400 &&
+        scrollPosition < 500 &&
+        appbarOpacity != 1) {
+      setState(() {
+        appbarOpacity = 1;
+        appIconColors = kBlack;
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController?.removeListener(_scrollListener);
+    _scrollController?.dispose();
+    super.dispose();
   }
 }

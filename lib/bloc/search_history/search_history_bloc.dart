@@ -16,7 +16,7 @@ class SearchHistoryBloc extends Bloc<SearchHistoryEvent, SearchHistoryState> {
 
   final ApiRepository repository;
 
-  SearchHistoryBloc({this.repository}) : super(SearchHistoryInitial());
+  SearchHistoryBloc({this.repository}) : super(const SearchHistoryState(status: SearchHistoryStatus.Initial, list: []));
 
   @override
   Stream<SearchHistoryState> mapEventToState(
@@ -31,23 +31,25 @@ class SearchHistoryBloc extends Bloc<SearchHistoryEvent, SearchHistoryState> {
     }
   }
 
-
   Stream<SearchHistoryState> _mapToSearchHistoryClear() async* {
+    yield SearchHistoryState(status: SearchHistoryStatus.Loading, list: state.list );
     String path = await _getHistoryPath();
     final file = File('$path/search_history.json');
     _writeEmptyFile(file);
-    yield const SearchHistoryLoadSuccess(list: []);
+    yield const SearchHistoryState(status: SearchHistoryStatus.Success, list: []);
   }
 
   Stream<SearchHistoryState> _mapToLoadHistory() async* {
     try {
+      yield SearchHistoryState(status: SearchHistoryStatus.Loading, list: state.list );
       String path = await _getHistoryPath();
       final file = File('$path/search_history.json');
       if (await file.exists()) {
         String readData = file.readAsStringSync();
         if(readData.isNotEmpty){
           List<dynamic> list = jsonDecode(readData) ?? [];
-          yield SearchHistoryLoadSuccess(
+          yield SearchHistoryState(
+            status: SearchHistoryStatus.Success,
               list: list
                   .map((aniItem) => AnimationSearchItem.fromJson(aniItem))
                   .toList());

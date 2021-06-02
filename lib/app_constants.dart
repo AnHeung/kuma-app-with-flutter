@@ -9,10 +9,6 @@ const List<String> itemCountList = [
   "20",
   "25",
   "30",
-  "35",
-  "40",
-  "45",
-  "50"
 ];
 
 const Map<String,String> categoryList = {"airing":"상영중","upcoming":"상영예정","movie":"극장판","ova":"OVA"};
@@ -25,6 +21,12 @@ const String kStartDate = "2000-01-01";
 
 
 const String kTimeFormat = 'yyyy-MM-dd';
+const String kInitialPage = "1";
+
+const kNoImageUri = 'assets/images/no_image.png';
+const kNoImage =  const AssetImage(
+  kNoImageUri,
+);
 
 // Colors
 const Color kBlue = Color(0xFF306EFF);
