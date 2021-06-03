@@ -107,7 +107,9 @@ const String kBottomContainerIntroduceTitle = "소개";
 const String kBottomContainerSiteTitle = "사이트";
 const String kBottomContainerImageTitle = "이미지";
 
+//검색 기록
 
+const kSearchHistoryPath = 'search_history.json';
 
 //계정페이지
 const double kAccountFontSize = 12;

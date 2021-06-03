@@ -87,7 +87,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   }
 
   Stream<SearchState> _mapToSearchClear() async* {
-    yield SearchState(status: SearchStatus.Initial);
+    yield SearchState(status: SearchStatus.Success , list: [],);
   }
 
   Stream<SearchState> _mapToSearchLoad(SearchLoad event) async* {

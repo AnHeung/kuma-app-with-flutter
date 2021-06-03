@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/model/item/animation_search_item.dart';
 import 'package:kuma_flutter_app/repository/api_repository.dart';
 import 'package:meta/meta.dart';
@@ -34,7 +35,7 @@ class SearchHistoryBloc extends Bloc<SearchHistoryEvent, SearchHistoryState> {
   Stream<SearchHistoryState> _mapToSearchHistoryClear() async* {
     yield SearchHistoryState(status: SearchHistoryStatus.Loading, list: state.list );
     String path = await _getHistoryPath();
-    final file = File('$path/search_history.json');
+    final file = File('$path/$kSearchHistoryPath');
     _writeEmptyFile(file);
     yield const SearchHistoryState(status: SearchHistoryStatus.Success, list: []);
   }
@@ -43,7 +44,7 @@ class SearchHistoryBloc extends Bloc<SearchHistoryEvent, SearchHistoryState> {
     try {
       yield SearchHistoryState(status: SearchHistoryStatus.Loading, list: state.list );
       String path = await _getHistoryPath();
-      final file = File('$path/search_history.json');
+      final file = File('$path/$kSearchHistoryPath');
       if (await file.exists()) {
         String readData = file.readAsStringSync();
         if(readData.isNotEmpty){
@@ -65,7 +66,7 @@ class SearchHistoryBloc extends Bloc<SearchHistoryEvent, SearchHistoryState> {
   Stream<SearchHistoryState> _mapToWriteHistory(SearchHistoryWrite event) async* {
     try {
       String path = await _getHistoryPath();
-      final file = File('$path/search_history.json');
+      final file = File('$path/$kSearchHistoryPath');
       if (await file.exists()) {
         AnimationSearchItem item = event.searchItem;
         await _writeJson(file, item);
@@ -91,20 +92,14 @@ class SearchHistoryBloc extends Bloc<SearchHistoryEvent, SearchHistoryState> {
 
     bool isDuplicate = duplicateIdx != -1;
 
-    print("idx: $duplicateIdx $isDuplicate length :${savedJson.length}");
-
-    if (savedJson.length <= 9) {
       if (isDuplicate) {
         var lastItem = savedJson[savedJson.length - 1];
         var duplicateItem = savedJson[duplicateIdx];
         savedJson[savedJson.length - 1] = duplicateItem;
         savedJson[duplicateIdx] = lastItem;
       } else {
-        if (savedJson.length == 9) savedJson.removeAt(8);
         savedJson.add(newJson);
       }
-    }
-
     await file.writeAsString(jsonEncode(savedJson.reversed.toList()));
   }
 

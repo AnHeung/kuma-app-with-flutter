@@ -39,3 +39,4 @@ class SearchBtnClick extends SearchEvent{
 }
 
 class SearchClear extends SearchEvent{}
+
