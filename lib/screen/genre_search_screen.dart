@@ -24,7 +24,6 @@ class GenreSearchScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final AppBar appBar = AppBar(
       centerTitle: true,
       actions: [ Container(padding: const EdgeInsets.only(right: 10),child: IconButton(

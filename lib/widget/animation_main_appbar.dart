@@ -43,7 +43,6 @@ class _AnimationMainAppbarState extends State<AnimationMainAppbar> {
   }
 
   _disposeJob(){
-    print('_disposeJob');
     timer?.cancel();
     timer = null;
     controller?.removeListener(pageControlListener);
@@ -52,7 +51,6 @@ class _AnimationMainAppbarState extends State<AnimationMainAppbar> {
   _resumeJob(){
     controller?.addListener(pageControlListener);
     timer = timer ?? Timer.periodic(Duration(seconds: scrollTime), (timer) {
-      print("controller.hasClient ${controller.hasClients} currentPage : ${currentPage} totalPageCount: $totalPageCount ");
       if(controller.hasClients) {
         if (currentPage == totalPageCount) {
           controller?.animateToPage(0, duration: const Duration(milliseconds: 300), curve: Curves.easeIn);

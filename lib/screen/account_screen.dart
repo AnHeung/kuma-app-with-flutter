@@ -104,7 +104,7 @@ class AccountScreen extends StatelessWidget {
                         fontSize: kAccountFontSize,
                       )),
                   Container(
-                    margin: const EdgeInsets.only(top: 10, bottom: 10),
+                    margin: const EdgeInsets.symmetric(vertical: 10),
                     padding: const EdgeInsets.only(
                       left: 20,
                     ),

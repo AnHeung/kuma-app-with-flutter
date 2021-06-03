@@ -46,7 +46,7 @@ class _LoginDialogState extends State<LoginDialog> {
           mainAxisSize: MainAxisSize.max,
           children: [
             Container(
-                padding: const EdgeInsets.only(top: 20, bottom: 20),
+                padding: const EdgeInsets.symmetric(vertical: 20),
                 child: CustomText(
                   text: "로그인/회원가입",
                   fontFamily: doHyunFont,

@@ -531,8 +531,7 @@ class AnimationDetailScreen extends StatelessWidget {
     );
   }
 
-  VoidCallback _pushGenreSearchScreen(
-      {BuildContext context, GenreClickFromDetailScreen event}) {
+  VoidCallback _pushGenreSearchScreen({BuildContext context, GenreClickFromDetailScreen event}) {
     return () {
       moveToHomeScreen(context: context);
       BlocProvider.of<TabCubit>(context).tabUpdate(AppTab.GENRE);

@@ -17,7 +17,6 @@ class NewsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String currentQuery = "";
-
     return Scaffold(
       appBar: NewsSearchAppbar(
         queryCallback: (query) {
@@ -73,7 +72,8 @@ class NewsSearchAppbar extends StatefulWidget implements PreferredSizeWidget {
   final Size preferredSize;
 }
 
-class _NewsSearchAppbarState extends State<NewsSearchAppbar> {
+class _NewsSearchAppbarState extends State<NewsSearchAppbar>{
+
   TextEditingController _controller;
   bool isClick = false;
   final Widget TitleText = CustomText(
@@ -195,8 +195,7 @@ class _NewsScrollContainerState extends State<NewsScrollContainer> {
                 scrollDirection: Axis.vertical,
                 itemCount: widget.state.newsQueryItems.length,
                 itemBuilder: (context, idx) {
-                  final AnimationNewsItem newsItem =
-                      widget.state.newsQueryItems[idx];
+                  final AnimationNewsItem newsItem = widget.state.newsQueryItems[idx];
                   if (currentDate != newsItem.date) {
                     currentDate = newsItem.date;
                   }

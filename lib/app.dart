@@ -13,6 +13,8 @@ import 'package:kuma_flutter_app/bloc/auth/auth_bloc.dart';
 import 'package:kuma_flutter_app/bloc/genre_search/genre_category_list_bloc/genre_category_list_bloc.dart';
 import 'package:kuma_flutter_app/bloc/genre_search/genre_search_bloc.dart';
 import 'package:kuma_flutter_app/bloc/login/login_bloc.dart';
+import 'package:kuma_flutter_app/bloc/more/more_bloc.dart';
+import 'package:kuma_flutter_app/bloc/news/animation_news_bloc.dart';
 import 'package:kuma_flutter_app/bloc/register/register_bloc.dart';
 import 'package:kuma_flutter_app/bloc/search/search_bloc.dart';
 import 'package:kuma_flutter_app/bloc/search_history/search_history_bloc.dart';
@@ -31,6 +33,7 @@ import 'package:kuma_flutter_app/screen/animation_schedule_screen.dart';
 import 'package:kuma_flutter_app/screen/first_screen.dart';
 import 'package:kuma_flutter_app/screen/home_screen.dart';
 import 'package:kuma_flutter_app/screen/login_screen.dart';
+import 'package:kuma_flutter_app/screen/news_screen.dart';
 import 'package:kuma_flutter_app/screen/notification_screen.dart';
 import 'package:kuma_flutter_app/screen/register_screen.dart';
 import 'package:kuma_flutter_app/screen/search_screen.dart';
@@ -129,7 +132,7 @@ class _AppState extends State<App> {
       child: MultiBlocProvider(
         providers: [
           BlocProvider(create: (context) => TabCubit(),),
-        BlocProvider(create: (context)=>AuthBloc(repository: context.read<ApiRepository>())),
+          BlocProvider(create: (context)=>AuthBloc(repository: context.read<ApiRepository>())),
           BlocProvider(create: (context) =>SettingBloc(repository: context.read<ApiRepository>())),
           BlocProvider(create: (context) => GenreCategoryListBloc(repository: context.read<ApiRepository>())),
           BlocProvider(create: (context)=>LoginBloc(repository: context.read<ApiRepository>())),
@@ -162,6 +165,8 @@ class _AppState extends State<App> {
                     BlocProvider(create: (_) => AnimationSeasonBloc(repository: context.read<ApiRepository>(),settingBloc: BlocProvider.of<SettingBloc>(context))..add(AnimationSeasonLoad(limit: "7"))),
                     BlocProvider(create: (_) => AnimationScheduleBloc(repository: context.read<ApiRepository>(),settingBloc: BlocProvider.of<SettingBloc>(context))..add(AnimationScheduleInitLoad())),
                     BlocProvider(create: (_) => GenreSearchBloc(repository: context.read<ApiRepository>(), genreCategoryListBloc: BlocProvider.of<GenreCategoryListBloc>(context)..add(GenreCategoryListLoad()))),
+                    BlocProvider(create: (context)=>AnimationNewsBloc(repository:context.read<ApiRepository>() )..add(const AnimationNewsLoad(page: "1")),),
+                    BlocProvider(create: (_)=>MoreBloc(),)
                   ],
                   child: HomeScreen(),
                 );
@@ -181,14 +186,8 @@ class _AppState extends State<App> {
               Routes.SEARCH: (context) =>
                   MultiBlocProvider(
                     providers: [
-                      BlocProvider(
-                          create: (_) =>
-                              SearchBloc(
-                                  repository: context.read<ApiRepository>())),
-                      BlocProvider(
-                          create: (_) =>
-                              SearchHistoryBloc(
-                                  repository: context.read<ApiRepository>()))
+                      BlocProvider(create: (_) => SearchBloc(repository: context.read<ApiRepository>())),
+                      BlocProvider(create: (_) => SearchHistoryBloc(repository: context.read<ApiRepository>()))
                     ],
                     child: SearchScreen(),
                   ),

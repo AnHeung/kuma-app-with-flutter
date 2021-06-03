@@ -17,7 +17,7 @@ class SearchImageItem extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.only(left: 30, right: 30),
+        padding: const EdgeInsets.symmetric(horizontal: 30),
         height: 80,
         child: Row(
           children: [
