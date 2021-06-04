@@ -9,6 +9,7 @@ import 'package:kuma_flutter_app/model/item/animation_search_item.dart';
 import 'package:kuma_flutter_app/repository/api_repository.dart';
 import 'package:meta/meta.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:kuma_flutter_app/util/string_util.dart';
 
 part 'search_history_event.dart';
 part 'search_history_state.dart';
@@ -35,9 +36,12 @@ class SearchHistoryBloc extends Bloc<SearchHistoryEvent, SearchHistoryState> {
   Stream<SearchHistoryState> _mapToSearchHistoryClear() async* {
     yield SearchHistoryState(status: SearchHistoryStatus.Loading, list: state.list );
     String path = await _getHistoryPath();
-    final file = File('$path/$kSearchHistoryPath');
-    _writeEmptyFile(file);
-    yield const SearchHistoryState(status: SearchHistoryStatus.Success, list: []);
+    if(!path.isNullEmptyOrWhitespace) {
+      final file = File('$path/$kSearchHistoryPath');
+      _writeEmptyFile(file);
+      yield const SearchHistoryState(
+          status: SearchHistoryStatus.Success, list: []);
+    }
   }
 
   Stream<SearchHistoryState> _mapToLoadHistory() async* {
@@ -59,7 +63,8 @@ class SearchHistoryBloc extends Bloc<SearchHistoryEvent, SearchHistoryState> {
         await _writeEmptyFile(file);
       }
     } catch (e) {
-      print("_mapToLoadHistory $e");
+      print("_mapToLoadHistory error $e");
+      yield SearchHistoryState(status: SearchHistoryStatus.Failure, list: state.list, msg: "데이터를 가져오는데 실패했습니다." );
     }
   }
 
@@ -75,7 +80,8 @@ class SearchHistoryBloc extends Bloc<SearchHistoryEvent, SearchHistoryState> {
         await _writeEmptyFile(file);
       }
     } catch (e) {
-      print(e);
+      print("_mapToWriteHistory error $e");
+      yield SearchHistoryState(status: SearchHistoryStatus.Failure, list: state.list, msg: "데이터를 기록하는데 실패했습니다." );
     }
   }
 
@@ -92,22 +98,25 @@ class SearchHistoryBloc extends Bloc<SearchHistoryEvent, SearchHistoryState> {
 
     bool isDuplicate = duplicateIdx != -1;
 
-      if (isDuplicate) {
-        var lastItem = savedJson[savedJson.length - 1];
-        var duplicateItem = savedJson[duplicateIdx];
-        savedJson[savedJson.length - 1] = duplicateItem;
-        savedJson[duplicateIdx] = lastItem;
+    if (isDuplicate) {
+        savedJson.removeAt(duplicateIdx);
+        savedJson.insert(0, newJson);
       } else {
-        savedJson.add(newJson);
+        savedJson.insert(0, newJson);
       }
-    await file.writeAsString(jsonEncode(savedJson.reversed.toList()));
+    await file.writeAsString(jsonEncode(savedJson.toList()));
   }
 
   _writeEmptyFile(File file) async => file.writeAsString("[]");
 
   Future<String> _getHistoryPath() async {
-    final directory = await getApplicationDocumentsDirectory();
-    String path = directory.path;
-    return path;
+    try {
+      final directory = await getApplicationDocumentsDirectory();
+      String path = directory.path;
+      return path;
+    }catch(e){
+      print('_getHistoryPath error :$e');
+      return '';
+    }
   }
 }

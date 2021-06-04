@@ -63,6 +63,7 @@ flutter:
     - assets/images/kakao_talk_logo.png
     - assets/images/kakao_talk_logo_color.png
     - assets/images/email_icon.png
+    - assets/images/loading.gif
   fonts:
     - family: NanumPenScript
       fonts:

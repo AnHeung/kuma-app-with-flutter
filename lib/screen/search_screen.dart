@@ -68,7 +68,10 @@ class SearchScreen extends StatelessWidget {
   }
 
   _searchHistoryView() {
-    return BlocBuilder<SearchHistoryBloc, SearchHistoryState>(
+    return BlocConsumer<SearchHistoryBloc, SearchHistoryState>(
+      listener: (context,state){
+        if(state.status == SearchStatus.Failure) showToast(msg: state.msg);
+      },
       builder: (context, state) {
         List<AnimationSearchItem> searchHistoryList = state.list;
         return Stack(

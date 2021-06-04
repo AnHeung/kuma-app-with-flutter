@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:ui';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -59,6 +60,7 @@ class ImageItem extends StatelessWidget {
   }
 
   _buildNetworkImageContainer({ColorFilter colorFilter, String imageRes}){
+
     return CachedNetworkImage(
       imageUrl: imageRes,
       imageBuilder: (context, imageProvider) => _buildDefaultImageContainer(colorFilter: colorFilter, image: imageProvider),
@@ -74,6 +76,31 @@ class ImageItem extends StatelessWidget {
   }
 
   _buildDefaultImageContainer({ColorFilter colorFilter, ImageProvider image}){
+
+    // FadeInImage imageItem = FadeInImage(placeholder: const AssetImage("assets/images/loading.gif"), image: image , imageErrorBuilder:
+    //     (context, error, stackTrace) {
+    //   return  Container(
+    //     child: const Text('Error'),
+    //   );
+    // },
+    //   fit: BoxFit.fill,);
+    //
+    // return  Container(
+    //   constraints: const BoxConstraints.expand(),
+    //   decoration: BoxDecoration(
+    //     shape: type == ImageShapeType.CIRCLE
+    //         ? BoxShape.circle
+    //         : BoxShape.rectangle,
+    //     image: DecorationImage(
+    //         image: image,
+    //         onError: (e, stack){
+    //           print('_buildDefaultImageContainer DecorationImage error : $e');
+    //         },
+    //         fit: BoxFit.fill,
+    //         colorFilter: colorFilter),
+    //   ),
+    // );
+
     return Container(
       constraints: const BoxConstraints.expand(),
       decoration: BoxDecoration(
