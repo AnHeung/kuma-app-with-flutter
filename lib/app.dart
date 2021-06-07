@@ -1,8 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:kuma_flutter_app/util/firebase_message_util.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/account/account_bloc.dart';
 import 'package:kuma_flutter_app/bloc/animation/animation_bloc.dart';
@@ -40,7 +39,6 @@ import 'package:kuma_flutter_app/screen/setting_screen.dart';
 import 'package:kuma_flutter_app/screen/splash_screen.dart';
 import 'package:kuma_flutter_app/util/view_utils.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
-import 'package:vibration/vibration.dart';
 
 class App extends StatefulWidget {
   @override
@@ -49,62 +47,13 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
 
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
-  String tokenId = "";
-
-  void firebaseCloudMessaging_Listeners() {
-    _firebaseMessaging.getToken().then((String token){
-      print('token:'+token);
-      tokenId = token;
-    });
-
-    // FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
-    //   Vibration.vibrate(duration: 1000, amplitude: 128);
-    //   print("onMessageOpenedApp: $message");
-    // });
-
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-
-      RemoteNotification notification = message.notification;
-      AndroidNotification android = message.notification?.android;
-      // If `onMessage` is triggered with a notification, construct our own
-      // local notification to show to users using the created channel.
-      if (notification != null && android != null) {
-        final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-        flutterLocalNotificationsPlugin.show(
-            notification.hashCode,
-            notification.title,
-            notification.body,
-            const NotificationDetails(
-              android: AndroidNotificationDetails(
-                "kuma_flutter_notification",
-                "kuma_flutter_notification",
-                "쿠마 푸쉬 채널",
-              ),
-            ));
-        Vibration.vibrate(duration: 1000, amplitude: 128);
-      }
-      print("onMessage: $message");
-    });
-
-    // FirebaseMessaging.onBackgroundMessage((message) {
-    //   Vibration.vibrate(duration: 1000, amplitude: 128);
-    //   print("onBackgroundMessage: $message");
-    //   return;
-    // });
-
-    // _firebaseMessaging.requestNotificationPermissions(
-    //     const IosNotificationSettings(sound: true, badge: true, alert: true)
-    // );
-    //
-    // _firebaseMessaging.onIosSettingsRegistered.listen((IosNotificationSettings settings) {
-    //   Vibration.vibrate(duration: 1000, amplitude: 128);
-    //   print("Settings registered: $settings");
-    // });
-  }
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey(debugLabel: "MainNavigator");
 
   @override
   Widget build(BuildContext context) {
+
+    bool isRelease = const bool.fromEnvironment('dart.vm.product');
+
     return RepositoryProvider(
       create: (_) {
         final dio = Dio()
@@ -138,6 +87,7 @@ class _AppState extends State<App> {
         ],
         child: BlocListener<AuthBloc, AuthState>(
           child:  MaterialApp(
+            navigatorKey: navigatorKey,
             title: "쿠마앱",
             theme: ThemeData(
               fontFamily: doHyunFont,
@@ -208,6 +158,6 @@ class _AppState extends State<App> {
   @override
   void initState() {
     super.initState();
-    firebaseCloudMessaging_Listeners();
+    FirebaseMessageUtil(navigatorKey:navigatorKey)..setListener();
   }
 }

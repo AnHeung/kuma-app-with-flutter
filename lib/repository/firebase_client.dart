@@ -18,7 +18,7 @@ import 'package:kuma_flutter_app/util/string_util.dart';
 class FirebaseClient {
   LoginClient loginClient;
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  final FirebaseFirestore firebaseFireStore = FirebaseFirestore.instance;
+  final FirebaseFirestore _firebaseFireStore = FirebaseFirestore.instance;
 
   get user => FirebaseAuth.instance.currentUser;
 
@@ -188,7 +188,7 @@ class FirebaseClient {
   Future<LoginUserData> getUserItemFromFireStore({String userId}) async {
     try {
       DocumentSnapshot users =
-          await firebaseFireStore.collection("users").doc(userId).get();
+          await _firebaseFireStore.collection("users").doc(userId).get();
       if (users.data() != null) {
         LoginUserData userItem = LoginUserData.fromMap(users.data());
         return userItem;
@@ -203,7 +203,7 @@ class FirebaseClient {
   Future<bool> isSubscribe({String userId, String animationId}) async {
     try {
       DocumentSnapshot users =
-          await firebaseFireStore.collection("subscribe").doc(userId).get();
+          await _firebaseFireStore.collection("subscribe").doc(userId).get();
       if (users.data() != null) {
         var subscribeIds = users.data()["animationIds"];
         if (subscribeIds != null) {
@@ -221,7 +221,7 @@ class FirebaseClient {
       {String userId, String animationId, bool isSubscribe}) async {
     try {
       DocumentSnapshot users =
-          await firebaseFireStore.collection("subscribe").doc(userId).get();
+          await _firebaseFireStore.collection("subscribe").doc(userId).get();
       if (users.data() != null) {
         List<String> subscribeIds =
             List.from(users.data()["animationIds"]) ?? [];
@@ -232,7 +232,7 @@ class FirebaseClient {
             subscribeIds = subscribeIds..add(animationId);
           }
         }
-        await firebaseFireStore
+        await _firebaseFireStore
             .collection("subscribe")
             .doc(userId)
             .update({"animationIds": subscribeIds});
@@ -248,7 +248,7 @@ class FirebaseClient {
   }
 
   Future<bool> removeUserDataToFireStore({String userId}) async {
-    return firebaseFireStore
+    return _firebaseFireStore
         .collection("users")
         .doc(userId)
         .delete()
@@ -260,7 +260,7 @@ class FirebaseClient {
   }
 
   Future<bool> removeSubscribeDataToFireStore({String userId}) async {
-    return firebaseFireStore
+    return _firebaseFireStore
         .collection("subscribe")
         .doc(userId)
         .delete()
@@ -283,7 +283,7 @@ class FirebaseClient {
   }
 
   Future<bool> updateUserItemToFireStore({String userId, Map<String, dynamic> userItem}) async {
-    return firebaseFireStore
+    return _firebaseFireStore
         .collection("users")
         .doc(userId)
         .update(userItem)
@@ -295,7 +295,7 @@ class FirebaseClient {
   }
 
   Future<bool> saveAllUserItemToFireStore({LoginUserData userData}) async =>
-      firebaseFireStore
+      _firebaseFireStore
           .collection("users")
           .doc(userData.userId)
           .set(userData.toMap())
@@ -306,7 +306,7 @@ class FirebaseClient {
       });
 
   saveSubscribeItemToFireStore({String userId, String animationId}) async =>
-      firebaseFireStore
+      _firebaseFireStore
           .collection("subscribe")
           .doc(userId)
           .set({"animationIds": [animationId]})
