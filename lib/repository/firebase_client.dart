@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/login/login_bloc.dart';
@@ -45,6 +46,8 @@ class FirebaseClient {
       if (userData == null) return {LoginStatus.Failure: userData};
       if (userData.uniqueId == null && userData.loginType == LoginType.EMAIL)
         return {LoginStatus.NeedLoginScreen: userData};
+      String token = await FirebaseMessaging.instance.getToken();
+      print('currentToken :$token');
 
       return firebaseSignIn(userData: userData);
     } catch (e) {
@@ -60,7 +63,10 @@ class FirebaseClient {
           .signInWithEmailAndPassword(
               email: userData.userId,
               password: userData.uniqueId.getEncryptString())
-          .then((result) => getUserItemFromFireStore(userId: userData.userId))
+          .then((result){
+            print("result $result");
+            return getUserItemFromFireStore(userId: userData.userId);
+      })
           .then((fireStoreUserData) async {
         await saveUserData(userData: fireStoreUserData);
         return {LoginStatus.LoginSuccess: fireStoreUserData};
@@ -154,10 +160,13 @@ class FirebaseClient {
   Future<RegisterStatus> register({LoginUserData userData}) async {
     try {
       String encryptId = userData.uniqueId.getEncryptString();
+      String token = await FirebaseMessaging.instance?.getToken();
 
       LoginUserData registerData = userData.copyWith(
+          token: token,
           uniqueId: encryptId,
           rankType: kBaseRankItem,
+          receiveNotify: true,
           isAutoScroll: true,
           homeItemCount: kBaseHomeItemCount);
 
@@ -217,14 +226,11 @@ class FirebaseClient {
     }
   }
 
-  Future<bool> updateSubscribeAnimation(
-      {String userId, String animationId, bool isSubscribe}) async {
+  Future<bool> updateSubscribeAnimation({String userId, String animationId, bool isSubscribe}) async {
     try {
-      DocumentSnapshot users =
-          await _firebaseFireStore.collection("subscribe").doc(userId).get();
+      DocumentSnapshot users = await _firebaseFireStore.collection("subscribe").doc(userId).get();
       if (users.data() != null) {
-        List<String> subscribeIds =
-            List.from(users.data()["animationIds"]) ?? [];
+        List<String> subscribeIds = List.from(users.data()["animationIds"]) ?? [];
         if (!isSubscribe) {
           subscribeIds = subscribeIds..remove(animationId);
         } else {

@@ -7,9 +7,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 saveUserData({LoginUserData userData}) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setString("token", userData.token);
   prefs.setString("id", userData.userId);
   prefs.setString("userName", userData.userName);
   prefs.setString("loginType", enumToString(userData.loginType));
+  prefs.setBool("receiveNotify", userData.receiveNotify);
   prefs.setString("rankType", userData.rankType);
   prefs.setBool("autoScroll", userData.isAutoScroll);
   prefs.setString("homeItemCount",userData.homeItemCount);
@@ -61,6 +63,7 @@ saveSettingConfig({SettingConfig settingConfig})async{
 
 Future<bool> removeUserData() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.remove("token");
   prefs.remove("id");
   prefs.remove("userName");
   prefs.remove("loginType");
@@ -83,12 +86,12 @@ getUserId() async{
 
 getUserData()async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  return LoginUserData(userId:  prefs.getString("id") , homeItemCount:  prefs.getString("homeItemCount") ,  isAutoScroll: prefs.getBool("autoScroll") , receiveNotify: prefs.getBool("receiveNotify"),rankType: prefs.getString("rankType"),
+  return LoginUserData(token:prefs.getString("token"), userId:  prefs.getString("id") , homeItemCount:  prefs.getString("homeItemCount") ,  isAutoScroll: prefs.getBool("autoScroll") , receiveNotify: prefs.getBool("receiveNotify"),rankType: prefs.getString("rankType"),
       loginType: enumFromString<LoginType>(prefs.getString("loginType"), LoginType.values), userName:  prefs.getString("userName"));
 }
 
 printUserData() async{
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  print('userId : ${prefs.getString("id")} , loginType: ${prefs.getString("loginType")} ,userName:${prefs.getString("userName")} '
+  print('token : ${prefs.getString("token")} , userId : ${prefs.getString("id")} , loginType: ${prefs.getString("loginType")} ,userName:${prefs.getString("userName")} '
       'isAutoScroll : ${prefs.getBool("autoScroll")} ,receiveNotify : ${prefs.getBool("receiveNotify")} , homeItemCount :${prefs.getString("homeItemCount")} ,rankType :${prefs.getString("rankType")}');
 }
