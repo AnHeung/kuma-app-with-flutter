@@ -6,6 +6,6 @@ class BottomMoreItem {
 
   const BottomMoreItem({this.id, this.imgUrl, this.title});
 
-  BottomMoreItem copyWith({String id, String imgUrl, String title})=>BottomMoreItem(title: title ?? this.title , id: id ?? this.id , imgUrl: imgUrl?? this.imgUrl);
+  BottomMoreItem copyWith({String id, String imgUrl, String title})=> BottomMoreItem(title: title ?? this.title , id: id ?? this.id , imgUrl: imgUrl?? this.imgUrl);
 
 }

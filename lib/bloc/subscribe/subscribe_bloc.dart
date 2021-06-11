@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kuma_flutter_app/model/api/notification_user.dart';
+import 'package:kuma_flutter_app/model/item/subscribe_item.dart';
 import 'package:kuma_flutter_app/repository/api_repository.dart';
 import 'package:kuma_flutter_app/util/object_util.dart';
 import 'package:meta/meta.dart';
@@ -37,8 +38,7 @@ class SubscribeBloc extends Bloc<SubscribeEvent, SubscribeState> {
     } else {
       String animationId = event.animationId;
       String userId = user.email;
-      bool isSubscribe = await repository.isSubscribe(
-          userId: userId, animationId: animationId);
+      bool isSubscribe = await repository.isSubscribe(userId: userId, animationId: animationId);
       yield SubscribeState(
           status: SubscribeStatus.Success,
           isLogin: true,
@@ -53,10 +53,10 @@ class SubscribeBloc extends Bloc<SubscribeEvent, SubscribeState> {
             yield const SubscribeState(
                 status: SubscribeStatus.Success, isLogin: false, isSubscribe: false);
           } else {
-            String animationId = event.animationId;
+            SubscribeItem item = event.item;
             String userId = user.email;
             bool isSubscribe = event.isSubScribe;
-            bool result = await repository.updateSubscribeAnimation(userId: userId, animationId: animationId, isSubscribe: isSubscribe);
+            bool result = await repository.updateSubscribeAnimation(userId: userId, item:item , isSubscribe: isSubscribe);
             yield SubscribeState(status: SubscribeStatus.Success, isLogin: true, isSubscribe: result);
           }
     } catch (e) {

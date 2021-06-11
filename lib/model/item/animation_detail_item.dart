@@ -1,7 +1,7 @@
 class AnimationDetailItem {
-
   final String id;
   final String title;
+  final String titleEn;
   final String image;
   final String startDate;
   final String endDate;
@@ -25,58 +25,103 @@ class AnimationDetailItem {
 
   const AnimationDetailItem(
       {this.id,
-        this.title,
-        this.image,
-        this.startDate,
-        this.endDate,
-        this.star,
-        this.popularity,
-        this.rank,
-        this.percent,
-        this.percentText,
-        this.synopsis,
-        this.status,
-        this.genres,
-        this.numEpisodes,
-        this.startSeason,
-        this.pictures,
-        this.relatedAnime,
-        this.recommendationAnimes,
-        this.studioItems,
-        this.videoItems, this.characterItems,
-        this.selectVideoUrl
-      });
+      this.title,
+      this.titleEn,
+      this.image,
+      this.startDate,
+      this.endDate,
+      this.star,
+      this.popularity,
+      this.rank,
+      this.percent,
+      this.percentText,
+      this.synopsis,
+      this.status,
+      this.genres,
+      this.numEpisodes,
+      this.startSeason,
+      this.pictures,
+      this.relatedAnime,
+      this.recommendationAnimes,
+      this.studioItems,
+      this.videoItems,
+      this.characterItems,
+      this.selectVideoUrl});
 
-  static const empty = AnimationDetailItem(id: "", videoItems: [], status: "", characterItems: [], title: "", endDate: "", startDate: "", image:"" , studioItems: [], recommendationAnimes: [], genres: [],pictures: []
-      , percentText: "",percent: "0.0", relatedAnime: [], startSeason: "",numEpisodes: "", synopsis: "",rank: "",popularity: "",star: "" ,selectVideoUrl :"");
+  static const empty = AnimationDetailItem(
+      id: "",
+      videoItems: [],
+      status: "",
+      characterItems: [],
+      title: "",
+      titleEn: "",
+      endDate: "",
+      startDate: "",
+      image: "",
+      studioItems: [],
+      recommendationAnimes: [],
+      genres: [],
+      pictures: [],
+      percentText: "",
+      percent: "0.0",
+      relatedAnime: [],
+      startSeason: "",
+      numEpisodes: "",
+      synopsis: "",
+      rank: "",
+      popularity: "",
+      star: "",
+      selectVideoUrl: "");
 
-  AnimationDetailItem copyWith({id,
-    title,
-    image,
-    startDate,
-    endDate,
-    star,
-    popularity,
-    rank,
-    percent,
-    percentText,
-    synopsis,
-    status,
-    genres,
-    numEpisodes,
-    startSeason,
-    pictures,
-    relatedAnime,
-    recommendationAnimes,
-    studioItems,
-    videoItems, characterItems,
-    selectVideoUrl}){
-    return AnimationDetailItem(id: id ?? this.id , star: star?? this.star , popularity: popularity ?? this.popularity , rank: rank?? this.rank, synopsis: synopsis ?? this.synopsis , numEpisodes: numEpisodes?? this.numEpisodes,
-    startSeason: startSeason ?? this.startSeason , relatedAnime: relatedAnime ?? this.relatedAnime , percent: percent ?? this.percent , percentText: percentText ?? this.percentText , pictures: pictures ?? this.pictures ,
-    genres:  genres ?? this.genres ,recommendationAnimes: recommendationAnimes ?? this.recommendationAnimes,studioItems: studioItems ?? this.studioItems, startDate: startDate ?? this.startDate , endDate: endDate ?? this.endDate ,
-    title: title?? this.title , characterItems: characterItems ?? this.characterItems , status: status ?? this.status , videoItems: videoItems ?? this.videoItems , image: image?? this.image , selectVideoUrl: selectVideoUrl ?? this.selectVideoUrl);
+  AnimationDetailItem copyWith(
+      {id,
+      title,
+      titleEn,
+      image,
+      startDate,
+      endDate,
+      star,
+      popularity,
+      rank,
+      percent,
+      percentText,
+      synopsis,
+      status,
+      genres,
+      numEpisodes,
+      startSeason,
+      pictures,
+      relatedAnime,
+      recommendationAnimes,
+      studioItems,
+      videoItems,
+      characterItems,
+      selectVideoUrl}) {
+    return AnimationDetailItem(
+        id: id ?? this.id,
+        star: star ?? this.star,
+        popularity: popularity ?? this.popularity,
+        rank: rank ?? this.rank,
+        synopsis: synopsis ?? this.synopsis,
+        numEpisodes: numEpisodes ?? this.numEpisodes,
+        startSeason: startSeason ?? this.startSeason,
+        relatedAnime: relatedAnime ?? this.relatedAnime,
+        percent: percent ?? this.percent,
+        percentText: percentText ?? this.percentText,
+        pictures: pictures ?? this.pictures,
+        genres: genres ?? this.genres,
+        recommendationAnimes: recommendationAnimes ?? this.recommendationAnimes,
+        studioItems: studioItems ?? this.studioItems,
+        startDate: startDate ?? this.startDate,
+        endDate: endDate ?? this.endDate,
+        title: title ?? this.title,
+        titleEn: titleEn ?? this.titleEn,
+        characterItems: characterItems ?? this.characterItems,
+        status: status ?? this.status,
+        videoItems: videoItems ?? this.videoItems,
+        image: image ?? this.image,
+        selectVideoUrl: selectVideoUrl ?? this.selectVideoUrl);
   }
-
 }
 
 class RelatedAnimeItem {
@@ -94,6 +139,7 @@ class RecommendationAnimeItem {
 
   RecommendationAnimeItem({this.id, this.title, this.image});
 }
+
 class StudioItem {
   String id;
   String name;
@@ -108,25 +154,21 @@ class AnimationDetailGenreItem {
   AnimationDetailGenreItem({this.id, this.name});
 }
 
-class VideoItem{
-
+class VideoItem {
   final String title;
   final String imageUrl;
   final String videoUrl;
 
   const VideoItem({this.title, this.imageUrl, this.videoUrl});
-
 }
 
-
-class CharacterItem{
-
+class CharacterItem {
   String characterId;
   String name;
   String role;
   String imageUrl;
   String url;
 
-  CharacterItem({
-      this.characterId, this.name, this.role, this.imageUrl, this.url});
+  CharacterItem(
+      {this.characterId, this.name, this.role, this.imageUrl, this.url});
 }

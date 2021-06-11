@@ -18,6 +18,7 @@ import 'package:kuma_flutter_app/model/item/animation_detail_item.dart';
 import 'package:kuma_flutter_app/model/item/base_scroll_item.dart';
 import 'package:kuma_flutter_app/model/item/bottom_more_item.dart';
 import 'package:kuma_flutter_app/model/item/genre_nav_item.dart';
+import 'package:kuma_flutter_app/model/item/subscribe_item.dart';
 import 'package:kuma_flutter_app/util/navigator_util.dart';
 import 'package:kuma_flutter_app/util/view_utils.dart';
 import 'package:kuma_flutter_app/widget/bottom_character_item_container.dart';
@@ -68,7 +69,6 @@ class AnimationDetailScreen extends StatelessWidget {
 
         return Scaffold(
           appBar: _buildAppbar(
-              id: id,
               type: type,
               infoItem: infoItem,
               context: context,
@@ -431,7 +431,7 @@ class AnimationDetailScreen extends StatelessWidget {
   }
 
   AppBar _buildAppbar(
-      {String id,
+      {
       String type,
       AnimationDetailPageItem infoItem,
       BuildContext context,
@@ -459,7 +459,7 @@ class AnimationDetailScreen extends StatelessWidget {
                   tooltip: "알림",
                   onPressed: () => {
                     showBaseDialog(context: context, title: "구독알림", content: isSubscribe? "구독해지 하시겠습니까?" : "구독하시겠습니까? 구독하면 해당 애니메이션 관련 알림이 날라옵니다.", confirmFunction:(){
-                      BlocProvider.of<SubscribeBloc>(context).add(SubscribeUpdate(animationId: id , isSubScribe: !isSubscribe));
+                      BlocProvider.of<SubscribeBloc>(context).add(SubscribeUpdate(item: SubscribeItem(title: detailItem.titleEn, animationId: detailItem.id, img: detailItem.image) , isSubScribe: !isSubscribe));
                       Navigator.pop(context);
                     })},
                 ),
@@ -490,7 +490,7 @@ class AnimationDetailScreen extends StatelessWidget {
                   break;
                 case DeTailAnimationActions.REFRESH:
                   BlocProvider.of<AnimationDetailBloc>(context)
-                      .add(AnimationDetailLoad(id: id));
+                      .add(AnimationDetailLoad(id: infoItem.id));
                   break;
               }
             },

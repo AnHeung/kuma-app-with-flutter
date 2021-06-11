@@ -25,6 +25,7 @@ class SearchMalDetailApiItem {
 class SearchMalDetailApiItemResult {
   String id;
   String title;
+  String titleEn;
   String image;
   String startDate;
   String endDate;
@@ -46,6 +47,7 @@ class SearchMalDetailApiItemResult {
   SearchMalDetailApiItemResult(
       {this.id,
         this.title,
+        this.titleEn,
         this.image,
         this.startDate,
         this.endDate,
@@ -65,6 +67,7 @@ class SearchMalDetailApiItemResult {
   SearchMalDetailApiItemResult.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     title = json['title'];
+    titleEn = json['title_en'];
     image = json['image'];
     startDate = json['start_date'];
     endDate = json['end_date'];
@@ -118,6 +121,7 @@ class SearchMalDetailApiItemResult {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['title'] = this.title;
+    data['titleEn'] = this.titleEn;
     data['image'] = this.image;
     data['start_date'] = this.startDate;
     data['end_date'] = this.endDate;

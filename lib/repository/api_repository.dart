@@ -16,6 +16,7 @@ import 'package:kuma_flutter_app/model/api/search_mal_api_season_item.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_character_detail_item.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_person_item.dart';
 import 'package:kuma_flutter_app/model/api/login_user.dart';
+import 'package:kuma_flutter_app/model/item/subscribe_item.dart';
 import 'package:kuma_flutter_app/repository/firebase_client.dart';
 import 'package:kuma_flutter_app/repository/api_client.dart';
 import 'package:kuma_flutter_app/repository/search_api_client.dart';
@@ -96,6 +97,6 @@ class ApiRepository {
 
   isSubscribe({String userId , String animationId})=>firebaseClient.isSubscribe(userId: userId, animationId: animationId);
 
-  updateSubscribeAnimation({String userId , String animationId, bool isSubscribe})=>firebaseClient.updateSubscribeAnimation(userId: userId, animationId: animationId, isSubscribe:isSubscribe);
+  updateSubscribeAnimation({String userId , SubscribeItem item ,bool isSubscribe})=>firebaseClient.updateSubscribeAnimation(userId: userId, item: item, isSubscribe:isSubscribe);
 
 }

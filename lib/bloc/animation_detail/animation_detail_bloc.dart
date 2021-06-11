@@ -58,10 +58,12 @@ class AnimationDetailBloc extends Bloc<AnimationDetailEvent, AnimationDetailStat
         List<CharacterItem> characterList = result.characters!= null ? result.characters.map((item) => CharacterItem(name: item.name, characterId: item.character_id,  imageUrl: item.image_url,  role: item.role , url: item.url)).toList() : [];
         String selectVideoUrl = !result.videos.isNullOrEmpty ? result.videos[0].video_url : "";
 
+        print('result.titleEn ${result.titleEn}');
         yield AnimationDetailState(status:AnimationDetailStatus.success ,detailItem: AnimationDetailItem(
             id: result.id,
             image: result.image,
             title: result.title,
+            titleEn: result.titleEn,
             startDate: result.startDate,
             endDate: result.endDate,
             star: result.star,
