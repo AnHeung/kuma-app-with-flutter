@@ -1,24 +1,24 @@
 class SubscribeItem {
 
-  final String title;
+  final String mainTitle;
   final String animationId;
-  final String img;
+  final String thumbnail;
 
-  const SubscribeItem({this.title, this.animationId, this.img});
+  const SubscribeItem({this.mainTitle, this.animationId, this.thumbnail});
 
   factory SubscribeItem.fromMap(Map<String, dynamic> map) {
     return SubscribeItem(
-      title: map['title'] as String,
+      mainTitle: map['mainTitle'] as String,
       animationId: map['animationId'] as String,
-      img: map['img'] as String,
+      thumbnail: map['thumbnail'] as String,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'title': this.title,
+      'mainTitle': this.mainTitle,
       'animationId': this.animationId,
-      'img': this.img,
+      'thumbnail': this.thumbnail,
     };
   }
 }

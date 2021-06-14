@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:kuma_flutter_app/util/string_util.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -38,6 +39,7 @@ import 'package:kuma_flutter_app/screen/register_screen.dart';
 import 'package:kuma_flutter_app/screen/search_screen.dart';
 import 'package:kuma_flutter_app/screen/setting_screen.dart';
 import 'package:kuma_flutter_app/screen/splash_screen.dart';
+import 'package:kuma_flutter_app/util/sharepref_util.dart';
 import 'package:kuma_flutter_app/util/view_utils.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
@@ -48,7 +50,7 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> with WidgetsBindingObserver {
   final GlobalKey<NavigatorState> navigatorKey =
-  GlobalKey(debugLabel: "MainNavigator");
+      GlobalKey(debugLabel: "MainNavigator");
 
   AppLifecycleState _appLifecycleState;
 
@@ -76,59 +78,69 @@ class _AppState extends State<App> with WidgetsBindingObserver {
   void firebaseCloudMessagingListeners() async {
     FirebaseMessaging.instance.onTokenRefresh.listen((event) {});
 
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) async{
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
       RemoteNotification notification = message.notification;
       AndroidNotification android = message.notification?.android;
       var initializationSettingsAndroid =
-      const AndroidInitializationSettings('@mipmap/ic_launcher');
+          const AndroidInitializationSettings('@mipmap/ic_launcher');
       var initializationSettings = InitializationSettings(
         android: initializationSettingsAndroid,
       );
       // If `onMessage` is triggered with a notification, construct our own
       // local notification to show to users using the created channel.
       if (notification != null && android != null) {
-        final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-        FlutterLocalNotificationsPlugin();
-        flutterLocalNotificationsPlugin.initialize(initializationSettings,
-            onSelectNotification: (payload) async {
-              print('payload $payload');
-              return;
-            });
+        String userId = await getUserId();
+        String pushUserId = message.data["userId"];
+        if (!userId.isNullEmptyOrWhitespace &&
+            !pushUserId.isNullEmptyOrWhitespace &&
+            userId == pushUserId) {
+          final FlutterLocalNotificationsPlugin
+              flutterLocalNotificationsPlugin =
+              FlutterLocalNotificationsPlugin();
+          flutterLocalNotificationsPlugin.initialize(initializationSettings,
+              onSelectNotification: (payload) async {
+            print('payload $payload');
+            return;
+          });
 
+          Future<void> _showBigPictureNotification() async {
+            BigPictureStyleInformation bigPictureStyleInformation =
+                BigPictureStyleInformation(
+                    const DrawableResourceAndroidBitmap('@mipmap/ic_launcher'),
+                    largeIcon: const DrawableResourceAndroidBitmap(
+                        '@mipmap/ic_launcher'),
+                    contentTitle: notification.title,
+                    htmlFormatContentTitle: true,
+                    summaryText: notification.body,
+                    htmlFormatSummaryText: true);
+            final AndroidNotificationDetails androidPlatformChannelSpecifics =
+                AndroidNotificationDetails(
+                    "kuma_flutter_notification", "PUSH", "쿠마 푸쉬 채널",
+                    styleInformation: bigPictureStyleInformation);
+            final NotificationDetails platformChannelSpecifics =
+                NotificationDetails(android: androidPlatformChannelSpecifics);
+            await flutterLocalNotificationsPlugin.show(notification.hashCode,
+                notification.title, notification.body, platformChannelSpecifics,
+                payload: message.data["url"]);
+          }
 
-        Future<void> _showBigPictureNotification() async {
-          BigPictureStyleInformation bigPictureStyleInformation =
-          BigPictureStyleInformation( const DrawableResourceAndroidBitmap('@mipmap/ic_launcher'),
-              largeIcon:  const DrawableResourceAndroidBitmap('@mipmap/ic_launcher'),
-              contentTitle: notification.title,
-              htmlFormatContentTitle: true,
-              summaryText: notification.body,
-              htmlFormatSummaryText: true);
-          final AndroidNotificationDetails androidPlatformChannelSpecifics =
-          AndroidNotificationDetails( "kuma_flutter_notification", "PUSH", "쿠마 푸쉬 채널",
-              styleInformation: bigPictureStyleInformation);
-          final NotificationDetails platformChannelSpecifics =
-          NotificationDetails(android: androidPlatformChannelSpecifics);
-          await flutterLocalNotificationsPlugin.show(
-              notification.hashCode, notification.title, notification.body, platformChannelSpecifics , payload: message.data["url"]);
+          await _showBigPictureNotification();
+
+          // flutterLocalNotificationsPlugin.show(
+          //     notification.hashCode,
+          //     notification.title,
+          //     notification.body,
+          //      const NotificationDetails(
+          //       android: AndroidNotificationDetails(
+          //           "kuma_flutter_notification",
+          //           "PUSH",
+          //           "쿠마 푸쉬 채널",
+          //       ),
+          //     ),
+          //     payload: message.data["status"]);
         }
-
-        await _showBigPictureNotification();
-
-        // flutterLocalNotificationsPlugin.show(
-        //     notification.hashCode,
-        //     notification.title,
-        //     notification.body,
-        //      const NotificationDetails(
-        //       android: AndroidNotificationDetails(
-        //           "kuma_flutter_notification",
-        //           "PUSH",
-        //           "쿠마 푸쉬 채널",
-        //       ),
-        //     ),
-        //     payload: message.data["status"]);
+        print("onMessage: $message");
       }
-      print("onMessage: $message");
     });
   }
 
@@ -170,9 +182,8 @@ class _AppState extends State<App> with WidgetsBindingObserver {
                 create: (context) =>
                     SettingBloc(repository: context.read<ApiRepository>())),
             BlocProvider(
-                create: (context) =>
-                    GenreCategoryListBloc(
-                        repository: context.read<ApiRepository>())),
+                create: (context) => GenreCategoryListBloc(
+                    repository: context.read<ApiRepository>())),
             BlocProvider(
                 create: (context) =>
                     LoginBloc(repository: context.read<ApiRepository>())),
@@ -188,17 +199,14 @@ class _AppState extends State<App> with WidgetsBindingObserver {
               ),
               initialRoute: Routes.SPLASH,
               routes: {
-                Routes.SPLASH: (context) =>
-                    BlocProvider(
-                      create: (_) =>
-                      SplashBloc(
+                Routes.SPLASH: (context) => BlocProvider(
+                      create: (_) => SplashBloc(
                           repository: context.read<ApiRepository>(),
                           authBloc: BlocProvider.of<AuthBloc>(context))
                         ..add(SplashLoad()),
                       child: SplashScreen(),
                     ),
-                Routes.FIRST_LAUNCH: (context) =>
-                    BlocProvider(
+                Routes.FIRST_LAUNCH: (context) => BlocProvider(
                       create: (_) =>
                           SplashBloc(repository: context.read<ApiRepository>()),
                       child: FirstScreen(),
@@ -207,38 +215,33 @@ class _AppState extends State<App> with WidgetsBindingObserver {
                   return MultiBlocProvider(
                     providers: [
                       BlocProvider(
-                          create: (_) =>
-                          AnimationBloc(
+                          create: (_) => AnimationBloc(
                               repository: context.read<ApiRepository>(),
                               settingBloc:
-                              BlocProvider.of<SettingBloc>(context),
+                                  BlocProvider.of<SettingBloc>(context),
                               loginBloc: BlocProvider.of<LoginBloc>(context))
                             ..add(AnimationLoad())),
                       BlocProvider(
-                          create: (_) =>
-                          AnimationSeasonBloc(
+                          create: (_) => AnimationSeasonBloc(
                               repository: context.read<ApiRepository>(),
                               settingBloc:
-                              BlocProvider.of<SettingBloc>(context))
+                                  BlocProvider.of<SettingBloc>(context))
                             ..add(AnimationSeasonLoad(limit: "7"))),
                       BlocProvider(
-                          create: (_) =>
-                          AnimationScheduleBloc(
+                          create: (_) => AnimationScheduleBloc(
                               repository: context.read<ApiRepository>(),
                               settingBloc:
-                              BlocProvider.of<SettingBloc>(context))
+                                  BlocProvider.of<SettingBloc>(context))
                             ..add(AnimationScheduleInitLoad())),
                       BlocProvider(
-                          create: (_) =>
-                              GenreSearchBloc(
-                                  repository: context.read<ApiRepository>(),
-                                  genreCategoryListBloc:
+                          create: (_) => GenreSearchBloc(
+                              repository: context.read<ApiRepository>(),
+                              genreCategoryListBloc:
                                   BlocProvider.of<GenreCategoryListBloc>(
                                       context)
                                     ..add(GenreCategoryListLoad()))),
                       BlocProvider(
-                        create: (context) =>
-                        AnimationNewsBloc(
+                        create: (context) => AnimationNewsBloc(
                             repository: context.read<ApiRepository>())
                           ..add(const AnimationNewsLoad(page: "1")),
                       ),
@@ -249,62 +252,49 @@ class _AppState extends State<App> with WidgetsBindingObserver {
                     child: HomeScreen(),
                   );
                 },
-                Routes.IMAGE_DETAIL: (context) =>
-                    MultiBlocProvider(
+                Routes.IMAGE_DETAIL: (context) => MultiBlocProvider(
                       providers: [
                         BlocProvider(
-                          create: (_) =>
-                              AnimationDetailBloc(
-                                  repository: context.read<ApiRepository>()),
+                          create: (_) => AnimationDetailBloc(
+                              repository: context.read<ApiRepository>()),
                         ),
                         BlocProvider(
-                            create: (context) =>
-                                SubscribeBloc(
-                                    repository: context.read<ApiRepository>()))
+                            create: (context) => SubscribeBloc(
+                                repository: context.read<ApiRepository>()))
                       ],
                       child: AnimationDetailScreen(),
                     ),
-                Routes.SEARCH: (context) =>
-                    MultiBlocProvider(
+                Routes.SEARCH: (context) => MultiBlocProvider(
                       providers: [
                         BlocProvider(
-                            create: (_) =>
-                                SearchBloc(
-                                    repository: context.read<ApiRepository>())),
+                            create: (_) => SearchBloc(
+                                repository: context.read<ApiRepository>())),
                         BlocProvider(
-                            create: (_) =>
-                                SearchHistoryBloc(
-                                    repository: context.read<ApiRepository>()))
+                            create: (_) => SearchHistoryBloc(
+                                repository: context.read<ApiRepository>()))
                       ],
                       child: SearchScreen(),
                     ),
                 Routes.LOGIN: (context) => LoginScreen(),
-                Routes.REGISTER: (_) =>
-                    BlocProvider(
-                      create: (context) =>
-                          RegisterBloc(
-                              repository: context.read<ApiRepository>()),
+                Routes.REGISTER: (_) => BlocProvider(
+                      create: (context) => RegisterBloc(
+                          repository: context.read<ApiRepository>()),
                       child: RegisterScreen(),
                     ),
-                Routes.Account: (context) =>
-                    BlocProvider(
+                Routes.Account: (context) => BlocProvider(
                       create: (_) =>
-                      AccountBloc(repository: context.read<ApiRepository>())
-                        ..add(AccountLoad()),
+                          AccountBloc(repository: context.read<ApiRepository>())
+                            ..add(AccountLoad()),
                       child: AccountScreen(),
                     ),
-                Routes.Notification: (context) =>
-                    BlocProvider(
-                      create: (_) =>
-                          RegisterBloc(
-                              repository: context.read<ApiRepository>()),
+                Routes.Notification: (context) => BlocProvider(
+                      create: (_) => RegisterBloc(
+                          repository: context.read<ApiRepository>()),
                       child: NotificationScreen(),
                     ),
                 Routes.Setting: (context) => SettingScreen(),
-                Routes.SCHEDULE: (_) =>
-                    BlocProvider(
-                      create: (context) =>
-                      AnimationScheduleBloc(
+                Routes.SCHEDULE: (_) => BlocProvider(
+                      create: (context) => AnimationScheduleBloc(
                           repository: context.read<ApiRepository>())
                         ..add(AnimationScheduleLoad(day: "1")),
                       child: AnimationScheduleScreen(),

@@ -20,6 +20,7 @@ import 'package:kuma_flutter_app/model/item/bottom_more_item.dart';
 import 'package:kuma_flutter_app/model/item/genre_nav_item.dart';
 import 'package:kuma_flutter_app/model/item/subscribe_item.dart';
 import 'package:kuma_flutter_app/util/navigator_util.dart';
+import 'package:kuma_flutter_app/util/object_util.dart';
 import 'package:kuma_flutter_app/util/view_utils.dart';
 import 'package:kuma_flutter_app/widget/bottom_character_item_container.dart';
 import 'package:kuma_flutter_app/widget/bottom_more_item_container.dart';
@@ -34,8 +35,6 @@ import 'package:kuma_flutter_app/widget/title_container.dart';
 import 'package:kuma_flutter_app/widget/title_image_more_container.dart';
 import 'package:kuma_flutter_app/widget/youtube_player.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'package:kuma_flutter_app/util/object_util.dart';
-
 
 import '../model/item/animation_deatil_page_item.dart';
 import '../repository/api_repository.dart';
@@ -451,15 +450,16 @@ class AnimationDetailScreen extends StatelessWidget {
             builder: (context,state){
               bool isLogin = state.isLogin;
               bool isSubscribe = state.isSubscribe;
+              print('detailItem :${detailItem}');
               return Visibility(
-                visible: isLogin,
+                visible: isLogin && detailItem.isNotNull,
                 child: IconButton(
                   color: isSubscribe? Colors.red : kWhite,
                   icon: isSubscribe ?  const Icon(Icons.notifications_on): const Icon(Icons.notifications_on_outlined),
                   tooltip: "알림",
                   onPressed: () => {
                     showBaseDialog(context: context, title: "구독알림", content: isSubscribe? "구독해지 하시겠습니까?" : "구독하시겠습니까? 구독하면 해당 애니메이션 관련 알림이 날라옵니다.", confirmFunction:(){
-                      BlocProvider.of<SubscribeBloc>(context).add(SubscribeUpdate(item: SubscribeItem(title: detailItem.titleEn, animationId: detailItem.id, img: detailItem.image) , isSubScribe: !isSubscribe));
+                      BlocProvider.of<SubscribeBloc>(context).add(SubscribeUpdate(item: SubscribeItem(mainTitle: detailItem.titleEn, animationId: detailItem.id, thumbnail: detailItem.image) , isSubScribe: !isSubscribe));
                       Navigator.pop(context);
                     })},
                 ),
