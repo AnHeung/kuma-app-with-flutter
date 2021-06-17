@@ -78,42 +78,56 @@ class NotificationContainerItem extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Container(
-              width: 70,
-              height: 100,
-              child: ImageItem(
-                imgRes: item.thumbnail,
-                type: ImageShapeType.FLAT,
-              )),
-          Container(
-            padding: const EdgeInsets.only(left:10),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                    child: CustomText(
-                      text: "[${item.mainTitle}]",
-                      maxLines: 1,
-                      isEllipsis: true,
-                      fontSize: 16.0,
-                      fontFamily: doHyunFont,
-                      fontWeight: FontWeight.w700,
-                    )),
-                Container(
-                  height: 70,
-                  width: 200,
-                  child: CustomText(
-                    text: "${item.summary}",
-                    maxLines: 3,
-                    isDynamic: true,
+          Expanded(
+            flex: 1,
+            child: Container(
+                width: 70,
+                height: 100,
+                child: ImageItem(
+                  imgRes: item.thumbnail,
+                  type: ImageShapeType.FLAT,
+                )),
+          ),
+          Expanded(
+            flex: 4,
+            child: Container(
+              padding: const EdgeInsets.only(left: 10),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                      child: CustomText(
+                    text: "[${item.mainTitle}]",
+                    maxLines: 1,
                     isEllipsis: true,
-                    fontSize: 13.0,
-                  ),
-                )
-              ],
+                    fontSize: 16.0,
+                    fontFamily: doHyunFont,
+                    fontWeight: FontWeight.w700,
+                  )),
+                  Container(
+                    height: 70,
+                    child: CustomText(
+                      text: "${item.summary}",
+                      maxLines: 3,
+                      isDynamic: true,
+                      isEllipsis: true,
+                      fontSize: 13.0,
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
+          Expanded(
+              flex: 1,
+              child: Container(
+                padding: const EdgeInsets.only(left: 5),
+                  width: 30,
+                  height: 50,
+                  child: ImageItem(
+                    imgRes: item.image,
+                  )))
         ],
       ),
     );
