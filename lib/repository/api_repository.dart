@@ -4,6 +4,7 @@ import 'package:kuma_flutter_app/bloc/login/login_bloc.dart';
 import 'package:kuma_flutter_app/enums/login_status.dart';
 import 'package:kuma_flutter_app/enums/register_status.dart';
 import 'package:kuma_flutter_app/model/api/api_anime_news_item.dart';
+import 'package:kuma_flutter_app/model/api/api_notification_item.dart';
 import 'package:kuma_flutter_app/model/api/firebase_user_item.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_all_genre_item.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_character_picture_item.dart';
@@ -51,6 +52,8 @@ class ApiRepository {
   Future<SearchMalApiCharacterPictureItem> getCharacterPictureList(String characterId) => searchApiClient.getCharacterPictureList(characterId);
 
   Future<ApiAnimeNewsItem> getAnimationNewsItem(String page, String viewCount) => apiClient.getAnimeNewsItems(page , viewCount , "","");
+
+  Future<ApiNotificationItem> getNotificationItems({String userId, String startDate}) => apiClient.getNotificationItems(userId :userId,startDate: startDate);
 
   Future<SearchMalAllGenreItem> getAllGenreItems({
           String type,

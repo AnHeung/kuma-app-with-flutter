@@ -42,4 +42,25 @@ class _ApiClient implements ApiClient {
     final value = ApiAnimeNewsItem.fromJson(_result.data);
     return value;
   }
+
+  @override
+  Future<ApiNotificationItem> getNotificationItems({userId, startDate}) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'userId': userId,
+      r'startDate': startDate
+    };
+    queryParameters.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>('/notification',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = ApiNotificationItem.fromJson(_result.data);
+    return value;
+  }
 }

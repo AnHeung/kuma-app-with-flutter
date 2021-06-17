@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:kuma_flutter_app/bloc/notification/notification_bloc.dart';
 import 'package:kuma_flutter_app/util/string_util.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -123,21 +124,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
                 notification.title, notification.body, platformChannelSpecifics,
                 payload: message.data["url"]);
           }
-
           await _showBigPictureNotification();
-
-          // flutterLocalNotificationsPlugin.show(
-          //     notification.hashCode,
-          //     notification.title,
-          //     notification.body,
-          //      const NotificationDetails(
-          //       android: AndroidNotificationDetails(
-          //           "kuma_flutter_notification",
-          //           "PUSH",
-          //           "쿠마 푸쉬 채널",
-          //       ),
-          //     ),
-          //     payload: message.data["status"]);
         }
         print("onMessage: $message");
       }
@@ -175,6 +162,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
             BlocProvider(
               create: (context) => TabCubit(),
             ),
+            BlocProvider(create: (context) => NotificationBloc(repository: context.read<ApiRepository>(),)..add(NotificationLoad())),
             BlocProvider(
                 create: (context) =>
                     AuthBloc(repository: context.read<ApiRepository>())),
@@ -287,11 +275,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
                             ..add(AccountLoad()),
                       child: AccountScreen(),
                     ),
-                Routes.Notification: (context) => BlocProvider(
-                      create: (_) => RegisterBloc(
-                          repository: context.read<ApiRepository>()),
-                      child: NotificationScreen(),
-                    ),
+                Routes.Notification: (context) => NotificationScreen(),
                 Routes.Setting: (context) => SettingScreen(),
                 Routes.SCHEDULE: (_) => BlocProvider(
                       create: (context) => AnimationScheduleBloc(

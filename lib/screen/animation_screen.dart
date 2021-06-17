@@ -6,6 +6,7 @@ import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/animation/animation_bloc.dart';
 import 'package:kuma_flutter_app/bloc/animation_schedule/animation_schedule_bloc.dart';
 import 'package:kuma_flutter_app/bloc/auth/auth_bloc.dart';
+import 'package:kuma_flutter_app/bloc/notification/notification_bloc.dart';
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
 import 'package:kuma_flutter_app/model/item/animation_deatil_page_item.dart';
 import 'package:kuma_flutter_app/model/item/animation_main_item.dart';
@@ -80,7 +81,10 @@ class _AnimationHomeSilverAppState extends State<AnimationHomeSilverApp> {
                       color: appIconColors,
                     ),
                     tooltip: "알림",
-                    onPressed: () => {print('알림')},
+                    onPressed: () {
+                      BlocProvider.of<NotificationBloc>(context).add(NotificationLoad());
+                      Navigator.pushNamed(context, Routes.Notification);
+                    },
                   ),
                 ),
               ],
