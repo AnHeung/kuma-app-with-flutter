@@ -11,13 +11,13 @@ class ApiNotificationItem {
     if (json['data'] != null) {
       data = [];
       json['data'].forEach((v) {
-        data.add( Data.fromJson(v));
+        data.add(Data.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['err'] = this.err;
     data['msg'] = this.msg;
     if (this.data != null) {
@@ -28,61 +28,57 @@ class ApiNotificationItem {
 }
 
 class Data {
+  String id;
   String title;
   String userId;
-  int iV;
   String animationId;
-  String createdAt;
   String date;
+  bool isRead;
   String image;
   String mainTitle;
   String summary;
   String thumbnail;
-  String updatedAt;
   String url;
 
-  Data(
-      {this.title,
-        this.userId,
-        this.iV,
-        this.animationId,
-        this.createdAt,
-        this.date,
-        this.image,
-        this.mainTitle,
-        this.summary,
-        this.thumbnail,
-        this.updatedAt,
-        this.url});
+  Data({
+      this.id,
+      this.title,
+      this.userId,
+      this.animationId,
+      this.date,
+      this.isRead,
+      this.image,
+      this.mainTitle,
+      this.summary,
+      this.thumbnail,
+      this.url});
 
   Data.fromJson(Map<String, dynamic> json) {
+    id = json['_id'];
     title = json['title'];
     userId = json['userId'];
-    iV = json['__v'];
     animationId = json['animationId'];
-    createdAt = json['createdAt'];
     date = json['date'];
+    isRead = json['isRead'];
     image = json['image'];
     mainTitle = json['mainTitle'];
     summary = json['summary'];
     thumbnail = json['thumbnail'];
-    updatedAt = json['updatedAt'];
     url = json['url'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data['_id'] = this.id;
     data['title'] = this.title;
     data['userId'] = this.userId;
-    data['__v'] = this.iV;
     data['animationId'] = this.animationId;
-    data['createdAt'] = this.createdAt;
     data['date'] = this.date;
+    data['isRead'] = this.isRead;
     data['image'] = this.image;
     data['mainTitle'] = this.mainTitle;
     data['summary'] = this.summary;
     data['thumbnail'] = this.thumbnail;
-    data['updatedAt'] = this.updatedAt;
     data['url'] = this.url;
     return data;
   }

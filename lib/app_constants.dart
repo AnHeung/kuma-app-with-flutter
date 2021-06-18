@@ -73,9 +73,17 @@ const double kMoreLoginFontSize = 10;
 const double kMoreTitleFontSize = 20;
 
 //View_Util
-const double dialogFontSize = 20            ;
+const double dialogFontSize = 20;
 const double toastFontSize = 15;
 
+//알림내역
+
+const double kNotificationItemHeight = 90;
+const double kNotificationItemWidth = 70;
+const double kNotificationTitleImageSize = 50;
+const double kNotificationTitleFontSize = 16;
+const double kNotificationFontSize = 12;
+const double kNotificationMargin = 10;
 
 
 //애니메인

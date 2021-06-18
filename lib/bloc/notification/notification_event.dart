@@ -12,3 +12,13 @@ abstract class NotificationEvent extends Equatable{
 }
 
 class NotificationLoad extends NotificationEvent {}
+
+class NotificationIsReadUpdate extends NotificationEvent {
+
+  final String id;
+
+  const NotificationIsReadUpdate({this.id});
+
+  @override
+  List<Object> get props =>[id];
+}

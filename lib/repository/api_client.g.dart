@@ -63,4 +63,24 @@ class _ApiClient implements ApiClient {
     final value = ApiNotificationItem.fromJson(_result.data);
     return value;
   }
+
+  @override
+  Future<ApiSimpleItem> updateIsRead({params}) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    _data.addAll(params ?? <String, dynamic>{});
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/notification/read',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'POST',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = ApiSimpleItem.fromJson(_result.data);
+    return value;
+  }
 }

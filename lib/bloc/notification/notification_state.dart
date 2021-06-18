@@ -1,7 +1,7 @@
 part of 'notification_bloc.dart';
 
 
-enum NotificationStatus { Initial , Loading, Failure , Success }
+enum NotificationStatus { Initial , Loading, Failure , Success , NetworkError }
 
 @immutable
 class NotificationState extends Equatable{
