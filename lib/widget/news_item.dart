@@ -21,7 +21,6 @@ class NewsItemContainer extends StatelessWidget {
         onTap: ()=> navigateWithUpAnimation(context: context, navigateScreen: AnimationNewsDetailScreen(newsItem)),
         child: Container(
           margin: const EdgeInsets.symmetric(
-            vertical: 16.0,
             horizontal: 24.0,
           ),
           child: Stack(
@@ -74,7 +73,7 @@ class NewsItemContainer extends StatelessWidget {
   Widget _buildNewsContainer(){
 
     return Container(
-      margin: const EdgeInsets.fromLTRB(66.0 , 15.0 , 10.0, 10.0),
+      margin: const EdgeInsets.only(left:66.0 , top:15.0 , right:10.0),
       constraints: const BoxConstraints.expand(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -89,7 +88,6 @@ class NewsItemContainer extends StatelessWidget {
           ),
           Separator(),
           Container(
-            margin: const EdgeInsets.only(top: 10),
             child: CustomText(
               isDynamic: true,
               text: newsItem.summary,
@@ -101,7 +99,7 @@ class NewsItemContainer extends StatelessWidget {
           ),
           const Spacer(),
           Container(
-            margin: const EdgeInsets.only(top: 10, right: 10 , bottom: 10),
+            margin: const EdgeInsets.only(bottom: 15, top: 5),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [

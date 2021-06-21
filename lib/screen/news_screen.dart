@@ -190,18 +190,26 @@ class _NewsScrollContainerState extends State<NewsScrollContainer> {
     return Stack(
       children: [
         widget.state.newsQueryItems.length != 0
-            ? ListView.builder(
-                controller: _scrollController,
-                scrollDirection: Axis.vertical,
-                itemCount: widget.state.newsQueryItems.length,
-                itemBuilder: (context, idx) {
-                  final AnimationNewsItem newsItem = widget.state.newsQueryItems[idx];
-                  if (currentDate != newsItem.date) {
-                    currentDate = newsItem.date;
-                  }
-                  return NewsItemContainer(newsItem);
-                },
-              )
+            ? Padding(
+              padding: const EdgeInsets.only(top:20.0),
+              child: ListView.separated(
+                  separatorBuilder:(context,idx){
+                    return const SizedBox(
+                      height: 30,
+                    );
+                  },
+                  controller: _scrollController,
+                  scrollDirection: Axis.vertical,
+                  itemCount: widget.state.newsQueryItems.length,
+                  itemBuilder: (context, idx) {
+                    final AnimationNewsItem newsItem = widget.state.newsQueryItems[idx];
+                    if (currentDate != newsItem.date) {
+                      currentDate = newsItem.date;
+                    }
+                    return NewsItemContainer(newsItem);
+                  },
+                ),
+            )
             : const EmptyContainer(
                 title: "목록이 존재하지 않습니다.",
               ),
