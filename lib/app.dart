@@ -50,8 +50,7 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> with WidgetsBindingObserver {
-  final GlobalKey<NavigatorState> navigatorKey =
-      GlobalKey(debugLabel: "MainNavigator");
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey(debugLabel: "MainNavigator");
 
   AppLifecycleState _appLifecycleState;
 
@@ -115,8 +114,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
                     summaryText: notification.body,
                     htmlFormatSummaryText: true);
             final AndroidNotificationDetails androidPlatformChannelSpecifics =
-                AndroidNotificationDetails(
-                    "kuma_flutter_notification", "PUSH", "쿠마 푸쉬 채널",
+                AndroidNotificationDetails("kuma_flutter_notification", "PUSH", "쿠마 푸쉬 채널",
                     styleInformation: bigPictureStyleInformation);
             final NotificationDetails platformChannelSpecifics =
                 NotificationDetails(android: androidPlatformChannelSpecifics);
@@ -159,24 +157,16 @@ class _AppState extends State<App> with WidgetsBindingObserver {
       },
       child: MultiBlocProvider(
           providers: [
-            BlocProvider(
-              create: (context) => TabCubit(),
-            ),
-            BlocProvider(create: (context) => NotificationBloc(repository: context.read<ApiRepository>(),)..add(NotificationLoad())),
-            BlocProvider(
-                create: (context) =>
-                    AuthBloc(repository: context.read<ApiRepository>())),
-            BlocProvider(
-                create: (context) =>
-                    SettingBloc(repository: context.read<ApiRepository>())),
-            BlocProvider(
-                create: (context) => GenreCategoryListBloc(
-                    repository: context.read<ApiRepository>())),
-            BlocProvider(
-                create: (context) =>
-                    LoginBloc(repository: context.read<ApiRepository>())),
+            BlocProvider(create: (context) => AuthBloc(repository: context.read<ApiRepository>())),
+            BlocProvider(create: (context) => SettingBloc(repository: context.read<ApiRepository>())),
+            BlocProvider(create: (context) => GenreCategoryListBloc(repository: context.read<ApiRepository>())),
+            BlocProvider(create: (context) => LoginBloc(repository: context.read<ApiRepository>())),
+            BlocProvider(create: (context) => NotificationBloc(repository: context.read<ApiRepository>() ,loginBloc: BlocProvider.of<LoginBloc>(context))..add(NotificationLoad())),
           ],
           child: BlocListener<AuthBloc, AuthState>(
+            listener: (context, state) {
+              print("app State :$state");
+            },
             child: MaterialApp(
               navigatorKey: navigatorKey,
               title: "쿠마앱",
@@ -194,27 +184,22 @@ class _AppState extends State<App> with WidgetsBindingObserver {
                         ..add(SplashLoad()),
                       child: SplashScreen(),
                     ),
-                Routes.FIRST_LAUNCH: (context) => BlocProvider(
-                      create: (_) =>
-                          SplashBloc(repository: context.read<ApiRepository>()),
-                      child: FirstScreen(),
-                    ),
+                Routes.FIRST_LAUNCH: (context) => BlocProvider(create: (_) => SplashBloc(repository: context.read<ApiRepository>()), child: FirstScreen()),
                 Routes.HOME: (context) {
                   return MultiBlocProvider(
                     providers: [
+                      BlocProvider(create: (context) => TabCubit(),),
                       BlocProvider(
                           create: (_) => AnimationBloc(
                               repository: context.read<ApiRepository>(),
-                              settingBloc:
-                                  BlocProvider.of<SettingBloc>(context),
+                              settingBloc: BlocProvider.of<SettingBloc>(context),
                               loginBloc: BlocProvider.of<LoginBloc>(context))
                             ..add(AnimationLoad())),
                       BlocProvider(
                           create: (_) => AnimationSeasonBloc(
                               repository: context.read<ApiRepository>(),
-                              settingBloc:
-                                  BlocProvider.of<SettingBloc>(context))
-                            ..add(AnimationSeasonLoad(limit: "7"))),
+                              settingBloc: BlocProvider.of<SettingBloc>(context))
+                            ..add(AnimationSeasonLoad(limit: kSeasonLimitCount))),
                       BlocProvider(
                           create: (_) => AnimationScheduleBloc(
                               repository: context.read<ApiRepository>(),
@@ -285,9 +270,6 @@ class _AppState extends State<App> with WidgetsBindingObserver {
                     ),
               },
             ),
-            listener: (context, state) {
-              print("app State :$state");
-            },
           )),
     );
   }

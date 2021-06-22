@@ -26,11 +26,10 @@ class AnimationBloc extends Bloc<AnimationEvent, AnimationState> {
 
   AnimationBloc({this.repository, this.settingBloc , this.loginBloc}) : super(AnimationLoadInit()){
     settingBloc.listen((state) {
-      if(state.status == SettingStatus.complete){
+      if(state.status == SettingStatus.Complete){
         add(AnimationLoad());
       }
     });
-    print("loginBloc $loginBloc");
     loginBloc.listen((state) {
       if(state.status == LoginStatus.LoginSuccess){
         add(AnimationLoad());

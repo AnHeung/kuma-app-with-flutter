@@ -69,33 +69,38 @@ class AnimationNewsBloc extends Bloc<AnimationNewsEvent, AnimationNewsState> {
 
   Stream<AnimationNewsState> _mapToAnimationNewsLoad(
       AnimationNewsLoad event) async* {
-    String page = event.page ?? "1";
-    String query = event.query ?? "";
-    const String viewCount = "30";
-    yield AnimationNewsState(
-        status: AnimationNewsStatus.Loading,
-        newsItems: state.newsItems,
-        newsQueryItems: state.newsQueryItems);
-    await Future.delayed(const Duration(milliseconds: 500));
+    try {
+      String page = event.page ?? "1";
+      String query = event.query ?? "";
+      const String viewCount = "30";
+      yield AnimationNewsState(
+              status: AnimationNewsStatus.Loading,
+              newsItems: state.newsItems,
+              newsQueryItems: state.newsQueryItems);
+      await Future.delayed(const Duration(milliseconds: 500));
 
-    ApiAnimeNewsItem result = await repository.getAnimationNewsItem(page, viewCount);
+      ApiAnimeNewsItem result = await repository.getAnimationNewsItem(page, viewCount);
 
-    if (result.err) {
-      yield AnimationNewsState(status: AnimationNewsStatus.Failure, msg: result.msg, newsItems: state.newsItems, newsQueryItems: state.newsQueryItems,);
-    } else {
-      List<AnimationNewsItem> newsItems = result.data
-          .map((newsItem) => AnimationNewsItem(title: newsItem.title, url: newsItem.url, imageUrl: newsItem.image, date: newsItem.date, summary: newsItem.summary)).toList()
-          ?? [];
-      if (page != "1") {
-        newsItems = state.newsItems..addAll(newsItems);
-      } else {
-        page = "1";
-      }
-      yield AnimationNewsState(status: AnimationNewsStatus.Success, newsItems: newsItems, newsQueryItems: newsItems, currentPage: int.parse(page),);
-      print('currentQuery: ${query}');
-      if(!query.isNullEmptyOrWhitespace) {
-        add(AnimationNewsSearch(query: query));
-      }
+      if (result.err) {
+            yield AnimationNewsState(status: AnimationNewsStatus.Failure, msg: result.msg, newsItems: state.newsItems, newsQueryItems: state.newsQueryItems,);
+          } else {
+            List<AnimationNewsItem> newsItems = result.data
+                .map((newsItem) => AnimationNewsItem(title: newsItem.title, url: newsItem.url, imageUrl: newsItem.image, date: newsItem.date, summary: newsItem.summary)).toList()
+                ?? [];
+            if (page != "1") {
+              newsItems = state.newsItems..addAll(newsItems);
+            } else {
+              page = "1";
+            }
+            yield AnimationNewsState(status: AnimationNewsStatus.Success, newsItems: newsItems, newsQueryItems: newsItems, currentPage: int.parse(page),);
+            print('currentQuery: ${query}');
+            if(!query.isNullEmptyOrWhitespace) {
+              add(AnimationNewsSearch(query: query));
+            }
+          }
+    } catch (e) {
+      print("_mapToAnimationNewsLoad ${e}");
+      yield AnimationNewsState(status: AnimationNewsStatus.Failure, msg: "_mapToAnimationNewsLoad ${e}", newsItems: state.newsItems, newsQueryItems: state.newsQueryItems,);
     }
   }
 }

@@ -22,36 +22,41 @@ class AnimationScheduleBloc extends Bloc<AnimationScheduleEvent, AnimationSchedu
   Stream<AnimationScheduleState> mapEventToState(
     AnimationScheduleEvent event,
   ) async* {
-    try {
       if (event is AnimationScheduleInitLoad) {
         yield* _mapToScheduleInitLoad();
       } else if (event is AnimationScheduleLoad) {
         yield* _mapToScheduleLoad(event);
       }
-    }catch(e){
-      yield AnimationScheduleLoadFailure(errMsg:"error : $e");
-    }
   }
 
   Stream<AnimationScheduleState> _mapToScheduleInitLoad() async*{
-    await Future.delayed(const Duration(seconds: 1));
-    add(AnimationScheduleLoad(day: "1"));
+    try {
+      await Future.delayed(const Duration(seconds: 1));
+      add(AnimationScheduleLoad(day: "1"));
+    } catch (e) {
+      print("_mapToScheduleInitLoad ${e}");
+    }
   }
 
   Stream<AnimationScheduleState> _mapToScheduleLoad(AnimationScheduleLoad event) async*{
-    yield AnimationScheduleLoadInProgress(currentDay: event.day);
-    SearchMalApiScheduleItem scheduleItem = await repository.getScheduleItems(event.day);
-    print('_mapToScheduleLoad ${event.day} scheduleItem :$scheduleItem');
-    if(scheduleItem.err){
-      yield AnimationScheduleLoadFailure(errMsg: scheduleItem.msg);
-    }else{
-      if(scheduleItem.result != null && scheduleItem.result.length > 0)
-      yield AnimationScheduleLoadSuccess(currentDay: event.day ,
-          scheduleItems: scheduleItem.result.map((schedule) => AnimationScheduleItem(title: schedule.title
-              , id: schedule.id
-              ,image: schedule.image
-              ,startDate: schedule.startDate
-              , score: schedule.score.toString())).toList());
+    try {
+      yield AnimationScheduleLoadInProgress(currentDay: event.day);
+      SearchMalApiScheduleItem scheduleItem = await repository.getScheduleItems(event.day);
+      print('_mapToScheduleLoad ${event.day} scheduleItem :$scheduleItem');
+      if(scheduleItem.err){
+            yield AnimationScheduleLoadFailure(errMsg: scheduleItem.msg);
+          }else{
+            if(scheduleItem.result != null && scheduleItem.result.length > 0)
+            yield AnimationScheduleLoadSuccess(currentDay: event.day ,
+                scheduleItems: scheduleItem.result.map((schedule) => AnimationScheduleItem(title: schedule.title
+                    , id: schedule.id
+                    ,image: schedule.image
+                    ,startDate: schedule.startDate
+                    , score: schedule.score.toString())).toList());
+          }
+    } catch (e) {
+      print("_mapToScheduleLoad ${e}");
+      yield AnimationScheduleLoadFailure(errMsg: "_mapToScheduleLoad ${e}");
     }
   }
 }

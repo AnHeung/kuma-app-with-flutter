@@ -40,16 +40,66 @@ class AnimationScreen extends StatelessWidget {
 }
 
 class AnimationHomeSilverApp extends StatefulWidget {
-
   @override
   _AnimationHomeSilverAppState createState() => _AnimationHomeSilverAppState();
 }
 
 class _AnimationHomeSilverAppState extends State<AnimationHomeSilverApp> {
-
   final AnimationMainAppbar animationMainAppbar = AnimationMainAppbar();
   double appbarOpacity = 0;
   Color appIconColors = kWhite;
+
+  Widget _notificationIcon({String unReadCount}){
+    return Container(
+      margin: const EdgeInsets.only(right: 10),
+      width: 30,
+      height: 30,
+      child: Stack(
+        children: [
+          IconButton(
+            padding: EdgeInsets.zero,
+            color: Colors.white,
+            icon: Icon(
+              Icons.notifications_none,
+              color: appIconColors,
+              size: 30,
+            ),
+            tooltip: "알림",
+            onPressed: () {
+              BlocProvider.of<NotificationBloc>(context)
+                  .add(NotificationLoad());
+              Navigator.pushNamed(
+                  context, Routes.Notification);
+            },
+          ),
+          Visibility(
+              visible: unReadCount != "0",
+              child:  Container(
+                width: 30,
+                height: 30,
+                alignment: Alignment.topRight,
+                margin: const EdgeInsets.only(top: 10),
+                child: Container(
+                  width: 15,
+                  height: 15,
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: const Color(0xffc32c37),
+                      border: Border.all(color: Colors.white, width: 1)),
+                  child: Padding(
+                    padding: const EdgeInsets.all(0.0),
+                    child: Center(
+                      child: Text(unReadCount,
+                        style: const TextStyle(fontSize: 7),
+                      ),
+                    ),
+                  ),
+                ),
+              ))
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,20 +123,13 @@ class _AnimationHomeSilverAppState extends State<AnimationHomeSilverApp> {
               ),
               actions: <Widget>[
                 Visibility(
-                  visible: state.status == AuthStatus.Auth,
-                  child: IconButton(
-                    color: Colors.white,
-                    icon: Icon(
-                      Icons.notifications_none,
-                      color: appIconColors,
-                    ),
-                    tooltip: "알림",
-                    onPressed: () {
-                      BlocProvider.of<NotificationBloc>(context).add(NotificationLoad());
-                      Navigator.pushNamed(context, Routes.Notification);
-                    },
-                  ),
-                ),
+                    visible: state.status == AuthStatus.Auth,
+                    child: BlocBuilder<NotificationBloc, NotificationState>(
+                      builder: (context, state) {
+                        String unReadCount = state.unReadCount;
+                        return _notificationIcon(unReadCount:unReadCount);
+                      },
+                    )),
               ],
               // floating 설정. SliverAppBar는 스크롤 다운되면 화면 위로 사라짐.
               // true: 스크롤 업 하면 앱바가 바로 나타남. false: 리스트 최 상단에서 스크롤 업 할 때에만 앱바가 나타남
@@ -139,9 +182,7 @@ class _AnimationScrollViewState extends State<AnimationScrollView> {
       child: NestedScrollView(
         controller: _scrollController,
         headerSliverBuilder: (context, isScrolled) {
-          return [
-            AnimationHomeSilverApp()
-          ];
+          return [AnimationHomeSilverApp()];
         },
         body: ListView(
             shrinkWrap: true,

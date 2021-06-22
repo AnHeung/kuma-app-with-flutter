@@ -1,6 +1,6 @@
 
 import 'package:flutter/cupertino.dart';
-import 'package:kuma_flutter_app/util/date_util.dart';
+
 
 const List<String> itemCountList = [
   "5",
@@ -95,6 +95,7 @@ const double kAnimationScheduleContainerHeight = 260;
 const double kAnimationRankingContainerHeightRate = 0.4;
 const String kAnimationScheduleTitle = "요일별 신작";
 const String kAnimationAppbarTitle = "ANIMATION";
+const kSeasonLimitCount = "7";
 
 //애니상세
 const double kAnimationDetailGenreFontSize = 8;

@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:kuma_flutter_app/bloc/login/login_bloc.dart';
+import 'package:kuma_flutter_app/enums/login_status.dart';
 import 'package:kuma_flutter_app/model/api/api_notification_item.dart';
 import 'package:kuma_flutter_app/model/api/api_simple_item.dart';
 import 'package:kuma_flutter_app/model/item/notification_item.dart';
@@ -15,8 +17,15 @@ part 'notification_state.dart';
 class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
 
   final ApiRepository repository;
+  final LoginBloc loginBloc;
 
-  NotificationBloc({this.repository}) : super(const NotificationState(status: NotificationStatus.Initial, notificationItems: [] ));
+  NotificationBloc({this.repository , this.loginBloc}) : super(const NotificationState().initNotification()){
+    loginBloc.listen((state){
+      if(state.status == LoginStatus.LoginSuccess){
+        add(NotificationLoad());
+      }
+    });
+  }
 
   @override
   Stream<NotificationState> mapEventToState(
@@ -31,38 +40,38 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
 
   Stream<NotificationState> _mapToNotificationIsReadUpdate(NotificationIsReadUpdate event) async*{
     try {
-      yield NotificationState(status: NotificationStatus.Loading , notificationItems: state.notificationItems,);
+      yield state.copyWith(status: NotificationStatus.Loading);
       String itemId = event.id;
       ApiSimpleItem apiSimpleItem =  await repository.updateIsRead(params:{"id":itemId});
       if(apiSimpleItem.err){
-            yield NotificationState(status: NotificationStatus.Failure , notificationItems: state.notificationItems, msg: apiSimpleItem.msg);
+            yield state.copyWith(status: NotificationStatus.Failure ,  msg: apiSimpleItem.msg);
           }else{
-            yield NotificationState(status: NotificationStatus.Success , notificationItems: state.notificationItems);
-            yield* _mapToNotificationLoad();
+           yield state.copyWith(status: NotificationStatus.Success);
+           yield* _mapToNotificationLoad();
           }
     } catch (e) {
       print("_mapToNotificationIsReadUpdate error ${e}");
-      yield NotificationState(status: NotificationStatus.NetworkError , notificationItems: state.notificationItems, msg: "통신에러 ${e}");
+      yield state.copyWith(status: NotificationStatus.NetworkError ,msg: "통신에러 ${e}");
     }
   }
 
   Stream<NotificationState> _mapToNotificationLoad() async*{
     try {
-      yield NotificationState(status: NotificationStatus.Loading , notificationItems: state.notificationItems,);
+      yield state.copyWith(status: NotificationStatus.Loading);
       String userId = await getUserId();
       ApiNotificationItem apiNotificationItem =  await repository.getNotificationItems(userId: userId);
-      if(apiNotificationItem.err){
-            yield NotificationState(status: NotificationStatus.Failure , notificationItems: [], msg: apiNotificationItem.msg);
+      if(apiNotificationItem.err || apiNotificationItem.data == null){
+            yield state.copyWith(status: NotificationStatus.Failure);
           }else{
-            yield NotificationState(status: NotificationStatus.Success , notificationItems: apiNotificationItem.data
-                .map((pushItem) => NotificationItem(id:pushItem.id, userId: pushItem.userId, title: pushItem.title
-                ,image: pushItem.image ,summary: pushItem.summary , date: pushItem.date ,mainTitle: pushItem.mainTitle
-                ,thumbnail: pushItem.thumbnail, url: pushItem.url , isRead: pushItem.isRead)).toList(),
-                msg: apiNotificationItem.msg);
+              yield NotificationState(status: NotificationStatus.Success , notificationItems: apiNotificationItem.data.result
+                  .map((pushItem) => NotificationItem(id:pushItem.id, userId: pushItem.userId, title: pushItem.title
+                  ,image: pushItem.image ,summary: pushItem.summary , date: pushItem.date ,mainTitle: pushItem.mainTitle
+                  ,thumbnail: pushItem.thumbnail, url: pushItem.url , isRead: pushItem.isRead)).toList(),
+                  msg: apiNotificationItem.msg, unReadCount:apiNotificationItem.data.unReadCount);
           }
     } catch (e) {
       print("_mapToNotificationLoad error ${e}");
-      yield NotificationState(status: NotificationStatus.NetworkError , notificationItems: [], msg: "통신에러 ${e}");
+      yield state.copyWith(status: NotificationStatus.NetworkError , msg: "통신에러 ${e}");
     }
   }
 }

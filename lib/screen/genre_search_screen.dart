@@ -40,7 +40,7 @@ class GenreSearchScreen extends StatelessWidget {
 
     return BlocConsumer<GenreSearchBloc, GenreSearchState>(
       listener: (context,state){
-        if(state.status == GenreSearchStatus.failure) showToast(msg:state.msg);
+        if(state.status == GenreSearchStatus.Failure) showToast(msg:state.msg);
       },
       builder: (context, state) {
         return RefreshIndicator(
@@ -62,7 +62,7 @@ class GenreSearchScreen extends StatelessWidget {
                 ),
               ),
               LoadingIndicator(
-                isVisible: state.status == GenreSearchStatus.loading,
+                isVisible: state.status == GenreSearchStatus.Loading,
               )
             ],
           ),
@@ -76,7 +76,7 @@ class GenreSearchScreen extends StatelessWidget {
 
     return BlocBuilder<GenreCategoryListBloc, GenreCategoryListState>(
       builder: (context, state) {
-        if (state.status == GenreCategoryStatus.success) {
+        if (state.status == GenreCategoryStatus.Success) {
           genreClickItems = state.genreListItems.fold([], (acc, genreItem) {
             genreItem.navItems
                 .where((navItem) =>
@@ -246,7 +246,7 @@ class GenreSearchScreen extends StatelessWidget {
 
     return BlocBuilder<GenreCategoryListBloc, GenreCategoryListState>(
       builder: (context, state) {
-        if (state.status == GenreCategoryStatus.success) {
+        if (state.status == GenreCategoryStatus.Success) {
           genreListItems = state.genreListItems;
         }
         return SafeArea(

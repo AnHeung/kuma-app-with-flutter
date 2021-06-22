@@ -18,7 +18,7 @@ class GenreCategoryListBloc extends Bloc<GenreCategoryListEvent, GenreCategoryLi
 
   final ApiRepository repository;
 
-  GenreCategoryListBloc({this.repository}) : super(const GenreCategoryListState(status: GenreCategoryStatus.initial));
+  GenreCategoryListBloc({this.repository}) : super(const GenreCategoryListState().initialGenreCategoryState());
 
 
   @override
@@ -39,27 +39,32 @@ class GenreCategoryListBloc extends Bloc<GenreCategoryListEvent, GenreCategoryLi
   }
 
   Stream<GenreCategoryListState> _mapToGenreCategoryListLoad(GenreCategoryListState state) async* {
-    yield const GenreCategoryListState(status: GenreCategoryStatus.loading);
-    SearchMalApiGenreListItem searchMalApiGenreListItem = await repository.getGenreCategoryList();
-    if (searchMalApiGenreListItem.err) {
-      yield GenreCategoryListState(status: GenreCategoryStatus.loading , msg: searchMalApiGenreListItem.msg);
-    } else {
-      yield GenreCategoryListState(
-          status: GenreCategoryStatus.success,
-          genreListItems: searchMalApiGenreListItem.result
-              .map((resultItem) => GenreListItem(
-              koreaType: resultItem.typeKorea,
-              type: resultItem.type,
-              navItems: resultItem.genreResult.map((result) => GenreNavItem(
-                  category: result.category,
-                  categoryValue: result.categoryValue,
-                  clickStatus: CategoryClickStatus.NONE,
-                  genreType:  enumFromString<GenreType>(resultItem.type, GenreType.values))).toList())).toList() , genreData: GenreData(page: "1"));
+    try {
+      yield const GenreCategoryListState(status: GenreCategoryStatus.Loading);
+      SearchMalApiGenreListItem searchMalApiGenreListItem = await repository.getGenreCategoryList();
+      if (searchMalApiGenreListItem.err) {
+            yield GenreCategoryListState(status: GenreCategoryStatus.Failure , msg: searchMalApiGenreListItem.msg);
+          } else {
+            yield GenreCategoryListState(
+                status: GenreCategoryStatus.Success,
+                genreListItems: searchMalApiGenreListItem.result
+                    .map((resultItem) => GenreListItem(
+                    koreaType: resultItem.typeKorea,
+                    type: resultItem.type,
+                    navItems: resultItem.genreResult.map((result) => GenreNavItem(
+                        category: result.category,
+                        categoryValue: result.categoryValue,
+                        clickStatus: CategoryClickStatus.NONE,
+                        genreType:  enumFromString<GenreType>(resultItem.type, GenreType.values))).toList())).toList() , genreData: GenreData(page: "1"));
+          }
+    } catch (e) {
+      print("_mapToGenreCategoryListLoad : ${e}");
+      yield GenreCategoryListState(status: GenreCategoryStatus.Failure , msg: "_mapToGenreCategoryListLoad : ${e}");
     }
   }
 
   Stream<GenreCategoryListState> _mapToGenreRemoveAll(GenreCategoryListState state)async*{
-    yield GenreCategoryListState(status: GenreCategoryStatus.success, genreListItems: state.genreListItems.map((item) => item.copyWith(navItems: item.navItems.map((navItem) => navItem.copyWith(clickStatus: CategoryClickStatus.NONE)).toList())).toList() , genreData: GenreData());
+    yield GenreCategoryListState(status: GenreCategoryStatus.Success, genreListItems: state.genreListItems.map((item) => item.copyWith(navItems: item.navItems.map((navItem) => navItem.copyWith(clickStatus: CategoryClickStatus.NONE)).toList())).toList() , genreData: GenreData());
   }
 
 
@@ -82,7 +87,7 @@ class GenreCategoryListBloc extends Bloc<GenreCategoryListEvent, GenreCategoryLi
   Stream<GenreCategoryListState> _genreCategorySuccessState({GenreNavItem clickItem , List<GenreListItem> genreItemList}) async*{
     List<GenreListItem> updateGenreList= _getUpdateItemList(genreItemList , clickItem);
     GenreData genreData = _getGenreData(genreListItems:updateGenreList);
-    yield GenreCategoryListState(status: GenreCategoryStatus.success, genreListItems:updateGenreList , genreData:genreData.copyWith(page: "1"));
+    yield GenreCategoryListState(status: GenreCategoryStatus.Success, genreListItems:updateGenreList , genreData:genreData.copyWith(page: "1"));
   }
 
   _getGenreData({List<GenreListItem> genreListItems}) {

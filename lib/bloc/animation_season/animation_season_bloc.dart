@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/setting/setting_bloc.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_season_item.dart';
 import 'package:kuma_flutter_app/model/api/login_user.dart';
@@ -18,10 +19,10 @@ class AnimationSeasonBloc extends Bloc<AnimationSeasonEvent, AnimationSeasonStat
   final ApiRepository repository;
   final SettingBloc settingBloc;
 
-  AnimationSeasonBloc({this.repository,this.settingBloc}) : super(AnimationSeasonLoadInProgress()) {
+  AnimationSeasonBloc({this.repository,this.settingBloc}) : super(const AnimationSeasonState()) {
     settingBloc.listen((state) {
-      if (state.status == SettingStatus.complete) {
-        add(AnimationSeasonLoad(limit: "7"));
+      if (state.status == SettingStatus.Complete) {
+        add(AnimationSeasonLoad(limit: kSeasonLimitCount));
       }
     });
   }
@@ -37,19 +38,24 @@ class AnimationSeasonBloc extends Bloc<AnimationSeasonEvent, AnimationSeasonStat
 
   Stream<AnimationSeasonState> _mapToAnimationSeasonLoad(
       AnimationSeasonLoad event) async* {
-    yield AnimationSeasonLoadInProgress();
-    String limit = event.limit;
-    SearchMalApiSeasonItem items =  await repository.getSeasonItems(limit);
-    bool isErr = items.err;
-    if (isErr) {
-      yield AnimationSeasonLoadFailure(errMsg: items.msg);
-    } else {
-      LoginUserData userData = await getUserData();
-      bool isAutoScroll = userData.isAutoScroll ?? true;
-      yield AnimationSeasonLoadSuccess(seasonItems: List.from(
-          items.result.map((data) =>
-              AnimationSeasonItem(
-                  id: data.id, title: data.title, image: data.image))), isAutoScroll:isAutoScroll);
+    try {
+      yield state.copyWith(status: AnimationSeasonStatus.Loading);
+      String limit = event.limit;
+      SearchMalApiSeasonItem items =  await repository.getSeasonItems(limit);
+      bool isErr = items.err;
+      if (isErr) {
+            yield state.copyWith(status: AnimationSeasonStatus.Failure , msg: items.msg);
+          } else {
+            LoginUserData userData = await getUserData();
+            bool isAutoScroll = userData.isAutoScroll ?? true;
+            yield AnimationSeasonState(status:AnimationSeasonStatus.Success , seasonItems: List.from(
+                items.result.map((data) =>
+                    AnimationSeasonItem(
+                        id: data.id, title: data.title, image: data.image))), isAutoScroll:isAutoScroll);
+          }
+    } catch (e) {
+      print("_mapToAnimationSeasonLoad ${e}");
+      yield state.copyWith(status: AnimationSeasonStatus.Failure , msg: "_mapToAnimationSeasonLoad ${e}");
     }
   }
 }

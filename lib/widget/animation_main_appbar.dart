@@ -65,13 +65,13 @@ class _AnimationMainAppbarState extends State<AnimationMainAppbar> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AnimationSeasonBloc, AnimationSeasonState>(
-      listenWhen: (prev,cur)=>cur is AnimationSeasonLoadFailure,
+      listenWhen: (prev,cur)=>cur == AnimationSeasonStatus.Failure,
       listener: (context,state){
-        String errMsg = (state is AnimationSeasonLoadFailure) ? state.errMsg : "에러발생";
+        String errMsg = state.msg;
         showToast(msg: errMsg);
       },
       builder: (context, seasonState) {
-        if(seasonState is AnimationSeasonLoadSuccess) {
+        if(seasonState.status ==  AnimationSeasonStatus.Success) {
           List<AnimationSeasonItem> list = seasonState.seasonItems;
           totalPageCount = list.length <= 0 ? 0 : list.length - 1;
           bool isAutoScroll = seasonState.isAutoScroll;
@@ -111,10 +111,10 @@ class _AnimationMainAppbarState extends State<AnimationMainAppbar> {
               ),
             ),
           );
-        }else if(seasonState is AnimationSeasonLoadInProgress){
-          return LoadingIndicator(isVisible: seasonState is AnimationSeasonLoadInProgress,);
-        }else if(seasonState is AnimationSeasonLoadFailure){
-          return RefreshContainer(callback: ()=>BlocProvider.of<AnimationSeasonBloc>(context).add(AnimationSeasonLoad(limit: "7")),);
+        }else if(seasonState.status ==  AnimationSeasonStatus.Loading){
+          return LoadingIndicator(isVisible: seasonState == AnimationSeasonStatus.Loading,);
+        }else if(seasonState.status == AnimationSeasonStatus.Failure){
+          return RefreshContainer(callback: ()=>BlocProvider.of<AnimationSeasonBloc>(context).add(AnimationSeasonLoad(limit: kSeasonLimitCount)),);
         } else{
           return const EmptyContainer(title: '자료없음');
 

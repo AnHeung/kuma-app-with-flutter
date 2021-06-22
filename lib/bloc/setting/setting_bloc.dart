@@ -15,8 +15,7 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
 
   final ApiRepository repository;
 
-
-  SettingBloc({this.repository}) : super(SettingState(status: SettingStatus.initial ,config: SettingConfig()));
+  SettingBloc({this.repository}) : super(const SettingState().initialConfigState());
 
   @override
   Stream<SettingState> mapEventToState(
@@ -27,27 +26,32 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     }else if(event is ChangeSetting){
       yield* _mapToSettingChange(event);
     }else if(event is SettingScreenExit){
-      yield SettingState(status: SettingStatus.complete, config: SettingConfig());
+      yield state.copyWith(status: SettingStatus.Complete);
     }
   }
 
   Stream<SettingState> _mapToSettingLoad() async*{
-    yield SettingState(status: SettingStatus.loading,config: SettingConfig());
-    LoginUserData userData = await getUserData();
-    yield SettingState(status: SettingStatus.success, config: SettingConfig(isAutoScroll: userData.isAutoScroll, receiveNotify: userData.receiveNotify,rankType: userData.rankType, homeItemCount: userData.homeItemCount));
+    try {
+      yield SettingState(status: SettingStatus.Loading,config:state.config);
+      LoginUserData userData = await getUserData();
+      yield SettingState(status: SettingStatus.Success, config: SettingConfig(isAutoScroll: userData.isAutoScroll, receiveNotify: userData.receiveNotify,rankType: userData.rankType, homeItemCount: userData.homeItemCount));
+    } catch (e) {
+      print("_mapToSettingLoad error: ${e}");
+      yield const SettingState(status:SettingStatus.Failure ,msg: "설정오류 다시 시도해주세요");
+    }
   }
 
   Stream<SettingState> _mapToSettingChange(ChangeSetting event) async*{
     try {
-      yield SettingState(status: SettingStatus.loading, config: event.config);
+      yield SettingState(status: SettingStatus.Loading, config: event.config);
       String userId  = await getUserId();
-      if(userId == null) yield const SettingState(status:SettingStatus.failure ,msg: "유저아이디 정보가 없습니다.");
+      if(userId == null) yield const SettingState(status:SettingStatus.Failure ,msg: "유저아이디 정보가 없습니다.");
       await repository.updateUserItemToFireStore(userId, event.config.toMap());
       await saveSettingConfig(settingConfig: event.config);
-      yield SettingState(status:SettingStatus.success,config: event.config);
+      yield SettingState(status:SettingStatus.Success,config: event.config);
     } catch (e) {
       print("_mapToSettingChange ${e}");
-      yield SettingState(status: SettingStatus.failure, msg: "ChangeSetting 실패 $e",config: event.config);
+      yield SettingState(status: SettingStatus.Failure, msg: "ChangeSetting 실패 $e",config: event.config);
     }
   }
 }

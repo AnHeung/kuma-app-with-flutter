@@ -18,9 +18,9 @@ class GenreSearchBloc extends Bloc<GenreSearchEvent, GenreSearchState> {
   final ApiRepository repository;
   final GenreCategoryListBloc genreCategoryListBloc;
 
-  GenreSearchBloc({this.repository,this.genreCategoryListBloc}) : super(GenreSearchState(status: GenreSearchStatus.initial , genreData: GenreData())){
+  GenreSearchBloc({this.repository,this.genreCategoryListBloc}) : super(const GenreSearchState().initialGenreState()){
     genreCategoryListBloc.listen((state){
-      if(state.status == GenreCategoryStatus.success){
+      if(state.status == GenreCategoryStatus.Success){
           add(GenreLoad(data: state.genreData));
       }
     });
@@ -55,62 +55,63 @@ class GenreSearchBloc extends Bloc<GenreSearchEvent, GenreSearchState> {
   }
 
   Stream<GenreSearchState> _mapToGenreLoad(GenreLoad event , GenreSearchState state) async* {
-    yield GenreSearchState(status: GenreSearchStatus.loading ,genreData: event.data ,genreSearchItems: state.genreSearchItems);
-    String q = event.data.q;
-    String page = event.page;
-    String type = event.data.type;
-    String startDate = event.data.startDate;
-    String endDate = event.data.endDate;
-    String status = event.data.status;
-    String limit = event.data.limit;
-    String rated = event.data.rated;
-    String genre = event.data.genre;
-    String genreExclude = event.data.genreExclude;
-    String sort = event.data.sort;
-    String orderBy = event.data.orderBy;
+    try {
+      yield state.copyWith(status:GenreSearchStatus.Loading);
+      String q = event.data.q;
+      String page = event.page;
+      String type = event.data.type;
+      String startDate = event.data.startDate;
+      String endDate = event.data.endDate;
+      String status = event.data.status;
+      String limit = event.data.limit;
+      String rated = event.data.rated;
+      String genre = event.data.genre;
+      String genreExclude = event.data.genreExclude;
+      String sort = event.data.sort;
+      String orderBy = event.data.orderBy;
 
-    SearchMalAllGenreItem genreItem = await repository.getAllGenreItems(
-        type:type,
-        q:q,
-        page:page,
-        status:status,
-        rated:rated,
-        genre:genre,
-        startDate:startDate,
-        endDate:endDate,
-        genreExclude:genreExclude,
-        limit:limit,
-        sort:sort,orderBy: orderBy);
+      SearchMalAllGenreItem genreItem = await repository.getAllGenreItems(
+              type:type,
+              q:q,
+              page:page,
+              status:status,
+              rated:rated,
+              genre:genre,
+              startDate:startDate,
+              endDate:endDate,
+              genreExclude:genreExclude,
+              limit:limit,
+              sort:sort,orderBy: orderBy);
 
-    if (genreItem.err) {
-      print('state.genreData :${state.genreData.rated}');
-      yield GenreSearchState(status: GenreSearchStatus.failure, msg: genreItem.msg , genreSearchItems: state.genreSearchItems , genreData: event.data);
-    } else {
-      List<AnimationGenreSearchItem> genreList =  genreItem.result
-          .map((item) => AnimationGenreSearchItem(
-          id: item.id,
-          title: item.title,
-          image: item.image,
-          score: item.score,
-          startDate: item.startDate,
-          endDate: item.endDate,
-          type: item.type,
-          airing: item.airing,
-          episodes: item.episodes,
-          rated: item.rated)).toList();
+      if (genreItem.err) {
+            yield GenreSearchState(status: GenreSearchStatus.Failure, msg: genreItem.msg , genreSearchItems: state.genreSearchItems , genreData: event.data);
+          } else {
+            List<AnimationGenreSearchItem> genreList =  genreItem.result
+                .map((item) => AnimationGenreSearchItem(
+                id: item.id,
+                title: item.title,
+                image: item.image,
+                score: item.score,
+                startDate: item.startDate,
+                endDate: item.endDate,
+                type: item.type,
+                airing: item.airing,
+                episodes: item.episodes,
+                rated: item.rated)).toList();
 
-      print("status ${state.status} , currentPage :$page");
+            if(page != "1"){
+              genreList =  state.genreSearchItems..addAll(genreList);
+            }
 
-      if(page != "1"){
-        genreList =  state.genreSearchItems..addAll(genreList);
-      }
-
-      print("genreList length :${genreList.length}");
-      yield GenreSearchState(
-          currentPage: int.parse(page),
-          status: GenreSearchStatus.success,
-          genreSearchItems: genreList,
-          genreData: event.data);
+            yield GenreSearchState(
+                currentPage: int.parse(page),
+                status: GenreSearchStatus.Success,
+                genreSearchItems: genreList,
+                genreData: event.data);
+          }
+    } catch (e) {
+      print("_mapToGenreLoad ${e}");
+      yield state.copyWith(status:GenreSearchStatus.Failure ,  msg: "_mapToGenreLoad ${e}");
     }
   }
 }
