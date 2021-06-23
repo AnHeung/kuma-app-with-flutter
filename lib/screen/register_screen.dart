@@ -31,7 +31,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ),
       body: BlocConsumer<RegisterBloc,RegisterState>(
             listener: (context,state){
-
               switch(state.status){
                 case RegisterStatus.AlreadyInUse :
                   showToast(msg: RegisterStatus.AlreadyInUse.msg);

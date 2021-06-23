@@ -1,11 +1,8 @@
 part of 'genre_category_list_bloc.dart';
 
-enum GenreCategoryStatus { Initial , Loading , Success, Failure }
-
-@immutable
 class GenreCategoryListState extends Equatable{
 
-  final GenreCategoryStatus status;
+  final BaseBlocStateStatus status;
   final List<GenreListItem> genreListItems;
   final GenreData genreData;
   final String msg;
@@ -15,10 +12,8 @@ class GenreCategoryListState extends Equatable{
 
   const GenreCategoryListState({this.status, this.genreListItems, this.genreData, this.msg});
 
-  GenreCategoryListState initialGenreCategoryState()=> GenreCategoryListState(status: GenreCategoryStatus.Initial , genreData: GenreData(), msg: "", genreListItems: []);
-
   GenreCategoryListState copyWith({
-    GenreCategoryStatus status,
+    BaseBlocStateStatus status,
     List<GenreListItem> genreListItems,
     GenreData genreData,
     String msg,

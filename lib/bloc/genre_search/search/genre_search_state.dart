@@ -1,24 +1,17 @@
 part of 'genre_search_bloc.dart';
 
-enum GenreSearchStatus { Initial , Success,  Failure , Loading }
-
-@immutable
 class GenreSearchState extends Equatable{
 
-  final GenreSearchStatus status;
+  final BaseBlocStateStatus status;
   final List<AnimationGenreSearchItem> genreSearchItems;
   final GenreData genreData;
   final int currentPage;
   final String msg;
 
-  const GenreSearchState({this.status = GenreSearchStatus.Initial , this.genreSearchItems = const <AnimationGenreSearchItem>[], this.genreData, this.msg="", this.currentPage = 1});
-
-  GenreSearchState initialGenreState(){
-    return GenreSearchState(status : GenreSearchStatus.Initial , genreSearchItems :const <AnimationGenreSearchItem>[], genreData: GenreData(), msg:"", currentPage:1);
-  }
+  const GenreSearchState({this.status = BaseBlocStateStatus.Initial , this.genreSearchItems = const <AnimationGenreSearchItem>[], this.genreData, this.msg="", this.currentPage = 1});
 
   GenreSearchState copyWith({
-    GenreSearchStatus status,
+    BaseBlocStateStatus status,
     List<AnimationGenreSearchItem> genreSearchItems,
     GenreData genreData,
     int currentPage,

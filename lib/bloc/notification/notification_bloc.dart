@@ -18,7 +18,7 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
   final ApiRepository repository;
   final LoginBloc loginBloc;
 
-  NotificationBloc({this.repository , this.loginBloc}) : super(const NotificationState().initNotification()){
+  NotificationBloc({this.repository , this.loginBloc}) : super(const NotificationState()){
     loginBloc.listen((state){
       if(state.status == LoginStatus.LoginSuccess){
         add(NotificationLoad());

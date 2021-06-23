@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kuma_flutter_app/bloc/character_detail/character_detail_bloc.dart';
+import 'package:kuma_flutter_app/enums/base_bloc_state_status.dart';
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
 import 'package:kuma_flutter_app/model/item/base_scroll_item.dart';
 import 'package:kuma_flutter_app/model/item/bottom_more_item.dart';
@@ -31,7 +32,7 @@ class BottomCharacterItemContainer extends StatelessWidget {
       builder: (context, state) {
         AnimationCharacterDetailItem characterItem = state.characterItem;
 
-        if (state.status == CharacterDetailStatus.loading) {
+        if (state.status == BaseBlocStateStatus.Loading) {
           return const LoadingIndicator(
             isVisible: true,
           );

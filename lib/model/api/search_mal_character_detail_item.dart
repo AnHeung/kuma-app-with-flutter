@@ -57,13 +57,13 @@ class Result {
     imageUrl = json['image_url'];
     url = json['url'];
     if (json['relate_animation'] != null) {
-      relateAnimation = new List<RelateAnimation>();
+      relateAnimation = [];
       json['relate_animation'].forEach((v) {
         relateAnimation.add(new RelateAnimation.fromJson(v));
       });
     }
     if (json['voice_actors'] != null) {
-      voiceActors = new List<VoiceActors>();
+      voiceActors = [];
       json['voice_actors'].forEach((v) {
         voiceActors.add(new VoiceActors.fromJson(v));
       });

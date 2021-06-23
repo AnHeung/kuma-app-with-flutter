@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
+import 'package:kuma_flutter_app/enums/base_bloc_state_status.dart';
 import 'package:kuma_flutter_app/model/item/animation_search_item.dart';
 import 'package:kuma_flutter_app/repository/api_repository.dart';
 import 'package:meta/meta.dart';
@@ -18,7 +19,7 @@ class SearchHistoryBloc extends Bloc<SearchHistoryEvent, SearchHistoryState> {
 
   final ApiRepository repository;
 
-  SearchHistoryBloc({this.repository}) : super(const SearchHistoryState(status: SearchHistoryStatus.Initial, list: []));
+  SearchHistoryBloc({this.repository}) : super(const SearchHistoryState());
 
   @override
   Stream<SearchHistoryState> mapEventToState(
@@ -34,19 +35,24 @@ class SearchHistoryBloc extends Bloc<SearchHistoryEvent, SearchHistoryState> {
   }
 
   Stream<SearchHistoryState> _mapToSearchHistoryClear() async* {
-    yield SearchHistoryState(status: SearchHistoryStatus.Loading, list: state.list );
-    String path = await _getHistoryPath();
-    if(!path.isNullEmptyOrWhitespace) {
-      final file = File('$path/$kSearchHistoryPath');
-      _writeEmptyFile(file);
-      yield const SearchHistoryState(
-          status: SearchHistoryStatus.Success, list: []);
+    try {
+      yield state.copyWith(status: BaseBlocStateStatus.Loading, list: state.list);
+      String path = await _getHistoryPath();
+      if(!path.isNullEmptyOrWhitespace) {
+            final file = File('$path/$kSearchHistoryPath');
+            _writeEmptyFile(file);
+            yield const SearchHistoryState(
+                status: BaseBlocStateStatus.Success, list: []);
+          }
+    } catch (e) {
+      print("_mapToSearchHistoryClear error :$e");
+      yield state.copyWith(status: BaseBlocStateStatus.Failure ,msg: kSearchHistoryDeleteErrMsg);
     }
   }
 
   Stream<SearchHistoryState> _mapToLoadHistory() async* {
     try {
-      yield SearchHistoryState(status: SearchHistoryStatus.Loading, list: state.list );
+      yield SearchHistoryState(status: BaseBlocStateStatus.Loading, list: state.list );
       String path = await _getHistoryPath();
       final file = File('$path/$kSearchHistoryPath');
       if (await file.exists()) {
@@ -54,7 +60,7 @@ class SearchHistoryBloc extends Bloc<SearchHistoryEvent, SearchHistoryState> {
         if(readData.isNotEmpty){
           List<dynamic> list = jsonDecode(readData) ?? [];
           yield SearchHistoryState(
-            status: SearchHistoryStatus.Success,
+            status: BaseBlocStateStatus.Success,
               list: list
                   .map((aniItem) => AnimationSearchItem.fromJson(aniItem))
                   .toList());
@@ -64,7 +70,7 @@ class SearchHistoryBloc extends Bloc<SearchHistoryEvent, SearchHistoryState> {
       }
     } catch (e) {
       print("_mapToLoadHistory error $e");
-      yield SearchHistoryState(status: SearchHistoryStatus.Failure, list: state.list, msg: "데이터를 가져오는데 실패했습니다." );
+      yield const SearchHistoryState(status: BaseBlocStateStatus.Failure,  msg: kSearchHistoryLoadErrMsg );
     }
   }
 
@@ -81,7 +87,7 @@ class SearchHistoryBloc extends Bloc<SearchHistoryEvent, SearchHistoryState> {
       }
     } catch (e) {
       print("_mapToWriteHistory error $e");
-      yield SearchHistoryState(status: SearchHistoryStatus.Failure, list: state.list, msg: "데이터를 기록하는데 실패했습니다." );
+      yield state.copyWith(status: BaseBlocStateStatus.Failure,  msg: kSearchHistoryWriteErrMsg );
     }
   }
 

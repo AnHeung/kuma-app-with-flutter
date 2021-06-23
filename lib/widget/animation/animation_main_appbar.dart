@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:focus_detector/focus_detector.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/animation_season/animation_season_bloc.dart';
+import 'package:kuma_flutter_app/enums/base_bloc_state_status.dart';
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
 import 'package:kuma_flutter_app/model/item/animation_detail_page_item.dart';
 import 'package:kuma_flutter_app/model/item/animation_search_season_item.dart';
@@ -65,13 +66,13 @@ class _AnimationMainAppbarState extends State<AnimationMainAppbar> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AnimationSeasonBloc, AnimationSeasonState>(
-      listenWhen: (prev,cur)=>cur == AnimationSeasonStatus.Failure,
+      listenWhen: (prev,cur)=>cur == BaseBlocStateStatus.Failure,
       listener: (context,state){
         String errMsg = state.msg;
         showToast(msg: errMsg);
       },
       builder: (context, seasonState) {
-        if(seasonState.status ==  AnimationSeasonStatus.Success) {
+        if(seasonState.status ==  BaseBlocStateStatus.Success) {
           List<AnimationSeasonItem> list = seasonState.seasonItems;
           totalPageCount = list.length <= 0 ? 0 : list.length - 1;
           bool isAutoScroll = seasonState.isAutoScroll;
@@ -111,9 +112,9 @@ class _AnimationMainAppbarState extends State<AnimationMainAppbar> {
               ),
             ),
           );
-        }else if(seasonState.status ==  AnimationSeasonStatus.Loading){
-          return LoadingIndicator(isVisible: seasonState == AnimationSeasonStatus.Loading,);
-        }else if(seasonState.status == AnimationSeasonStatus.Failure){
+        }else if(seasonState.status ==  BaseBlocStateStatus.Loading){
+          return LoadingIndicator(isVisible: seasonState == BaseBlocStateStatus.Loading,);
+        }else if(seasonState.status == BaseBlocStateStatus.Failure){
           return RefreshContainer(callback: ()=>BlocProvider.of<AnimationSeasonBloc>(context).add(AnimationSeasonLoad(limit: kSeasonLimitCount)),);
         } else{
           return const EmptyContainer(title: '자료없음');

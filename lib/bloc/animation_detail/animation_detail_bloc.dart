@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:kuma_flutter_app/enums/base_bloc_state_status.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_detail_item.dart';
 import 'package:kuma_flutter_app/model/item/animation_detail_item.dart';
 import 'package:kuma_flutter_app/repository/api_repository.dart';
@@ -16,7 +17,7 @@ class AnimationDetailBloc extends Bloc<AnimationDetailEvent, AnimationDetailStat
   ApiRepository repository;
 
   AnimationDetailBloc({this.repository})
-      : super(const AnimationDetailState(status: AnimationDetailStatus.initial));
+      : super(const AnimationDetailState());
 
   @override
   Stream<AnimationDetailState> mapEventToState(
@@ -29,19 +30,19 @@ class AnimationDetailBloc extends Bloc<AnimationDetailEvent, AnimationDetailStat
   }
 
   Stream<AnimationDetailState> _mapToAnimationDetailVideoLoad(AnimationDetailVideoLoad event) async*{
-    yield AnimationDetailState(status: AnimationDetailStatus.success ,detailItem:  event.detailItem);
+    yield AnimationDetailState(status: BaseBlocStateStatus.Success ,detailItem:  event.detailItem);
   }
 
 
   Stream<AnimationDetailState> _mapToAnimationDetailLoad(
       AnimationDetailLoad event) async* {
     try {
-      yield const AnimationDetailState(status:AnimationDetailStatus.loading);
+      yield const AnimationDetailState(status:BaseBlocStateStatus.Loading);
       String id = event.id;
       SearchMalDetailApiItem malDetailApiItem = await repository
           .getDetailApiItem(id);
       if (malDetailApiItem.err) {
-        yield AnimationDetailState(status:AnimationDetailStatus.failure, msg: malDetailApiItem.msg);
+        yield AnimationDetailState(status:BaseBlocStateStatus.Failure, msg: malDetailApiItem.msg);
       } else {
         SearchMalDetailApiItemResult result = malDetailApiItem.result;
         List<RelatedAnimeItem> relateItemList = result.relatedAnime.map((
@@ -59,8 +60,7 @@ class AnimationDetailBloc extends Bloc<AnimationDetailEvent, AnimationDetailStat
         List<CharacterItem> characterList = result.characters!= null ? result.characters.map((item) => CharacterItem(name: item.name, characterId: item.character_id,  imageUrl: item.image_url,  role: item.role , url: item.url)).toList() : [];
         String selectVideoUrl = !result.videos.isNullOrEmpty ? result.videos[0].video_url : "";
 
-        print('result.titleEn ${result.titleEn}');
-        yield AnimationDetailState(status:AnimationDetailStatus.success ,detailItem: AnimationDetailItem(
+        yield AnimationDetailState(status:BaseBlocStateStatus.Success ,detailItem: AnimationDetailItem(
             id: result.id,
             image: result.image,
             title: result.title,
@@ -84,7 +84,7 @@ class AnimationDetailBloc extends Bloc<AnimationDetailEvent, AnimationDetailStat
             studioItems: studioList , videoItems:videoList , characterItems: characterList , selectVideoUrl:selectVideoUrl));
       }
     } catch (e) {
-      yield AnimationDetailState(status:AnimationDetailStatus.failure, msg:  "_mapToAnimationDetailLoad 에러 $e");
+      yield AnimationDetailState(status:BaseBlocStateStatus.Failure, msg:  "_mapToAnimationDetailLoad 에러 $e");
     }
   }
 }

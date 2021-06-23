@@ -14,9 +14,7 @@ part 'animation_news_state.dart';
 class AnimationNewsBloc extends Bloc<AnimationNewsEvent, AnimationNewsState> {
   final ApiRepository repository;
 
-  AnimationNewsBloc({this.repository})
-      : super(const AnimationNewsState(
-            status: AnimationNewsStatus.Initial, newsItems: [] , newsQueryItems: []));
+  AnimationNewsBloc({this.repository}) : super(const AnimationNewsState());
 
   @override
   Stream<AnimationNewsState> mapEventToState(

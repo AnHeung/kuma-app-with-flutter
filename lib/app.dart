@@ -10,8 +10,8 @@ import 'package:kuma_flutter_app/bloc/animation_detail/animation_detail_bloc.dar
 import 'package:kuma_flutter_app/bloc/animation_schedule/animation_schedule_bloc.dart';
 import 'package:kuma_flutter_app/bloc/animation_season/animation_season_bloc.dart';
 import 'package:kuma_flutter_app/bloc/auth/auth_bloc.dart';
-import 'package:kuma_flutter_app/bloc/genre_search/genre_category_list_bloc/genre_category_list_bloc.dart';
-import 'package:kuma_flutter_app/bloc/genre_search/genre_search_bloc.dart';
+import 'package:kuma_flutter_app/bloc/genre_search/category_list/genre_category_list_bloc.dart';
+import 'package:kuma_flutter_app/bloc/genre_search/search/genre_search_bloc.dart';
 import 'package:kuma_flutter_app/bloc/login/login_bloc.dart';
 import 'package:kuma_flutter_app/bloc/more/more_bloc.dart';
 import 'package:kuma_flutter_app/bloc/news/animation_news_bloc.dart';
@@ -129,7 +129,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    bool isRelease = const bool.fromEnvironment('dart.vm.product');
+    // bool isRelease = const bool.fromEnvironment('dart.vm.product');
 
     return RepositoryProvider(
       create: (_) {

@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-
 class AnimationNewsItem {
   final String date;
   final String url;

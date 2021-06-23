@@ -33,8 +33,8 @@ class CardsStack extends StatelessWidget {
         top: isOddPageNumber ? 25.0 : 50.0,
       ),
       child: Stack(
+        clipBehavior: Clip.none,
         alignment: AlignmentDirectional.center,
-        overflow: Overflow.visible,
         children: <Widget>[
           SlideTransition(
             position: darkCardOffsetAnimation,

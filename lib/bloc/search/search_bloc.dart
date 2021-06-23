@@ -15,8 +15,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
 
   final ApiRepository repository;
 
-  SearchBloc({this.repository})
-      : super(SearchState(status: SearchStatus.Initial));
+  SearchBloc({this.repository}) : super(const SearchState());
 
   @override
   Stream<Transition<SearchEvent, SearchState>> transformEvents(
@@ -54,9 +53,9 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   Stream<SearchState> _mapToSearchBtnClick(SearchBtnClick event) async* {
     bool isClick = event.isClick;
     if (isClick)
-      yield SearchState(status: SearchStatus.Set);
+      yield const SearchState(status: SearchStatus.Set);
     else
-      yield SearchState(status: SearchStatus.Initial);
+      yield const SearchState(status: SearchStatus.Initial);
   }
 
   Stream<SearchState> _mapToSearchUpdate(SearchQueryUpdate event,
@@ -65,7 +64,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       String query = event.searchQuery;
 
       if (query.isEmpty) {
-        yield SearchState(status: SearchStatus.Clear);
+        yield const SearchState(status: SearchStatus.Clear);
       } else {
         yield SearchState(status: SearchStatus.Loading, list: state.list);
         SearchMalApiSearchItem searchItems = await repository.getSearchItems(query);
@@ -82,17 +81,18 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
         }
       }
     } catch (e) {
+      print('_mapToSearchUpdate error: $e');
       yield SearchState(status: SearchStatus.Failure, msg: "검색 에러 $e");
     }
   }
 
   Stream<SearchState> _mapToSearchClear() async* {
-    yield SearchState(status: SearchStatus.Success , list: [],);
+    yield const SearchState(status: SearchStatus.Success , list: [],);
   }
 
   Stream<SearchState> _mapToSearchLoad(SearchLoad event) async* {
     try {
-      yield SearchState(status: SearchStatus.Loading);
+      yield state.copyWith(status: SearchStatus.Loading);
       String query = event.searchQuery;
       SearchMalApiSearchItem searchItems = await repository.getSearchItems(query);
       if (searchItems.err) {
@@ -107,7 +107,8 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
                 .toList());
       }
     } catch (e) {
-      yield SearchState(status: SearchStatus.Failure, msg: "검색결과 불러오기 실패 :$e");
+      print('_mapToSearchLoad Error :$e');
+      yield state.copyWith(status: SearchStatus.Failure, msg: "검색결과 불러오기 실패 :$e");
     }
   }
 

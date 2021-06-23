@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/setting/setting_bloc.dart';
+import 'package:kuma_flutter_app/enums/base_bloc_state_status.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_season_item.dart';
 import 'package:kuma_flutter_app/model/api/login_user.dart';
 import 'package:kuma_flutter_app/model/item/animation_search_season_item.dart';
@@ -39,23 +40,23 @@ class AnimationSeasonBloc extends Bloc<AnimationSeasonEvent, AnimationSeasonStat
   Stream<AnimationSeasonState> _mapToAnimationSeasonLoad(
       AnimationSeasonLoad event) async* {
     try {
-      yield state.copyWith(status: AnimationSeasonStatus.Loading);
+      yield state.copyWith(status: BaseBlocStateStatus.Loading);
       String limit = event.limit;
       SearchMalApiSeasonItem items =  await repository.getSeasonItems(limit);
       bool isErr = items.err;
       if (isErr) {
-            yield state.copyWith(status: AnimationSeasonStatus.Failure , msg: items.msg);
+            yield state.copyWith(status: BaseBlocStateStatus.Failure , msg: items.msg);
           } else {
             LoginUserData userData = await getUserData();
             bool isAutoScroll = userData.isAutoScroll ?? true;
-            yield AnimationSeasonState(status:AnimationSeasonStatus.Success , seasonItems: List.from(
+            yield AnimationSeasonState(status:BaseBlocStateStatus.Success , seasonItems: List.from(
                 items.result.map((data) =>
                     AnimationSeasonItem(
                         id: data.id, title: data.title, image: data.image))), isAutoScroll:isAutoScroll);
           }
     } catch (e) {
       print("_mapToAnimationSeasonLoad ${e}");
-      yield state.copyWith(status: AnimationSeasonStatus.Failure , msg: "_mapToAnimationSeasonLoad ${e}");
+      yield state.copyWith(status: BaseBlocStateStatus.Failure , msg: "_mapToAnimationSeasonLoad ${e}");
     }
   }
 }

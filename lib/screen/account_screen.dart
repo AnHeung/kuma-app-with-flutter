@@ -21,20 +21,20 @@ class AccountScreen extends StatelessWidget {
         ),
         body: BlocConsumer<AccountBloc, AccountState>(
           listener: (context, state) {
-            if (state.status == AccountStatus.failure) {
+            if (state.status == AccountStatus.Failure) {
               showToast(msg: state.msg);
               Navigator.pop(context);
-            } else if (state.status == AccountStatus.withdraw) {
+            } else if (state.status == AccountStatus.Withdraw) {
               showToast(msg: state.msg);
               moveToHomeScreen(context:context);
             }
           },
           builder: (context, state) {
-            if (state.status == AccountStatus.loading) {
+            if (state.status == AccountStatus.Loading) {
               return LoadingIndicator(
-                isVisible: state.status == AccountStatus.loading,
+                isVisible: state.status == AccountStatus.Loading,
               );
-            } else if (state.status == AccountStatus.success) {
+            } else if (state.status == AccountStatus.Success) {
               UserAccount accountData = state.accountData;
 
               return Column(

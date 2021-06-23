@@ -21,10 +21,8 @@ class AnimationScheduleScreen extends StatelessWidget {
 
     return BlocBuilder<AnimationScheduleBloc, AnimationScheduleState>(
       builder: (context, state) {
-        List<AnimationScheduleItem> scheduleItems =
-            state is AnimationScheduleLoadSuccess ? state.scheduleItems : [];
+        List<AnimationScheduleItem> scheduleItems = state.scheduleItems;
         String currentDay = state.currentDay ?? "1";
-
         return Scaffold(
           backgroundColor: bgColor,
           appBar: AppBar(

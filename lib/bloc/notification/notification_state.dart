@@ -1,6 +1,5 @@
 part of 'notification_bloc.dart';
 
-
 enum NotificationStatus { Initial , Loading, Failure , Success , NetworkError }
 
 @immutable
@@ -11,11 +10,7 @@ class NotificationState extends Equatable{
   final String msg;
   final String unReadCount;
 
-  const NotificationState({this.status ,this.notificationItems ,this.msg ,this.unReadCount = "0"});
-
-  NotificationState initNotification(){
-    return const NotificationState(status: NotificationStatus.Initial, notificationItems: [] ,unReadCount: "0" ,msg: "");
-  }
+  const NotificationState({this.status = NotificationStatus.Initial ,this.notificationItems = const<NotificationItem>[],this.msg ,this.unReadCount = "0"});
 
   NotificationState copyWith({
     NotificationStatus status,

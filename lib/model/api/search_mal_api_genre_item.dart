@@ -9,7 +9,7 @@ class SearchMalApiGenreItem {
     err = json['err'];
     msg = json['msg'];
     if (json['result'] != null) {
-      result = new List<Result>();
+      result = [];
       json['result'].forEach((v) {
         result.add(new Result.fromJson(v));
       });
@@ -53,7 +53,7 @@ class Result {
     episodes = json['episodes'];
     startDate = json['start_date'];
     if (json['genres'] != null) {
-      genres = new List<Genres>();
+      genres = [];
       json['genres'].forEach((v) {
         genres.add(new Genres.fromJson(v));
       });

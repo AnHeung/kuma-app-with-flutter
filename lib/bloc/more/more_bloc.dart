@@ -12,7 +12,7 @@ class MoreBloc extends Bloc<MoreEvent, MoreState> {
 
   final ApiRepository repository;
 
-  MoreBloc({this.repository}) : super(const MoreState(msg: "",status: MoreStatus.Initial));
+  MoreBloc({this.repository}) : super(const MoreState());
 
   @override
   Stream<MoreState> mapEventToState(

@@ -14,7 +14,7 @@ part 'login_state.dart';
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final ApiRepository repository;
 
-  LoginBloc({this.repository}) : super(const LoginState(status: LoginStatus.Initial));
+  LoginBloc({this.repository}) : super(const LoginState());
 
   @override
   Stream<LoginState> mapEventToState(LoginEvent event,) async* {

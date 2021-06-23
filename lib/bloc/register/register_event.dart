@@ -3,8 +3,6 @@ part of 'register_bloc.dart';
 @immutable
 abstract class RegisterEvent extends Equatable{
 
-
-
   @override
   List<Object> get props =>[];
 
@@ -19,5 +17,5 @@ class UserRegister extends RegisterEvent{
   const UserRegister({this.userData});
 
   @override
-  List<Object> get props =>[];
+  List<Object> get props =>[userData];
 }

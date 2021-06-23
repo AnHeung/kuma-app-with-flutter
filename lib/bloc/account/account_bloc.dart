@@ -14,7 +14,7 @@ part 'account_state.dart';
 class AccountBloc extends Bloc<AccountEvent, AccountState> {
   final ApiRepository repository;
 
-  AccountBloc({this.repository}) : super(const AccountState(status: AccountStatus.initial));
+  AccountBloc({this.repository}) : super(const AccountState(status: AccountStatus.Initial));
 
   @override
   Stream<AccountState> mapEventToState(
@@ -29,25 +29,29 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
 
   Stream<AccountState> _mapToWithdraw(AccountWithdraw event) async* {
     try {
-      yield const AccountState(status: AccountStatus.loading);
+      yield const AccountState(status: AccountStatus.Loading);
       String userId  = event.userId;
       bool withdrawResult = await repository.withdraw(userId);
-      if (withdrawResult) yield const AccountState(status: AccountStatus.withdraw, msg: "회원탈퇴 성공");
-      else yield const AccountState(status :AccountStatus.failure, msg: "회원탈퇴 실패 다시 시도해주세요");
+      if (withdrawResult) yield const AccountState(status: AccountStatus.Withdraw, msg: "회원탈퇴 성공");
+      else yield const AccountState(status :AccountStatus.Failure, msg: "회원탈퇴 실패 다시 시도해주세요");
     }catch(e){
-      yield AccountState(status :AccountStatus.failure, msg: "회원탈퇴 오류 : $e");
+      yield AccountState(status :AccountStatus.Failure, msg: "회원탈퇴 오류 : $e");
     }
   }
 
   Stream<AccountState> _mapToAccountLoad() async* {
-    yield const AccountState(status: AccountStatus.loading);
-    LoginUserData userData = await getUserData();
+    try {
+      yield const AccountState(status: AccountStatus.Loading);
+      LoginUserData userData = await getUserData();
 
-    yield AccountState(
-      status: AccountStatus.success,
-        accountData: UserAccount(
-            userId: userData.userId,
-            userName: userData.userName.isNullEmptyOrWhitespace ? userData.userId : userData.userName,
-            loginType: userData.loginType));
+      yield AccountState(
+            status: AccountStatus.Success,
+              accountData: UserAccount(
+                  userId: userData.userId,
+                  userName: userData.userName.isNullEmptyOrWhitespace ? userData.userId : userData.userName,
+                  loginType: userData.loginType));
+    } catch (e) {
+      print("_mapToAccountLoad Error :$e");
+    }
   }
 }

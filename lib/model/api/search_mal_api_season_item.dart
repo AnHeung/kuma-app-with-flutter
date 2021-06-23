@@ -9,7 +9,7 @@ class SearchMalApiSeasonItem {
     err = json['err'];
     msg = json['msg'];
     if (json['result'] != null) {
-      result = new List<SearchMalApiSeasonItemResult>();
+      result = [];
       json['result'].forEach((v) {
         result.add(new SearchMalApiSeasonItemResult.fromJson(v));
       });

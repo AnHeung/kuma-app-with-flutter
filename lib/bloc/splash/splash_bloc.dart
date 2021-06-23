@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/auth/auth_bloc.dart';
+import 'package:kuma_flutter_app/enums/base_bloc_state_status.dart';
 import 'package:kuma_flutter_app/model/api/login_user.dart';
 import 'package:kuma_flutter_app/repository/api_repository.dart';
 import 'package:kuma_flutter_app/util/common.dart';
@@ -18,7 +19,7 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
   final AuthBloc authBloc;
 
   SplashBloc({this.repository ,this.authBloc})
-      : super(const SplashState(status: SplashStatus.initial));
+      : super(const SplashState());
 
   @override
   Stream<SplashState> mapEventToState(
@@ -31,7 +32,7 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
 
   Stream<SplashState> _mapToSplashInit() async* {
     await Future.delayed(const Duration(seconds: kSplashTime));
-    yield const SplashState(status: SplashStatus.loading);
+    yield const SplashState(status: BaseBlocStateStatus.Loading);
     String userId = await getUserId();
     LoginUserData userData = await repository.getUserItemFromFireStore(userId:userId);
     if(userData != null){
@@ -44,6 +45,6 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
     bool isAppFirstLaunch = await appFirstLaunch();
     await Future.delayed(const Duration(seconds: 1));
     yield SplashState(
-        isAppFirstLaunch: isAppFirstLaunch, status: SplashStatus.success);
+        isAppFirstLaunch: isAppFirstLaunch, status: BaseBlocStateStatus.Success);
   }
 }

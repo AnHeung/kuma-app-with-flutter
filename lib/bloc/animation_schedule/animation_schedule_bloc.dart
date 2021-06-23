@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:kuma_flutter_app/bloc/setting/setting_bloc.dart';
+import 'package:kuma_flutter_app/enums/base_bloc_state_status.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_schedule_item.dart';
 import 'package:kuma_flutter_app/model/item/animation_schedule_item.dart';
 import 'package:kuma_flutter_app/repository/api_repository.dart';
@@ -16,7 +17,7 @@ class AnimationScheduleBloc extends Bloc<AnimationScheduleEvent, AnimationSchedu
   final ApiRepository repository;
   final SettingBloc settingBloc;
 
-  AnimationScheduleBloc({this.repository,this.settingBloc}) : super(AnimationScheduleLoadInProgress(currentDay: "1"));
+  AnimationScheduleBloc({this.repository,this.settingBloc}) : super(const AnimationScheduleState());
 
   @override
   Stream<AnimationScheduleState> mapEventToState(
@@ -40,14 +41,16 @@ class AnimationScheduleBloc extends Bloc<AnimationScheduleEvent, AnimationSchedu
 
   Stream<AnimationScheduleState> _mapToScheduleLoad(AnimationScheduleLoad event) async*{
     try {
-      yield AnimationScheduleLoadInProgress(currentDay: event.day);
+      yield state.copyWith(status: BaseBlocStateStatus.Loading , currentDay: event.day);
       SearchMalApiScheduleItem scheduleItem = await repository.getScheduleItems(event.day);
       print('_mapToScheduleLoad ${event.day} scheduleItem :$scheduleItem');
       if(scheduleItem.err){
-            yield AnimationScheduleLoadFailure(errMsg: scheduleItem.msg);
+            yield state.copyWith(msg:scheduleItem.msg);
           }else{
             if(scheduleItem.result != null && scheduleItem.result.length > 0)
-            yield AnimationScheduleLoadSuccess(currentDay: event.day ,
+            yield AnimationScheduleState(
+                status: BaseBlocStateStatus.Success,
+                currentDay: event.day ,
                 scheduleItems: scheduleItem.result.map((schedule) => AnimationScheduleItem(title: schedule.title
                     , id: schedule.id
                     ,image: schedule.image
@@ -56,7 +59,7 @@ class AnimationScheduleBloc extends Bloc<AnimationScheduleEvent, AnimationSchedu
           }
     } catch (e) {
       print("_mapToScheduleLoad ${e}");
-      yield AnimationScheduleLoadFailure(errMsg: "_mapToScheduleLoad ${e}");
+      yield state.copyWith(msg: "_mapToScheduleLoad ${e}");
     }
   }
 }

@@ -60,7 +60,7 @@ class Result {
     imageUrl = json['image_url'];
     url = json['url'];
     if (json['voice_acting_roles'] != null) {
-      voiceActingRoles = new List<VoiceActingRoles>();
+      voiceActingRoles = [];
       json['voice_acting_roles'].forEach((v) {
         voiceActingRoles.add(new VoiceActingRoles.fromJson(v));
       });

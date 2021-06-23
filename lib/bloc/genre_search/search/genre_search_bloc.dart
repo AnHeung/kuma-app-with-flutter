@@ -2,7 +2,8 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:kuma_flutter_app/bloc/genre_search/genre_category_list_bloc/genre_category_list_bloc.dart';
+import 'package:kuma_flutter_app/bloc/genre_search/category_list/genre_category_list_bloc.dart';
+import 'package:kuma_flutter_app/enums/base_bloc_state_status.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_all_genre_item.dart';
 import 'package:kuma_flutter_app/model/item/animation_genre_search_item.dart';
 import 'package:kuma_flutter_app/model/item/genre_data.dart';
@@ -10,17 +11,17 @@ import 'package:kuma_flutter_app/repository/api_repository.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';
 
-part 'genre_search_event.dart';
-part 'genre_search_state.dart';
+part '../search/genre_search_event.dart';
+part '../search/genre_search_state.dart';
 
 class GenreSearchBloc extends Bloc<GenreSearchEvent, GenreSearchState> {
 
   final ApiRepository repository;
   final GenreCategoryListBloc genreCategoryListBloc;
 
-  GenreSearchBloc({this.repository,this.genreCategoryListBloc}) : super(const GenreSearchState().initialGenreState()){
+  GenreSearchBloc({this.repository,this.genreCategoryListBloc}) : super(GenreSearchState(status : BaseBlocStateStatus.Initial , genreSearchItems :const <AnimationGenreSearchItem>[], genreData: GenreData(), msg:"", currentPage:1)){
     genreCategoryListBloc.listen((state){
-      if(state.status == GenreCategoryStatus.Success){
+      if(state.status == BaseBlocStateStatus.Success){
           add(GenreLoad(data: state.genreData));
       }
     });
@@ -56,7 +57,7 @@ class GenreSearchBloc extends Bloc<GenreSearchEvent, GenreSearchState> {
 
   Stream<GenreSearchState> _mapToGenreLoad(GenreLoad event , GenreSearchState state) async* {
     try {
-      yield state.copyWith(status:GenreSearchStatus.Loading);
+      yield state.copyWith(status:BaseBlocStateStatus.Loading);
       String q = event.data.q;
       String page = event.page;
       String type = event.data.type;
@@ -84,7 +85,7 @@ class GenreSearchBloc extends Bloc<GenreSearchEvent, GenreSearchState> {
               sort:sort,orderBy: orderBy);
 
       if (genreItem.err) {
-            yield GenreSearchState(status: GenreSearchStatus.Failure, msg: genreItem.msg , genreSearchItems: state.genreSearchItems , genreData: event.data);
+            yield GenreSearchState(status: BaseBlocStateStatus.Failure, msg: genreItem.msg , genreSearchItems: state.genreSearchItems , genreData: event.data);
           } else {
             List<AnimationGenreSearchItem> genreList =  genreItem.result
                 .map((item) => AnimationGenreSearchItem(
@@ -105,13 +106,13 @@ class GenreSearchBloc extends Bloc<GenreSearchEvent, GenreSearchState> {
 
             yield GenreSearchState(
                 currentPage: int.parse(page),
-                status: GenreSearchStatus.Success,
+                status: BaseBlocStateStatus.Success,
                 genreSearchItems: genreList,
                 genreData: event.data);
           }
     } catch (e) {
       print("_mapToGenreLoad ${e}");
-      yield state.copyWith(status:GenreSearchStatus.Failure ,  msg: "_mapToGenreLoad ${e}");
+      yield state.copyWith(status:BaseBlocStateStatus.Failure ,  msg: "_mapToGenreLoad ${e}");
     }
   }
 }

@@ -26,7 +26,6 @@ extension LoginStatusExtension on LoginStatus{
   }
 }
 
-
 class LoginState extends Equatable{
 
    final LoginStatus status;

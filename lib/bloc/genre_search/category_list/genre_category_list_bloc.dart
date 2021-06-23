@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:kuma_flutter_app/enums/base_bloc_state_status.dart';
 import 'package:kuma_flutter_app/enums/category_click_status.dart';
 import 'package:kuma_flutter_app/enums/genre_title.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_genre_list_item.dart';
@@ -18,7 +19,7 @@ class GenreCategoryListBloc extends Bloc<GenreCategoryListEvent, GenreCategoryLi
 
   final ApiRepository repository;
 
-  GenreCategoryListBloc({this.repository}) : super(const GenreCategoryListState().initialGenreCategoryState());
+  GenreCategoryListBloc({this.repository}) : super(GenreCategoryListState(status: BaseBlocStateStatus.Initial , genreData: GenreData(), msg: "", genreListItems: []));
 
 
   @override
@@ -40,13 +41,13 @@ class GenreCategoryListBloc extends Bloc<GenreCategoryListEvent, GenreCategoryLi
 
   Stream<GenreCategoryListState> _mapToGenreCategoryListLoad(GenreCategoryListState state) async* {
     try {
-      yield const GenreCategoryListState(status: GenreCategoryStatus.Loading);
+      yield const GenreCategoryListState(status: BaseBlocStateStatus.Loading);
       SearchMalApiGenreListItem searchMalApiGenreListItem = await repository.getGenreCategoryList();
       if (searchMalApiGenreListItem.err) {
-            yield GenreCategoryListState(status: GenreCategoryStatus.Failure , msg: searchMalApiGenreListItem.msg);
+            yield GenreCategoryListState(status: BaseBlocStateStatus.Failure , msg: searchMalApiGenreListItem.msg);
           } else {
             yield GenreCategoryListState(
-                status: GenreCategoryStatus.Success,
+                status: BaseBlocStateStatus.Success,
                 genreListItems: searchMalApiGenreListItem.result
                     .map((resultItem) => GenreListItem(
                     koreaType: resultItem.typeKorea,
@@ -59,12 +60,12 @@ class GenreCategoryListBloc extends Bloc<GenreCategoryListEvent, GenreCategoryLi
           }
     } catch (e) {
       print("_mapToGenreCategoryListLoad : ${e}");
-      yield GenreCategoryListState(status: GenreCategoryStatus.Failure , msg: "_mapToGenreCategoryListLoad : ${e}");
+      yield state.copyWith(status: BaseBlocStateStatus.Failure , msg: "_mapToGenreCategoryListLoad : ${e}");
     }
   }
 
   Stream<GenreCategoryListState> _mapToGenreRemoveAll(GenreCategoryListState state)async*{
-    yield GenreCategoryListState(status: GenreCategoryStatus.Success, genreListItems: state.genreListItems.map((item) => item.copyWith(navItems: item.navItems.map((navItem) => navItem.copyWith(clickStatus: CategoryClickStatus.None)).toList())).toList() , genreData: GenreData());
+    yield GenreCategoryListState(status: BaseBlocStateStatus.Success, genreListItems: state.genreListItems.map((item) => item.copyWith(navItems: item.navItems.map((navItem) => navItem.copyWith(clickStatus: CategoryClickStatus.None)).toList())).toList() , genreData: GenreData());
   }
 
 
@@ -87,7 +88,7 @@ class GenreCategoryListBloc extends Bloc<GenreCategoryListEvent, GenreCategoryLi
   Stream<GenreCategoryListState> _genreCategorySuccessState({GenreNavItem clickItem , List<GenreListItem> genreItemList}) async*{
     List<GenreListItem> updateGenreList= _getUpdateItemList(genreItemList , clickItem);
     GenreData genreData = _getGenreData(genreListItems:updateGenreList);
-    yield GenreCategoryListState(status: GenreCategoryStatus.Success, genreListItems:updateGenreList , genreData:genreData.copyWith(page: "1"));
+    yield GenreCategoryListState(status: BaseBlocStateStatus.Success, genreListItems:updateGenreList , genreData:genreData.copyWith(page: "1"));
   }
 
   _getGenreData({List<GenreListItem> genreListItems}) {

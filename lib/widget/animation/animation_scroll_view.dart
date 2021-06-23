@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
+import 'package:kuma_flutter_app/enums/base_bloc_state_status.dart';
 import 'package:kuma_flutter_app/routes/routes.dart';
 import 'package:kuma_flutter_app/screen/animation_screen.dart';
 import 'package:kuma_flutter_app/util/common.dart';
@@ -15,8 +16,8 @@ import 'package:kuma_flutter_app/enums/image_shape_type.dart';
 import 'package:kuma_flutter_app/model/item/animation_detail_page_item.dart';
 import 'package:kuma_flutter_app/model/item/animation_main_item.dart';
 import 'package:kuma_flutter_app/model/item/animation_schedule_item.dart';
-import 'package:kuma_flutter_app/model/item/base_scroll_item.dart';
 import 'package:kuma_flutter_app/bloc/animation/animation_bloc.dart';
+import 'package:kuma_flutter_app/model/item/base_scroll_item.dart';
 import 'package:kuma_flutter_app/bloc/animation_schedule/animation_schedule_bloc.dart';
 
 import '../../bloc/animation_schedule/animation_schedule_bloc.dart';
@@ -55,8 +56,8 @@ class _AnimationScrollViewState extends State<AnimationScrollView> {
   Widget _buildRankingItems() {
     return BlocBuilder<AnimationBloc, AnimationState>(
         builder: (context, state) {
-          switch (state.runtimeType) {
-            case AnimationLoadFailure:
+          switch (state.status) {
+            case BaseBlocStateStatus.Failure:
               return Container(
                 height: 300,
                 child: RefreshContainer(
@@ -64,9 +65,8 @@ class _AnimationScrollViewState extends State<AnimationScrollView> {
                       BlocProvider.of<AnimationBloc>(context).add(AnimationLoad()),
                 ),
               );
-            case AnimationLoadSuccess:
-              final List<AnimationMainItem> mainItemList =
-              (state is AnimationLoadSuccess) ? state.rankingList : [];
+            case BaseBlocStateStatus.Success:
+              final List<AnimationMainItem> mainItemList = state.rankingList;
               return ListView(
                 padding: EdgeInsets.zero,
                 shrinkWrap: true,
@@ -80,7 +80,7 @@ class _AnimationScrollViewState extends State<AnimationScrollView> {
                 height: 300,
                 child: LoadingIndicator(
                   type: LoadingIndicatorType.IPhone,
-                  isVisible: state is AnimationLoadInProgress,
+                  isVisible: state.status == BaseBlocStateStatus.Loading ,
                 ),
               );
           }
@@ -178,10 +178,9 @@ class _AnimationScrollViewState extends State<AnimationScrollView> {
     return BlocBuilder<AnimationScheduleBloc, AnimationScheduleState>(
       builder: (context, state) {
         String currentDay = state.currentDay ?? "1";
-        List<AnimationScheduleItem> scheduleItems =
-        state is AnimationScheduleLoadSuccess ? state.scheduleItems : [];
+        List<AnimationScheduleItem> scheduleItems = state.scheduleItems;
 
-        if (state is AnimationScheduleLoadFailure) {
+        if (state.status ==  BaseBlocStateStatus.Failure) {
           return Container(
               height: kAnimationScheduleContainerHeight,
               child: RefreshContainer(
@@ -205,7 +204,7 @@ class _AnimationScrollViewState extends State<AnimationScrollView> {
                 height: kAnimationScheduleContainerHeight,
                 child: LoadingIndicator(
                   type: LoadingIndicatorType.IPhone,
-                  isVisible: state is AnimationScheduleLoadInProgress,
+                  isVisible: state.status ==  BaseBlocStateStatus.Loading,
                 ))
           ],
         );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/person/person_bloc.dart';
+import 'package:kuma_flutter_app/enums/base_bloc_state_status.dart';
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
 import 'package:kuma_flutter_app/model/item/animation_person_item.dart';
 import 'package:kuma_flutter_app/model/item/base_scroll_item.dart';
@@ -30,7 +31,7 @@ class BottomVoiceItemContainer extends StatelessWidget {
     return BlocBuilder<PersonBloc, PersonState>(
       builder: (context, state) {
         AnimationPersonItem personItem = state.personItem;
-        if (state.status == PersonStateStatus.loading) {
+        if (state.status == BaseBlocStateStatus.Loading) {
           return const LoadingIndicator(
             isVisible: true,
           );

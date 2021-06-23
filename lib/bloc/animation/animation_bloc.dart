@@ -5,6 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/login/login_bloc.dart';
 import 'package:kuma_flutter_app/bloc/setting/setting_bloc.dart';
+import 'package:kuma_flutter_app/enums/base_bloc_state_status.dart';
 import 'package:kuma_flutter_app/model/api/login_user.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_ranking_item.dart';
 import 'package:kuma_flutter_app/model/item/animation_main_item.dart';
@@ -22,7 +23,7 @@ class AnimationBloc extends Bloc<AnimationEvent, AnimationState> {
   final SettingBloc settingBloc;
   final LoginBloc loginBloc;
 
-  AnimationBloc({this.repository, this.settingBloc , this.loginBloc}) : super(AnimationLoadInit()){
+  AnimationBloc({this.repository, this.settingBloc , this.loginBloc}) : super(const AnimationState()){
     settingBloc.listen((state) {
       if(state.status == SettingStatus.Complete){
         add(AnimationLoad());
@@ -48,7 +49,7 @@ class AnimationBloc extends Bloc<AnimationEvent, AnimationState> {
 
   Stream<AnimationState> _mapToAnimationLoad() async* {
     try {
-      yield AnimationLoadInProgress();
+      yield state.copyWith(status: BaseBlocStateStatus.Loading);
 
       LoginUserData userData = await getUserData();
       String type = "anime";
@@ -58,9 +59,10 @@ class AnimationBloc extends Bloc<AnimationEvent, AnimationState> {
       SearchRankingApiResult searchRankingApiResult = await repository.getRankingItemList(type,page,rankType, limit);
       bool isErr = searchRankingApiResult.err;
       if (isErr)
-        yield AnimationLoadFailure(errMsg: searchRankingApiResult.msg);
+        yield state.copyWith(status: BaseBlocStateStatus.Failure, msg: searchRankingApiResult.msg);
       else
-        yield AnimationLoadSuccess(
+        yield AnimationState(
+            status: BaseBlocStateStatus.Success,
             rankingList: searchRankingApiResult.result
                 .map((result) =>
                 AnimationMainItem(
@@ -76,14 +78,14 @@ class AnimationBloc extends Bloc<AnimationEvent, AnimationState> {
                         .toList()))
                 .toList());
     }on Exception{
-      yield AnimationLoadFailure(errMsg: "통신 에러 발생");
+      yield state.copyWith(status: BaseBlocStateStatus.Failure, msg: "통신 에러 발생");
     }
   }
 
   Stream<AnimationState> _mapToAnimationLoadUpdate(
       AnimationUpdate event) async* {
-    yield AnimationLoadInProgress();
+    yield state.copyWith(status: BaseBlocStateStatus.Loading);
     List<AnimationMainItem> rankItem = event.rankingList;
-    yield AnimationLoadSuccess(rankingList: rankItem);
+    yield state.copyWith(status: BaseBlocStateStatus.Success , rankingList: rankItem);
   }
 }

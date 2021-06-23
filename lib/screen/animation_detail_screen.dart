@@ -5,10 +5,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/animation_detail/animation_detail_bloc.dart';
 import 'package:kuma_flutter_app/bloc/character_detail/character_detail_bloc.dart';
-import 'package:kuma_flutter_app/bloc/genre_search/genre_category_list_bloc/genre_category_list_bloc.dart';
+import 'package:kuma_flutter_app/bloc/genre_search/category_list/genre_category_list_bloc.dart';
 import 'package:kuma_flutter_app/bloc/subscribe/subscribe_bloc.dart';
 import 'package:kuma_flutter_app/bloc/tab/tab_cubit.dart';
 import 'package:kuma_flutter_app/enums/app_tab.dart';
+import 'package:kuma_flutter_app/enums/base_bloc_state_status.dart';
 import 'package:kuma_flutter_app/enums/category_click_status.dart';
 import 'package:kuma_flutter_app/enums/detail_animation_actions.dart';
 import 'package:kuma_flutter_app/enums/genre_title.dart';
@@ -55,9 +56,9 @@ class AnimationDetailScreen extends StatelessWidget {
     return BlocBuilder<AnimationDetailBloc, AnimationDetailState>(
       builder: (context, state) {
         final AnimationDetailItem detailItem = state.detailItem;
-        bool isLoading = state.status == AnimationDetailStatus.loading;
+        bool isLoading = state.status == BaseBlocStateStatus.Loading;
 
-        if (AnimationDetailStatus.failure == state.status) {
+        if (BaseBlocStateStatus.Failure == state.status) {
           showToast(msg: state.msg);
           return RefreshContainer(
               callback: () => BlocProvider.of<AnimationDetailBloc>(context)
@@ -442,13 +443,12 @@ class AnimationDetailScreen extends StatelessWidget {
         actions: <Widget>[
           BlocConsumer<SubscribeBloc,SubscribeState>(
             listener: (context,state){
-              if(state.status == SubscribeStatus.Failure)
+              if(state.status == BaseBlocStateStatus.Failure)
                 print(state.msg);
             },
             builder: (context,state){
               bool isLogin = state.isLogin;
               bool isSubscribe = state.isSubscribe;
-              print('detailItem :${detailItem}');
               return Visibility(
                 visible: isLogin && detailItem.isNotNull,
                 child: IconButton(

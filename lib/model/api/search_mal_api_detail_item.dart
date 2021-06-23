@@ -77,7 +77,7 @@ class SearchMalDetailApiItemResult {
     synopsis = json['synopsis'];
     status = json['status'];
     if (json['genres'] != null) {
-      genres = new List<SearchMalDetailGenreItem>();
+      genres = [];
       json['genres'].forEach((v) {
         genres.add(new SearchMalDetailGenreItem.fromJson(v));
       });

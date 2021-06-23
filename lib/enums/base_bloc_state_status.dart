@@ -1,0 +1,1 @@
+enum BaseBlocStateStatus {Initial , Loading, Failure , Success}

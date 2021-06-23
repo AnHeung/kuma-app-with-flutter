@@ -3,9 +3,7 @@ part of 'login_bloc.dart';
 enum LoginType{ KAKAO ,GOOGLE , EMAIL,  UNKNOWN}
 
 extension SocialTypeExtension on LoginType{
-
   String get iconRes {
-
     switch(this){
       case LoginType.KAKAO:
         return "assets/images/kakao_talk_logo_color.png";
@@ -15,7 +13,8 @@ extension SocialTypeExtension on LoginType{
         return "assets/images/email_icon.png";
       case LoginType.UNKNOWN:
         return "assets/images/no_image.png";
-
+      default:
+        return "assets/images/no_image.png";
     }
 
   }

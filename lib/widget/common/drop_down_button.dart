@@ -39,7 +39,7 @@ class CustomDropDown extends StatelessWidget {
                 fontSize: 10.0,
                 isEllipsis: true,
               ),
-              style: Theme.of(context).textTheme.title,
+              style: Theme.of(context).textTheme.headline6,
               items: items,
               onChanged: (item) {
                 onChanged(item);

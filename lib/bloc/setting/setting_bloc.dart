@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/model/api/login_user.dart';
 import 'package:kuma_flutter_app/model/item/setting_config.dart';
 import 'package:kuma_flutter_app/repository/api_repository.dart';
@@ -37,7 +38,7 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
       yield SettingState(status: SettingStatus.Success, config: SettingConfig(isAutoScroll: userData.isAutoScroll, receiveNotify: userData.receiveNotify,rankType: userData.rankType, homeItemCount: userData.homeItemCount));
     } catch (e) {
       print("_mapToSettingLoad error: ${e}");
-      yield const SettingState(status:SettingStatus.Failure ,msg: "설정오류 다시 시도해주세요");
+      yield state.copyWith(status:SettingStatus.Failure ,msg: kSettingLoadErrMsg);
     }
   }
 
@@ -45,13 +46,13 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     try {
       yield SettingState(status: SettingStatus.Loading, config: event.config);
       String userId  = await getUserId();
-      if(userId == null) yield const SettingState(status:SettingStatus.Failure ,msg: "유저아이디 정보가 없습니다.");
+      if(userId == null) yield const SettingState(status:SettingStatus.Failure ,msg: kSettingNoUserErrMsg);
       await repository.updateUserItemToFireStore(userId, event.config.toMap());
       await saveSettingConfig(settingConfig: event.config);
       yield SettingState(status:SettingStatus.Success,config: event.config);
     } catch (e) {
       print("_mapToSettingChange ${e}");
-      yield SettingState(status: SettingStatus.Failure, msg: "ChangeSetting 실패 $e",config: event.config);
+      yield state.copyWith(status: SettingStatus.Failure, msg: kSettingChangeErrMsg , config: event.config);
     }
   }
 }

@@ -10,7 +10,7 @@ class AnimationNewsState extends Equatable{
   final int currentPage;
   final String msg;
 
-  const AnimationNewsState({this.status, this.newsItems, this.newsQueryItems,this.msg, this.currentPage = 1  });
+  const AnimationNewsState({this.status = AnimationNewsStatus.Initial, this.newsItems = const<AnimationNewsItem>[], this.newsQueryItems = const<AnimationNewsItem>[],this.msg = "", this.currentPage = 1  });
 
   @override
   List<Object> get props => [status, newsItems , msg,currentPage, newsQueryItems];

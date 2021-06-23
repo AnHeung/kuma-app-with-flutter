@@ -66,22 +66,29 @@ const String doHyunFont = 'DoHyeon';
 const String nanumFont = 'NanumPenScript';
 const String nanumGothicFont = 'NanumGothic';
 
-//Setting
+//설정
 const double kSettingFontSize = 13;
 const String kBaseRankItem = "airing,upcoming,movie";
 const String kBaseHomeItemCount = "30";
+const String kSettingLoadErrMsg = "설정오류 다시 시도해주세요";
+const String kSettingNoUserErrMsg = "유저아이디 정보가 없습니다.";
+const String kSettingChangeErrMsg = "ChangeSetting 실패 다시 시도해주세요";
 
 //더보기
 const double kMoreFontSize = 15;
 const double kMoreLoginFontSize = 10;
 const double kMoreTitleFontSize = 20;
 
+//구독
+
+const String kSubscribeCheckErrMsg = "구독 목록 가져오기 실패";
+const String kSubscribeUpdateErrMsg = "구독에러 재시도 해주세요";
+
 //View_Util
 const double dialogFontSize = 20;
 const double toastFontSize = 15;
 
 //알림내역
-
 const double kNotificationItemHeight = 90;
 const double kNotificationItemWidth = 70;
 const double kNotificationTitleImageSize = 50;
@@ -120,9 +127,12 @@ const String kBottomContainerIntroduceTitle = "소개";
 const String kBottomContainerSiteTitle = "사이트";
 const String kBottomContainerImageTitle = "이미지";
 
-//검색 기록
-
+//검색 이력
 const kSearchHistoryPath = 'search_history.json';
+const kSearchHistoryDeleteErrMsg = "검색목록 삭제 실패";
+const kSearchHistoryLoadErrMsg = "데이터를 가져오는데 실패했습니다.";
+const kSearchHistoryWriteErrMsg = "데이터를 기록하는데 실패했습니다.";
+
 
 //계정페이지
 const double kAccountFontSize = 12;

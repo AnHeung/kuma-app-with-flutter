@@ -9,7 +9,7 @@ class SearchMalApiScheduleItem {
     err = json['err'];
     msg = json['msg'];
     if (json['result'] != null) {
-      result = new List<Result>();
+      result = [];
       json['result'].forEach((v) {
         result.add(new Result.fromJson(v));
       });
