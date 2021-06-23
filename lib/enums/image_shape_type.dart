@@ -1,1 +1,1 @@
-enum  ImageShapeType{ CIRCLE , FLAT }
+enum  ImageShapeType{ Circle , Flat }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
-import 'package:kuma_flutter_app/widget/custom_text.dart';
-import 'package:kuma_flutter_app/widget/loading_indicator.dart';
+import 'package:kuma_flutter_app/widget/common/custom_text.dart';
+import 'package:kuma_flutter_app/widget/common/loading_indicator.dart';
 
 class SplashAnimationScreen extends StatefulWidget {
 
@@ -99,7 +99,7 @@ class _SplashAnimationState extends State<SplashAnimationScreen>
           Align(alignment:Alignment.bottomCenter, child: Container(
             height: 100,
             child: LoadingIndicator(
-              type: LoadingIndicatorType.IPHONE,
+              type: LoadingIndicatorType.IPhone,
               isVisible: widget.isLoading,
             ),
           ))

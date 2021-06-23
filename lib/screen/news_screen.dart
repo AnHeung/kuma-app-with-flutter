@@ -4,12 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/news/animation_news_bloc.dart';
 import 'package:kuma_flutter_app/model/item/animation_news_item.dart';
-import 'package:kuma_flutter_app/util/view_utils.dart';
-import 'package:kuma_flutter_app/widget/custom_text.dart';
-import 'package:kuma_flutter_app/widget/empty_container.dart';
-import 'package:kuma_flutter_app/widget/loading_indicator.dart';
-import 'package:kuma_flutter_app/widget/news_item.dart';
-import 'package:kuma_flutter_app/widget/refresh_container.dart';
+import 'package:kuma_flutter_app/util/common.dart';
+import 'package:kuma_flutter_app/widget/common/custom_text.dart';
+import 'package:kuma_flutter_app/widget/common/empty_container.dart';
+import 'package:kuma_flutter_app/widget/common/loading_indicator.dart';
+import 'package:kuma_flutter_app/widget/common/refresh_container.dart';
+import 'package:kuma_flutter_app/widget/news/news_item.dart';
 
 class NewsScreen extends StatelessWidget {
   final String initialPage = "1";

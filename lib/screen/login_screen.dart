@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
-import 'package:kuma_flutter_app/bloc/animation/animation_bloc.dart';
 import 'package:kuma_flutter_app/bloc/login/login_bloc.dart';
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
-import 'package:kuma_flutter_app/enums/login_status.dart';
 import 'package:kuma_flutter_app/routes/routes.dart';
-import 'package:kuma_flutter_app/util/view_utils.dart';
-import 'package:kuma_flutter_app/widget/custom_text.dart';
-import 'package:kuma_flutter_app/widget/image_item.dart';
-import 'package:kuma_flutter_app/widget/loading_indicator.dart';
-import 'package:kuma_flutter_app/widget/login_dialog.dart';
+import 'package:kuma_flutter_app/util/common.dart';
+import 'package:kuma_flutter_app/widget/common/custom_text.dart';
+import 'package:kuma_flutter_app/widget/common/image_item.dart';
+import 'package:kuma_flutter_app/widget/common/loading_indicator.dart';
+import 'package:kuma_flutter_app/widget/login/login_dialog.dart';
 
 class LoginScreen extends StatelessWidget {
 
@@ -92,7 +90,7 @@ class LoginScreen extends StatelessWidget {
              width: 30,
              height: 30,
              child: ImageItem(
-               type: ImageShapeType.FLAT,
+               type: ImageShapeType.Flat,
                imgRes: imgRes,
              ),
            ),

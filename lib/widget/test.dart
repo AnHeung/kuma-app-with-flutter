@@ -2,8 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
-import 'package:kuma_flutter_app/enums/image_type.dart';
-import 'package:kuma_flutter_app/widget/image_item.dart';
+import 'package:kuma_flutter_app/widget/common/image_item.dart';
 
 class Pages extends StatefulWidget {
 
@@ -32,7 +31,7 @@ class PageState extends State<Pages>{
             Container(
                 color: Colors.pink,
                 child: Center(
-                    child: ImageItem(type: ImageShapeType.FLAT , imgRes: "https://api-cdn.myanimelist.net/images/anime/1598/110462l.jpg",))
+                    child: ImageItem(type: ImageShapeType.Flat , imgRes: "https://api-cdn.myanimelist.net/images/anime/1598/110462l.jpg",))
             ),
 
             Container(

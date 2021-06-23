@@ -7,13 +7,13 @@ import 'package:kuma_flutter_app/enums/image_shape_type.dart';
 import 'package:kuma_flutter_app/model/item/animation_search_item.dart';
 import 'package:kuma_flutter_app/model/item/base_scroll_item.dart';
 import 'package:kuma_flutter_app/routes/routes.dart';
-import 'package:kuma_flutter_app/util/view_utils.dart';
-import 'package:kuma_flutter_app/widget/custom_text.dart';
-import 'package:kuma_flutter_app/widget/inner_text_grid_container.dart';
-import 'package:kuma_flutter_app/widget/loading_indicator.dart';
-import 'package:kuma_flutter_app/widget/search_image_item.dart';
+import 'package:kuma_flutter_app/util/common.dart';
+import 'package:kuma_flutter_app/widget/common/custom_text.dart';
+import 'package:kuma_flutter_app/widget/common/inner_text_grid_container.dart';
+import 'package:kuma_flutter_app/widget/common/loading_indicator.dart';
+import 'package:kuma_flutter_app/widget/search/search_image_item.dart';
 
-import '../model/item/animation_deatil_page_item.dart';
+import '../model/item/animation_detail_page_item.dart';
 
 class SearchScreen extends StatelessWidget {
   @override
@@ -79,7 +79,7 @@ class SearchScreen extends StatelessWidget {
             Container(
               margin: const EdgeInsets.only(top: 30),
               child: InnerTextGridContainer(
-                imageShapeType: ImageShapeType.CIRCLE,
+                imageShapeType: ImageShapeType.Circle,
                 gridCount: 3,
                 list: searchHistoryList
                     .map((item) => BaseScrollItem(

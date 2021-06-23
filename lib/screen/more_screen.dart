@@ -2,12 +2,43 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/auth/auth_bloc.dart';
-import 'package:kuma_flutter_app/enums/more_type.dart';
 import 'package:kuma_flutter_app/routes/routes.dart';
-import 'package:kuma_flutter_app/util/view_utils.dart';
-import 'package:kuma_flutter_app/widget/custom_text.dart';
-import 'package:kuma_flutter_app/widget/loading_indicator.dart';
+import 'package:kuma_flutter_app/util/common.dart';
+import 'package:kuma_flutter_app/widget/common/custom_text.dart';
+import 'package:kuma_flutter_app/widget/common/loading_indicator.dart';
 import 'package:package_info/package_info.dart';
+
+enum MoreType {Account  , Setting, VersionInfo, Logout}
+
+extension  MoreTypeExtension on MoreType{
+
+  get icon {
+
+    switch(this){
+      case MoreType.Account :
+        return Icons.account_circle;
+      case MoreType.VersionInfo :
+        return Icons.info_outline;
+      case MoreType.Setting :
+        return Icons.settings;
+      case MoreType.Logout :
+        return Icons.logout;
+    }
+  }
+
+  get title{
+    switch(this){
+      case MoreType.Account :
+        return "계정 설정 ";
+      case MoreType.Logout :
+        return "로그아웃";
+      case MoreType.VersionInfo :
+        return "버전 정보";
+      case MoreType.Setting :
+        return "설정";
+    }
+  }
+}
 
 class MoreScreen extends StatelessWidget {
   @override

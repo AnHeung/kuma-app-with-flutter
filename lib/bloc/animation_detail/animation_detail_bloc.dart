@@ -6,7 +6,8 @@ import 'package:kuma_flutter_app/model/api/search_mal_api_detail_item.dart';
 import 'package:kuma_flutter_app/model/item/animation_detail_item.dart';
 import 'package:kuma_flutter_app/repository/api_repository.dart';
 import 'package:meta/meta.dart';
-import 'package:kuma_flutter_app/util/object_util.dart';
+import 'package:kuma_flutter_app/util/common.dart';
+
 part 'animation_detail_event.dart';
 part 'animation_detail_state.dart';
 

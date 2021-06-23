@@ -1,1 +1,1 @@
-enum AppTab {ANIMATION, GENRE , NEWS, MORE}
+enum AppTab {Animation, Genre , News, More}

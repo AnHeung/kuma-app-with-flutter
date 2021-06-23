@@ -6,14 +6,12 @@ import 'package:kuma_flutter_app/enums/image_shape_type.dart';
 import 'package:kuma_flutter_app/model/item/animation_news_item.dart';
 import 'package:kuma_flutter_app/model/item/notification_item.dart';
 import 'package:kuma_flutter_app/screen/animation_news_detail_screen.dart';
-import 'package:kuma_flutter_app/util/navigator_util.dart';
-import 'package:kuma_flutter_app/util/view_utils.dart';
-import 'package:kuma_flutter_app/widget/custom_text.dart';
-import 'package:kuma_flutter_app/widget/empty_container.dart';
-import 'package:kuma_flutter_app/widget/image_item.dart';
-import 'package:kuma_flutter_app/util/object_util.dart';
-import 'package:kuma_flutter_app/widget/loading_indicator.dart';
-import 'package:kuma_flutter_app/widget/refresh_container.dart';
+import 'package:kuma_flutter_app/util/common.dart';
+import 'package:kuma_flutter_app/widget/common/custom_text.dart';
+import 'package:kuma_flutter_app/widget/common/empty_container.dart';
+import 'package:kuma_flutter_app/widget/common/image_item.dart';
+import 'package:kuma_flutter_app/widget/common/loading_indicator.dart';
+import 'package:kuma_flutter_app/widget/common/refresh_container.dart';
 
 class NotificationScreen extends StatelessWidget {
   @override
@@ -116,7 +114,7 @@ class NotificationContainerItem extends StatelessWidget {
                   height: kNotificationItemHeight,
                   child: ImageItem(
                     imgRes: item.thumbnail,
-                    type: ImageShapeType.FLAT,
+                    type: ImageShapeType.Flat,
                   )),
             ),
             Expanded(

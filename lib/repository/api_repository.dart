@@ -1,12 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:kuma_flutter_app/bloc/login/login_bloc.dart';
-import 'package:kuma_flutter_app/enums/login_status.dart';
-import 'package:kuma_flutter_app/enums/register_status.dart';
+import 'package:kuma_flutter_app/bloc/register/register_bloc.dart';
 import 'package:kuma_flutter_app/model/api/api_anime_news_item.dart';
 import 'package:kuma_flutter_app/model/api/api_notification_item.dart';
 import 'package:kuma_flutter_app/model/api/api_simple_item.dart';
-import 'package:kuma_flutter_app/model/api/firebase_user_item.dart';
+import 'package:kuma_flutter_app/model/api/login_user.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_all_genre_item.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_character_picture_item.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_detail_item.dart';
@@ -17,10 +16,9 @@ import 'package:kuma_flutter_app/model/api/search_mal_api_search_item.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_season_item.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_character_detail_item.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_person_item.dart';
-import 'package:kuma_flutter_app/model/api/login_user.dart';
 import 'package:kuma_flutter_app/model/item/subscribe_item.dart';
-import 'package:kuma_flutter_app/repository/firebase_client.dart';
 import 'package:kuma_flutter_app/repository/api_client.dart';
+import 'package:kuma_flutter_app/repository/firebase_client.dart';
 import 'package:kuma_flutter_app/repository/search_api_client.dart';
 
 class ApiRepository {

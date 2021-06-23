@@ -1,3 +1,3 @@
 enum DeTailAnimationActions{
-  REFRESH, ADD,
+  Refresh, Add,
 }

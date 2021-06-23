@@ -4,16 +4,13 @@ import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/account/account_bloc.dart';
 import 'package:kuma_flutter_app/bloc/login/login_bloc.dart';
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
-import 'package:kuma_flutter_app/model/user_account.dart';
-import 'package:kuma_flutter_app/routes/routes.dart';
-import 'package:kuma_flutter_app/util/navigator_util.dart';
-import 'package:kuma_flutter_app/util/string_util.dart';
-import 'package:kuma_flutter_app/util/view_utils.dart';
-import 'package:kuma_flutter_app/widget/custom_text.dart';
-import 'package:kuma_flutter_app/widget/empty_container.dart';
-import 'package:kuma_flutter_app/widget/image_item.dart';
-import 'package:kuma_flutter_app/widget/loading_indicator.dart';
-import 'package:kuma_flutter_app/widget/refresh_container.dart';
+import 'package:kuma_flutter_app/model/item/user_account.dart';
+import 'package:kuma_flutter_app/util/common.dart';
+import 'package:kuma_flutter_app/widget/common/custom_text.dart';
+import 'package:kuma_flutter_app/widget/common/image_item.dart';
+import 'package:kuma_flutter_app/widget/common/loading_indicator.dart';
+import 'package:kuma_flutter_app/widget/common/refresh_container.dart';
+
 
 class AccountScreen extends StatelessWidget {
   @override
@@ -141,7 +138,7 @@ class AccountScreen extends StatelessWidget {
                             width: 30,
                             height: 30,
                             child: ImageItem(
-                              type: ImageShapeType.CIRCLE,
+                              type: ImageShapeType.Circle,
                               imgRes: accountData.loginType.iconRes,
                             ),
                           ),

@@ -1,1 +1,1 @@
-enum MoveState{RIGHT, LEFT}
+enum MoveState { Right, Left }

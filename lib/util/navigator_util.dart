@@ -1,9 +1,4 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:kuma_flutter_app/model/item/animation_deatil_page_item.dart';
-import 'package:kuma_flutter_app/model/item/bottom_more_item.dart';
-import 'package:kuma_flutter_app/routes/routes.dart';
-import 'package:kuma_flutter_app/widget/bottom_more_item_container.dart';
+part of 'common.dart';
 
 navigateWithUpAnimation({BuildContext context , Widget navigateScreen}){
   Navigator.push(context, PageRouteBuilder(pageBuilder: (context,animation, secondaryAnimation)=> navigateScreen ,

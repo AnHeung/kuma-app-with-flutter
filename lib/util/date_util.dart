@@ -1,6 +1,4 @@
-
-import 'package:intl/intl.dart';
-import 'package:kuma_flutter_app/app_constants.dart';
+part of 'common.dart';
 
 getFourYearMapData(){
   DateTime now = DateTime.now();

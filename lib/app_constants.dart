@@ -2,6 +2,10 @@
 import 'package:flutter/cupertino.dart';
 
 
+//카카오 key
+const KakaoClientId = "c2de908819754be96af4d46766eaa8eb";
+const KakaoJavascriptClientId = "145316ccaf6edd8159668aee4133c4a5";
+
 const List<String> itemCountList = [
   "5",
   "10",
@@ -134,6 +138,5 @@ const double kRegisterFontSize = 15;
 const double kRegisterTitleFontSize = 20;
 
 //장르검색
-
 const double kGenreItemHeight = 60;
 const double kGenreFilterItemHeight = 30;

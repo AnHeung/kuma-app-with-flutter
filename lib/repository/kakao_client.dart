@@ -1,4 +1,5 @@
 import 'package:kakao_flutter_sdk/all.dart';
+import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/login/login_bloc.dart';
 import 'package:kuma_flutter_app/model/api/login_user.dart';
 import 'package:kuma_flutter_app/repository/social_client.dart';
@@ -9,10 +10,9 @@ class KakaoClient extends LoginClient{
 
   factory KakaoClient()=> _instance;
 
-
   KakaoClient._(){
-    KakaoContext.clientId = "c2de908819754be96af4d46766eaa8eb";
-    KakaoContext.javascriptClientId = "145316ccaf6edd8159668aee4133c4a5";
+    KakaoContext.clientId = KakaoClientId;
+    KakaoContext.javascriptClientId = KakaoJavascriptClientId;
   }
 
   @override

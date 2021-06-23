@@ -21,7 +21,7 @@ class GenreNavItem{
   String categoryValue;
   CategoryClickStatus clickStatus;
 
-  GenreNavItem({this.genreType, this.category, this.categoryValue, clickStatus}) : this.clickStatus = clickStatus?? CategoryClickStatus.NONE;
+  GenreNavItem({this.genreType, this.category, this.categoryValue, clickStatus}) : this.clickStatus = clickStatus?? CategoryClickStatus.None;
 
   GenreNavItem copyWith({genreType, category, categoryValue, clickStatus}){
     return GenreNavItem(genreType: genreType ?? this.genreType , clickStatus: clickStatus ?? this.clickStatus , categoryValue: categoryValue ?? this.categoryValue ,category: category ?? this.category);

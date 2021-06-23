@@ -1,3 +1,3 @@
 enum CategoryClickStatus{
-  INCLUDE, EXCLUDE , NONE
+  Include, Exclude , None
 }

@@ -6,16 +6,16 @@ import 'package:kuma_flutter_app/bloc/genre_search/genre_category_list_bloc/genr
 import 'package:kuma_flutter_app/bloc/genre_search/genre_search_bloc.dart';
 import 'package:kuma_flutter_app/enums/category_click_status.dart';
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
-import 'package:kuma_flutter_app/model/genre_data.dart';
-import 'package:kuma_flutter_app/model/item/animation_deatil_page_item.dart';
+import 'package:kuma_flutter_app/model/item/animation_detail_page_item.dart';
 import 'package:kuma_flutter_app/model/item/animation_genre_search_item.dart';
+import 'package:kuma_flutter_app/model/item/genre_data.dart';
 import 'package:kuma_flutter_app/model/item/genre_nav_item.dart';
 import 'package:kuma_flutter_app/routes/routes.dart';
-import 'package:kuma_flutter_app/util/view_utils.dart';
-import 'package:kuma_flutter_app/widget/custom_text.dart';
-import 'package:kuma_flutter_app/widget/empty_container.dart';
-import 'package:kuma_flutter_app/widget/image_item.dart';
-import 'package:kuma_flutter_app/widget/loading_indicator.dart';
+import 'package:kuma_flutter_app/util/common.dart';
+import 'package:kuma_flutter_app/widget/common/custom_text.dart';
+import 'package:kuma_flutter_app/widget/common/empty_container.dart';
+import 'package:kuma_flutter_app/widget/common/image_item.dart';
+import 'package:kuma_flutter_app/widget/common/loading_indicator.dart';
 
 class GenreSearchScreen extends StatelessWidget {
 
@@ -80,7 +80,7 @@ class GenreSearchScreen extends StatelessWidget {
           genreClickItems = state.genreListItems.fold([], (acc, genreItem) {
             genreItem.navItems
                 .where((navItem) =>
-                    navItem.clickStatus != CategoryClickStatus.NONE)
+                    navItem.clickStatus != CategoryClickStatus.None)
                 .forEach((item) => acc.add(item));
             return acc;
           });
@@ -337,7 +337,7 @@ class _GenreGridViewState extends State<GenreGridView> {
                             flex: 4,
                             child: ImageItem(
                               imgRes: genreSearchItem.image,
-                              type: ImageShapeType.FLAT,
+                              type: ImageShapeType.Flat,
                             )),
                         const SizedBox(
                           height: 5,
@@ -465,8 +465,8 @@ class GenreCategoryItem extends StatelessWidget {
                 fontFamily: doHyunFont,
                 text: navItem.category,
                 fontColor:
-                    (navItem.clickStatus == CategoryClickStatus.INCLUDE ||
-                            navItem.clickStatus == CategoryClickStatus.EXCLUDE)
+                    (navItem.clickStatus == CategoryClickStatus.Include ||
+                            navItem.clickStatus == CategoryClickStatus.Exclude)
                         ? kPurple
                         : kBlack,
               ),
@@ -481,14 +481,14 @@ class GenreCategoryItem extends StatelessWidget {
 
   _buildCategoryIcon(CategoryClickStatus status) {
     switch (status) {
-      case CategoryClickStatus.INCLUDE:
+      case CategoryClickStatus.Include:
         return const Icon(
           Icons.check_box_outlined,
           color: kPurple,
         );
-      case CategoryClickStatus.EXCLUDE:
+      case CategoryClickStatus.Exclude:
         return const Icon(Icons.indeterminate_check_box_outlined, color: kPurple);
-      case CategoryClickStatus.NONE:
+      case CategoryClickStatus.None:
         return const Icon(Icons.check_box_outline_blank);
     }
   }

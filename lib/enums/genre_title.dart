@@ -1,3 +1,3 @@
 enum GenreType{
-  GENRE, YEAR, AIRING, RATED
+  Genre, Year, Airing, Rated
 }

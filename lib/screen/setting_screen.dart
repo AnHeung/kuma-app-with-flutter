@@ -4,10 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/setting/setting_bloc.dart';
-import 'package:kuma_flutter_app/model/setting_config.dart';
-import 'package:kuma_flutter_app/widget/custom_text.dart';
-import 'package:kuma_flutter_app/widget/drop_down_button.dart';
-import 'package:kuma_flutter_app/widget/loading_indicator.dart';
+import 'package:kuma_flutter_app/model/item/setting_config.dart';
+import 'package:kuma_flutter_app/widget/common/custom_text.dart';
+import 'package:kuma_flutter_app/widget/common/drop_down_button.dart';
+import 'package:kuma_flutter_app/widget/common/loading_indicator.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
 class SettingScreen extends StatelessWidget {
@@ -153,7 +153,7 @@ class SettingScreen extends StatelessWidget {
                     ],
                   ),
                   LoadingIndicator(
-                    type: LoadingIndicatorType.IPHONE,
+                    type: LoadingIndicatorType.IPhone,
                     isVisible: state.status == SettingStatus.Loading,
                   )
                 ],

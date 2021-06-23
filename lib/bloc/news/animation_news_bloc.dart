@@ -5,7 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:kuma_flutter_app/model/api/api_anime_news_item.dart';
 import 'package:kuma_flutter_app/model/item/animation_news_item.dart';
 import 'package:kuma_flutter_app/repository/api_repository.dart';
-import 'package:kuma_flutter_app/util/string_util.dart';
+import 'package:kuma_flutter_app/util/common.dart';
 import 'package:meta/meta.dart';
 
 part 'animation_news_event.dart';

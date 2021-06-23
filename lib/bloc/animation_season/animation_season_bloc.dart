@@ -8,7 +8,7 @@ import 'package:kuma_flutter_app/model/api/search_mal_api_season_item.dart';
 import 'package:kuma_flutter_app/model/api/login_user.dart';
 import 'package:kuma_flutter_app/model/item/animation_search_season_item.dart';
 import 'package:kuma_flutter_app/repository/api_repository.dart';
-import 'package:kuma_flutter_app/util/sharepref_util.dart';
+import 'package:kuma_flutter_app/util/common.dart';
 import 'package:meta/meta.dart';
 
 part 'animation_season_event.dart';

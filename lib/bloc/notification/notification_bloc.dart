@@ -3,12 +3,11 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:kuma_flutter_app/bloc/login/login_bloc.dart';
-import 'package:kuma_flutter_app/enums/login_status.dart';
 import 'package:kuma_flutter_app/model/api/api_notification_item.dart';
 import 'package:kuma_flutter_app/model/api/api_simple_item.dart';
 import 'package:kuma_flutter_app/model/item/notification_item.dart';
 import 'package:kuma_flutter_app/repository/api_repository.dart';
-import 'package:kuma_flutter_app/util/sharepref_util.dart';
+import 'package:kuma_flutter_app/util/common.dart';
 import 'package:meta/meta.dart';
 
 part 'notification_event.dart';

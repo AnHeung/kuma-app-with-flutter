@@ -5,13 +5,11 @@ import 'package:equatable/equatable.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/login/login_bloc.dart';
 import 'package:kuma_flutter_app/bloc/setting/setting_bloc.dart';
-import 'package:kuma_flutter_app/enums/login_status.dart';
-import 'package:kuma_flutter_app/model/api/search_mal_api_ranking_item.dart';
 import 'package:kuma_flutter_app/model/api/login_user.dart';
+import 'package:kuma_flutter_app/model/api/search_mal_api_ranking_item.dart';
 import 'package:kuma_flutter_app/model/item/animation_main_item.dart';
-import 'package:kuma_flutter_app/model/setting_config.dart';
 import 'package:kuma_flutter_app/repository/api_repository.dart';
-import 'package:kuma_flutter_app/util/sharepref_util.dart';
+import 'package:kuma_flutter_app/util/common.dart';
 import 'package:meta/meta.dart';
 
 part 'animation_event.dart';

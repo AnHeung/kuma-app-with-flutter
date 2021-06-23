@@ -3,14 +3,12 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:kuma_flutter_app/model/api/notification_user.dart';
 import 'package:kuma_flutter_app/model/item/subscribe_item.dart';
 import 'package:kuma_flutter_app/repository/api_repository.dart';
-import 'package:kuma_flutter_app/util/object_util.dart';
+import 'package:kuma_flutter_app/util/common.dart';
 import 'package:meta/meta.dart';
 
 part 'subscribe_event.dart';
-
 part 'subscribe_state.dart';
 
 class SubscribeBloc extends Bloc<SubscribeEvent, SubscribeState> {

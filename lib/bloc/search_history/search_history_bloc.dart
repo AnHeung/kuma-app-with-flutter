@@ -9,7 +9,7 @@ import 'package:kuma_flutter_app/model/item/animation_search_item.dart';
 import 'package:kuma_flutter_app/repository/api_repository.dart';
 import 'package:meta/meta.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:kuma_flutter_app/util/string_util.dart';
+import 'package:kuma_flutter_app/util/common.dart';
 
 part 'search_history_event.dart';
 part 'search_history_state.dart';

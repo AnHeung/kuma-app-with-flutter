@@ -1,22 +1,19 @@
 import 'dart:async';
 
-import 'package:kuma_flutter_app/util/object_util.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/login/login_bloc.dart';
-import 'package:kuma_flutter_app/enums/login_status.dart';
-import 'package:kuma_flutter_app/enums/register_status.dart';
+import 'package:kuma_flutter_app/bloc/register/register_bloc.dart';
 import 'package:kuma_flutter_app/model/api/login_user.dart';
+import 'package:kuma_flutter_app/model/item/subscribe_item.dart';
 import 'package:kuma_flutter_app/repository/email_client.dart';
 import 'package:kuma_flutter_app/repository/google_client.dart';
 import 'package:kuma_flutter_app/repository/kakao_client.dart';
 import 'package:kuma_flutter_app/repository/social_client.dart';
-import 'package:kuma_flutter_app/util/sharepref_util.dart';
-import 'package:kuma_flutter_app/util/string_util.dart';
-import 'package:kuma_flutter_app/model/item/subscribe_item.dart';
+import 'package:kuma_flutter_app/util/common.dart';
 
 class FirebaseClient {
   LoginClient loginClient;

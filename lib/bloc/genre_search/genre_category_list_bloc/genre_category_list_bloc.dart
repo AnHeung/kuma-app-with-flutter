@@ -5,10 +5,10 @@ import 'package:equatable/equatable.dart';
 import 'package:kuma_flutter_app/enums/category_click_status.dart';
 import 'package:kuma_flutter_app/enums/genre_title.dart';
 import 'package:kuma_flutter_app/model/api/search_mal_api_genre_list_item.dart';
-import 'package:kuma_flutter_app/model/genre_data.dart';
+import 'package:kuma_flutter_app/model/item/genre_data.dart';
 import 'package:kuma_flutter_app/model/item/genre_nav_item.dart';
 import 'package:kuma_flutter_app/repository/api_repository.dart';
-import 'package:kuma_flutter_app/util/string_util.dart';
+import 'package:kuma_flutter_app/util/common.dart';
 import 'package:meta/meta.dart';
 
 part 'genre_category_list_event.dart';
@@ -54,7 +54,7 @@ class GenreCategoryListBloc extends Bloc<GenreCategoryListEvent, GenreCategoryLi
                     navItems: resultItem.genreResult.map((result) => GenreNavItem(
                         category: result.category,
                         categoryValue: result.categoryValue,
-                        clickStatus: CategoryClickStatus.NONE,
+                        clickStatus: CategoryClickStatus.None,
                         genreType:  enumFromString<GenreType>(resultItem.type, GenreType.values))).toList())).toList() , genreData: GenreData(page: "1"));
           }
     } catch (e) {
@@ -64,7 +64,7 @@ class GenreCategoryListBloc extends Bloc<GenreCategoryListEvent, GenreCategoryLi
   }
 
   Stream<GenreCategoryListState> _mapToGenreRemoveAll(GenreCategoryListState state)async*{
-    yield GenreCategoryListState(status: GenreCategoryStatus.Success, genreListItems: state.genreListItems.map((item) => item.copyWith(navItems: item.navItems.map((navItem) => navItem.copyWith(clickStatus: CategoryClickStatus.NONE)).toList())).toList() , genreData: GenreData());
+    yield GenreCategoryListState(status: GenreCategoryStatus.Success, genreListItems: state.genreListItems.map((item) => item.copyWith(navItems: item.navItems.map((navItem) => navItem.copyWith(clickStatus: CategoryClickStatus.None)).toList())).toList() , genreData: GenreData());
   }
 
 
@@ -80,7 +80,7 @@ class GenreCategoryListBloc extends Bloc<GenreCategoryListEvent, GenreCategoryLi
   }
 
   Stream<GenreCategoryListState> _mapToGenreItemRemove(GenreItemRemove event , GenreCategoryListState state)async*{
-    GenreNavItem clickItem = event.navItem.copyWith(clickStatus: CategoryClickStatus.NONE);
+    GenreNavItem clickItem = event.navItem.copyWith(clickStatus: CategoryClickStatus.None);
     yield* _genreCategorySuccessState(clickItem:clickItem , genreItemList: state.genreListItems);
   }
 
@@ -96,23 +96,23 @@ class GenreCategoryListBloc extends Bloc<GenreCategoryListEvent, GenreCategoryLi
     return clickNavItem.fold(GenreData(), (acc, navItem) {
       GenreData genreData = (acc as GenreData);
       switch(navItem.genreType){
-        case GenreType.GENRE:
-          if (navItem.clickStatus == CategoryClickStatus.EXCLUDE) {
+        case GenreType.Genre:
+          if (navItem.clickStatus == CategoryClickStatus.Exclude) {
             String genreExclude = genreData.genreExclude ?? "";
             genreExclude = _appendComma(baseString: genreExclude, appendString: navItem.categoryValue);
             return genreData.copyWith(genreExclude: genreExclude);
-          } else if (navItem.clickStatus == CategoryClickStatus.INCLUDE) {
+          } else if (navItem.clickStatus == CategoryClickStatus.Include) {
             String genre = genreData.genre ?? "";
             genre = _appendComma(baseString: genre, appendString: navItem.categoryValue);
             return (acc as GenreData).copyWith(genre: genre);
           }
           return acc;
-        case GenreType.YEAR:
+        case GenreType.Year:
           List<String> dateList = navItem.categoryValue.split("~");
           return genreData.copyWith(startDate: dateList.first , endDate: dateList.last);
-        case GenreType.AIRING:
+        case GenreType.Airing:
           return genreData.copyWith(status: navItem.categoryValue);
-        case GenreType.RATED:
+        case GenreType.Rated:
           String rated = genreData.rated;
           rated = _appendComma(baseString: rated, appendString: navItem.categoryValue);
           return genreData.copyWith(rated: rated);
@@ -123,7 +123,7 @@ class GenreCategoryListBloc extends Bloc<GenreCategoryListEvent, GenreCategoryLi
   List<GenreNavItem> _setClickItemList({List<GenreListItem> genreListItems}){
     return genreListItems.fold([], (acc, genreItem) {
       genreItem.navItems
-          .where((navItem) => navItem.clickStatus != CategoryClickStatus.NONE)
+          .where((navItem) => navItem.clickStatus != CategoryClickStatus.None)
           .forEach((item) => acc.add(item));
       return acc;
     });
@@ -132,9 +132,9 @@ class GenreCategoryListBloc extends Bloc<GenreCategoryListEvent, GenreCategoryLi
   _getUpdateItemList(List<GenreListItem> genreListItems , GenreNavItem updateItem){
     return genreListItems.map((genreItem){
       return GenreListItem(type: genreItem.type , koreaType: genreItem.koreaType, navItems: genreItem.navItems.map((navItem){
-        if(navItem.genreType != GenreType.GENRE && navItem.genreType != GenreType.RATED && navItem.genreType == updateItem.genreType){
+        if(navItem.genreType != GenreType.Genre && navItem.genreType != GenreType.Rated && navItem.genreType == updateItem.genreType){
             if(navItem.categoryValue == updateItem.categoryValue) return navItem.copyWith(clickStatus: updateItem.clickStatus);
-            else return navItem.copyWith(clickStatus: CategoryClickStatus.NONE);
+            else return navItem.copyWith(clickStatus: CategoryClickStatus.None);
         }
         if(navItem.categoryValue == updateItem.categoryValue) return navItem.copyWith(clickStatus: updateItem.clickStatus);
         return navItem;
@@ -145,7 +145,7 @@ class GenreCategoryListBloc extends Bloc<GenreCategoryListEvent, GenreCategoryLi
   _getClearItemList(List<GenreListItem> genreListItems){
     return genreListItems.map((genreItem){
       return genreItem.copyWith(navItems: genreItem.navItems.map((navItem){
-        return  navItem.copyWith(clickStatus: CategoryClickStatus.NONE);
+        return  navItem.copyWith(clickStatus: CategoryClickStatus.None);
       }).toList());
     }).toList();
   }
@@ -163,18 +163,18 @@ class GenreCategoryListBloc extends Bloc<GenreCategoryListEvent, GenreCategoryLi
     CategoryClickStatus clickStatus = status;
 
     switch (status) {
-      case CategoryClickStatus.INCLUDE:
-        if (genreType == GenreType.GENRE) {
-          clickStatus =  CategoryClickStatus.EXCLUDE;
+      case CategoryClickStatus.Include:
+        if (genreType == GenreType.Genre) {
+          clickStatus =  CategoryClickStatus.Exclude;
         } else {
-          clickStatus =  CategoryClickStatus.NONE;
+          clickStatus =  CategoryClickStatus.None;
         }
         break;
-      case CategoryClickStatus.EXCLUDE:
-        clickStatus =  CategoryClickStatus.NONE;
+      case CategoryClickStatus.Exclude:
+        clickStatus =  CategoryClickStatus.None;
         break;
-      case CategoryClickStatus.NONE:
-        clickStatus =  CategoryClickStatus.INCLUDE;
+      case CategoryClickStatus.None:
+        clickStatus =  CategoryClickStatus.Include;
         break;
     }
     return clickStatus;

@@ -1,7 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/login/login_bloc.dart';
-import 'package:kuma_flutter_app/util/string_util.dart';
+import 'package:kuma_flutter_app/util/common.dart';
 
 class LoginUserData{
 
@@ -15,7 +14,7 @@ class LoginUserData{
  final String homeItemCount;
  final String rankType;
 
- const LoginUserData({@required this.token ,this.uniqueId, this.userId , this.userName, this.loginType, this.isAutoScroll, this.receiveNotify,this.homeItemCount,this.rankType});
+ const LoginUserData({this.token ,this.uniqueId, this.userId , this.userName, this.loginType, this.isAutoScroll, this.receiveNotify,this.homeItemCount,this.rankType});
 
  static const empty = LoginUserData(token : '', uniqueId: '',userId: '', userName: '',  loginType:LoginType.UNKNOWN ,isAutoScroll:true, receiveNotify:false, homeItemCount:kBaseHomeItemCount , rankType: kBaseRankItem);
 

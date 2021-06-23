@@ -1,3 +1,5 @@
+part of 'common.dart';
+
 extension GeneralUtilsObjectExtension on Object {
   bool get isNull => this == null;
 

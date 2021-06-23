@@ -1,19 +1,4 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:kuma_flutter_app/app_constants.dart';
-import 'package:kuma_flutter_app/bloc/character_detail/character_detail_bloc.dart';
-import 'package:kuma_flutter_app/bloc/person/person_bloc.dart';
-import 'package:kuma_flutter_app/enums/image_shape_type.dart';
-import 'package:kuma_flutter_app/enums/image_type.dart';
-import 'package:kuma_flutter_app/enums/move_state.dart';
-import 'package:kuma_flutter_app/repository/api_repository.dart';
-import 'package:kuma_flutter_app/widget/bottom_character_item_container.dart';
-import 'package:kuma_flutter_app/widget/bottom_voice_item_container.dart';
-import 'package:kuma_flutter_app/widget/custom_text.dart';
-import 'package:kuma_flutter_app/widget/image_item.dart';
-
+part of 'common.dart';
 
 MaterialColor createMaterialColor(Color color) {
   List strengths = <double>[.05];
@@ -77,7 +62,7 @@ showImageDialog(
                           flex: 1,
                           child: SizedBox.expand(
                               child: ImageItem(
-                            type: ImageShapeType.FLAT,
+                            type: ImageShapeType.Flat,
                             imgRes: img,
                           )),
                         ),
@@ -111,7 +96,7 @@ showImageDialog(
                 onTap: () => _controlPage(
                     listSize: imgList.length,
                     controller: controller,
-                    state: MoveState.RIGHT),
+                    state: MoveState.Right),
                 child: Container(
                     alignment: Alignment.centerRight,
                     child: const Icon(
@@ -127,7 +112,7 @@ showImageDialog(
                 onTap: () => _controlPage(
                     listSize: imgList.length,
                     controller: controller,
-                    state: MoveState.LEFT),
+                    state: MoveState.Left),
                 child: Container(
                     alignment: Alignment.centerLeft,
                     child: const Icon(
@@ -151,14 +136,14 @@ _controlPage({int listSize, PageController controller, MoveState state}) {
   var curves = Curves.easeIn;
 
   switch (state) {
-    case MoveState.LEFT:
+    case MoveState.Left:
       if (listSize > 1 && currentPage == 0)
         controller.animateToPage(listSize - 1,
             duration: duration, curve: curves);
       else
         controller.previousPage(duration: duration, curve: Curves.easeIn);
       break;
-    case MoveState.RIGHT:
+    case MoveState.Right:
       if (listSize > 1 && currentPage == listSize - 1)
         controller.animateToPage(0, duration: duration, curve: curves);
       else
@@ -307,12 +292,12 @@ showVoiceBottomSheet({BuildContext context , String id}){
 
 checkImageType(String res) {
   if (res.isEmpty) {
-    return ImageType.NO_IMAGE;
+    return ImageType.NoImage;
   }else if(res.contains("assets/")) {
-    return ImageType.ASSETS;
+    return ImageType.Assets;
   }else if (res.startsWith("/data")) {
-    return ImageType.FILE;
+    return ImageType.File;
   } else {
-    return ImageType.NETWORK;
+    return ImageType.Network;
   }
 }

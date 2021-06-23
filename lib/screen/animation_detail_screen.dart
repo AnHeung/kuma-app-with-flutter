@@ -13,30 +13,28 @@ import 'package:kuma_flutter_app/enums/category_click_status.dart';
 import 'package:kuma_flutter_app/enums/detail_animation_actions.dart';
 import 'package:kuma_flutter_app/enums/genre_title.dart';
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
-import 'package:kuma_flutter_app/model/item/animation_deatil_page_item.dart';
+import 'package:kuma_flutter_app/model/item/animation_detail_page_item.dart';
 import 'package:kuma_flutter_app/model/item/animation_detail_item.dart';
 import 'package:kuma_flutter_app/model/item/base_scroll_item.dart';
 import 'package:kuma_flutter_app/model/item/bottom_more_item.dart';
 import 'package:kuma_flutter_app/model/item/genre_nav_item.dart';
 import 'package:kuma_flutter_app/model/item/subscribe_item.dart';
-import 'package:kuma_flutter_app/util/navigator_util.dart';
-import 'package:kuma_flutter_app/util/object_util.dart';
-import 'package:kuma_flutter_app/util/view_utils.dart';
-import 'package:kuma_flutter_app/widget/bottom_character_item_container.dart';
-import 'package:kuma_flutter_app/widget/bottom_more_item_container.dart';
-import 'package:kuma_flutter_app/widget/bottom_video_item_container.dart';
-import 'package:kuma_flutter_app/widget/custom_text.dart';
-import 'package:kuma_flutter_app/widget/empty_container.dart';
-import 'package:kuma_flutter_app/widget/image_item.dart';
-import 'package:kuma_flutter_app/widget/image_scroll_container.dart';
-import 'package:kuma_flutter_app/widget/loading_indicator.dart';
-import 'package:kuma_flutter_app/widget/refresh_container.dart';
-import 'package:kuma_flutter_app/widget/title_container.dart';
-import 'package:kuma_flutter_app/widget/title_image_more_container.dart';
-import 'package:kuma_flutter_app/widget/youtube_player.dart';
+import 'package:kuma_flutter_app/widget/bottom/bottom_character_item_container.dart';
+import 'package:kuma_flutter_app/widget/bottom/bottom_more_item_container.dart';
+import 'package:kuma_flutter_app/widget/bottom/bottom_video_item_container.dart';
+import 'package:kuma_flutter_app/widget/common/custom_text.dart';
+import 'package:kuma_flutter_app/widget/common/empty_container.dart';
+import 'package:kuma_flutter_app/widget/common/image_item.dart';
+import 'package:kuma_flutter_app/widget/common/image_scroll_container.dart';
+import 'package:kuma_flutter_app/widget/common/loading_indicator.dart';
+import 'package:kuma_flutter_app/widget/common/refresh_container.dart';
+import 'package:kuma_flutter_app/widget/common/title_container.dart';
+import 'package:kuma_flutter_app/widget/common/title_image_more_container.dart';
+import 'package:kuma_flutter_app/widget/common/youtube_player.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:kuma_flutter_app/util/common.dart';
 
-import '../model/item/animation_deatil_page_item.dart';
+import '../model/item/animation_detail_page_item.dart';
 import '../repository/api_repository.dart';
 
 class AnimationDetailScreen extends StatelessWidget {
@@ -113,7 +111,7 @@ class AnimationDetailScreen extends StatelessWidget {
                               title: characterItem.name,
                               imgUrl: characterItem.imageUrl))
                           .toList()),
-                  imageShapeType: ImageShapeType.CIRCLE,
+                  imageShapeType: ImageShapeType.Circle,
                   imageDiveRate: 3,
                   categoryTitle: kAnimationDetailCharacterTitle,
                   height: kAnimationImageContainerHeight,
@@ -158,7 +156,7 @@ class AnimationDetailScreen extends StatelessWidget {
                   categoryTitle: kAnimationDetailRelateTitle,
                   height: kAnimationImageContainerHeight,
                   imageDiveRate: 3,
-                  imageShapeType: ImageShapeType.CIRCLE,
+                  imageShapeType: ImageShapeType.Circle,
                   baseItemList: detailItem.relatedAnime
                       .map((data) => BaseScrollItem(
                             id: data.id,
@@ -184,7 +182,7 @@ class AnimationDetailScreen extends StatelessWidget {
                   categoryTitle: kAnimationDetailRecommendTitle,
                   height: kAnimationImageContainerHeight,
                   imageDiveRate: 3,
-                  imageShapeType: ImageShapeType.CIRCLE,
+                  imageShapeType: ImageShapeType.Circle,
                   baseItemList: detailItem.recommendationAnimes
                       .map((data) => BaseScrollItem(
                             id: data.id,
@@ -309,11 +307,11 @@ class AnimationDetailScreen extends StatelessWidget {
                             onTap: _pushGenreSearchScreen(
                                 context: context,
                                 event: GenreClickFromDetailScreen(
-                                    navItem: GenreNavItem().copyWith(
+                                    navItem: GenreNavItem(
                                         category: genre.name,
                                         categoryValue: genre.id,
-                                        clickStatus: CategoryClickStatus.NONE,
-                                        genreType: GenreType.GENRE))),
+                                        clickStatus: CategoryClickStatus.None,
+                                        genreType: GenreType.Genre))),
                             behavior: HitTestBehavior.translucent,
                             child: Padding(
                               padding: const EdgeInsets.only(left: 10),
@@ -372,7 +370,7 @@ class AnimationDetailScreen extends StatelessWidget {
             child: ImageItem(
               opacity: 0.8,
               imgRes: detailItem.image,
-              type: ImageShapeType.FLAT,
+              type: ImageShapeType.Flat,
             ),
           ),
           Container(
@@ -391,7 +389,7 @@ class AnimationDetailScreen extends StatelessWidget {
                       child: Hero(
                         tag: "animation-detail-hero${detailItem.id}",
                         child: ImageItem(
-                          type: ImageShapeType.FLAT,
+                          type: ImageShapeType.Flat,
                           imgRes: detailItem.image,
                         ),
                       ),
@@ -486,9 +484,9 @@ class AnimationDetailScreen extends StatelessWidget {
           PopupMenuButton<DeTailAnimationActions>(
             onSelected: (value) {
               switch (value) {
-                case DeTailAnimationActions.ADD:
+                case DeTailAnimationActions.Add:
                   break;
-                case DeTailAnimationActions.REFRESH:
+                case DeTailAnimationActions.Refresh:
                   BlocProvider.of<AnimationDetailBloc>(context)
                       .add(AnimationDetailLoad(id: infoItem.id));
                   break;
@@ -497,11 +495,11 @@ class AnimationDetailScreen extends StatelessWidget {
             itemBuilder: (BuildContext context) =>
                 <PopupMenuItem<DeTailAnimationActions>>[
               const PopupMenuItem<DeTailAnimationActions>(
-                value: DeTailAnimationActions.ADD,
+                value: DeTailAnimationActions.Add,
                 child: Text('배치에 추가'),
               ),
               const PopupMenuItem<DeTailAnimationActions>(
-                value: DeTailAnimationActions.REFRESH,
+                value: DeTailAnimationActions.Refresh,
                 child: Text('새로고침'),
               ),
             ],
@@ -534,7 +532,7 @@ class AnimationDetailScreen extends StatelessWidget {
   VoidCallback _pushGenreSearchScreen({BuildContext context, GenreClickFromDetailScreen event}) {
     return () {
       moveToHomeScreen(context: context);
-      BlocProvider.of<TabCubit>(context).tabUpdate(AppTab.GENRE);
+      BlocProvider.of<TabCubit>(context).tabUpdate(AppTab.Genre);
       BlocProvider.of<GenreCategoryListBloc>(context).add(event);
     };
   }

@@ -1,6 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:kuma_flutter_app/bloc/notification/notification_bloc.dart';
-import 'package:kuma_flutter_app/util/string_util.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,6 +15,7 @@ import 'package:kuma_flutter_app/bloc/genre_search/genre_search_bloc.dart';
 import 'package:kuma_flutter_app/bloc/login/login_bloc.dart';
 import 'package:kuma_flutter_app/bloc/more/more_bloc.dart';
 import 'package:kuma_flutter_app/bloc/news/animation_news_bloc.dart';
+import 'package:kuma_flutter_app/bloc/notification/notification_bloc.dart';
 import 'package:kuma_flutter_app/bloc/register/register_bloc.dart';
 import 'package:kuma_flutter_app/bloc/search/search_bloc.dart';
 import 'package:kuma_flutter_app/bloc/search_history/search_history_bloc.dart';
@@ -40,8 +39,7 @@ import 'package:kuma_flutter_app/screen/register_screen.dart';
 import 'package:kuma_flutter_app/screen/search_screen.dart';
 import 'package:kuma_flutter_app/screen/setting_screen.dart';
 import 'package:kuma_flutter_app/screen/splash_screen.dart';
-import 'package:kuma_flutter_app/util/sharepref_util.dart';
-import 'package:kuma_flutter_app/util/view_utils.dart';
+import 'package:kuma_flutter_app/util/common.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 class App extends StatefulWidget {
@@ -157,6 +155,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
       },
       child: MultiBlocProvider(
           providers: [
+            BlocProvider(create: (context) => TabCubit(),),
             BlocProvider(create: (context) => AuthBloc(repository: context.read<ApiRepository>())),
             BlocProvider(create: (context) => SettingBloc(repository: context.read<ApiRepository>())),
             BlocProvider(create: (context) => GenreCategoryListBloc(repository: context.read<ApiRepository>())),
@@ -188,7 +187,6 @@ class _AppState extends State<App> with WidgetsBindingObserver {
                 Routes.HOME: (context) {
                   return MultiBlocProvider(
                     providers: [
-                      BlocProvider(create: (context) => TabCubit(),),
                       BlocProvider(
                           create: (_) => AnimationBloc(
                               repository: context.read<ApiRepository>(),

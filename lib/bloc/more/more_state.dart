@@ -1,31 +1,17 @@
 part of 'more_bloc.dart';
 
-@immutable
-abstract class MoreState extends Equatable{
+enum MoreStatus {Initial , Loading, Success , NeedLogin, Failure , }
 
-  const MoreState();
+class MoreState extends Equatable{
 
-  @override
-  List<Object> get props =>[];
+  final MoreStatus status;
+  final String msg;
 
-}
-
-class MoreInitial extends MoreState {}
-
-class MoreLoadingInProgress extends MoreState {}
-
-class MoreLoadSuccess extends MoreState {}
-
-class MoreNeedLogin extends MoreState {}
-
-class MoreLoadFailure extends MoreState {
-
-  final String errMsg;
-
-  const MoreLoadFailure({this.errMsg});
+  const MoreState({this.status = MoreStatus.Initial,  this.msg = ""});
 
   @override
-  List<Object> get props =>[errMsg];
+  List<Object> get props =>[status, msg];
+
 }
 
 

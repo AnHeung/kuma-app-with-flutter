@@ -15,7 +15,6 @@ part 'search_api_client.g.dart';
 
 @RestApi(baseUrl: "https://search.kumaserver.me/")
 abstract class SearchApiClient {
-  // manatoki, crawling , down , siteInfo , hotdeal , torrent , schedule
 
   @GET("/translate/title")
   Future<SearchMalApiSearchItem> getSearchItems(@Query("q") String query);

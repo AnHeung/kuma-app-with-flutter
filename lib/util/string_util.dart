@@ -1,7 +1,4 @@
-// Helper functions
-import 'dart:convert';
-
-import 'package:crypto/crypto.dart';
+part of 'common.dart';
 
 T enumFromString<T>(String key, List<T> values) => values.firstWhere((v) => key == enumToString(v), orElse: () => null);
 

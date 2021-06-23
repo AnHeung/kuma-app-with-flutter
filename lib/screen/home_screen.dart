@@ -8,7 +8,7 @@ import 'package:kuma_flutter_app/screen/animation_screen.dart';
 import 'package:kuma_flutter_app/screen/genre_search_screen.dart';
 import 'package:kuma_flutter_app/screen/more_screen.dart';
 import 'package:kuma_flutter_app/screen/news_screen.dart';
-import 'package:kuma_flutter_app/widget/tab_selector.dart';
+import 'package:kuma_flutter_app/widget/home/tab_selector.dart';
 
 class HomeScreen extends StatelessWidget {
 
@@ -19,12 +19,12 @@ class HomeScreen extends StatelessWidget {
 
     return BlocBuilder<TabCubit, AppTab>(builder: (context, currentTab) {
 
-      if(currentTab != AppTab.NEWS) FocusManager.instance.primaryFocus?.unfocus();
+      if(currentTab != AppTab.News) FocusManager.instance.primaryFocus?.unfocus();
 
       return Scaffold(
         body:  IndexedStack(children: homeScreenList ,index: currentTab.index,),
         floatingActionButton: Visibility(
-          visible: currentTab != AppTab.MORE && currentTab != AppTab.NEWS,
+          visible: currentTab != AppTab.More && currentTab != AppTab.News,
           child: FloatingActionButton(
             onPressed: () => Navigator.pushNamed(context, Routes.SEARCH),
             child: const Icon(Icons.search),

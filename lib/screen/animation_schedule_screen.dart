@@ -4,13 +4,14 @@ import 'package:flutter_simple_rating_bar/flutter_simple_rating_bar.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/animation_schedule/animation_schedule_bloc.dart';
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
-import 'package:kuma_flutter_app/model/item/animation_deatil_page_item.dart';
+import 'package:kuma_flutter_app/model/item/animation_detail_page_item.dart';
 import 'package:kuma_flutter_app/model/item/animation_schedule_item.dart';
 import 'package:kuma_flutter_app/routes/routes.dart';
-import 'package:kuma_flutter_app/util/string_util.dart';
-import 'package:kuma_flutter_app/widget/custom_text.dart';
-import 'package:kuma_flutter_app/widget/image_item.dart';
-import 'package:kuma_flutter_app/widget/loading_indicator.dart';
+import 'package:kuma_flutter_app/widget/common/custom_text.dart';
+import 'package:kuma_flutter_app/widget/common/image_item.dart';
+import 'package:kuma_flutter_app/widget/common/loading_indicator.dart';
+
+import 'package:kuma_flutter_app/util/common.dart';
 
 class AnimationScheduleScreen extends StatelessWidget {
   @override
@@ -95,7 +96,7 @@ class AnimationScheduleScreen extends StatelessWidget {
                 height: 50,
                 child: ImageItem(
                   imgRes: item.image,
-                  type: ImageShapeType.FLAT,
+                  type: ImageShapeType.Flat,
                 ),
               ),
             ),
