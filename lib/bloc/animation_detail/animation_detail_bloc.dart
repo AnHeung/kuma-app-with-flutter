@@ -30,31 +30,22 @@ class AnimationDetailBloc extends Bloc<AnimationDetailEvent, AnimationDetailStat
   }
 
   Stream<AnimationDetailState> _mapToAnimationDetailVideoLoad(AnimationDetailVideoLoad event) async*{
-    yield AnimationDetailState(status: BaseBlocStateStatus.Success ,detailItem:  event.detailItem);
+    yield state.copyWith(status: BaseBlocStateStatus.Success , detailItem: event.detailItem);
   }
-
 
   Stream<AnimationDetailState> _mapToAnimationDetailLoad(
       AnimationDetailLoad event) async* {
     try {
-      yield const AnimationDetailState(status:BaseBlocStateStatus.Loading);
+      yield const AnimationDetailState(status: BaseBlocStateStatus.Loading);
       String id = event.id;
-      SearchMalDetailApiItem malDetailApiItem = await repository
-          .getDetailApiItem(id);
+      SearchMalDetailApiItem malDetailApiItem = await repository.getDetailApiItem(id);
       if (malDetailApiItem.err) {
-        yield AnimationDetailState(status:BaseBlocStateStatus.Failure, msg: malDetailApiItem.msg);
+        yield state.copyWith(status:BaseBlocStateStatus.Failure, msg: malDetailApiItem.msg);
       } else {
         SearchMalDetailApiItemResult result = malDetailApiItem.result;
-        List<RelatedAnimeItem> relateItemList = result.relatedAnime.map((
-            item) =>
-            RelatedAnimeItem(id: item.id, image: item.image, title: item.title))
-            .toList();
-        List<RecommendationAnimeItem> recommendList = result.recommendAnime
-            .map((item) =>
-            RecommendationAnimeItem(
-                id: item.id, image: item.image, title: item.title)).toList();
-        List<StudioItem> studioList = result.studios.map((item) =>
-            StudioItem(id: item.id, name: item.name)).toList();
+        List<RelatedAnimeItem> relateItemList = result.relatedAnime.map((item) => RelatedAnimeItem(id: item.id, image: item.image, title: item.title)).toList();
+        List<RecommendationAnimeItem> recommendList = result.recommendAnime.map((item) => RecommendationAnimeItem(id: item.id, image: item.image, title: item.title)).toList();
+        List<StudioItem> studioList = result.studios.map((item) => StudioItem(id: item.id, name: item.name)).toList();
         List<AnimationDetailGenreItem> genreList = result.genres.map((item) => AnimationDetailGenreItem(id: item.id, name: item.name)).toList();
         List<VideoItem> videoList = result.videos!= null ? result.videos.map((item) => VideoItem(title:item.title, videoUrl: item.video_url , imageUrl: item.image_url)).toList() : [];
         List<CharacterItem> characterList = result.characters!= null ? result.characters.map((item) => CharacterItem(name: item.name, characterId: item.character_id,  imageUrl: item.image_url,  role: item.role , url: item.url)).toList() : [];
@@ -84,7 +75,8 @@ class AnimationDetailBloc extends Bloc<AnimationDetailEvent, AnimationDetailStat
             studioItems: studioList , videoItems:videoList , characterItems: characterList , selectVideoUrl:selectVideoUrl));
       }
     } catch (e) {
-      yield AnimationDetailState(status:BaseBlocStateStatus.Failure, msg:  "_mapToAnimationDetailLoad 에러 $e");
+      print('_mapToAnimationDetailLoad Error :$e');
+      yield state.copyWith(status:BaseBlocStateStatus.Failure, msg:  "상세목록 불러오기 오류");
     }
   }
 }

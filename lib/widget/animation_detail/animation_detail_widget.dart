@@ -1,0 +1,33 @@
+
+import 'package:kuma_flutter_app/bloc/animation_detail/animation_detail_bloc.dart';
+import 'package:kuma_flutter_app/bloc/genre_search/category_list/genre_category_list_bloc.dart';
+import 'package:kuma_flutter_app/bloc/tab/tab_cubit.dart';
+import 'package:kuma_flutter_app/enums/app_tab.dart';
+import 'package:kuma_flutter_app/enums/category_click_status.dart';
+import 'package:kuma_flutter_app/enums/detail_animation_actions.dart';
+import 'package:kuma_flutter_app/enums/genre_title.dart';
+import 'package:kuma_flutter_app/enums/image_shape_type.dart';
+import 'package:kuma_flutter_app/model/item/genre_nav_item.dart';
+import 'package:kuma_flutter_app/model/item/subscribe_item.dart';
+import 'package:kuma_flutter_app/util/common.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kuma_flutter_app/app_constants.dart';
+import 'package:kuma_flutter_app/bloc/subscribe/subscribe_bloc.dart';
+import 'package:kuma_flutter_app/enums/base_bloc_state_status.dart';
+import 'package:kuma_flutter_app/model/item/animation_detail_item.dart';
+import 'package:kuma_flutter_app/model/item/animation_detail_page_item.dart';
+import 'package:kuma_flutter_app/widget/bottom/bottom_video_item_container.dart';
+import 'package:kuma_flutter_app/widget/common/base_app_bar.dart';
+import 'package:kuma_flutter_app/widget/common/custom_text.dart';
+import 'package:kuma_flutter_app/widget/common/image_item.dart';
+import 'package:kuma_flutter_app/widget/common/title_container.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
+
+part 'animation_detail_app_bar.dart';
+part 'animation_detail_genre_container.dart';
+part 'animation_detail_like_indicator.dart';
+part 'animation_detail_top_image_container.dart';
+part 'animation_detail_top_item_container.dart';
+part 'animation_detail_top_synopsis_container.dart';

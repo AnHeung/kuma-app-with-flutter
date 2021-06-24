@@ -43,11 +43,7 @@ class AnimationNewsBloc extends Bloc<AnimationNewsEvent, AnimationNewsState> {
       AnimationNewsSearch event) async* {
     String query = event.query;
     if (query.isNullEmptyOrWhitespace) {
-      yield AnimationNewsState(
-          status: AnimationNewsStatus.Success,
-          currentPage: state.currentPage,
-          newsItems: state.newsItems,
-          newsQueryItems: state.newsItems);
+      yield state.copyWith(status: AnimationNewsStatus.Success);
     } else {
       yield AnimationNewsState(
           status: AnimationNewsStatus.Success,
@@ -76,11 +72,9 @@ class AnimationNewsBloc extends Bloc<AnimationNewsEvent, AnimationNewsState> {
               newsItems: state.newsItems,
               newsQueryItems: state.newsQueryItems);
       await Future.delayed(const Duration(milliseconds: 500));
-
       ApiAnimeNewsItem result = await repository.getAnimationNewsItem(page, viewCount);
-
       if (result.err) {
-            yield AnimationNewsState(status: AnimationNewsStatus.Failure, msg: result.msg, newsItems: state.newsItems, newsQueryItems: state.newsQueryItems,);
+            yield state.copyWith(status: AnimationNewsStatus.Failure, msg: result.msg);
           } else {
             List<AnimationNewsItem> newsItems = result.data
                 .map((newsItem) => AnimationNewsItem(title: newsItem.title, url: newsItem.url, imageUrl: newsItem.image, date: newsItem.date, summary: newsItem.summary)).toList()
@@ -98,7 +92,7 @@ class AnimationNewsBloc extends Bloc<AnimationNewsEvent, AnimationNewsState> {
           }
     } catch (e) {
       print("_mapToAnimationNewsLoad ${e}");
-      yield AnimationNewsState(status: AnimationNewsStatus.Failure, msg: "_mapToAnimationNewsLoad ${e}", newsItems: state.newsItems, newsQueryItems: state.newsQueryItems,);
+      yield state.copyWith(status: AnimationNewsStatus.Failure, msg: "뉴스를 읽어오는데 실패하였습니다.");
     }
   }
 }

@@ -10,8 +10,8 @@ void main() async{
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   const AndroidNotificationChannel channel = AndroidNotificationChannel(
     'kuma_flutter_notification', // id
-    'High Importance Notifications', // title
-    'This channel is used for important notifications.', // description
+    '쿠마 노티', // title
+    '쿠마 노티 채널임', // description
     importance: Importance.high,
   );
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,8 +26,6 @@ void main() async{
 }
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  // If you're going to use other Firebase services in the background, such as Firestore,
-  // make sure you call `initializeApp` before using other Firebase services.
   print('Handling a background message ${message.messageId}');
 }
 

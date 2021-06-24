@@ -237,12 +237,8 @@ class _AppState extends State<App> with WidgetsBindingObserver {
                     ),
                 Routes.SEARCH: (context) => MultiBlocProvider(
                       providers: [
-                        BlocProvider(
-                            create: (_) => SearchBloc(
-                                repository: context.read<ApiRepository>())),
-                        BlocProvider(
-                            create: (_) => SearchHistoryBloc(
-                                repository: context.read<ApiRepository>()))
+                        BlocProvider(create: (_) => SearchBloc(repository: context.read<ApiRepository>())),
+                        BlocProvider(create: (_) => SearchHistoryBloc(repository: context.read<ApiRepository>()))
                       ],
                       child: SearchScreen(),
                     ),

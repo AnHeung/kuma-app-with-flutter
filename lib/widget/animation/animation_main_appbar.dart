@@ -1,24 +1,4 @@
-import 'dart:async';
-
-import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:focus_detector/focus_detector.dart';
-import 'package:kuma_flutter_app/app_constants.dart';
-import 'package:kuma_flutter_app/bloc/animation_season/animation_season_bloc.dart';
-import 'package:kuma_flutter_app/enums/base_bloc_state_status.dart';
-import 'package:kuma_flutter_app/enums/image_shape_type.dart';
-import 'package:kuma_flutter_app/model/item/animation_detail_page_item.dart';
-import 'package:kuma_flutter_app/model/item/animation_search_season_item.dart';
-import 'package:kuma_flutter_app/routes/routes.dart';
-import 'package:kuma_flutter_app/util/common.dart';
-import 'package:kuma_flutter_app/widget/common/custom_text.dart';
-import 'package:kuma_flutter_app/widget/common/empty_container.dart';
-import 'package:kuma_flutter_app/widget/common/image_item.dart';
-import 'package:kuma_flutter_app/widget/common/loading_indicator.dart';
-import 'package:kuma_flutter_app/widget/common/refresh_container.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-
+part of 'animation_widget.dart';
 
 class AnimationMainAppbar extends StatefulWidget {
 
@@ -29,35 +9,24 @@ class AnimationMainAppbar extends StatefulWidget {
 class _AnimationMainAppbarState extends State<AnimationMainAppbar> {
   Timer timer;
   int currentPage = 0;
-  VoidCallback pageControlListener ;
-  PageController controller = PageController(initialPage: 0, keepPage: false);
+  final PageController controller = PageController(initialPage: 0, keepPage: false);
   int totalPageCount = 0;
   int scrollTime = 3;
 
 
-  @override
-  void initState() {
-    super.initState();
-    pageControlListener = () {
-      if(controller?.hasClients ?? false)currentPage = controller.page.ceil();
-    };
-  }
-
   _disposeJob(){
     timer?.cancel();
     timer = null;
-    controller?.removeListener(pageControlListener);
   }
 
   _resumeJob(){
-    controller?.addListener(pageControlListener);
     timer = timer ?? Timer.periodic(Duration(seconds: scrollTime), (timer) {
       if(controller.hasClients) {
         if (currentPage == totalPageCount) {
-          controller?.animateToPage(0, duration: const Duration(milliseconds: 300), curve: Curves.easeIn);
+          controller?.animateToPage(0, duration:  const Duration(milliseconds: 600) , curve: Curves.easeOut);
           currentPage = 0;
         }else if (totalPageCount > 0) {
-          controller.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.easeIn);
+          controller.nextPage(duration: const Duration(milliseconds: 500), curve: Curves.easeOut);
         }
       }
     });
@@ -92,6 +61,11 @@ class _AnimationMainAppbarState extends State<AnimationMainAppbar> {
                   Container(
                     color: kWhite,
                     child: PageView(
+                      onPageChanged: (page){
+                        currentPage = controller.page.ceil();
+                        _disposeJob();
+                        _resumeJob();
+                      },
                       controller: controller,
                       scrollDirection: Axis.horizontal,
                       children: list

@@ -1,45 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/notification/notification_bloc.dart';
-import 'package:kuma_flutter_app/enums/image_shape_type.dart';
-import 'package:kuma_flutter_app/model/item/animation_news_item.dart';
 import 'package:kuma_flutter_app/model/item/notification_item.dart';
-import 'package:kuma_flutter_app/screen/animation_news_detail_screen.dart';
 import 'package:kuma_flutter_app/util/common.dart';
-import 'package:kuma_flutter_app/widget/common/custom_text.dart';
 import 'package:kuma_flutter_app/widget/common/empty_container.dart';
-import 'package:kuma_flutter_app/widget/common/image_item.dart';
 import 'package:kuma_flutter_app/widget/common/loading_indicator.dart';
 import 'package:kuma_flutter_app/widget/common/refresh_container.dart';
+import 'package:kuma_flutter_app/widget/notification/notification_widget.dart';
 
 class NotificationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        backgroundColor: kWhite,
-        elevation: 0,
-        centerTitle: true,
-        title: CustomText(
-          text: '알림내역',
-          fontColor: kBlack,
-          fontFamily: doHyunFont,
-          fontSize: 20.0,
-        ),
-      ),
+      appBar: NotificationAppbar(),
       body: RefreshIndicator(
         onRefresh: () async =>
             BlocProvider.of<NotificationBloc>(context).add(NotificationLoad()),
         child: BlocBuilder<NotificationBloc, NotificationState>(
           builder: (context, state) {
-
             List<NotificationItem> items = state.notificationItems;
-
             if (items.isNullOrEmpty) {
               return const EmptyContainer(
                 title: "알림 내역이 없습니다.",
@@ -58,13 +37,11 @@ class NotificationScreen extends StatelessWidget {
                 children: [
                   ListView.separated(
                     separatorBuilder: (context, idx) {
-                      return const SizedBox(
-                        height: 10,
-                      );
+                      return const SizedBox(height: 10,);
                     },
                     itemBuilder: (context, idx) {
                       final NotificationItem notificationItem = items[idx];
-                      return NotificationContainerItem(
+                      return NotificationItemContainer(
                         item: notificationItem,
                       );
                     },
@@ -82,84 +59,3 @@ class NotificationScreen extends StatelessWidget {
   }
 }
 
-class NotificationContainerItem extends StatelessWidget {
-  final NotificationItem item;
-
-  const NotificationContainerItem({this.item});
-
-  @override
-  Widget build(BuildContext context) {
-
-    final bool isRead = item.isRead ?? false;
-    final String id = item.id ?? "";
-
-    return GestureDetector(
-      onTap: (){
-        BlocProvider.of<NotificationBloc>(context).add(NotificationIsReadUpdate(id: id));
-        navigateWithUpAnimation(context: context , navigateScreen: AnimationNewsDetailScreen(AnimationNewsItem(date: item.date ,summary: item.summary ,title: item.title , imageUrl: item.image , url: item.url)));
-      },
-      behavior: HitTestBehavior.translucent,
-      child: Container(
-        color: isRead ? kDisabled : kWhite,
-        height: kNotificationItemHeight,
-        width: MediaQuery.of(context).size.width,
-        margin: const EdgeInsets.symmetric(horizontal: kNotificationMargin),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Expanded(
-              flex: 1,
-              child: Container(
-                  width: kNotificationItemWidth,
-                  height: kNotificationItemHeight,
-                  child: ImageItem(
-                    imgRes: item.thumbnail,
-                    type: ImageShapeType.Flat,
-                  )),
-            ),
-            Expanded(
-              flex: 4,
-              child: Container(
-                padding: const EdgeInsets.only(left: kNotificationMargin),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                        child: CustomText(
-                      text: "[${item.mainTitle}]",
-                      maxLines: 1,
-                      isEllipsis: true,
-                      fontSize: kNotificationTitleFontSize,
-                      fontFamily: doHyunFont,
-                      fontWeight: FontWeight.w500,
-                    )),
-                    Container(
-                      margin: const EdgeInsets.only(bottom: 5),
-                      child: CustomText(
-                        text: "${item.summary}",
-                        maxLines: 3,
-                        isDynamic: true,
-                        isEllipsis: true,
-                        fontSize: kNotificationFontSize,
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            Expanded(
-                flex: 1,
-                child: Container(
-                    padding: const EdgeInsets.only(left: 5),
-                    width: kNotificationTitleImageSize,
-                    height: kNotificationTitleImageSize,
-                    child: ImageItem(
-                      imgRes: item.image,
-                    )))
-          ],
-        ),
-      ),
-    );
-  }
-}

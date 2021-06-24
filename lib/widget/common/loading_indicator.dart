@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
 
-enum LoadingIndicatorType { IPhone ,  Circle}
+enum LoadingIndicatorType { IPhone ,  Circle }
 
 class LoadingIndicator extends StatelessWidget {
 

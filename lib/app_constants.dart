@@ -6,6 +6,8 @@ import 'package:flutter/cupertino.dart';
 const KakaoClientId = "c2de908819754be96af4d46766eaa8eb";
 const KakaoJavascriptClientId = "145316ccaf6edd8159668aee4133c4a5";
 
+//공통
+
 const List<String> itemCountList = [
   "5",
   "10",
@@ -109,6 +111,10 @@ const String kAnimationAppbarTitle = "ANIMATION";
 const kSeasonLimitCount = "7";
 
 //애니상세
+const double kTopImageContainerHeightRate = 0.25;
+const double kTopImageWidthRate = 0.4;
+const double kTopContainerHeightRate = 0.5;
+const double kTopContainerIndicatorRate = 0.82;
 const double kAnimationDetailGenreFontSize = 8;
 const double kAnimationDetailFontSize = 15;
 const double kAnimationDetailIndicatorFontSize = 10;
@@ -119,6 +125,7 @@ const String kAnimationDetailRecommendTitle = "추천애니";
 const String kAnimationDetailImageTitle = "이미지";
 const String kAnimationDetailCharacterTitle = "등장인물";
 const String kAnimationDetailSynopsisTitle = "개요";
+
 
 //BottomContainer
 const String kBottomContainerVoiceTitle = "성우";
