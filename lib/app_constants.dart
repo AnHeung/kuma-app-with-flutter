@@ -60,7 +60,7 @@ const Duration kButtonAnimationDuration = Duration(milliseconds: 600);
 const Duration kCardAnimationDuration = Duration(milliseconds: 400);
 const Duration kRippleAnimationDuration = Duration(milliseconds: 400);
 const Duration kLoginAnimationDuration = Duration(milliseconds: 1500);
-const int kSplashTime = 3;
+const int kSplashTime = 2;
 
 // Assets
 const String kGoogleLogoPath = 'assets/images/google_logo.png';
@@ -80,6 +80,9 @@ const String kSettingChangeErrMsg = "ChangeSetting 실패 다시 시도해주세
 const double kMoreFontSize = 15;
 const double kMoreLoginFontSize = 10;
 const double kMoreTitleFontSize = 20;
+const String kVersionInfo = "버전정보";
+const String kLogoutInfoMsg = "로그아웃 하시겠습니까?";
+const String kLogoutInfoTitle = "로그아웃";
 
 //구독
 

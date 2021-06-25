@@ -1,7 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:kuma_flutter_app/app_constants.dart';
-import 'package:kuma_flutter_app/model/item/animation_news_item.dart';
-import 'package:kuma_flutter_app/widget/common/webview_container.dart';
+part of 'screen.dart';
 
 class AnimationNewsDetailScreen extends StatelessWidget {
 

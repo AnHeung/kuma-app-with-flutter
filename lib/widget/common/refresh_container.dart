@@ -14,18 +14,21 @@ class RefreshContainer extends StatelessWidget {
     return SizedBox.expand(
         child: GestureDetector(
           onTap: callback,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                child: CustomText(text: "다시 시도해주세요", fontSize: 10.0, fontColor: kBlue,),
-              ),
-              Container(
-                color: Colors.transparent,
-                alignment: Alignment.center,
-                child: const Icon(Icons.refresh, color: kBlue, size: 30,),
+          child: Container(
+            color: kWhite,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  child: CustomText(text: "다시 시도해주세요", fontSize: 10.0, fontColor: kBlue,),
+                ),
+                Container(
+                  color: Colors.transparent,
+                  alignment: Alignment.center,
+                  child: const Icon(Icons.refresh, color: kBlue, size: 30,),
       ),
-            ],
+              ],
+            ),
           ),
         ),
     );

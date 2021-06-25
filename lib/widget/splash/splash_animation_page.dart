@@ -1,18 +1,15 @@
-import 'package:flutter/material.dart';
-import 'package:kuma_flutter_app/app_constants.dart';
-import 'package:kuma_flutter_app/widget/common/custom_text.dart';
-import 'package:kuma_flutter_app/widget/common/loading_indicator.dart';
+part of 'splash_widget.dart';
 
-class SplashAnimationScreen extends StatefulWidget {
+class SplashAnimationPage extends StatefulWidget {
 
   final isLoading;
 
-  const SplashAnimationScreen({this.isLoading = false});
+  const SplashAnimationPage({this.isLoading = false});
 
   _SplashAnimationState createState() => new _SplashAnimationState();
 }
 
-class _SplashAnimationState extends State<SplashAnimationScreen>
+class _SplashAnimationState extends State<SplashAnimationPage>
     with SingleTickerProviderStateMixin {
   AnimationController _animationController;
   Animation<double> _rotateAnimation;
@@ -34,7 +31,7 @@ class _SplashAnimationState extends State<SplashAnimationScreen>
         TweenSequenceItem<double>(
           tween: Tween<double>(begin: 2.0, end: 1.0)
               .chain(CurveTween(curve: Curves.easeIn)),
-          weight: 20.0,
+          weight: 30.0,
         ),
         TweenSequenceItem<double>(
           tween: Tween<double>(begin: 1.0, end: 0.0)
@@ -44,7 +41,7 @@ class _SplashAnimationState extends State<SplashAnimationScreen>
         TweenSequenceItem<double>(
           tween: Tween<double>(begin: 0.0, end: 1.0)
               .chain(CurveTween(curve: Curves.fastOutSlowIn)),
-          weight: 40.0,
+          weight: 50.0,
         ),
         TweenSequenceItem<double>(
           tween: Tween<double>(begin: 1.0, end: 0.0)
@@ -60,6 +57,7 @@ class _SplashAnimationState extends State<SplashAnimationScreen>
   @override
   void dispose() {
     super.dispose();
+    print('test dispose');
     _animationController?.dispose();
   }
 
@@ -70,17 +68,17 @@ class _SplashAnimationState extends State<SplashAnimationScreen>
       body: Stack(
         children: [
           Container(
-              alignment: Alignment.center,
-              child: AnimatedBuilder(
-                animation: _animationController,
-                builder: (context, child){
-                  return ScaleTransition(
-                      scale: _scaleAnimation,
-                      alignment: Alignment.center,
-                      child: Material(  type: MaterialType.transparency, child: CustomText(text: "ANIMATION" ,fontFamily: doHyunFont, fontWeight: FontWeight.w700,   fontColor: kPurple,  fontSize: 50.0,)),
-                  );
-                },
-              ),
+            alignment: Alignment.center,
+            child: AnimatedBuilder(
+              animation: _animationController,
+              builder: (context, child){
+                return ScaleTransition(
+                  scale: _scaleAnimation,
+                  alignment: Alignment.center,
+                  child: Material(  type: MaterialType.transparency, child: CustomText(text: "ANIMATION" ,fontFamily: doHyunFont, fontWeight: FontWeight.w700,   fontColor: kPurple,  fontSize: 50.0,)),
+                );
+              },
+            ),
           ),
           Container(
             alignment: Alignment.center,

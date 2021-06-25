@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
-import 'package:kuma_flutter_app/widget/onBoarding/widgets/header_logo.dart';
+import 'package:kuma_flutter_app/widget/first/widgets/header_logo.dart';
 
 
 class Header extends StatelessWidget {

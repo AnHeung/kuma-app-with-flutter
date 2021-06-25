@@ -9,8 +9,7 @@ class AnimationMainScheduleContainer extends StatelessWidget {
         children: [
           Row(
             children: [
-              const TitleContainer(
-                  fontWeight: FontWeight.w700, title: kAnimationScheduleTitle),
+              const TitleContainer(fontWeight: FontWeight.w700, title: kAnimationScheduleTitle),
               const Spacer(),
               MoreContainer(
                 onClick: () =>

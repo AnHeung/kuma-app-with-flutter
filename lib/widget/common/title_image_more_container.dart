@@ -4,8 +4,8 @@ import 'package:kuma_flutter_app/enums/image_shape_type.dart';
 import 'package:kuma_flutter_app/model/item/base_scroll_item.dart';
 import 'package:kuma_flutter_app/widget/common/empty_container.dart';
 import 'package:kuma_flutter_app/widget/common/image_text_scroll_item.dart';
+import 'package:kuma_flutter_app/widget/common/more_container.dart';
 import 'package:kuma_flutter_app/widget/common/title_container.dart';
-import 'package:kuma_flutter_app/widget/more/more_container.dart';
 
 class TitleImageMoreContainer extends StatelessWidget {
   final List<BaseScrollItem> baseItemList;

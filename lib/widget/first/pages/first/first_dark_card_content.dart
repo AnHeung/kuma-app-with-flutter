@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
 
-
 class FirstDarkCardContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

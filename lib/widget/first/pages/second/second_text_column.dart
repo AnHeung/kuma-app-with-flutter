@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kuma_flutter_app/widget/onBoarding/widgets/text_column.dart';
+import 'package:kuma_flutter_app/widget/first/widgets/text_column.dart';
 
 
 class SecondTextColumn extends StatelessWidget {

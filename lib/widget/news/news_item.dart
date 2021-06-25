@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
 import 'package:kuma_flutter_app/model/item/animation_news_item.dart';
-import 'package:kuma_flutter_app/screen/animation_news_detail_screen.dart';
+import 'package:kuma_flutter_app/screen/screen.dart';
 import 'package:kuma_flutter_app/util/common.dart';
 import 'package:kuma_flutter_app/widget/common/custom_text.dart';
 import 'package:kuma_flutter_app/widget/common/image_item.dart';

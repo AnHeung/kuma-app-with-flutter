@@ -1,14 +1,6 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kuma_flutter_app/app_constants.dart';
-import 'package:kuma_flutter_app/bloc/news/animation_news_bloc.dart';
-import 'package:kuma_flutter_app/util/common.dart';
-import 'package:kuma_flutter_app/widget/common/refresh_container.dart';
-import 'package:kuma_flutter_app/widget/news/news_scroll_container.dart';
-import 'package:kuma_flutter_app/widget/news/news_search_app_bar.dart';
+part of 'screen.dart';
 
-class NewsScreen extends StatelessWidget {
+class AnimationNewsScreen extends StatelessWidget {
   final String initialPage = "1";
 
   @override

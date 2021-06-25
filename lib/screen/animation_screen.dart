@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:kuma_flutter_app/widget/animation/animation_widget.dart';
-
+part of 'screen.dart';
 
 class AnimationScreen extends StatelessWidget {
   @override

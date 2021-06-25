@@ -1,14 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kuma_flutter_app/app_constants.dart';
-import 'package:kuma_flutter_app/bloc/login/login_bloc.dart';
-import 'package:kuma_flutter_app/enums/image_shape_type.dart';
-import 'package:kuma_flutter_app/routes/routes.dart';
-import 'package:kuma_flutter_app/util/common.dart';
-import 'package:kuma_flutter_app/widget/common/custom_text.dart';
-import 'package:kuma_flutter_app/widget/common/image_item.dart';
-import 'package:kuma_flutter_app/widget/common/loading_indicator.dart';
-import 'package:kuma_flutter_app/widget/login/login_dialog.dart';
+part of 'screen.dart';
 
 class LoginScreen extends StatelessWidget {
 
@@ -41,7 +31,9 @@ class LoginScreen extends StatelessWidget {
                 showToast(msg: LoginStatus.CheckEmail.msg);
                 break;
               case LoginStatus.NeedLoginScreen:
-                _showLoginDialog(context:context);
+                showDialog(context: context, builder: (_){
+                  return LoginDialog(bloc:  BlocProvider.of<LoginBloc>(context),);
+                });
                 break;
               default:
                 break;
@@ -56,14 +48,14 @@ class LoginScreen extends StatelessWidget {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  _buildLoginButton(bgColor: Colors.yellow ,
+                  LoginButton(bgColor: Colors.yellow ,
                       buttonText: "카카오 로그인",
                       imgRes: LoginType.KAKAO.iconRes, onPress: () => BlocProvider.of<LoginBloc>(context).add(Login(type: LoginType.KAKAO, context: context))),
-                  _buildLoginButton(bgColor: kBlue ,
+                  LoginButton(bgColor: kBlue ,
                       buttonText: "구글 로그인" ,
                       imgRes: LoginType.GOOGLE.iconRes ,
                       onPress: () => BlocProvider.of<LoginBloc>(context).add(Login(type: LoginType.GOOGLE, context: context))),
-                  _buildLoginButton(bgColor: Colors.grey.withOpacity(0.5) ,
+                  LoginButton(bgColor: Colors.grey.withOpacity(0.5) ,
                       buttonText: "이메일 로그인" ,
                       imgRes: LoginType.EMAIL.iconRes ,
                       onPress: () => BlocProvider.of<LoginBloc>(context).add(Login(type: LoginType.EMAIL, context: context))),
@@ -74,45 +66,5 @@ class LoginScreen extends StatelessWidget {
         ));
   }
 
-  _buildLoginButton({ Color bgColor, VoidCallback onPress , String imgRes , String buttonText}){
-   return Container(
-     decoration: BoxDecoration(
-         color: bgColor,
-         borderRadius: const BorderRadius.all(Radius.circular(10))),
-     height: 50,
-     margin: const EdgeInsets.only(left: 20, right: 20, top: 20),
-     child: TextButton(
-       onPressed: onPress,
-       child: Row(
-         mainAxisAlignment: MainAxisAlignment.center,
-         children: [
-           Container(
-             width: 30,
-             height: 30,
-             child: ImageItem(
-               type: ImageShapeType.Flat,
-               imgRes: imgRes,
-             ),
-           ),
-           Padding(
-             padding: const EdgeInsets.only(left: 8.0),
-             child: Container(
-                 width: 100,
-                 child: CustomText(
-                   fontFamily: doHyunFont,
-                   text: buttonText,
-                   fontSize: kLoginFontSize,
-                 )),
-           )
-         ],
-       ),
-     ),
-   );
-  }
 
-  _showLoginDialog({BuildContext context}){
-    showDialog(context: context, builder: (_){
-      return LoginDialog(bloc:  BlocProvider.of<LoginBloc>(context),);
-    });
-  }
 }

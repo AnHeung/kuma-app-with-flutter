@@ -1,12 +1,4 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kuma_flutter_app/app_constants.dart';
-import 'package:kuma_flutter_app/bloc/search/search_bloc.dart';
-import 'package:kuma_flutter_app/bloc/search_history/search_history_bloc.dart';
-import 'package:kuma_flutter_app/util/common.dart';
-import 'package:kuma_flutter_app/widget/common/base_app_bar.dart';
-import 'package:kuma_flutter_app/widget/common/custom_text.dart';
+part of 'search_widget.dart';
 
 class SearchAppbar extends BaseAppbar {
   @override

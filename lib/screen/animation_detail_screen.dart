@@ -1,31 +1,4 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kuma_flutter_app/app_constants.dart';
-import 'package:kuma_flutter_app/bloc/animation_detail/animation_detail_bloc.dart';
-import 'package:kuma_flutter_app/bloc/character_detail/character_detail_bloc.dart';
-import 'package:kuma_flutter_app/bloc/subscribe/subscribe_bloc.dart';
-import 'package:kuma_flutter_app/enums/base_bloc_state_status.dart';
-import 'package:kuma_flutter_app/enums/image_shape_type.dart';
-import 'package:kuma_flutter_app/model/item/animation_detail_item.dart';
-import 'package:kuma_flutter_app/model/item/animation_detail_page_item.dart';
-import 'package:kuma_flutter_app/model/item/base_scroll_item.dart';
-import 'package:kuma_flutter_app/model/item/bottom_more_item.dart';
-import 'package:kuma_flutter_app/widget/animation_detail/animation_detail_widget.dart';
-import 'package:kuma_flutter_app/util/common.dart';
-import 'package:kuma_flutter_app/widget/bottom/bottom_character_item_container.dart';
-import 'package:kuma_flutter_app/widget/bottom/bottom_more_item_container.dart';
-import 'package:kuma_flutter_app/widget/common/empty_container.dart';
-import 'package:kuma_flutter_app/widget/common/image_scroll_container.dart';
-import 'package:kuma_flutter_app/widget/common/loading_indicator.dart';
-import 'package:kuma_flutter_app/widget/common/refresh_container.dart';
-import 'package:kuma_flutter_app/widget/common/title_container.dart';
-import 'package:kuma_flutter_app/widget/common/title_image_more_container.dart';
-import 'package:kuma_flutter_app/widget/common/youtube_player.dart';
-
-import '../model/item/animation_detail_page_item.dart';
-import '../repository/api_repository.dart';
+part of 'screen.dart';
 
 class AnimationDetailScreen extends StatelessWidget {
 

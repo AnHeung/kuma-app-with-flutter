@@ -1,12 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kuma_flutter_app/app_constants.dart';
-import 'package:kuma_flutter_app/bloc/register/register_bloc.dart';
-import 'package:kuma_flutter_app/model/api/login_user.dart';
-import 'package:kuma_flutter_app/routes/routes.dart';
-import 'package:kuma_flutter_app/util/common.dart';
-import 'package:kuma_flutter_app/widget/common/custom_text.dart';
-import 'package:kuma_flutter_app/widget/common/loading_indicator.dart';
+part of 'screen.dart';
 
 class RegisterScreen extends StatefulWidget {
 
@@ -56,7 +48,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               }
 
               return Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(12.0),
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,7 +56,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       Container(
                         child: Row(
                           children: [
-                            TextButton(onPressed: ()=>{}, child: CustomText(text:'모든 약관에 동의' , fontSize: kRegisterTitleFontSize, fontWeight: FontWeight.w700, fontColor: Colors.black, ),),
+                            CustomText(text:'모든 약관에 동의' , fontSize: kRegisterTitleFontSize, fontWeight: FontWeight.w700, fontColor: Colors.black, ),
                             const Spacer(),
                             Checkbox(value: allTermCheck, onChanged: ((value)=>{
                               setState((){
@@ -78,7 +70,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       Container(
                         child: Row(
                           children: [
-                            TextButton(onPressed: ()=>{}, child: CustomText(text:'이용에 대한 동의(필수)',  fontSize: kRegisterFontSize, fontColor: Colors.black, ),),
+                            CustomText(text:'이용에 대한 동의(필수)',  fontSize: kRegisterFontSize, fontColor: Colors.black, ),
                             const Spacer(),
                             Checkbox(value: firstTermCheck, onChanged: (bool value){
                               setState(() {
@@ -95,7 +87,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       Container(
                         child: Row(
                           children: [
-                            TextButton(onPressed: ()=>{}, child: CustomText(text:'개인정보수집 이용에 대한 안내' ,   fontSize: kRegisterFontSize, fontColor: Colors.black,),),
+                            CustomText(text:'개인정보수집 이용에 대한 안내' ,   fontSize: kRegisterFontSize, fontColor: Colors.black,),
                             const Expanded(child: SizedBox()),
                             Checkbox(value: secondTermCheck, onChanged: (value)=>{
                               setState(() {
@@ -112,7 +104,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       const Spacer(),
                       Container(
                         color: allTermCheck ? kBlue : Colors.black45,
-                        margin: const EdgeInsets.only(bottom: 20, left: 20, right: 20),
+                        margin: const EdgeInsets.only(bottom: 20),
                         alignment: Alignment.bottomCenter,
                         child: SizedBox( height:50 , width: double.infinity ,child: TextButton(onPressed: ()=>{
                           if(allTermCheck){

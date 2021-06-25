@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
 
-import 'package:kuma_flutter_app/widget/onBoarding/widgets/cards_stack.dart';
+import 'package:kuma_flutter_app/widget/first/widgets/cards_stack.dart';
 
 class OnboardingPage extends StatelessWidget {
   final int number;

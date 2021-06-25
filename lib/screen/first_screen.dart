@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:kuma_flutter_app/widget/onBoarding/onboarding.dart';
+part of 'screen.dart';
 
 class FirstScreen extends StatefulWidget {
   @override

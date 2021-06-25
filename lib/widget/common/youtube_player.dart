@@ -61,6 +61,7 @@ class _YoutubePlayerState extends State<YoutubeVideoPlayer> with AutomaticKeepAl
   }
 
   @override
+  // ignore: must_call_super
   Widget build(BuildContext context) {
     return YoutubePlayerBuilder(
         key: widget.scaffoldKey,

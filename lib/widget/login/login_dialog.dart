@@ -1,11 +1,4 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:kuma_flutter_app/app_constants.dart';
-import 'package:kuma_flutter_app/bloc/login/login_bloc.dart';
-import 'package:kuma_flutter_app/model/api/login_user.dart';
-import 'package:kuma_flutter_app/util/common.dart';
-import 'package:kuma_flutter_app/widget/common/custom_text.dart';
-import 'package:kuma_flutter_app/widget/common/default_text_field.dart';
+part of 'login_widget.dart';
 
 class LoginDialog extends StatefulWidget {
   final LoginBloc bloc;

@@ -1,15 +1,11 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:kuma_flutter_app/enums/image_shape_type.dart';
-import 'package:kuma_flutter_app/widget/common/custom_text.dart';
-import 'package:kuma_flutter_app/widget/common/image_item.dart';
+part of 'search_widget.dart';
 
-class SearchImageItem extends StatelessWidget {
+class SearchImageItemContainer extends StatelessWidget {
   final String title;
   final String imgRes;
   final GestureTapCallback onTap;
 
-  SearchImageItem({this.imgRes, this.title, this.onTap});
+  SearchImageItemContainer({this.imgRes, this.title, this.onTap});
 
   @override
   Widget build(BuildContext context) {

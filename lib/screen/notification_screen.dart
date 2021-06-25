@@ -1,12 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kuma_flutter_app/bloc/notification/notification_bloc.dart';
-import 'package:kuma_flutter_app/model/item/notification_item.dart';
-import 'package:kuma_flutter_app/util/common.dart';
-import 'package:kuma_flutter_app/widget/common/empty_container.dart';
-import 'package:kuma_flutter_app/widget/common/loading_indicator.dart';
-import 'package:kuma_flutter_app/widget/common/refresh_container.dart';
-import 'package:kuma_flutter_app/widget/notification/notification_widget.dart';
+part of 'screen.dart';
 
 class NotificationScreen extends StatelessWidget {
   @override

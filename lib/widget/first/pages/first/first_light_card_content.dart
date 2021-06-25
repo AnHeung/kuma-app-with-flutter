@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
-import 'package:kuma_flutter_app/widget/onBoarding/widgets/icon_container.dart';
+import 'package:kuma_flutter_app/widget/first/widgets/icon_container.dart';
 
 class FirstLightCardContent extends StatelessWidget {
   @override

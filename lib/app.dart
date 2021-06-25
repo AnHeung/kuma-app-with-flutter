@@ -14,6 +14,7 @@ import 'package:kuma_flutter_app/bloc/genre_search/category_list/genre_category_
 import 'package:kuma_flutter_app/bloc/genre_search/search/genre_search_bloc.dart';
 import 'package:kuma_flutter_app/bloc/login/login_bloc.dart';
 import 'package:kuma_flutter_app/bloc/more/more_bloc.dart';
+import 'package:kuma_flutter_app/bloc/network/network_bloc.dart';
 import 'package:kuma_flutter_app/bloc/news/animation_news_bloc.dart';
 import 'package:kuma_flutter_app/bloc/notification/notification_bloc.dart';
 import 'package:kuma_flutter_app/bloc/register/register_bloc.dart';
@@ -28,21 +29,12 @@ import 'package:kuma_flutter_app/repository/api_repository.dart';
 import 'package:kuma_flutter_app/repository/firebase_client.dart';
 import 'package:kuma_flutter_app/repository/search_api_client.dart';
 import 'package:kuma_flutter_app/routes/routes.dart';
-import 'package:kuma_flutter_app/screen/account_screen.dart';
-import 'package:kuma_flutter_app/screen/animation_detail_screen.dart';
-import 'package:kuma_flutter_app/screen/animation_schedule_screen.dart';
-import 'package:kuma_flutter_app/screen/first_screen.dart';
-import 'package:kuma_flutter_app/screen/home_screen.dart';
-import 'package:kuma_flutter_app/screen/login_screen.dart';
-import 'package:kuma_flutter_app/screen/notification_screen.dart';
-import 'package:kuma_flutter_app/screen/register_screen.dart';
-import 'package:kuma_flutter_app/screen/search_screen.dart';
-import 'package:kuma_flutter_app/screen/setting_screen.dart';
-import 'package:kuma_flutter_app/screen/splash_screen.dart';
+import 'package:kuma_flutter_app/screen/screen.dart';
 import 'package:kuma_flutter_app/util/common.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 class App extends StatefulWidget {
+
   @override
   _AppState createState() => _AppState();
 }
@@ -156,15 +148,24 @@ class _AppState extends State<App> with WidgetsBindingObserver {
       child: MultiBlocProvider(
           providers: [
             BlocProvider(create: (context) => TabCubit(),),
+            BlocProvider(create: (context) => NetworkBloc()),
             BlocProvider(create: (context) => AuthBloc(repository: context.read<ApiRepository>())),
             BlocProvider(create: (context) => SettingBloc(repository: context.read<ApiRepository>())),
             BlocProvider(create: (context) => GenreCategoryListBloc(repository: context.read<ApiRepository>())),
             BlocProvider(create: (context) => LoginBloc(repository: context.read<ApiRepository>())),
             BlocProvider(create: (context) => NotificationBloc(repository: context.read<ApiRepository>() ,loginBloc: BlocProvider.of<LoginBloc>(context))..add(NotificationLoad())),
           ],
-          child: BlocListener<AuthBloc, AuthState>(
+          child: BlocListener<NetworkBloc, NetworkState>(
             listener: (context, state) {
               print("app State :$state");
+              if(state.status == NetworkStatus.Disconnect){
+                showBaseDialog(context: navigatorKey.currentState.overlay.context,
+                    title: "네트워크 연결 끊김",
+                    content: "네트워크 연결이 끊겼습니다. 연결을 해주세요",
+                    confirmFunction: () {
+                        BlocProvider.of<NetworkBloc>(context).add(CheckNetwork());
+                    });
+              }
             },
             child: MaterialApp(
               navigatorKey: navigatorKey,
@@ -203,7 +204,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
                               repository: context.read<ApiRepository>(),
                               settingBloc:
                                   BlocProvider.of<SettingBloc>(context))
-                            ..add(AnimationScheduleInitLoad())),
+                            ..add(AnimationScheduleLoad(day: "1"))),
                       BlocProvider(
                           create: (_) => GenreSearchBloc(
                               repository: context.read<ApiRepository>(),

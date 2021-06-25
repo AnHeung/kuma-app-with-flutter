@@ -23,20 +23,9 @@ class AnimationScheduleBloc extends Bloc<AnimationScheduleEvent, AnimationSchedu
   Stream<AnimationScheduleState> mapEventToState(
     AnimationScheduleEvent event,
   ) async* {
-      if (event is AnimationScheduleInitLoad) {
-        yield* _mapToScheduleInitLoad();
-      } else if (event is AnimationScheduleLoad) {
+      if (event is AnimationScheduleLoad) {
         yield* _mapToScheduleLoad(event);
       }
-  }
-
-  Stream<AnimationScheduleState> _mapToScheduleInitLoad() async*{
-    try {
-      await Future.delayed(const Duration(seconds: 1));
-      add(AnimationScheduleLoad(day: "1"));
-    } catch (e) {
-      print("_mapToScheduleInitLoad ${e}");
-    }
   }
 
   Stream<AnimationScheduleState> _mapToScheduleLoad(AnimationScheduleLoad event) async*{
@@ -59,7 +48,7 @@ class AnimationScheduleBloc extends Bloc<AnimationScheduleEvent, AnimationSchedu
           }
     } catch (e) {
       print("_mapToScheduleLoad ${e}");
-      yield state.copyWith(msg: "_mapToScheduleLoad ${e}");
+      yield state.copyWith(status: BaseBlocStateStatus.Failure, msg: "_mapToScheduleLoad ${e}");
     }
   }
 }

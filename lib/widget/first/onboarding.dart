@@ -4,18 +4,18 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/routes/routes.dart';
-import 'package:kuma_flutter_app/widget/onBoarding/pages/first/first_dark_card_content.dart';
-import 'package:kuma_flutter_app/widget/onBoarding/pages/first/first_light_card_content.dart';
-import 'package:kuma_flutter_app/widget/onBoarding/pages/first/first_text_column.dart';
-import 'package:kuma_flutter_app/widget/onBoarding/pages/second/secod_dark_card_content.dart';
-import 'package:kuma_flutter_app/widget/onBoarding/pages/second/second_light_card_content.dart';
-import 'package:kuma_flutter_app/widget/onBoarding/pages/second/second_text_column.dart';
-import 'package:kuma_flutter_app/widget/onBoarding/pages/onboarding_page.dart';
-import 'package:kuma_flutter_app/widget/onBoarding/pages/third/index.dart';
-import 'package:kuma_flutter_app/widget/onBoarding/widgets/header.dart';
-import 'package:kuma_flutter_app/widget/onBoarding/widgets/next_page_button.dart';
-import 'package:kuma_flutter_app/widget/onBoarding/widgets/onboarding_page_indicator.dart';
-import 'package:kuma_flutter_app/widget/onBoarding/widgets/ripple.dart';
+import 'package:kuma_flutter_app/widget/first/pages/first/first_dark_card_content.dart';
+import 'package:kuma_flutter_app/widget/first/pages/first/first_light_card_content.dart';
+import 'package:kuma_flutter_app/widget/first/pages/first/first_text_column.dart';
+import 'package:kuma_flutter_app/widget/first/pages/second/secod_dark_card_content.dart';
+import 'package:kuma_flutter_app/widget/first/pages/second/second_light_card_content.dart';
+import 'package:kuma_flutter_app/widget/first/pages/second/second_text_column.dart';
+import 'package:kuma_flutter_app/widget/first/pages/onboarding_page.dart';
+import 'package:kuma_flutter_app/widget/first/pages/third/index.dart';
+import 'package:kuma_flutter_app/widget/first/widgets/header.dart';
+import 'package:kuma_flutter_app/widget/first/widgets/next_page_button.dart';
+import 'package:kuma_flutter_app/widget/first/widgets/onboarding_page_indicator.dart';
+import 'package:kuma_flutter_app/widget/first/widgets/ripple.dart';
 
 
 class OnBoarding extends StatefulWidget {
@@ -88,7 +88,7 @@ class _OnBoardingState extends State<OnBoarding> with TickerProviderStateMixin {
           darkCardChild: FirstDarkCardContent(),
           lightCardOffsetAnimation: _slideAnimationLightCard,
           darkCardOffsetAnimation: _slideAnimationDarkCard,
-          textColumn: FisrtTextColumn(),
+          textColumn: FirstTextColumn(),
         );
       case 2:
         return OnboardingPage(

@@ -1,20 +1,9 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:kuma_flutter_app/app_constants.dart';
-import 'package:kuma_flutter_app/bloc/search_history/search_history_bloc.dart';
-import 'package:kuma_flutter_app/enums/image_shape_type.dart';
-import 'package:kuma_flutter_app/model/item/animation_search_item.dart';
-import 'package:kuma_flutter_app/routes/routes.dart';
-import 'package:kuma_flutter_app/widget/common/custom_text.dart';
-import 'package:kuma_flutter_app/widget/common/image_item.dart';
+part of 'search_history_widget.dart';
 
-import '../../model/item/animation_detail_page_item.dart';
-
-class SearchHistoryItem extends StatelessWidget {
+class SearchHistoryItemContainer extends StatelessWidget {
   final List<AnimationSearchItem> list;
 
-  const SearchHistoryItem({this.list});
+  const SearchHistoryItemContainer({this.list});
 
   @override
   Widget build(BuildContext context) {

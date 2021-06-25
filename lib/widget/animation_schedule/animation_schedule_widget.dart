@@ -14,3 +14,4 @@ import 'package:kuma_flutter_app/widget/common/image_item.dart';
 
 part 'animation_schedule_indicator.dart';
 part 'animation_schedule_item_container.dart';
+part 'animation_schedule_container.dart';
