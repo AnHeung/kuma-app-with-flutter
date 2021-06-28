@@ -8,7 +8,6 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return BlocBuilder<TabCubit, AppTab>(builder: (context, currentTab) {
-
       if(currentTab != AppTab.News) FocusManager.instance.primaryFocus?.unfocus();
 
       return Scaffold(

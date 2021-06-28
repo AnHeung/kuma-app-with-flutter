@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:kuma_flutter_app/app.dart';
 import 'package:kuma_flutter_app/bloc/simple_bloc_observer.dart';
-import 'package:kuma_flutter_app/bloc/network/network_bloc.dart';
 
 void main() async{
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();

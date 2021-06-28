@@ -3,7 +3,6 @@ part of 'screen.dart';
 class SearchScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<SearchHistoryBloc>(context).add(SearchHistoryLoad());
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: SearchAppbar(),

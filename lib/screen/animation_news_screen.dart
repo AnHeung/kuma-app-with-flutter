@@ -5,6 +5,7 @@ class AnimationNewsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     String currentQuery = "";
     return Scaffold(
       appBar: NewsSearchAppbar(

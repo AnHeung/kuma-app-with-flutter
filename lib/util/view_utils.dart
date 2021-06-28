@@ -230,6 +230,28 @@ showOneBtnDialog(
   );
 }
 
+showNetworkErrorDialog({BuildContext context}) {
+  return showDialog(
+    context: context,
+    barrierColor: Colors.black12.withOpacity(0.6), // background color
+    barrierDismissible: false, // should dialog be dismissed when tapped outside
+    builder: (_) {
+      return NetworkErrorDialog();
+      },
+  );
+}
+
+showErrorDialog({BuildContext context, String errMsg}) {
+  return showDialog(
+    context: context,
+    barrierColor: Colors.black12.withOpacity(0.6), // background color
+    barrierDismissible: false, // should dialog be dismissed when tapped outside
+    builder: (_) {
+      return ErrorDialog(terminateMsg:errMsg);
+    },
+  );
+}
+
 showCheckListDialog(
     {String title,
       String content,
@@ -240,7 +262,7 @@ showCheckListDialog(
     context: context,
     barrierColor: Colors.black12.withOpacity(0.6), // background color
     barrierDismissible: false, // should dialog be dismissed when tapped outside
-    builder: (BuildContext context) {
+    builder: (_) {
       return AlertDialog(
         title: Text(title ?? '알림'),
         content: Text(content ?? '내용'),

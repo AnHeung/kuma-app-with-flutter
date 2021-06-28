@@ -17,60 +17,56 @@ class SettingCategoryContainer extends StatelessWidget {
             fontSize: kSettingFontSize,
             fontColor: Colors.black,
           ),
-          const SizedBox(
-            width: 50,
-          ),
           Expanded(
             flex: 1,
             child: LayoutBuilder(
-              builder: (context, constraints) {
-                double width = constraints.maxWidth / categoryList.length - 8;
+              builder: (context,constraints){
+                double margin = 20;
+                double separatorWidth = 3;
+                final double width = (constraints.maxWidth-margin)/kCategoryList.length - separatorWidth ;
+
                 return Container(
-                  padding: EdgeInsets.zero,
-                  margin: const EdgeInsets.only(left: 20),
+                  margin: EdgeInsets.only(left: margin),
                   height: 30,
                   child: ListView.separated(
                     physics: const ClampingScrollPhysics(),
-                    separatorBuilder: (context, index) => const SizedBox(
-                      width: 3,
+                    separatorBuilder: (context, index) => SizedBox(
+                      width: separatorWidth,
                     ),
-                    itemBuilder: (context, idx) {
-                      List<String> categoryKeyList = categoryList.keys.toList();
+                    itemBuilder: (ctx, idx) {
+                      List<String> categoryKeyList = kCategoryList.keys.toList();
                       String categoryKey = categoryKeyList[idx];
-                      String category = categoryList.values.toList()[idx];
+                      String category = kCategoryList.values.toList()[idx];
 
-                      return Container(
-                        width: width,
-                        decoration: BoxDecoration(
-                            borderRadius:
+                      return GestureDetector(
+                          onTap: () {
+                            String rankType = categoryKeyList
+                                .reduce((acc, rankCategory) {
+                              if (rankCategory == "upcoming") {
+                                acc += ",$rankCategory";
+                              } else if (!_isCheck(config.rankType, rankCategory) && rankCategory == categoryKey) {
+                                acc += ",$rankCategory";
+                              } else if (_isCheck(
+                                  config.rankType, rankCategory) &&
+                                  rankCategory != categoryKey) {
+                                acc += ",$rankCategory";
+                              }
+                              return acc;
+                            }) ?? "airing,upcoming";
+                            BlocProvider.of<SettingBloc>(context).add(
+                                ChangeSetting(
+                                    config:
+                                    config.copyWith(rankType: rankType)));
+                          },
+                          behavior: HitTestBehavior.translucent,
+                          child: Container(
+                            width: width,
+                            decoration: BoxDecoration(
+                                borderRadius:
                                 const BorderRadius.all(Radius.circular(30)),
-                            color: _isCheck(config.rankType, categoryKey)
-                                ? kPurple
-                                : kDisabled),
-                        child: GestureDetector(
-                            onTap: () {
-                              String rankType = categoryKeyList
-                                      .reduce((acc, rankCategory) {
-                                    if (rankCategory == "upcoming") {
-                                      acc += ",$rankCategory";
-                                    } else if (!_isCheck(
-                                            config.rankType, rankCategory) &&
-                                        rankCategory == categoryKey) {
-                                      acc += ",$rankCategory";
-                                    } else if (_isCheck(
-                                            config.rankType, rankCategory) &&
-                                        rankCategory != categoryKey) {
-                                      acc += ",$rankCategory";
-                                    }
-                                    return acc;
-                                  }) ??
-                                  "airing,upcoming";
-                              BlocProvider.of<SettingBloc>(context).add(
-                                  ChangeSetting(
-                                      config:
-                                          config.copyWith(rankType: rankType)));
-                            },
-                            behavior: HitTestBehavior.translucent,
+                                color: _isCheck(config.rankType, categoryKey)
+                                    ? kPurple
+                                    : kDisabled),
                             child: Container(
                                 alignment: Alignment.center,
                                 child: CustomText(
@@ -79,10 +75,10 @@ class SettingCategoryContainer extends StatelessWidget {
                                     text: category,
                                     fontSize: 8.0,
                                     maxLines: 1,
-                                    isEllipsis: true))),
-                      );
+                                    isEllipsis: true)),
+                          ));
                     },
-                    itemCount: categoryList.length,
+                    itemCount: kCategoryList.length,
                     scrollDirection: Axis.horizontal,
                   ),
                 );

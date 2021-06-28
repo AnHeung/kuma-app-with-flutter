@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/account/account_bloc.dart';
@@ -16,7 +15,6 @@ import 'package:kuma_flutter_app/bloc/news/animation_news_bloc.dart';
 import 'package:kuma_flutter_app/bloc/notification/notification_bloc.dart';
 import 'package:kuma_flutter_app/bloc/register/register_bloc.dart';
 import 'package:kuma_flutter_app/bloc/search/search_bloc.dart';
-import 'package:kuma_flutter_app/bloc/search_history/search_history_bloc.dart';
 import 'package:kuma_flutter_app/bloc/setting/setting_bloc.dart';
 import 'package:kuma_flutter_app/bloc/splash/splash_bloc.dart';
 import 'package:kuma_flutter_app/bloc/subscribe/subscribe_bloc.dart';

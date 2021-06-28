@@ -11,7 +11,7 @@ class AnimationScheduleIndicator extends StatelessWidget {
     final double itemHeight = MediaQuery.of(context).size.height * 0.6 / 7;
     return Column(
       mainAxisSize: MainAxisSize.max,
-      children: dayList.map((day) => GestureDetector(
+      children: kDayList.map((day) => GestureDetector(
         onTap: () {
           BlocProvider.of<AnimationScheduleBloc>(context)
               .add(AnimationScheduleLoad(day: day.getDayToNum()));

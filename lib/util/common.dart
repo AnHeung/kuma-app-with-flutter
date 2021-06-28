@@ -1,4 +1,6 @@
 import 'dart:convert';
+
+import 'package:connectivity/connectivity.dart';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,11 +23,14 @@ import 'package:kuma_flutter_app/widget/bottom/bottom_character_item_container.d
 import 'package:kuma_flutter_app/widget/bottom/bottom_more_item_container.dart';
 import 'package:kuma_flutter_app/widget/bottom/bottom_voice_item_container.dart';
 import 'package:kuma_flutter_app/widget/common/custom_text.dart';
+import 'package:kuma_flutter_app/widget/common/error_dialog.dart';
 import 'package:kuma_flutter_app/widget/common/image_item.dart';
+import 'package:kuma_flutter_app/widget/common/network_error_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'date_util.dart';
 part 'navigator_util.dart';
+part 'network_util.dart';
 part 'object_util.dart';
 part 'sharepref_util.dart';
 part 'string_util.dart';

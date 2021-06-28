@@ -12,4 +12,11 @@ class NetworkConnect extends NetworkEvent{}
 
 class NetworkDisconnect extends NetworkEvent{}
 
-class CheckNetwork extends NetworkEvent{}
+class NetworkTerminate extends NetworkEvent{}
+
+class CheckNetwork extends NetworkEvent{
+
+  final int checkCount;
+
+  const CheckNetwork({this.checkCount});
+}

@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
@@ -34,15 +37,16 @@ import 'package:kuma_flutter_app/util/common.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 class App extends StatefulWidget {
-
   @override
   _AppState createState() => _AppState();
 }
 
 class _AppState extends State<App> with WidgetsBindingObserver {
-  final GlobalKey<NavigatorState> navigatorKey = GlobalKey(debugLabel: "MainNavigator");
+  final GlobalKey<NavigatorState> navigatorKey =
+      GlobalKey(debugLabel: "MainNavigator");
 
   AppLifecycleState _appLifecycleState;
+  bool isDialogOpen = false;
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
@@ -104,7 +108,8 @@ class _AppState extends State<App> with WidgetsBindingObserver {
                     summaryText: notification.body,
                     htmlFormatSummaryText: true);
             final AndroidNotificationDetails androidPlatformChannelSpecifics =
-                AndroidNotificationDetails("kuma_flutter_notification", "PUSH", "쿠마 푸쉬 채널",
+                AndroidNotificationDetails(
+                    "kuma_flutter_notification", "PUSH", "쿠마 푸쉬 채널",
                     styleInformation: bigPictureStyleInformation);
             final NotificationDetails platformChannelSpecifics =
                 NotificationDetails(android: androidPlatformChannelSpecifics);
@@ -112,6 +117,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
                 notification.title, notification.body, platformChannelSpecifics,
                 payload: message.data["url"]);
           }
+
           await _showBigPictureNotification();
         }
         print("onMessage: $message");
@@ -122,7 +128,6 @@ class _AppState extends State<App> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     // bool isRelease = const bool.fromEnvironment('dart.vm.product');
-
     return RepositoryProvider(
       create: (_) {
         final dio = Dio()
@@ -147,24 +152,46 @@ class _AppState extends State<App> with WidgetsBindingObserver {
       },
       child: MultiBlocProvider(
           providers: [
-            BlocProvider(create: (context) => TabCubit(),),
+            BlocProvider(
+              create: (context) => TabCubit(),
+            ),
             BlocProvider(create: (context) => NetworkBloc()),
-            BlocProvider(create: (context) => AuthBloc(repository: context.read<ApiRepository>())),
-            BlocProvider(create: (context) => SettingBloc(repository: context.read<ApiRepository>())),
-            BlocProvider(create: (context) => GenreCategoryListBloc(repository: context.read<ApiRepository>())),
-            BlocProvider(create: (context) => LoginBloc(repository: context.read<ApiRepository>())),
-            BlocProvider(create: (context) => NotificationBloc(repository: context.read<ApiRepository>() ,loginBloc: BlocProvider.of<LoginBloc>(context))..add(NotificationLoad())),
+            BlocProvider(
+                create: (context) =>
+                    AuthBloc(repository: context.read<ApiRepository>())),
+            BlocProvider(
+                create: (context) =>
+                    SettingBloc(repository: context.read<ApiRepository>())),
+            BlocProvider(
+                create: (context) => GenreCategoryListBloc(
+                    repository: context.read<ApiRepository>())),
+            BlocProvider(
+                create: (context) =>
+                    LoginBloc(repository: context.read<ApiRepository>())),
+            BlocProvider(
+                create: (context) => NotificationBloc(
+                    repository: context.read<ApiRepository>(),
+                    loginBloc: BlocProvider.of<LoginBloc>(context))
+                  ..add(NotificationLoad())),
           ],
           child: BlocListener<NetworkBloc, NetworkState>(
             listener: (context, state) {
-              print("app State :$state");
-              if(state.status == NetworkStatus.Disconnect){
-                showBaseDialog(context: navigatorKey.currentState.overlay.context,
-                    title: "네트워크 연결 끊김",
-                    content: "네트워크 연결이 끊겼습니다. 연결을 해주세요",
-                    confirmFunction: () {
-                        BlocProvider.of<NetworkBloc>(context).add(CheckNetwork());
-                    });
+              BuildContext currentContext = navigatorKey.currentState.overlay.context;
+              switch (state.status) {
+                case NetworkStatus.Disconnect:
+                  showNetworkErrorDialog(context: currentContext);
+                  isDialogOpen = true;
+                  break;
+                case NetworkStatus.Terminate:
+                  showToast(msg: "시간이 초과했습니다. 앱을 다시 실행해주세요");
+                  SystemNavigator.pop();
+                  return;
+                case NetworkStatus.Connect:
+                  if (isDialogOpen) {
+                    Navigator.of(currentContext).pop();
+                  };
+                  isDialogOpen = false;
+                  break;
               }
             },
             child: MaterialApp(
@@ -175,16 +202,20 @@ class _AppState extends State<App> with WidgetsBindingObserver {
                 primarySwatch: createMaterialColor(kBlack),
                 visualDensity: VisualDensity.adaptivePlatformDensity,
               ),
-              initialRoute: Routes.SPLASH,
               routes: {
                 Routes.SPLASH: (context) => BlocProvider(
                       create: (_) => SplashBloc(
+                          networkBloc: BlocProvider.of<NetworkBloc>(context),
                           repository: context.read<ApiRepository>(),
                           authBloc: BlocProvider.of<AuthBloc>(context))
                         ..add(SplashLoad()),
                       child: SplashScreen(),
                     ),
-                Routes.FIRST_LAUNCH: (context) => BlocProvider(create: (_) => SplashBloc(repository: context.read<ApiRepository>()), child: FirstScreen()),
+                Routes.FIRST_LAUNCH: (context) => BlocProvider(
+                    create: (_) => SplashBloc(
+                        networkBloc: BlocProvider.of<NetworkBloc>(context),
+                        repository: context.read<ApiRepository>(),),
+                    child: FirstScreen()),
                 Routes.HOME: (context) {
                   return MultiBlocProvider(
                     providers: [
@@ -192,30 +223,26 @@ class _AppState extends State<App> with WidgetsBindingObserver {
                           create: (_) => AnimationBloc(
                               repository: context.read<ApiRepository>(),
                               settingBloc: BlocProvider.of<SettingBloc>(context),
-                              loginBloc: BlocProvider.of<LoginBloc>(context))
-                            ..add(AnimationLoad())),
+                              loginBloc: BlocProvider.of<LoginBloc>(context))..add(AnimationLoad())),
                       BlocProvider(
                           create: (_) => AnimationSeasonBloc(
                               repository: context.read<ApiRepository>(),
-                              settingBloc: BlocProvider.of<SettingBloc>(context))
-                            ..add(AnimationSeasonLoad(limit: kSeasonLimitCount))),
+                              settingBloc:
+                                  BlocProvider.of<SettingBloc>(context))..add(AnimationSeasonLoad(limit: kSeasonLimitCount))),
                       BlocProvider(
                           create: (_) => AnimationScheduleBloc(
                               repository: context.read<ApiRepository>(),
                               settingBloc:
-                                  BlocProvider.of<SettingBloc>(context))
-                            ..add(AnimationScheduleLoad(day: "1"))),
+                                  BlocProvider.of<SettingBloc>(context))..add(AnimationScheduleLoad(day: "1"))),
                       BlocProvider(
                           create: (_) => GenreSearchBloc(
                               repository: context.read<ApiRepository>(),
                               genreCategoryListBloc:
                                   BlocProvider.of<GenreCategoryListBloc>(
-                                      context)
-                                    ..add(GenreCategoryListLoad()))),
+                                      context)..add(GenreCategoryListLoad()))),
                       BlocProvider(
                         create: (context) => AnimationNewsBloc(
-                            repository: context.read<ApiRepository>())
-                          ..add(const AnimationNewsLoad(page: "1")),
+                            repository: context.read<ApiRepository>())..add(const AnimationNewsLoad(page: "1")),
                       ),
                       BlocProvider(
                         create: (_) => MoreBloc(),
@@ -238,8 +265,12 @@ class _AppState extends State<App> with WidgetsBindingObserver {
                     ),
                 Routes.SEARCH: (context) => MultiBlocProvider(
                       providers: [
-                        BlocProvider(create: (_) => SearchBloc(repository: context.read<ApiRepository>())),
-                        BlocProvider(create: (_) => SearchHistoryBloc(repository: context.read<ApiRepository>()))
+                        BlocProvider(
+                            create: (_) => SearchBloc(
+                                repository: context.read<ApiRepository>())),
+                        BlocProvider(
+                            create: (_) => SearchHistoryBloc(
+                                repository: context.read<ApiRepository>())..add(SearchHistoryLoad()))
                       ],
                       child: SearchScreen(),
                     ),

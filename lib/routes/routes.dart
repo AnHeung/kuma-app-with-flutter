@@ -1,8 +1,8 @@
 class Routes{
 
-  static const SPLASH = '/splash';
+  static const SPLASH = '/';
   static const FIRST_LAUNCH = '/first';
-  static const HOME = '/';
+  static const HOME = '/home';
   static const IMAGE = '/image';
   static const VIDEO = '/video';
   static const SETTING = '/setting';
