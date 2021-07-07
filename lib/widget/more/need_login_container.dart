@@ -9,7 +9,7 @@ class NeedLoginContainer extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('로그인이 되어 있지 않습니다.'),
+            const Text(kMoreNoLoginTitle),
             Container(
               height: 30,
               margin: const EdgeInsets.only(top: 10),
@@ -19,7 +19,7 @@ class NeedLoginContainer extends StatelessWidget {
                   child: CustomText(
                     fontColor: kWhite,
                     fontFamily: doHyunFont,
-                    text: "로그인/회원가입",
+                    text: kLoginDialogTitle,
                     fontSize: kMoreLoginFontSize,
                   )),
             )

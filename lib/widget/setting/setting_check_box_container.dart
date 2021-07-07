@@ -12,7 +12,7 @@ class SettingCheckBoxContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 70,
+      height: kSettingContainerHeight,
       child: Row(
         children: [
           CustomText(

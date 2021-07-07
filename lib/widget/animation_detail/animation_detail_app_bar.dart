@@ -36,14 +36,13 @@ class _AnimationDetailAppbarState extends State<AnimationDetailAppbar> {
                   icon: isSubscribe
                       ? const Icon(Icons.notifications_on)
                       : const Icon(Icons.notifications_on_outlined),
-                  tooltip: "알림",
                   onPressed: () =>
                   {
                     showBaseDialog(context: context,
-                        title: "구독알림",
+                        title: kAnimationDetailSubscribeTitle,
                         content: isSubscribe
-                            ? "구독해지 하시겠습니까?"
-                            : "구독하시겠습니까? 구독하면 해당 애니메이션 관련 알림이 날라옵니다.",
+                            ? kAnimationDetailUnsubscribeInfoMsg
+                            : kAnimationDetailSubscribeInfoMsg,
                         confirmFunction: () {
                           BlocProvider.of<SubscribeBloc>(context).add(
                               SubscribeUpdate(item: SubscribeItem(
@@ -62,7 +61,6 @@ class _AnimationDetailAppbarState extends State<AnimationDetailAppbar> {
                 !widget.detailItem.videoItems.isNullOrEmpty,
             child: IconButton(
               icon: const Icon(Icons.play_circle_outline),
-              tooltip: "영상리스트",
               onPressed: () =>
               {
                 showModalBottomSheet(
@@ -91,11 +89,11 @@ class _AnimationDetailAppbarState extends State<AnimationDetailAppbar> {
             <PopupMenuItem<DetailAnimationActions>>[
               const PopupMenuItem<DetailAnimationActions>(
                 value: DetailAnimationActions.Add,
-                child: Text('배치에 추가'),
+                child: Text(kAnimationDetailPopupMenuAddBatchTitle),
               ),
               const PopupMenuItem<DetailAnimationActions>(
                 value: DetailAnimationActions.Refresh,
-                child: Text('새로고침'),
+                child: Text(kAnimationDetailPopupMenuRefreshTitle),
               ),
             ],
           )

@@ -15,7 +15,7 @@ class SearchHistoryContainer extends StatelessWidget {
               margin: const EdgeInsets.only(top: 30),
               child: InnerTextGridContainer(
                 imageShapeType: ImageShapeType.Circle,
-                gridCount: 3,
+                gridCount: kSearchGridCount,
                 list: searchHistoryList
                     .map((item) => BaseScrollItem(
                     id: item.id,

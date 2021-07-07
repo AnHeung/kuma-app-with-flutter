@@ -17,10 +17,10 @@ class _NotificationAppbarState extends State<NotificationAppbar> {
       elevation: 0,
       centerTitle: true,
       title: CustomText(
-        text: '알림내역',
+        text: kNotificationAppbarTitle,
         fontColor: kBlack,
         fontFamily: doHyunFont,
-        fontSize: 20.0,
+        fontSize: kAppbarTitleFontSize,
       ),
     );
   }

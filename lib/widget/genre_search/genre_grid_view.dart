@@ -9,7 +9,7 @@ class GenreGridView extends StatefulWidget {
   GenreGridView({genreSearchItems, genreData ,this.onLoadMore ,currentPage})
       : this.genreSearchItems = genreSearchItems ?? [],
         this.genreData = genreData ?? GenreData(),
-        this.currentPage = currentPage ?? 1;
+        this.currentPage = currentPage ?? kInitialPage;
 
   @override
   _GenreGridViewState createState() => _GenreGridViewState();

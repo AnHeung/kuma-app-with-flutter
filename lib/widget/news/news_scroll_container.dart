@@ -1,9 +1,12 @@
 import 'package:flutter/cupertino.dart';
+import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/news/animation_news_bloc.dart';
+import 'package:kuma_flutter_app/enums/orientation_type.dart';
 import 'package:kuma_flutter_app/model/item/animation_news_item.dart';
+import 'package:kuma_flutter_app/util/common.dart';
 import 'package:kuma_flutter_app/widget/common/empty_container.dart';
 import 'package:kuma_flutter_app/widget/common/loading_indicator.dart';
-import 'package:kuma_flutter_app/widget/news/news_item.dart';
+import 'package:kuma_flutter_app/widget/news/news_item_container.dart';
 
 class NewsScrollContainer extends StatefulWidget {
   final Function(int) onLoadMore;
@@ -57,11 +60,7 @@ class _NewsScrollContainerState extends State<NewsScrollContainer> {
             ? Padding(
           padding: const EdgeInsets.only(top:20.0),
           child: ListView.separated(
-            separatorBuilder:(context,idx){
-              return const SizedBox(
-                height: 30,
-              );
-            },
+            separatorBuilder:separatorBuilder(context: context, type: OrientationType.Vertical,size: 30),
             controller: _scrollController,
             scrollDirection: Axis.vertical,
             itemCount: widget.state.newsQueryItems.length,
@@ -74,9 +73,7 @@ class _NewsScrollContainerState extends State<NewsScrollContainer> {
             },
           ),
         )
-            : const EmptyContainer(
-          title: "목록이 존재하지 않습니다.",
-        ),
+            : const EmptyContainer(),
         LoadingIndicator(
           isVisible: widget.state.status == AnimationNewsStatus.Loading,
         )

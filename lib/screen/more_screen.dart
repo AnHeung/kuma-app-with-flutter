@@ -21,13 +21,13 @@ extension  MoreTypeExtension on MoreType{
   get title{
     switch(this){
       case MoreType.Account :
-        return "계정 설정 ";
+        return kMoreAccountTitle;
       case MoreType.Logout :
-        return "로그아웃";
+        return kLogoutInfoTitle;
       case MoreType.VersionInfo :
-        return "버전 정보";
+        return kMoreVersionInfoTitle;
       case MoreType.Setting :
-        return "설정";
+        return kMoreSettingTitle;
     }
   }
 }

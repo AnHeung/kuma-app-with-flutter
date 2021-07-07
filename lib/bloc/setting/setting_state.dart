@@ -9,6 +9,8 @@ class SettingState extends Equatable{
   final String msg;
   final SettingConfig config;
 
+  const SettingState({this.status = SettingStatus.Initial,this.msg = "", this.config = const SettingConfig()});
+
   @override
   List<Object> get props =>[status , msg, config];
 
@@ -29,16 +31,6 @@ class SettingState extends Equatable{
       config: config ?? this.config,
     );
   }
-
-  SettingState initialConfigState(){
-    return SettingState(
-      status: SettingStatus.Initial,
-      msg: "",
-      config: SettingConfig(),
-    );
-  }
-
-  const SettingState({this.status,this.msg, this.config});
 }
 
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
 import 'package:kuma_flutter_app/util/common.dart';
 import 'package:kuma_flutter_app/widget/common/empty_container.dart';
@@ -9,7 +10,7 @@ class ImageScrollItemContainer extends StatelessWidget {
   final String title;
   final double height;
 
-  ImageScrollItemContainer({images , this.title , height}) : this.images = images ?? [] , this.height = height ?? 150;
+  ImageScrollItemContainer({images , this.title , height}) : this.images = images ?? [] , this.height = height ?? kDefaultImageScrollContainerHeight;
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +18,8 @@ class ImageScrollItemContainer extends StatelessWidget {
       alignment: Alignment.centerLeft,
       padding: const EdgeInsets.all(10),
       child: _getImagesContainer(
+          context: context,
           height: height,
-          margin: 10,
           length: images.length,
           builderFunction: (BuildContext context, idx) {
             final String imgRes = images[idx];
@@ -37,16 +38,12 @@ class ImageScrollItemContainer extends StatelessWidget {
   }
 
   Widget _getImagesContainer(
-      {double height, double margin, int length, Function builderFunction}) {
+      {BuildContext context , double height, int length, Function builderFunction}) {
     return Container(
       height: height,
       child: ListView.separated(
           padding: EdgeInsets.zero,
-          separatorBuilder: (BuildContext context, int index) {
-            return SizedBox(
-              width: margin,
-            );
-          },
+          separatorBuilder: separatorBuilder(context: context),
           physics: const BouncingScrollPhysics(),
           scrollDirection: Axis.horizontal,
           itemCount: length,

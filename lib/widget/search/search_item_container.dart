@@ -13,9 +13,9 @@ class SearchItemContainer extends StatelessWidget {
           visible: list.isNotEmpty,
           child: Container(
             constraints: BoxConstraints(
-                minHeight: 50,
+                minHeight: kSearchItemContainerMinHeight,
                 minWidth: double.infinity,
-                maxHeight: MediaQuery.of(context).size.height * 0.6),
+                maxHeight: MediaQuery.of(context).size.height * kSearchItemContainerMaxHeightRate),
             color: kBlack,
             child: ListView(
               shrinkWrap: true,

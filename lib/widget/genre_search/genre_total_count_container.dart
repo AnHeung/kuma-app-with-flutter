@@ -9,7 +9,7 @@ class GenreSearchTotalCountContainer extends StatelessWidget {
           decoration: const BoxDecoration(
               border: Border(bottom: BorderSide(color: kBlack, width: 0.1))),
           alignment: Alignment.center,
-          height: kGenreItemHeight,
+          height: kGenreTopItemHeight,
           padding: const EdgeInsets.only(left: 10),
           child: Container(
             child: CustomText(

@@ -2,7 +2,6 @@ part of 'screen.dart';
 
 class GenreSearchScreen extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  final String initialPage = "1";
 
   @override
   Widget build(BuildContext context) {

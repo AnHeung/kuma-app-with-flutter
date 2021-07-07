@@ -13,13 +13,13 @@ class SettingScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: CustomText(
-            text: '계정 설정',
+            text: kSettingAccountTitle,
             fontSize: 15.0,
             fontColor: kWhite,
           ),
         ),
         body: Padding(
-            padding: const EdgeInsets.only(left: 15, right: 15),
+            padding: const EdgeInsets.symmetric(horizontal: 15),
             child: BlocBuilder<SettingBloc, SettingState>(
                 builder: (context, state) {
               SettingConfig config = state.config;
@@ -31,7 +31,7 @@ class SettingScreen extends StatelessWidget {
                       SettingCategoryContainer(config: config),
                       SettingDropBoxContainer(config: config),
                       SettingCheckBoxContainer(
-                          title: "홈화면 자동 스크롤",
+                          title: kSettingHomeAutoScrollTitle,
                           initialValue: config.isAutoScroll,
                           onToggle: (index) =>
                               BlocProvider.of<SettingBloc>(context).add(
@@ -39,7 +39,7 @@ class SettingScreen extends StatelessWidget {
                                       config: config.copyWith(
                                           isAutoScroll: index == 0)))),
                       SettingCheckBoxContainer(
-                          title: "알림설정",
+                          title: kSettingNotificationTitle,
                           initialValue: config.receiveNotify,
                           onToggle: (index) =>
                               BlocProvider.of<SettingBloc>(context).add(

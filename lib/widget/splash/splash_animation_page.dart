@@ -57,7 +57,6 @@ class _SplashAnimationState extends State<SplashAnimationPage>
   @override
   void dispose() {
     super.dispose();
-    print('test dispose');
     _animationController?.dispose();
   }
 

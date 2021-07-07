@@ -13,7 +13,7 @@ class NotificationScreen extends StatelessWidget {
             List<NotificationItem> items = state.notificationItems;
             if (items.isNullOrEmpty) {
               return const EmptyContainer(
-                title: "알림 내역이 없습니다.",
+                title: kNotificationNoNotificationMsg,
               );
             } else if (state.status == NotificationStatus.Failure) {
               showToast(msg: state.msg);
@@ -28,9 +28,7 @@ class NotificationScreen extends StatelessWidget {
               child: Stack(
                 children: [
                   ListView.separated(
-                    separatorBuilder: (context, idx) {
-                      return const SizedBox(height: 10,);
-                    },
+                    separatorBuilder: separatorBuilder(context: context, type: OrientationType.Vertical),
                     itemBuilder: (context, idx) {
                       final NotificationItem notificationItem = items[idx];
                       return NotificationItemContainer(

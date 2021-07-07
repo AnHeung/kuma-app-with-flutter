@@ -4,6 +4,7 @@ import 'package:kuma_flutter_app/enums/image_shape_type.dart';
 import 'package:kuma_flutter_app/model/item/base_scroll_item.dart';
 import 'package:kuma_flutter_app/widget/common/custom_text.dart';
 import 'package:kuma_flutter_app/widget/common/image_item.dart';
+import 'package:kuma_flutter_app/widget/common/score_container.dart';
 
 class ImageTextScrollItemContainer extends StatelessWidget {
 
@@ -12,7 +13,7 @@ class ImageTextScrollItemContainer extends StatelessWidget {
   final ImageShapeType imageShapeType;
   final int imageDiveRate;
 
-  ImageTextScrollItemContainer({this.context ,this.baseScrollItem, imageShapeType , imageDiveRate}) : this.imageShapeType = imageShapeType?? ImageShapeType.Circle , this.imageDiveRate = imageDiveRate ?? 3;
+  ImageTextScrollItemContainer({this.context ,this.baseScrollItem, imageShapeType , imageDiveRate}) : this.imageShapeType = imageShapeType?? ImageShapeType.Circle , this.imageDiveRate = imageDiveRate ?? kDefaultImageDiveRate;
 
   @override
   Widget build(BuildContext context) {
@@ -36,27 +37,10 @@ class ImageTextScrollItemContainer extends StatelessWidget {
                           type: imageShapeType,
                         ),
                       ),
-                      baseScrollItem.score.isNotEmpty ? Container(
-                        padding: const EdgeInsets.only(left: 5, bottom: 5),
-                          alignment: AlignmentDirectional.bottomStart,
-                          child:  Container(
-                              width: 30,
-                              height: 30,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                border:Border.all(width: 2, color: (_setIndicatorColor(score : (double.parse(baseScrollItem.score)) * 10))),
-                                borderRadius: BorderRadius.circular(30),
-                                color: kBlack,
-                              ),
-                              child: CustomText(
-                                fontFamily: doHyunFont,
-                                fontWeight: FontWeight.w700,
-                                fontColor: kWhite,
-                                text: "${((double.parse(baseScrollItem.score)) * 10).toStringAsFixed(0)}%",
-                                fontSize: 10.0,
-                              ),
-                            ),
-                          ) : const SizedBox()
+                      baseScrollItem.score.isNotEmpty ? ScoreContainer(
+                        color: _setIndicatorColor(score : (double.parse(baseScrollItem.score)) * 10),
+                        score: baseScrollItem.score,
+                      ) : const SizedBox()
                     ],
                   ),
                 ),

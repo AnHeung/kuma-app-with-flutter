@@ -4,11 +4,7 @@ class MoreCategoryContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
-      separatorBuilder: (context, idx) {
-        return const SizedBox(
-          height: 10,
-        );
-      },
+      separatorBuilder: separatorBuilder(context: context),
       physics: const BouncingScrollPhysics(),
       scrollDirection: Axis.vertical,
       itemCount: MoreType.values.length,
@@ -28,7 +24,7 @@ class MoreCategoryContainer extends StatelessWidget {
                 showBaseDialog(
                     context: context,
                     title: kLogoutInfoTitle,
-                    content: kLogoutInfoMsg,
+                    content: kMoreLogoutInfoMsg,
                     confirmFunction: () {
                       BlocProvider.of<AuthBloc>(context).add(SignOut());
                       Navigator.pop(context);
@@ -43,7 +39,7 @@ class MoreCategoryContainer extends StatelessWidget {
             }
           },
           child: Container(
-            height: 50,
+            height: kMoreContainerHeight,
             child: Row(
               children: [
                 Icon(icon),
@@ -72,7 +68,7 @@ class MoreCategoryContainer extends StatelessWidget {
       showOneBtnDialog(
         content: "앱이름: $appName\n\n 패키지명:$packageName\n\n version:$version\n\n buildNumber:$buildNumber",
         context: context,
-        title: kVersionInfo,
+        title: kMoreVersionInfoTitle,
       );
     });
   }

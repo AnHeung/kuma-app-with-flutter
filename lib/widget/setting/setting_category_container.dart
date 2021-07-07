@@ -9,11 +9,11 @@ class SettingCategoryContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: 70,
+      height: kSettingContainerHeight,
       child: Row(
         children: [
           CustomText(
-            text: "표시할 카테고리",
+            text: kSettingGenreCategoryTitle,
             fontSize: kSettingFontSize,
             fontColor: Colors.black,
           ),
@@ -30,9 +30,7 @@ class SettingCategoryContainer extends StatelessWidget {
                   height: 30,
                   child: ListView.separated(
                     physics: const ClampingScrollPhysics(),
-                    separatorBuilder: (context, index) => SizedBox(
-                      width: separatorWidth,
-                    ),
+                    separatorBuilder: separatorBuilder(context: context, size: separatorWidth),
                     itemBuilder: (ctx, idx) {
                       List<String> categoryKeyList = kCategoryList.keys.toList();
                       String categoryKey = categoryKeyList[idx];

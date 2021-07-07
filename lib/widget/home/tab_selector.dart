@@ -19,49 +19,9 @@ class TabSelector extends StatelessWidget {
       items:
         AppTab.values
         .map((tab)=>BottomNavigationBarItem(
-          icon: Icon(_makeTabRes(tab)),
-          label: _makeTabTitle(tab),
+          icon: Icon(tab.icon),
+          label: tab.title,
         )).toList()
     );
-  }
-
-  String _makeTabTitle(AppTab tab) {
-    String title;
-
-    switch (tab) {
-      case AppTab.Animation:
-        title = "애니";
-        break;
-      case AppTab.Genre:
-        title = "장르검색";
-        break;
-      case AppTab.News:
-        title = "뉴스";
-        break;
-      case AppTab.More:
-        title = "더보기";
-        break;
-    }
-    return title;
-  }
-
-  _makeTabRes(AppTab tab) {
-    IconData icon = Icons.terrain;
-
-    switch (tab) {
-      case AppTab.Animation:
-        icon = Icons.album;
-        break;
-      case AppTab.Genre:
-        icon = Icons.phone_android_sharp;
-        break;
-      case AppTab.News:
-        icon = Icons.update_sharp;
-        break;
-      case AppTab.More:
-        icon = Icons.more_horiz;
-        break;
-    }
-    return icon;
   }
 }

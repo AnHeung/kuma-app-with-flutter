@@ -11,8 +11,8 @@ class AnimationNotificationIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(right: 10),
-      width: 30,
-      height: 30,
+      width: AnimationNotificationIconSize,
+      height: AnimationNotificationIconSize,
       child: Stack(
         children: [
           IconButton(
@@ -21,7 +21,7 @@ class AnimationNotificationIcon extends StatelessWidget {
             icon: Icon(
               Icons.notifications_none,
               color: appIconColors,
-              size: 30,
+              size: AnimationNotificationIconSize,
             ),
             tooltip: "알림",
             onPressed: () {
@@ -34,13 +34,13 @@ class AnimationNotificationIcon extends StatelessWidget {
           Visibility(
               visible: unReadCount != "0",
               child:  Container(
-                width: 30,
-                height: 30,
+                width: AnimationNotificationIconSize,
+                height: AnimationNotificationIconSize,
                 alignment: Alignment.topRight,
                 margin: const EdgeInsets.only(top: 10),
                 child: Container(
-                  width: 15,
-                  height: 15,
+                  width: AnimationNotificationIconTxtContainerSize,
+                  height: AnimationNotificationIconTxtContainerSize,
                   decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: const Color(0xffc32c37),
@@ -49,7 +49,7 @@ class AnimationNotificationIcon extends StatelessWidget {
                     padding: const EdgeInsets.all(0.0),
                     child: Center(
                       child: Text(unReadCount,
-                        style: const TextStyle(fontSize: 7),
+                        style: const TextStyle(fontSize: AnimationNotificationIconTxtSize),
                       ),
                     ),
                   ),

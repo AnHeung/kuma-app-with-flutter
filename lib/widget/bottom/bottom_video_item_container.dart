@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/animation_detail/animation_detail_bloc.dart';
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
+import 'package:kuma_flutter_app/enums/orientation_type.dart';
 import 'package:kuma_flutter_app/model/item/animation_detail_item.dart';
+import 'package:kuma_flutter_app/util/common.dart';
 import 'package:kuma_flutter_app/widget/common/custom_text.dart';
 import 'package:kuma_flutter_app/widget/common/image_item.dart';
 
@@ -37,11 +39,7 @@ class BottomVideoItemContainer extends StatelessWidget {
               padding:
                   const EdgeInsets.only(left: 10, top: 10, right: 20, bottom: 10),
               child: ListView.separated(
-                  separatorBuilder: (BuildContext context, int index) {
-                    return const SizedBox(
-                      height: 10,
-                    );
-                  },
+                  separatorBuilder: separatorBuilder(context: context, type: OrientationType.Vertical),
                   itemCount: videoItems.length,
                   scrollDirection: Axis.vertical,
                   itemBuilder: (context, idx) {

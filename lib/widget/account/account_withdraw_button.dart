@@ -12,7 +12,7 @@ class AccountWithdrawButton extends StatelessWidget {
         showBaseDialog(context: context, confirmFunction: (){
           BlocProvider.of<AccountBloc>(context).add(AccountWithdraw(userId: userId));
           Navigator.pop(context);
-        } ,title: "회원탈퇴",content: "회원탈퇴를 하시겠습니까?")
+        } ,title: kAccountWithdrawTitle,content: kAccountWithdrawInfoMsg)
       },
       behavior: HitTestBehavior.translucent,
       child: Container(
@@ -23,7 +23,7 @@ class AccountWithdrawButton extends StatelessWidget {
             alignment: Alignment.center,
             child: CustomText(
               fontFamily: doHyunFont,
-              text: '탈퇴하기',
+              text: kAccountWithdrawButtonTitle,
               fontColor: kWhite,
             ),
           )),

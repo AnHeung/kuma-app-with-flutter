@@ -20,6 +20,21 @@ MaterialColor createMaterialColor(Color color) {
   return MaterialColor(color.value, swatch);
 }
 
+Function(BuildContext,int) separatorBuilder ({BuildContext context, double size = 10 , OrientationType type = OrientationType.Horizontal}){
+    return (context, idx) {
+      switch(type){
+        case OrientationType.Vertical :
+          return SizedBox(
+            height: size,
+          );
+        case OrientationType.Horizontal :
+          return SizedBox(
+            width: size,
+          );
+      }
+    };
+}
+
 showImageDialog(
     BuildContext context, String title, List<String> imgList, int imgIdx) {
   PageController controller = PageController(initialPage: imgIdx);

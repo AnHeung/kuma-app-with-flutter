@@ -10,11 +10,7 @@ class AnimationScheduleContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: ListView.separated(
-        separatorBuilder: (BuildContext context, int index) {
-          return const SizedBox(
-            height: 10,
-          );
-        },
+        separatorBuilder: separatorBuilder(context: context,),
         padding: EdgeInsets.zero,
         physics: const ClampingScrollPhysics(),
         scrollDirection: Axis.vertical,

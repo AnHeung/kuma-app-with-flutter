@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:kuma_flutter_app/app_constants.dart';
 
 class DefaultTextFormField extends StatelessWidget {
 
@@ -19,7 +20,7 @@ class DefaultTextFormField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
-      style: TextStyle(fontSize: textSize ?? 12),
+      style: TextStyle(fontSize: textSize ?? kDefaultFontSize),
       textAlignVertical: TextAlignVertical.center,
       textAlign: TextAlign.left,
       autofocus: autoFocus ?? false,

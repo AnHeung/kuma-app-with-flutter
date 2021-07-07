@@ -9,7 +9,7 @@ class GenreSearchTopContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: kGenreItemHeight,
+      height: kGenreTopItemHeight,
       padding: const EdgeInsets.only(left: 10, right: 10),
       child: Row(
         children: [

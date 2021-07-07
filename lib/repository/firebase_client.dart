@@ -45,9 +45,6 @@ class FirebaseClient {
       if (userData == null) return {LoginStatus.Failure: userData};
       if (userData.uniqueId == null && userData.loginType == LoginType.EMAIL)
         return {LoginStatus.NeedLoginScreen: userData};
-      String token = await FirebaseMessaging.instance.getToken();
-      print('currentToken :$token');
-
       return firebaseSignIn(userData: userData);
     } catch (e) {
       print("firebaseClient login Error :$e");
@@ -62,10 +59,13 @@ class FirebaseClient {
           .signInWithEmailAndPassword(
               email: userData.userId,
               password: userData.uniqueId.getEncryptString())
-          .then((result) {
-        print("result $result");
-        return getUserItemFromFireStore(userId: userData.userId);
-      }).then((fireStoreUserData) async {
+          .then((result) => getUserItemFromFireStore(userId: userData.userId))
+          .then((fireStoreUserData) async {
+        String token = await FirebaseMessaging.instance.getToken();
+        if (!token.isNullEmptyOrWhitespace){
+          fireStoreUserData = fireStoreUserData.copyWith(token: token);
+          await updateUserTokenToFireStore(userId: userData.userId, token: token);
+        }
         await saveUserData(userData: fireStoreUserData);
         return {LoginStatus.LoginSuccess: fireStoreUserData};
       }).catchError((e) {
@@ -128,9 +128,8 @@ class FirebaseClient {
     bool reAuthResult = await _reAuthenticateUser(userId);
 
     if (reAuthResult) {
-      return _firebaseAuth.currentUser
-          .delete()
-          .then((_) => removeAllDataToFireStore(userId: userId))
+      return removeAllDataToFireStore(userId: userId)
+          .then((_)=>_firebaseAuth.currentUser.delete())
           .then((_) => removeUserData())
           .catchError((e) {
         var errorCode = e.code;
@@ -229,21 +228,27 @@ class FirebaseClient {
   Future<bool> updateSubscribeAnimation(
       {String userId, SubscribeItem item, bool isSubscribe}) async {
     try {
-      DocumentSnapshot users = await _firebaseFireStore.collection("subscribe").doc(userId).get();
+      DocumentSnapshot users =
+          await _firebaseFireStore.collection("subscribe").doc(userId).get();
       if (!users.data().isNullOrEmpty) {
-        List<SubscribeItem> subscribeItems  = List.from(users.data()["animationItem"].map((item) => SubscribeItem.fromMap(item)).toList());
+        List<SubscribeItem> subscribeItems = List.from(users
+            .data()["animationItem"]
+            .map((item) => SubscribeItem.fromMap(item))
+            .toList());
         if (!isSubscribe) {
-          subscribeItems = subscribeItems..removeWhere((subscribeItem) => subscribeItem.animationId == item.animationId);
+          subscribeItems = subscribeItems
+            ..removeWhere((subscribeItem) =>
+                subscribeItem.animationId == item.animationId);
         } else {
-          bool isContain = subscribeItems.any((subscribeItem) => subscribeItem.animationId == item.animationId);
-          if (!isContain){
+          bool isContain = subscribeItems.any(
+              (subscribeItem) => subscribeItem.animationId == item.animationId);
+          if (!isContain) {
             subscribeItems = subscribeItems..add(item);
           }
         }
-        await _firebaseFireStore
-            .collection("subscribe")
-            .doc(userId)
-            .update({"animationItem": subscribeItems.map((item)=>item.toMap()).toList()});
+        await _firebaseFireStore.collection("subscribe").doc(userId).update({
+          "animationItem": subscribeItems.map((item) => item.toMap()).toList()
+        });
       } else {
         await saveSubscribeItemToFireStore(item: item, userId: userId);
       }
@@ -302,6 +307,19 @@ class FirebaseClient {
     });
   }
 
+  Future<bool> updateUserTokenToFireStore(
+      {String userId, String token}) async {
+    return _firebaseFireStore
+        .collection("users")
+        .doc(userId)
+        .update({"token":token})
+        .then((_) => true)
+        .onError((error, stackTrace) {
+      print(error);
+      return false;
+    });
+  }
+
   Future<bool> saveAllUserItemToFireStore({LoginUserData userData}) async =>
       _firebaseFireStore
           .collection("users")
@@ -317,7 +335,9 @@ class FirebaseClient {
       _firebaseFireStore
           .collection("subscribe")
           .doc(userId)
-          .set({"animationItem": [item.toMap()]})
+          .set({
+            "animationItem": [item.toMap()]
+          })
           .then((value) => true)
           .catchError((e) {
             print("saveSubscribeItemToFireStore error :$e");

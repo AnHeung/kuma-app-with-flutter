@@ -15,9 +15,9 @@ class _GenreSearchAppbarState extends State<GenreSearchAppbar> {
             padding: const EdgeInsets.only(right: 10),
             child: IconButton(
               onPressed: () => showBaseDialog(
-                title: "필터 삭제",
+                title: kGenreFilterRemoveTitle,
                 context: context,
-                content: "필터를 전부 삭제하시겠습니까?",
+                content: kGenreFilterRemoveMsg,
                 confirmFunction: () {
                   BlocProvider.of<GenreCategoryListBloc>(context)
                       .add(GenreItemRemoveAll());
@@ -27,7 +27,7 @@ class _GenreSearchAppbarState extends State<GenreSearchAppbar> {
               icon: const Icon(Icons.delete_outline_rounded),
             ))
       ],
-      title: const Text('장르검색'),
+      title: const Text(kGenreSearchAppbarTitle),
     );
   }
 }

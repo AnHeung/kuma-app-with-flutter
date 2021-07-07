@@ -91,7 +91,7 @@ class _AnimationMainAppbarState extends State<AnimationMainAppbar> {
         }else if(seasonState.status == BaseBlocStateStatus.Failure){
           return RefreshContainer(callback: ()=>BlocProvider.of<AnimationSeasonBloc>(context).add(AnimationSeasonLoad(limit: kSeasonLimitCount)),);
         } else{
-          return const EmptyContainer(title: '자료없음');
+          return const EmptyContainer(title: kEmptyScreenDefaultMsg);
 
         }
       },

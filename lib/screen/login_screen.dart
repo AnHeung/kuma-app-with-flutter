@@ -7,13 +7,14 @@ class LoginScreen extends StatelessWidget {
     return Scaffold(
         resizeToAvoidBottomInset: true,
         appBar:AppBar(
-          title: const Text('로그인'),
+          title: const Text(kLoginTitle),
         ),
         body: BlocConsumer<LoginBloc, LoginState>(
           listener: (context, state) {
             switch (state.status) {
               case LoginStatus.LoginSuccess:
                 showToast(msg: LoginStatus.LoginSuccess.msg);
+                BlocProvider.of<NotificationBloc>(context).add(NotificationLoad());
                 Navigator.pop(context);
                 break;
               case LoginStatus.WrongPassword:
@@ -49,14 +50,14 @@ class LoginScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   LoginButton(bgColor: Colors.yellow ,
-                      buttonText: "카카오 로그인",
+                      buttonText: kLoginKakao,
                       imgRes: LoginType.KAKAO.iconRes, onPress: () => BlocProvider.of<LoginBloc>(context).add(Login(type: LoginType.KAKAO, context: context))),
                   LoginButton(bgColor: kBlue ,
-                      buttonText: "구글 로그인" ,
+                      buttonText: kLoginGoogle ,
                       imgRes: LoginType.GOOGLE.iconRes ,
                       onPress: () => BlocProvider.of<LoginBloc>(context).add(Login(type: LoginType.GOOGLE, context: context))),
                   LoginButton(bgColor: Colors.grey.withOpacity(0.5) ,
-                      buttonText: "이메일 로그인" ,
+                      buttonText: kLoginEmail ,
                       imgRes: LoginType.EMAIL.iconRes ,
                       onPress: () => BlocProvider.of<LoginBloc>(context).add(Login(type: LoginType.EMAIL, context: context))),
                 ],

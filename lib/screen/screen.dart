@@ -23,6 +23,7 @@ import 'package:kuma_flutter_app/enums/app_tab.dart';
 import 'package:kuma_flutter_app/enums/base_bloc_state_status.dart';
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
 import 'package:kuma_flutter_app/model/api/login_user.dart';
+import 'package:kuma_flutter_app/enums/orientation_type.dart';
 import 'package:kuma_flutter_app/model/item/animation_detail_item.dart';
 import 'package:kuma_flutter_app/model/item/animation_detail_page_item.dart';
 import 'package:kuma_flutter_app/model/item/animation_news_item.dart';

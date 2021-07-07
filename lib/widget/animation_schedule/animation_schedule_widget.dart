@@ -5,6 +5,7 @@ import 'package:flutter_simple_rating_bar/flutter_simple_rating_bar.dart';
 import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/animation_schedule/animation_schedule_bloc.dart';
 import 'package:kuma_flutter_app/enums/image_shape_type.dart';
+import 'package:kuma_flutter_app/enums/orientation_type.dart';
 import 'package:kuma_flutter_app/model/item/animation_detail_page_item.dart';
 import 'package:kuma_flutter_app/model/item/animation_schedule_item.dart';
 import 'package:kuma_flutter_app/routes/routes.dart';

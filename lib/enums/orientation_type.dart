@@ -1,0 +1,3 @@
+enum OrientationType {
+  Vertical , Horizontal
+}

@@ -82,7 +82,7 @@ class BottomCharacterItemContainer extends StatelessWidget {
                   const TitleContainer(title: kBottomContainerIntroduceTitle),
                   Container(
                     padding: const EdgeInsets.only(left: 10),
-                    alignment: Alignment.center,
+                    alignment: Alignment.centerLeft,
                     child: CustomText(
                       text: characterItem.about,
                     ),

@@ -6,6 +6,7 @@ import 'package:kuma_flutter_app/routes/routes.dart';
 import 'package:kuma_flutter_app/util/common.dart';
 import 'package:kuma_flutter_app/widget/common/custom_text.dart';
 import 'package:kuma_flutter_app/widget/common/image_item.dart';
+import 'package:kuma_flutter_app/enums/orientation_type.dart';
 
 enum BottomMoreItemType { Character, Animation, Voice }
 
@@ -40,11 +41,7 @@ class BottomMoreItemContainer extends StatelessWidget {
               padding:
                   const EdgeInsets.only(left: 10, top: 10, right: 20, bottom: 10),
               child: ListView.separated(
-                  separatorBuilder: (BuildContext context, int index) {
-                    return const SizedBox(
-                      height: 10,
-                    );
-                  },
+                  separatorBuilder: separatorBuilder(context: context, type: OrientationType.Vertical),
                   itemCount: moreItems.length,
                   scrollDirection: Axis.vertical,
                   itemBuilder: (context, idx) {

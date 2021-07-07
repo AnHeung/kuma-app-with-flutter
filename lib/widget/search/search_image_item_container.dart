@@ -13,17 +13,17 @@ class SearchImageItemContainer extends StatelessWidget {
       behavior: HitTestBehavior.translucent,
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 30),
-        height: 80,
+        padding: const EdgeInsets.symmetric(horizontal: kSearchItemContainerSymmetricMargin),
+        height: kSearchImageItemContainerHeight,
         child: Row(
           children: [
             Container(
-                width: 40,
-                height: 40,
+                width: kSearchImageItemSize,
+                height: kSearchImageItemSize,
                 child: ImageItem(type: ImageShapeType.Circle, imgRes: imgRes)),
             Expanded(
                 child: Container(
-              margin: const EdgeInsets.only(left: 30),
+              margin: const EdgeInsets.only(left: 20),
               child: CustomText(
                 fontColor: Colors.white,
                 text: title,

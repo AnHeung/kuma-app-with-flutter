@@ -35,7 +35,7 @@ class _SearchAppbarState extends State<SearchAppbar> {
 
   Widget _initText(){
     return CustomText(
-      text: '검색페이지',
+      text: kSearchInitTitle,
       fontColor: kWhite,
       fontFamily: doHyunFont,
       fontSize: 17.0,
@@ -47,7 +47,6 @@ class _SearchAppbarState extends State<SearchAppbar> {
 
       style: const TextStyle(color: kWhite),
       onChanged: (value) {
-        print('value:$value');
         if(query != value) {
           query = value;
           BlocProvider.of<SearchBloc>(context)
@@ -56,7 +55,7 @@ class _SearchAppbarState extends State<SearchAppbar> {
       },
       autofocus: true,
       decoration: const InputDecoration(
-        hintText: '검색...',
+        hintText: kSearchHint,
         hintStyle: const TextStyle(color: kWhite),
       ),
       cursorColor: kWhite,
@@ -69,8 +68,8 @@ class _SearchAppbarState extends State<SearchAppbar> {
       child: IconButton(
         onPressed: () => showBaseDialog(
             context: context,
-            title: "기록 전체삭제",
-            content: "저장된 기록을 다 지우시겠습니까?",
+            title: kSearchHistoryDeleteTitle,
+            content: kSearchHistoryDeleteMsg,
             confirmFunction: () {
               BlocProvider.of<SearchHistoryBloc>(context)
                   .add(SearchHistoryClear());

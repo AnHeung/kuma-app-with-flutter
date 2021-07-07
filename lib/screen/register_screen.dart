@@ -19,7 +19,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('약관동의'),
+        title: const Text(kRegisterTermsTitle),
       ),
       body: BlocConsumer<RegisterBloc,RegisterState>(
             listener: (context,state){
@@ -44,7 +44,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               if(status == RegisterStatus.Loading){
                 return const LoadingIndicator(isVisible: true);
               }else if(status == RegisterStatus.RegisterComplete){
-                showToast(msg: "등록성공");
+                showToast(msg: kRegisterCompleteMsg);
               }
 
               return Padding(
@@ -56,7 +56,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       Container(
                         child: Row(
                           children: [
-                            CustomText(text:'모든 약관에 동의' , fontSize: kRegisterTitleFontSize, fontWeight: FontWeight.w700, fontColor: Colors.black, ),
+                            CustomText(text:kRegisterAllTermsOkTitle , fontSize: kRegisterTitleFontSize, fontWeight: FontWeight.w700, fontColor: Colors.black, ),
                             const Spacer(),
                             Checkbox(value: allTermCheck, onChanged: ((value)=>{
                               setState((){
@@ -70,7 +70,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       Container(
                         child: Row(
                           children: [
-                            CustomText(text:'이용에 대한 동의(필수)',  fontSize: kRegisterFontSize, fontColor: Colors.black, ),
+                            CustomText(text:kRegisterTermsAgreeTitle,  fontSize: kRegisterFontSize, fontColor: Colors.black, ),
                             const Spacer(),
                             Checkbox(value: firstTermCheck, onChanged: (bool value){
                               setState(() {
@@ -87,7 +87,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       Container(
                         child: Row(
                           children: [
-                            CustomText(text:'개인정보수집 이용에 대한 안내' ,   fontSize: kRegisterFontSize, fontColor: Colors.black,),
+                            CustomText(text:kRegisterPrivacyInfoTitle ,   fontSize: kRegisterFontSize, fontColor: Colors.black,),
                             const Expanded(child: SizedBox()),
                             Checkbox(value: secondTermCheck, onChanged: (value)=>{
                               setState(() {
@@ -110,7 +110,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           if(allTermCheck){
                             BlocProvider.of<RegisterBloc>(context).add(UserRegister(userData: userData))
                           }
-                        }, child: CustomText(fontColor:kWhite, text:'완료', fontSize: kRegisterTitleFontSize, fontFamily: doHyunFont,),)), )
+                        }, child: CustomText(fontColor:kWhite, text:kRegisterAllTermsCheckButton, fontSize: kRegisterTitleFontSize, fontFamily: doHyunFont,),)), )
 
                     ],
                   ),

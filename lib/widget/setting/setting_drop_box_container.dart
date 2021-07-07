@@ -8,18 +8,18 @@ class SettingDropBoxContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 70,
+      height: kSettingContainerHeight,
       child: Row(
         children: [
           CustomText(
-            text: "홈화면에 보여줄 아이템 갯수",
+            text: kSettingHomeItemTitle,
             fontSize: kSettingFontSize,
             fontColor: Colors.black,
           ),
           const Spacer(),
           CustomDropDown(
             value: config.homeItemCount,
-            items: itemCountList
+            items: kSettingHomeItemCountList
                 .map(
                   (item) => DropdownMenuItem(
                 child: CustomText(

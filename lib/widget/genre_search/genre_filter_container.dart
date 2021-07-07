@@ -18,7 +18,7 @@ class GenreSearchFilterContainer extends StatelessWidget {
         return Visibility(
           visible: genreClickItems.isNotEmpty,
           child: Container(
-            height: kGenreItemHeight,
+            height: kGenreTopItemHeight,
             decoration: const BoxDecoration(
                 border: Border(
                     top: BorderSide(color: kBlack, width: 0.1),
@@ -67,11 +67,7 @@ class GenreSearchFilterContainer extends StatelessWidget {
                           ),
                         );
                       },
-                      separatorBuilder: (context, idx) {
-                        return const SizedBox(
-                          width: 10,
-                        );
-                      },
+                      separatorBuilder: separatorBuilder(context: context ,size: 7),
                       itemCount: genreClickItems.length,
                       scrollDirection: Axis.horizontal,
                     ),

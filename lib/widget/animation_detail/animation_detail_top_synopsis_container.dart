@@ -1,10 +1,10 @@
 part of 'animation_detail_widget.dart';
 
-class AnimationDetailTopSynopsisContainer extends StatelessWidget {
+class AnimationDetailSynopsisContainer extends StatelessWidget {
 
   final AnimationDetailItem detailItem;
 
-  const AnimationDetailTopSynopsisContainer({this.detailItem});
+  const AnimationDetailSynopsisContainer({this.detailItem});
 
   @override
   Widget build(BuildContext context) {

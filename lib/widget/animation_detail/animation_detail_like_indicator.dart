@@ -12,7 +12,7 @@ class AnimationDetailLikeIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        margin: const EdgeInsets.only(top: 5, bottom: 10),
+        margin: const EdgeInsets.symmetric(vertical: 5),
         alignment: AlignmentDirectional.bottomCenter,
         child: CircularPercentIndicator(
           radius: height,

@@ -24,7 +24,7 @@ class CustomText extends StatelessWidget {
     maxLines,
     fontWeight,
     textAlign,
-  })  : this.fontSize = fontSize ?? 13.0,
+  })  : this.fontSize = fontSize ?? kDefaultFontSize,
         this.fontColor = fontColor ?? kBlack,
         this.fontFamily = fontFamily ?? nanumGothicFont,
         this.isEllipsis = isEllipsis ?? false,

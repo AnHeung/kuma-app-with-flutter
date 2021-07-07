@@ -21,7 +21,7 @@ class _GenreItemsState extends State<GenreItemContainer> {
         children: [
           Container(
             padding: const EdgeInsets.only(left: 10),
-            height: 60,
+            height: kGenreItemContainerHeight,
             child: GestureDetector(
               behavior: HitTestBehavior.translucent,
               onTap: () {

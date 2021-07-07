@@ -17,9 +17,11 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
 
   final ApiRepository repository;
   final LoginBloc loginBloc;
+  StreamSubscription subscription;
 
   NotificationBloc({this.repository , this.loginBloc}) : super(const NotificationState()){
-    loginBloc.listen((state){
+    subscription = loginBloc.listen((state){
+      print('tetstsat $state');
       if(state.status == LoginStatus.LoginSuccess){
         add(NotificationLoad());
       }
@@ -35,6 +37,13 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
     }else if(event is NotificationIsReadUpdate){
       yield* _mapToNotificationIsReadUpdate(event);
     }
+  }
+
+
+  @override
+  Future<Function> close() {
+    subscription?.cancel();
+    return super.close();
   }
 
   Stream<NotificationState> _mapToNotificationIsReadUpdate(NotificationIsReadUpdate event) async*{

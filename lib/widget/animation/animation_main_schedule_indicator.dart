@@ -12,7 +12,7 @@ class AnimationMainScheduleIndicator extends StatelessWidget {
     return Container(
       height: 80,
       child: Row(
-        children: kDayList
+        children: kAnimationScheduleDayList
             .map((day) => GestureDetector(
           onTap: () => BlocProvider.of<AnimationScheduleBloc>(context)
               .add(AnimationScheduleLoad(day: day.getDayToNum())),

@@ -8,7 +8,7 @@ class AnimationMainRankContainer extends StatelessWidget {
           switch (state.status) {
             case BaseBlocStateStatus.Failure:
               return Container(
-                height: 300,
+                height: kAnimationRankContainerHeight,
                 child: RefreshContainer(
                   callback: () =>
                       BlocProvider.of<AnimationBloc>(context).add(AnimationLoad()),
@@ -26,7 +26,7 @@ class AnimationMainRankContainer extends StatelessWidget {
               );
             default:
               return Container(
-                height: 300,
+                height: kAnimationRankContainerHeight,
                 child: LoadingIndicator(
                   type: LoadingIndicatorType.IPhone,
                   isVisible: state.status == BaseBlocStateStatus.Loading ,

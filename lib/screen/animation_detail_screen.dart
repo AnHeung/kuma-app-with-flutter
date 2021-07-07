@@ -51,8 +51,7 @@ class AnimationDetailScreen extends StatelessWidget {
                 _buildDetailTopYoutubeContainer(
                     context: context,
                     selectVideoUrl: detailItem.selectVideoUrl),
-                _buildDetailTopContainer(
-                    context: context, detailItem: detailItem),
+                _buildDetailTopContainer(context: context, detailItem: detailItem),
                 TitleImageMoreContainer(
                   onClick: () => moveToBottomMoreItemContainer(
                       title: kAnimationDetailCharacterTitle,
@@ -90,10 +89,9 @@ class AnimationDetailScreen extends StatelessWidget {
                           ))
                       .toList(),
                 ),
-                AnimationDetailTopSynopsisContainer(detailItem: detailItem),
+                AnimationDetailSynopsisContainer(detailItem: detailItem),
                 const TitleContainer(title: kAnimationDetailImageTitle),
-                ImageScrollItemContainer(
-                    title: "관련 이미지", images: detailItem.pictures),
+                ImageScrollItemContainer(title: "관련 이미지", images: detailItem.pictures),
                 TitleImageMoreContainer(
                   onClick: () => moveToBottomMoreItemContainer(
                       title: kAnimationDetailRelateTitle,
@@ -148,9 +146,7 @@ class AnimationDetailScreen extends StatelessWidget {
                       .toList(),
                 ),
               ])
-        : const EmptyContainer(
-            title: "",
-          );
+        : const EmptyContainer(title: "",);
   }
 
   Widget _buildDetailTopYoutubeContainer(
@@ -198,7 +194,7 @@ class AnimationDetailScreen extends StatelessWidget {
                         AnimationDetailTopItemContainer(
                           text: detailItem.rank != null
                               ? '랭킹:${detailItem.rank}위'
-                              : "랭킹:기록없음",
+                              : kAnimationDetailNoRanking,
                           fontSize: 13,
                         ),
                         AnimationDetailTopItemContainer(
@@ -212,7 +208,7 @@ class AnimationDetailScreen extends StatelessWidget {
                         AnimationDetailTopItemContainer(
                           text: detailItem.numEpisodes != "0"
                               ? '화수:${detailItem.numEpisodes}'
-                              : "화수:정보없음",
+                              : kAnimationDetailNoEpisode,
                           fontSize: 13,
                         ),
                         AnimationDetailGenreContainer(genres: detailItem.genres)

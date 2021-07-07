@@ -41,18 +41,18 @@ class _LoginDialogState extends State<LoginDialog> {
             Container(
                 padding: const EdgeInsets.symmetric(vertical: 20),
                 child: CustomText(
-                  text: "로그인/회원가입",
+                  text: kLoginDialogTitle,
                   fontFamily: doHyunFont,
                   fontSize: 20.0,
                 )),
             DefaultTextField(
-              title: "이메일",
+              title: kLoginDialogIdTitle,
               textSize: 13,
               controller: idController,
               validator: (value) => validateEmail(value),
             ),
             DefaultTextField(
-              title: "비밀번호",
+              title: kLoginDialogPwTitle,
               textSize: 13,
               isObscureText: true,
               controller: pwController,
@@ -77,7 +77,7 @@ class _LoginDialogState extends State<LoginDialog> {
                     }
                   },
                   child: CustomText(
-                    text: '로그인/회원가입',
+                    text: kLoginDialogTitle,
                     fontSize: 13.0,
                     fontFamily: doHyunFont,
                     fontColor: kWhite,

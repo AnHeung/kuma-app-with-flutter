@@ -8,7 +8,7 @@ class AnimationMainRankItemContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double heightSize = (MediaQuery.of(context).size.height) * kAnimationRankingContainerHeightRate;
+    double heightSize = (MediaQuery.of(context).size.height) * kAnimationRankContainerHeightRate;
 
     return Container(
       height: heightSize,
@@ -29,7 +29,7 @@ class AnimationMainRankItemContainer extends StatelessWidget {
                   .map(
                     (rankItem) => ImageTextScrollItemContainer(
                     imageShapeType: ImageShapeType.Flat,
-                    imageDiveRate: 3,
+                    imageDiveRate: kDefaultImageDiveRate,
                     context: context,
                     baseScrollItem: BaseScrollItem(
                       title: rankItem.title,

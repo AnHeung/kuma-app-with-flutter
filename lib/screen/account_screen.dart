@@ -5,7 +5,7 @@ class AccountScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: CustomText(text:'계정 설정', fontSize: 15.0, fontColor: kWhite,),
+          title: CustomText(text:kAccountConfig, fontSize: 15.0, fontColor: kWhite,),
         ),
         body: BlocConsumer<AccountBloc, AccountState>(
           listener: (context, state) {
@@ -29,16 +29,16 @@ class AccountScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  const AccountSubjectContainer(title: "계정"),
-                  const AccountTitleContainer(isBold: false, text: "닉네임" , color: kGrey),
+                  const AccountSubjectContainer(title: kAccountTitle),
+                  const AccountTitleContainer(isBold: false, text: kAccountNickName , color: kGrey),
                   AccountTitleContainer(isBold: true, text: accountData.userName , color: kBlue),
-                  const AccountTitleContainer(isBold: false, text: '이메일' , color: kGrey),
+                  const AccountTitleContainer(isBold: false, text: kAccountEmail , color: kGrey),
                   AccountTitleContainer(isBold: true, text: accountData.userId , color: kBlack),
-                  const AccountSubjectContainer(title: "로그인 타입"),
+                  const AccountSubjectContainer(title: kAccountLoginType),
                   AccountTitleContainer(isBold: false, text: (accountData.loginType != LoginType.UNKNOWN &&
                       accountData.loginType != LoginType.EMAIL)
-                      ? "소셜"
-                      : "이메일" , color: kGrey),
+                      ? kAccountSocial
+                      : kAccountEmail , color: kGrey),
                   Container(
                     child: Padding(
                       padding: const EdgeInsets.only(left: 20),
@@ -62,9 +62,7 @@ class AccountScreen extends StatelessWidget {
                 ],
               );
             }
-            return const EmptyContainer(
-              title: "정보가 없습니다.",
-            );
+            return const EmptyContainer();
           },
         ));
   }

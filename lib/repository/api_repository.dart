@@ -88,6 +88,8 @@ class ApiRepository {
 
   updateUserItemToFireStore(String userId , Map<String,dynamic> userItem)=>firebaseClient.updateUserItemToFireStore(userId: userId, userItem: userItem);
 
+  updateUserTokenToFireStore(String userId , String token)=>firebaseClient.updateUserTokenToFireStore(userId: userId, token: token);
+
   saveAllUserItemToFireStore(String userId , LoginUserData userData)=>firebaseClient.saveAllUserItemToFireStore(userData:userData);
 
   getUserItemFromFireStore({String userId})=>firebaseClient.getUserItemFromFireStore(userId: userId);

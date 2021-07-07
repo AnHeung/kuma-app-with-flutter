@@ -12,7 +12,7 @@ class MoreTopContainer extends StatelessWidget {
             Container(
                 alignment: Alignment.centerLeft,
                 child: CustomText(
-                  text: '더보기',
+                  text: kMoreAppbarTitle,
                   fontSize: kMoreTitleFontSize,
                   fontWeight: FontWeight.w700,
                   fontColor: Colors.black,

@@ -70,7 +70,9 @@ class _AppState extends State<App> with WidgetsBindingObserver {
   }
 
   void firebaseCloudMessagingListeners() async {
-    FirebaseMessaging.instance.onTokenRefresh.listen((event) {});
+    FirebaseMessaging.instance.onTokenRefresh.listen((event) {
+      print("onTokenRefresh $event");
+    });
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
       RemoteNotification notification = message.notification;
@@ -183,7 +185,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
                   isDialogOpen = true;
                   break;
                 case NetworkStatus.Terminate:
-                  showToast(msg: "시간이 초과했습니다. 앱을 다시 실행해주세요");
+                  showToast(msg: kRetryInfoMsg);
                   SystemNavigator.pop();
                   return;
                 case NetworkStatus.Connect:
@@ -196,7 +198,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
             },
             child: MaterialApp(
               navigatorKey: navigatorKey,
-              title: "쿠마앱",
+              title: kAppTitle,
               theme: ThemeData(
                 fontFamily: doHyunFont,
                 primarySwatch: createMaterialColor(kBlack),
@@ -253,13 +255,8 @@ class _AppState extends State<App> with WidgetsBindingObserver {
                 },
                 Routes.IMAGE_DETAIL: (context) => MultiBlocProvider(
                       providers: [
-                        BlocProvider(
-                          create: (_) => AnimationDetailBloc(
-                              repository: context.read<ApiRepository>()),
-                        ),
-                        BlocProvider(
-                            create: (context) => SubscribeBloc(
-                                repository: context.read<ApiRepository>()))
+                        BlocProvider(create: (_) => AnimationDetailBloc(repository: context.read<ApiRepository>()),),
+                        BlocProvider(create: (context) => SubscribeBloc(repository: context.read<ApiRepository>()))
                       ],
                       child: AnimationDetailScreen(),
                     ),

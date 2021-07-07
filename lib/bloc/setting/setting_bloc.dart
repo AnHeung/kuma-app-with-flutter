@@ -16,7 +16,7 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
 
   final ApiRepository repository;
 
-  SettingBloc({this.repository}) : super(const SettingState().initialConfigState());
+  SettingBloc({this.repository}) : super(const SettingState());
 
   @override
   Stream<SettingState> mapEventToState(
