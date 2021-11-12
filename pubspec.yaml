@@ -58,6 +58,7 @@ dev_dependencies:
 flutter:
   assets:
     - assets/
+    - assets/.env
     - assets/images/no_image.png
     - assets/images/google_icon.png
     - assets/images/google_logo.png

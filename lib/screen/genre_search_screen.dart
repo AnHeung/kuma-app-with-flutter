@@ -9,10 +9,6 @@ class GenreSearchScreen extends StatelessWidget {
       builder: (context, state) {
         if (state.status == BaseBlocStateStatus.Failure) {
           showToast(msg: state.msg);
-          return RefreshContainer(
-            callback: () => BlocProvider.of<GenreCategoryListBloc>(context)
-                .add(GenreCategoryListLoad()),
-          );
         }
         return RefreshIndicator(
           onRefresh: () async => BlocProvider.of<GenreSearchBloc>(context)

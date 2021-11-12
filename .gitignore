@@ -117,3 +117,5 @@ app.*.symbols
 !/dev/ci/**/Gemfile.lock
 
 pubspec.lock
+
+/assets/.env
