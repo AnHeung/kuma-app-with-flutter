@@ -1,19 +1,19 @@
 import 'package:kakao_flutter_sdk/all.dart';
-import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/login/login_bloc.dart';
 import 'package:kuma_flutter_app/model/api/login_user.dart';
+import 'package:kuma_flutter_app/model/item/app_env_item.dart';
 import 'package:kuma_flutter_app/repository/social_client.dart';
 
 class KakaoClient extends LoginClient{
 
   static final KakaoClient _instance = KakaoClient._();
-
-  factory KakaoClient()=> _instance;
-
-  KakaoClient._(){
-    KakaoContext.clientId = KakaoClientId;
-    KakaoContext.javascriptClientId = KakaoJavascriptClientId;
+  factory KakaoClient({AppEnvItem envItem}){
+    KakaoContext.clientId = envItem.KAKAO_CLIENT_ID;
+    KakaoContext.javascriptClientId = envItem.KAKAO_JAVASCRIPT_CLIENT_ID;
+    return _instance;
   }
+
+  KakaoClient._();
 
   @override
   login() async{

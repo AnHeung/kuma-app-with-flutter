@@ -16,6 +16,7 @@ import 'package:kuma_flutter_app/bloc/auth/auth_bloc.dart';
 import 'package:kuma_flutter_app/bloc/genre_search/category_list/genre_category_list_bloc.dart';
 import 'package:kuma_flutter_app/bloc/genre_search/search/genre_search_bloc.dart';
 import 'package:kuma_flutter_app/bloc/login/login_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:kuma_flutter_app/bloc/more/more_bloc.dart';
 import 'package:kuma_flutter_app/bloc/network/network_bloc.dart';
 import 'package:kuma_flutter_app/bloc/news/animation_news_bloc.dart';
@@ -27,6 +28,7 @@ import 'package:kuma_flutter_app/bloc/setting/setting_bloc.dart';
 import 'package:kuma_flutter_app/bloc/splash/splash_bloc.dart';
 import 'package:kuma_flutter_app/bloc/subscribe/subscribe_bloc.dart';
 import 'package:kuma_flutter_app/bloc/tab/tab_cubit.dart';
+import 'package:kuma_flutter_app/model/item/app_env_item.dart';
 import 'package:kuma_flutter_app/repository/api_client.dart';
 import 'package:kuma_flutter_app/repository/api_repository.dart';
 import 'package:kuma_flutter_app/repository/firebase_client.dart';
@@ -36,9 +38,15 @@ import 'package:kuma_flutter_app/screen/screen.dart';
 import 'package:kuma_flutter_app/util/common.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
+
 class App extends StatefulWidget {
+
+  AppEnvItem envItem;
+
   @override
   _AppState createState() => _AppState();
+
+  App({this.envItem});
 }
 
 class _AppState extends State<App> with WidgetsBindingObserver {
@@ -143,9 +151,9 @@ class _AppState extends State<App> with WidgetsBindingObserver {
               compact: true,
               maxWidth: 90));
 
-        final ApiClient apiClient = ApiClient(dio);
-        final SearchApiClient searchApiClient = SearchApiClient(dio);
-        final FirebaseClient firebaseClient = FirebaseClient();
+        final ApiClient apiClient = ApiClient(dio , baseUrl: widget.envItem.API_URL);
+        final SearchApiClient searchApiClient = SearchApiClient(dio, baseUrl: widget.envItem.SEARCH_API_URL);
+        final FirebaseClient firebaseClient = FirebaseClient(envItem: widget.envItem);
 
         return ApiRepository(
             apiClient: apiClient,

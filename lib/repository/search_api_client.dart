@@ -13,7 +13,7 @@ import 'package:retrofit/http.dart';
 
 part 'search_api_client.g.dart';
 
-@RestApi(baseUrl: "https://search.kumaserver.me/")
+@RestApi()
 abstract class SearchApiClient {
 
   @GET("/translate/title")

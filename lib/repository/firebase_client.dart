@@ -8,6 +8,7 @@ import 'package:kuma_flutter_app/app_constants.dart';
 import 'package:kuma_flutter_app/bloc/login/login_bloc.dart';
 import 'package:kuma_flutter_app/bloc/register/register_bloc.dart';
 import 'package:kuma_flutter_app/model/api/login_user.dart';
+import 'package:kuma_flutter_app/model/item/app_env_item.dart';
 import 'package:kuma_flutter_app/model/item/subscribe_item.dart';
 import 'package:kuma_flutter_app/repository/email_client.dart';
 import 'package:kuma_flutter_app/repository/google_client.dart';
@@ -16,9 +17,13 @@ import 'package:kuma_flutter_app/repository/social_client.dart';
 import 'package:kuma_flutter_app/util/common.dart';
 
 class FirebaseClient {
+
   LoginClient loginClient;
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firebaseFireStore = FirebaseFirestore.instance;
+  AppEnvItem envItem;
+
+  FirebaseClient({this.envItem});
 
   get user => FirebaseAuth.instance.currentUser;
 
@@ -30,7 +35,7 @@ class FirebaseClient {
     try {
       switch (type) {
         case LoginType.KAKAO:
-          loginClient = KakaoClient();
+          loginClient = KakaoClient(envItem: envItem);
           break;
         case LoginType.GOOGLE:
           loginClient = GoogleClient();
@@ -97,7 +102,7 @@ class FirebaseClient {
       if (data.loginType != null) {
         switch (data.loginType) {
           case LoginType.KAKAO:
-            loginClient = KakaoClient();
+            loginClient = KakaoClient(envItem:envItem);
             break;
           case LoginType.GOOGLE:
             loginClient = GoogleClient();
