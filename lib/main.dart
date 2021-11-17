@@ -36,12 +36,16 @@ Future<AppEnvItem> configEnvItem() async {
   await Firebase.initializeApp();
   await dotenv.load(fileName: "assets/.env");
   String API_URL = dotenv.env["API_URL"];
+  String API_KEY = dotenv.env["API_KEY"];
+  String API_KEY_VALUE = dotenv.env["API_KEY_VALUE"];
   String SEARCH_API_URL = dotenv.env["SEARCH_API_URL"];
   String KAKAO_CLIENT_ID = dotenv.env["KAKAO_CLIENT_ID"];
   String KAKAO_JAVASCRIPT_CLIENT_ID = dotenv.env["KAKAO_JAVASCRIPT_CLIENT_ID"];
 
   return AppEnvItem(
       API_URL: API_URL,
+      API_KEY: API_KEY,
+      API_KEY_VALUE: API_KEY_VALUE,
       SEARCH_API_URL: SEARCH_API_URL,
       KAKAO_CLIENT_ID: KAKAO_CLIENT_ID,
       KAKAO_JAVASCRIPT_CLIENT_ID: KAKAO_JAVASCRIPT_CLIENT_ID);

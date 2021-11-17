@@ -141,7 +141,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
     return RepositoryProvider(
       create: (_) {
         final dio = Dio()
-          ..options = BaseOptions(receiveTimeout: 15000, connectTimeout: 15000)
+          ..options = BaseOptions(receiveTimeout: 15000, connectTimeout: 15000, headers: { widget.envItem.API_KEY : widget.envItem.API_KEY_VALUE })
           ..interceptors.add(PrettyDioLogger(
               requestHeader: true,
               requestBody: true,
