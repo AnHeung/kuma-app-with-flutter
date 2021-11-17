@@ -1,8 +1,6 @@
 ## kuma_flutter_app
 
-쿠마 앱 플러터
-
-애니메이션 정보 조회 및 구독 알림 앱 
+## 애니메이션 정보 조회 및 구독 알림 앱 
 
 ### Fltter_Bloc
 ### Retrofit
@@ -12,3 +10,8 @@
 ### Firebase_Messaging
 ### Firebase_Auth
 ### FireStore
+
+## 참조 API
+### kumaSearchApi(https://github.com/AnHeung/kuma_search_api)
+### kumaApi
+### kumaNotificationApi
