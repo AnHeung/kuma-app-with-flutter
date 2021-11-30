@@ -18,7 +18,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc({this.repository}) : super(const AuthState.unKnown()){
 
     subscription = repository.userStream.listen((User user) {
-      print('auth user: $user');
       if (user == null) {
         print('유저가 로그아웃 하였습니다.');
         add(const ChangeAuth(status: AuthStatus.UnAuth));

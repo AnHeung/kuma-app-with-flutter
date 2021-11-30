@@ -8,7 +8,7 @@ getVideoId(String url){
   final RegExp regex = RegExp(r'.*(?:(?:youtu\.be/|v/|vi/|u/\w/|embed/)|(?:(?:watch)?\?v(?:i)?=|&v(?:i)?=))([^#&?]*).*', caseSensitive: false, multiLine: false,);
   if (regex.hasMatch(url)) {
     final videoId = regex.firstMatch(url).group(1);
-    print("videoId ${videoId}");
+    log("videoId ${videoId}");
     return videoId;
   } else {
     print("Cannot parse $url");

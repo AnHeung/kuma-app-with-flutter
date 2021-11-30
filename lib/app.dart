@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -16,7 +17,6 @@ import 'package:kuma_flutter_app/bloc/auth/auth_bloc.dart';
 import 'package:kuma_flutter_app/bloc/genre_search/category_list/genre_category_list_bloc.dart';
 import 'package:kuma_flutter_app/bloc/genre_search/search/genre_search_bloc.dart';
 import 'package:kuma_flutter_app/bloc/login/login_bloc.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:kuma_flutter_app/bloc/more/more_bloc.dart';
 import 'package:kuma_flutter_app/bloc/network/network_bloc.dart';
 import 'package:kuma_flutter_app/bloc/news/animation_news_bloc.dart';
@@ -147,6 +147,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
               requestBody: true,
               responseBody: false,
               responseHeader: false,
+              logPrint: (object) => log(object),
               error: true,
               compact: true,
               maxWidth: 90));
@@ -166,18 +167,9 @@ class _AppState extends State<App> with WidgetsBindingObserver {
               create: (context) => TabCubit(),
             ),
             BlocProvider(create: (context) => NetworkBloc()),
-            BlocProvider(
-                create: (context) =>
-                    AuthBloc(repository: context.read<ApiRepository>())),
-            BlocProvider(
-                create: (context) =>
-                    SettingBloc(repository: context.read<ApiRepository>())),
-            BlocProvider(
-                create: (context) => GenreCategoryListBloc(
-                    repository: context.read<ApiRepository>())),
-            BlocProvider(
-                create: (context) =>
-                    LoginBloc(repository: context.read<ApiRepository>())),
+            BlocProvider(create: (context) => AuthBloc(repository: context.read<ApiRepository>())),
+            BlocProvider(create: (context) => SettingBloc(repository: context.read<ApiRepository>())),
+            BlocProvider(create: (context) => GenreCategoryListBloc(repository: context.read<ApiRepository>())), BlocProvider(create: (context) => LoginBloc(repository: context.read<ApiRepository>())),
             BlocProvider(
                 create: (context) => NotificationBloc(
                     repository: context.read<ApiRepository>(),

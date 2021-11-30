@@ -28,6 +28,7 @@ import 'package:kuma_flutter_app/widget/common/error_dialog.dart';
 import 'package:kuma_flutter_app/widget/common/image_item.dart';
 import 'package:kuma_flutter_app/widget/common/network_error_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:developer';
 
 part 'date_util.dart';
 part 'navigator_util.dart';
