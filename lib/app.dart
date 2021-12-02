@@ -68,71 +68,12 @@ class _AppState extends State<App> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    firebaseCloudMessagingListeners();
   }
 
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
-  }
-
-  void firebaseCloudMessagingListeners() async {
-    FirebaseMessaging.instance.onTokenRefresh.listen((event) {
-      print("onTokenRefresh $event");
-    });
-
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
-      RemoteNotification notification = message.notification;
-      AndroidNotification android = message.notification?.android;
-      var initializationSettingsAndroid =
-          const AndroidInitializationSettings('@mipmap/ic_launcher');
-      var initializationSettings = InitializationSettings(
-        android: initializationSettingsAndroid,
-      );
-      // If `onMessage` is triggered with a notification, construct our own
-      // local notification to show to users using the created channel.
-      if (notification != null && android != null) {
-        String userId = await getUserId();
-        String pushUserId = message.data["userId"];
-        if (!userId.isNullEmptyOrWhitespace &&
-            !pushUserId.isNullEmptyOrWhitespace &&
-            userId == pushUserId) {
-          final FlutterLocalNotificationsPlugin
-              flutterLocalNotificationsPlugin =
-              FlutterLocalNotificationsPlugin();
-          flutterLocalNotificationsPlugin.initialize(initializationSettings,
-              onSelectNotification: (payload) async {
-            print('payload $payload');
-            return;
-          });
-
-          Future<void> _showBigPictureNotification() async {
-            BigPictureStyleInformation bigPictureStyleInformation =
-                BigPictureStyleInformation(
-                    const DrawableResourceAndroidBitmap('@mipmap/ic_launcher'),
-                    largeIcon: const DrawableResourceAndroidBitmap(
-                        '@mipmap/ic_launcher'),
-                    contentTitle: notification.title,
-                    htmlFormatContentTitle: true,
-                    summaryText: notification.body,
-                    htmlFormatSummaryText: true);
-            final AndroidNotificationDetails androidPlatformChannelSpecifics =
-                AndroidNotificationDetails(
-                    "kuma_flutter_notification", "PUSH", "쿠마 푸쉬 채널",
-                    styleInformation: bigPictureStyleInformation);
-            final NotificationDetails platformChannelSpecifics =
-                NotificationDetails(android: androidPlatformChannelSpecifics);
-            await flutterLocalNotificationsPlugin.show(notification.hashCode,
-                notification.title, notification.body, platformChannelSpecifics,
-                payload: message.data["url"]);
-          }
-
-          await _showBigPictureNotification();
-        }
-        print("onMessage: $message");
-      }
-    });
   }
 
   @override
